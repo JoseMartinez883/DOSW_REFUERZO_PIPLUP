@@ -29,6 +29,7 @@ target/
 # IntelliJ IDEA
 .idea/
 *.iml
+.out/
 
 # Eclipse
 .project
