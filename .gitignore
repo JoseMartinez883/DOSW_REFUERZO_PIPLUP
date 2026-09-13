@@ -29,7 +29,7 @@ target/
 # IntelliJ IDEA
 .idea/
 *.iml
-.out/
+out/
 
 # Eclipse
 .project
