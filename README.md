@@ -112,3 +112,176 @@ Se modela la entidad con el record inmutable `DroneAcuatico` y se resuelven las 
 - `map()` con referencia a método (`DroneAcuatico::id`) para proyectar la lista de identificadores.
 - `anyMatch()` para comprobar de forma eficiente si hay al menos una coincidencia.
 - `count()` para el total de drones activos y `max()` para obtener el dron con mayor batería envuelto de forma segura en un `Optional`.
+
+---
+
+### Ejercicio 03 — Builder para construir misiones válidas en AquaPort
+
+Implementar el patrón de diseño creacional Builder para la instanciación de objetos de tipo `Mision` en el sistema AquaPort. El patrón garantiza la inmutabilidad de la entidad y previene la creación de instancias con parámetros inconsistentes o nulos mediante encadenamiento de métodos y validaciones integradas en la operación terminal `build()`.
+
+**Código implementado:**
+
+`TipoCarga.java`
+```java
+package main.dosw.piplup;
+
+public enum TipoCarga {
+    MUESTRA_AGUA
+}
+```
+
+`EstadoMision.java`
+```java
+package main.dosw.piplup;
+
+public enum EstadoMision {
+    PENDIENTE,PROCESO,FINALIZADA
+}
+```
+
+`Mision.java`
+```java
+package main.dosw.piplup;
+
+public class Mision {
+
+    private final String id;
+    private final DroneAcuatico drone;
+    private final String puntoLlegada;
+    private final String puntoPartida;
+    private final TipoCarga tipoCarga;
+    private final EstadoMision estadoMision;
+
+    private Mision(String id, DroneAcuatico drone, String puntoLlegada, String puntoPartida, TipoCarga tipoCarga, EstadoMision estadoMision) {
+        this.id = id;
+        this.drone = drone;
+        this.puntoLlegada = puntoLlegada;
+        this.puntoPartida = puntoPartida;
+        this.tipoCarga = tipoCarga;
+        this.estadoMision = estadoMision;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public DroneAcuatico getDrone() {
+        return drone;
+    }
+
+    public String getPuntoLlegada() {
+        return puntoLlegada;
+    }
+
+    public String getPuntoPartida() {
+        return puntoPartida;
+    }
+
+    public TipoCarga getTipoCarga() {
+        return tipoCarga;
+    }
+
+    public EstadoMision getEstadoMision() {
+        return estadoMision;
+    }
+
+    public static class Builder {
+        private String id;
+        private DroneAcuatico drone;
+        private String puntoLlegada;
+        private TipoCarga tipoCarga;
+        private EstadoMision estadoMision = EstadoMision.PENDIENTE;
+        private String puntoPartida;
+
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder drone(DroneAcuatico drone) {
+            this.drone = drone;
+            return this;
+        }
+
+        public Builder puntoLlegada(String puntoLlegada) {
+            this.puntoLlegada = puntoLlegada;
+            return this;
+        }
+
+        public Builder tipoCarga(TipoCarga tipoCarga) {
+            this.tipoCarga = tipoCarga;
+            return this;
+        }
+
+        public Builder puntoPartida(String puntoPartida) {
+            this.puntoPartida = puntoPartida;
+            return this;
+        }
+
+        public Mision build() {
+            if (id == null || drone == null || puntoLlegada == null || tipoCarga == null
+                    || puntoPartida == null || id.isBlank() || puntoLlegada.isBlank() || puntoPartida.isBlank()) {
+                throw new IllegalStateException("Falta campos por diligenciar sobre la mision o hay campos coN mensajes vacios");
+            } else if (!drone.disponible()){
+                throw new IllegalStateException("El drone asignado no se encuentra disponible");
+            }
+
+            return new Mision(id, drone, puntoLlegada, puntoPartida, tipoCarga, EstadoMision.PENDIENTE);
+        }
+    }
+}
+```
+
+`Ejercicio03.java`
+```java
+package main.dosw.piplup;
+
+public class Ejercicio03 {
+    public static void main(String[] args) {
+        DroneAcuatico droneValido = new DroneAcuatico("AR-01", "Aqua-Ranger 100", 85, true, "Embalse Norte");
+        DroneAcuatico droneNoDisponible = new DroneAcuatico("AR-03", "Aqua-Ranger 100", 18, false, "Laguna Sur");
+
+        // 1. Caso exitoso
+        Mision misionValida = new Mision.Builder()
+                .id("M-001")
+                .drone(droneValido)
+                .puntoPartida("Embalse Norte")
+                .puntoLlegada("Laboratorio Hídrico")
+                .tipoCarga(TipoCarga.MUESTRA_AGUA)
+                .build();
+
+        System.out.println("Misión construida correctamente: " + misionValida.getId() + " - " + misionValida.getEstadoMision());
+
+        // 2. Validación de disponibilidad del drone
+        try {
+            new Mision.Builder()
+                    .id("M-002")
+                    .drone(droneNoDisponible)
+                    .puntoPartida("Laguna Sur")
+                    .puntoLlegada("Laboratorio Hídrico")
+                    .tipoCarga(TipoCarga.MUESTRA_AGUA)
+                    .build();
+        } catch (IllegalStateException e) {
+            System.out.println("Excepción capturada esperada: " + e.getMessage());
+        }
+
+        // 3. Validación de campos obligatorios o vacíos
+        try {
+            new Mision.Builder()
+                    .id("")
+                    .drone(droneValido)
+                    .puntoPartida("Embalse Norte")
+                    .puntoLlegada("   ")
+                    .build();
+        } catch (IllegalStateException e) {
+            System.out.println("Excepción capturada esperada: " + e.getMessage());
+        }
+    }
+}
+```
+
+**Captura de ejecución:**  
+![ExecutionExercise03PiplupPhase.png](docs/images/ExecutionExercise03PiplupPhase.png)
+
+**Explicación:**  
+Se encapsuló la construcción de la clase inmutable `Mision` mediante su clase anidada estática `Builder`. A través de una interfaz fluida se asignan los atributos requeridos, delegando al método `build()` la comprobación estricta de precondiciones: verifica que las cadenas no sean nulas ni estén compuestas únicamente por espacios en blanco (`isBlank()`), que las referencias a objetos/enums no sean nulas y que el `DroneAcuatico` asignado cumpla la regla de negocio de encontrarse en estado disponible. De no cumplirse alguna regla, interrumpe el flujo levantando una `IllegalStateException` descriptiva.
