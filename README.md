@@ -796,7 +796,7 @@ Utilizando la plantilla oficial de la asignatura para el análisis de requerimie
 
 En concordancia con las buenas prácticas de diseño de producto y las directrices de la fase Piplup, la interfaz de monitoreo de AquaPort se construyó bajo la premisa de **identidad corporativa primero, diseño de interfaz después**. Esto garantiza coherencia visual, accesibilidad y claridad cognitiva para el Operador Hídrico frente a la pantalla de control.
 
-> 🌐 **Enlace directo al Manual de Identidad interactivo:**  
+> 🌐 **Enlace directo al Manual de Identidad interactivo:**
 > 👉 [**Abrir Manual de Identidad de AquaPort (`AquaPort_Manual_de_Identidad.html`)**](docs/mockups/AquaPort_Manual_de_Identidad.html)
 
 #### 1. Manual de Identidad Corporativa
@@ -804,33 +804,37 @@ En concordancia con las buenas prácticas de diseño de producto y las directric
 El manual de identidad formal de AquaPort ha sido desarrollado como artefacto web interactivo navegable y autocontenido. Puedes consultarlo directamente en el enlace superior o accediendo al archivo [`docs/mockups/AquaPort_Manual_de_Identidad.html`](docs/mockups/AquaPort_Manual_de_Identidad.html).
 
 ##### A. Paleta de Colores Institucional
+
 Diseñada específicamente para entornos operativos de monitoreo continuo (modo oscuro de baja fatiga visual), inspirada en ambientes hídricos y con altos contrastes WCAG:
 
-| Nombre | Código Hex | RGB | Uso y Aplicación en Interfaz |
-| :--- | :--- | :--- | :--- |
-| **Abisal** | `#0A1C26` | `(10, 28, 38)` | Fondo principal del panel y superficie base. |
-| **Casco** | `#12303D` | `(18, 48, 61)` | Tarjetas de drones, barras de navegación y contenedores. |
-| **Marea** | `#1B7F8C` | `(27, 127, 140)` | Color primario de acción (botones principales, logo claro). |
-| **Sonar** | `#7FD8C9` | `(127, 216, 201)` | Acento visual, enlaces, estados de foco y barras de batería. |
-| **Sedimento** | `#8CA3A8` | `(140, 163, 168)` | Texto secundario, unidades de medida y etiquetas complementarias. |
-| **Bruma** | `#E4EDEC` | `(228, 237, 236)` | Texto principal y encabezados de alta legibilidad (contraste 14.6:1). |
+| Nombre              | Código Hex | RGB                 | Uso y Aplicación en Interfaz                                         |
+| :------------------ | :---------- | :------------------ | :-------------------------------------------------------------------- |
+| **Abisal**    | `#0A1C26` | `(10, 28, 38)`    | Fondo principal del panel y superficie base.                          |
+| **Casco**     | `#12303D` | `(18, 48, 61)`    | Tarjetas de drones, barras de navegación y contenedores.             |
+| **Marea**     | `#1B7F8C` | `(27, 127, 140)`  | Color primario de acción (botones principales, logo claro).          |
+| **Sonar**     | `#7FD8C9` | `(127, 216, 201)` | Acento visual, enlaces, estados de foco y barras de batería.         |
+| **Sedimento** | `#8CA3A8` | `(140, 163, 168)` | Texto secundario, unidades de medida y etiquetas complementarias.     |
+| **Bruma**     | `#E4EDEC` | `(228, 237, 236)` | Texto principal y encabezados de alta legibilidad (contraste 14.6:1). |
 
 ##### B. Colores Semánticos de Estado (Flota de Drones)
+
 Cada estado combina de forma obligatoria **color, forma e icono y texto explicativo** para prevenir ambigüedad en operadores con daltonismo:
 
-| Estado | Código Hex | Ratio Contraste | Icono / Forma | Criterio de Uso Operativo |
-| :--- | :--- | :--- | :--- | :--- |
-| **Disponible** | `#3FBF8A` | 7.5:1 | Círculo lleno (`●`) | Drone con batería `>= 35%` listo para asignación inmediata. |
-| **En misión** | `#4C9BE8` | 5.9:1 | Flecha de avance (`▶`) | Drone ejecutando un despacho o transporte en tránsito. |
-| **Recargando** | `#E5B33A` | 9.0:1 | Rayo (`⚡`) | Drone en estación de acople cargando energía. |
-| **Mantenimiento** | `#8A979C` | 5.8:1 | Rombo (`◇`) | Drone fuera de servicio por revisión programada. |
-| **Fallo** | `#E5604F` | 5.1:1 | Triángulo de alerta (`▲`) | Alerta técnica; requiere atención inmediata del operador. |
+| Estado                  | Código Hex | Ratio Contraste | Icono / Forma                 | Criterio de Uso Operativo                                      |
+| :---------------------- | :---------- | :-------------- | :---------------------------- | :------------------------------------------------------------- |
+| **Disponible**    | `#3FBF8A` | 7.5:1           | Círculo lleno (`●`)       | Drone con batería`>= 35%` listo para asignación inmediata. |
+| **En misión**    | `#4C9BE8` | 5.9:1           | Flecha de avance (`▶`)     | Drone ejecutando un despacho o transporte en tránsito.        |
+| **Recargando**    | `#E5B33A` | 9.0:1           | Rayo (`⚡`)                 | Drone en estación de acople cargando energía.                |
+| **Mantenimiento** | `#8A979C` | 5.8:1           | Rombo (`◇`)                | Drone fuera de servicio por revisión programada.              |
+| **Fallo**         | `#E5604F` | 5.1:1           | Triángulo de alerta (`▲`) | Alerta técnica; requiere atención inmediata del operador.    |
 
 ##### C. Tipografía
+
 - **IBM Plex Sans (400, 500, 600):** Tipografía principal para títulos, etiquetas de navegación, mensajes y botones.
 - **IBM Plex Mono (400, 500):** Tipografía monoespaciada reservada exclusivamente para telemetría y datos que requieren comparación o copiado rápido: identificadores de drone (`AR-01`), códigos de misión (`M-0412`), porcentajes de batería (`82%`) y timestamps (`10:47:12`).
 
 ##### D. Tono de Voz y Microcopia
+
 Técnico, conciso, preventivo y en voz activa en español. Se eliminan los mensajes genéricos o decorativos en favor de diagnósticos claros con cifras y pautas de acción concretas (ej. *"El drone AR-03 tiene batería insuficiente (18%). Mínimo requerido: 35%."* en lugar de *"Error de asignación"*).
 
 ---
@@ -842,6 +846,7 @@ A partir del manual de identidad establecido, se diseñó la interfaz de monitor
 ![Panel de Monitoreo de la Flota Acuática - AquaPort](docs/images/AquaPort_Panel_Flota.png)
 
 ##### Aspectos Destacados del Mockup:
+
 1. **Resumen Cuantitativo Superior:** Contadores en tiempo real agrupados por estado (`1 disponible`, `1 en misión`, `1 recargando`, `1 fallo`) que permiten evaluar la capacidad de la flota sin navegar entre pestañas.
 2. **Banner de Notificación Crítica:** Aviso destacado en color de fallo sobre el drone `AR-04`, especificando la hora de pérdida de enlace y el punto geográfico donde intervenir (`Punto Ribereño Este`).
 3. **Control y Deshabilitación Preventiva (RN-01):**
@@ -855,27 +860,26 @@ A partir del manual de identidad establecido, se diseñó la interfaz de monitor
 
 Se evaluó exhaustivamente la interfaz del panel de monitoreo frente a los 10 principios de usabilidad de Jakob Nielsen, verificando el cumplimiento de **7 de las 10 heurísticas** en esta pantalla y justificando las 3 restantes:
 
-| N.° | Heurística de Nielsen | Evaluación | Aplicación y Evidencia Concreta en el Panel de AquaPort |
-| :---: | :--- | :---: | :--- |
-| **#1** | **Visibilidad del estado del sistema** | **Cumple** | Los indicadores superiores totalizan los estados de la flota en tiempo real. Cada fila de drone y cada nodo del mapa batimétrico muestran su estado con color, icono y texto. El pie de página indica el timestamp exacto de la última sincronización (`Actualizado 10:47:12`). |
-| **#2** | **Concordancia entre el sistema y el mundo real** | **Cumple** | Utiliza la terminología natural del operador hídrico (drones, misiones, batería, telemetría). Las zonas geográficas corresponden a los lugares reales del campus de la Escuela Colombiana de Ingeniería (`Embalse Norte`, `Canal Central`, `Laguna Sur`, `Punto Ribereño Este`, `Laboratorio Hídrico`). |
-| **#3** | **Control y libertad del usuario** | *No aplica aquí* | La cancelación de misiones pendientes o edición de rutas se gestiona en la vista de detalle de misión; el panel de flota actúa como centro de visualización y despacho rápido. |
-| **#4** | **Consistencia y estándares** | **Cumple** | Todas las filas mantienen una jerarquía visual idéntica: ID, estado estandarizado, nivel de batería, zona actual, misión y botón de acción. Los datos numéricos y códigos se expresan uniformemente en tipografía monoespaciada (`IBM Plex Mono`). |
-| **#5** | **Prevención de errores** | **Cumple** | El drone `AR-03` con batería al 18% se presenta deshabilitado y su botón de asignación queda inactivo con el mensaje de restricción (`< 35%`). El drone `AR-04` en fallo no ofrece botón de asignación, impidiendo que el operador intente despachar una unidad averiada. |
-| **#6** | **Reconocimiento antes que recuerdo** | **Cumple** | Cada fila consolida toda la información que el operador necesita para decidir (ID, porcentaje y barra de batería, ubicación actual y misión en curso). El usuario no necesita recordar datos de pantallas previas para tomar decisiones de asignación. |
-| **#7** | **Flexibilidad y eficiencia de uso** | *No aplica aquí* | En la escala del MVP (4 drones), la lista completa cabe en un solo vistazo sin necesidad de filtros ni atajos complejos. Se proyectan aceleradores y filtros avanzados para etapas posteriores con flotas superiores a 50 drones. |
-| **#8** | **Diseño estético y minimalista** | **Cumple** | La interfaz evita elementos ornamentales distractores. El mapa topográfico utiliza líneas sutiles sin saturar, y las tarjetas presentan una distribución espaciada en múltiplos de 4 px, priorizando la lectura rápida de los indicadores operativos. |
-| **#9** | **Ayudar a reconocer, diagnosticar y recuperarse de errores** | **Cumple** | En lugar de alertas genéricas, los mensajes son precisos y orientados a la solución: para `AR-03` se indica el porcentaje actual y la cota mínima requerida; para `AR-04` el banner diagnostica la hora de desconexión y orienta al operador sobre el punto exacto donde inspeccionar el dispositivo. |
-| **#10** | **Ayuda y documentación** | *No aplica aquí* | El panel de control está diseñado para ser autoexplicativo para personal técnico sin manuales contextuales intrusivos. La documentación de diseño y lineamientos se centralizan en el [Manual de Identidad HTML](docs/mockups/AquaPort_Manual_de_Identidad.html). |
+|     N.°     | Heurística de Nielsen                                              |     Evaluación     | Aplicación y Evidencia Concreta en el Panel de AquaPort                                                                                                                                                                                                                                                                  |
+| :-----------: | :------------------------------------------------------------------ | :-----------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **#1** | **Visibilidad del estado del sistema**                        |  **Cumple**  | Los indicadores superiores totalizan los estados de la flota en tiempo real. Cada fila de drone y cada nodo del mapa batimétrico muestran su estado con color, icono y texto. El pie de página indica el timestamp exacto de la última sincronización (`Actualizado 10:47:12`).                                     |
+| **#2** | **Concordancia entre el sistema y el mundo real**             |  **Cumple**  | Utiliza la terminología natural del operador hídrico (drones, misiones, batería, telemetría). Las zonas geográficas corresponden a los lugares reales del campus de la Escuela Colombiana de Ingeniería (`Embalse Norte`, `Canal Central`, `Laguna Sur`, `Punto Ribereño Este`, `Laboratorio Hídrico`). |
+| **#3** | **Control y libertad del usuario**                            | *No aplica aquí* | La cancelación de misiones pendientes o edición de rutas se gestiona en la vista de detalle de misión; el panel de flota actúa como centro de visualización y despacho rápido.                                                                                                                                      |
+| **#4** | **Consistencia y estándares**                                |  **Cumple**  | Todas las filas mantienen una jerarquía visual idéntica: ID, estado estandarizado, nivel de batería, zona actual, misión y botón de acción. Los datos numéricos y códigos se expresan uniformemente en tipografía monoespaciada (`IBM Plex Mono`).                                                             |
+| **#5** | **Prevención de errores**                                    |  **Cumple**  | El drone`AR-03` con batería al 18% se presenta deshabilitado y su botón de asignación queda inactivo con el mensaje de restricción (`< 35%`). El drone `AR-04` en fallo no ofrece botón de asignación, impidiendo que el operador intente despachar una unidad averiada.                                      |
+| **#6** | **Reconocimiento antes que recuerdo**                         |  **Cumple**  | Cada fila consolida toda la información que el operador necesita para decidir (ID, porcentaje y barra de batería, ubicación actual y misión en curso). El usuario no necesita recordar datos de pantallas previas para tomar decisiones de asignación.                                                               |
+| **#7** | **Flexibilidad y eficiencia de uso**                          | *No aplica aquí* | En la escala del MVP (4 drones), la lista completa cabe en un solo vistazo sin necesidad de filtros ni atajos complejos. Se proyectan aceleradores y filtros avanzados para etapas posteriores con flotas superiores a 50 drones.                                                                                         |
+| **#8** | **Diseño estético y minimalista**                           |  **Cumple**  | La interfaz evita elementos ornamentales distractores. El mapa topográfico utiliza líneas sutiles sin saturar, y las tarjetas presentan una distribución espaciada en múltiplos de 4 px, priorizando la lectura rápida de los indicadores operativos.                                                                |
+| **#9** | **Ayudar a reconocer, diagnosticar y recuperarse de errores** |  **Cumple**  | En lugar de alertas genéricas, los mensajes son precisos y orientados a la solución: para`AR-03` se indica el porcentaje actual y la cota mínima requerida; para `AR-04` el banner diagnostica la hora de desconexión y orienta al operador sobre el punto exacto donde inspeccionar el dispositivo.              |
+| **#10** | **Ayuda y documentación**                                    | *No aplica aquí* | El panel de control está diseñado para ser autoexplicativo para personal técnico sin manuales contextuales intrusivos. La documentación de diseño y lineamientos se centralizan en el[Manual de Identidad HTML](docs/mockups/AquaPort_Manual_de_Identidad.html).                                                      |
 
 ---
 
 ### Ejercicio 09 — Agilismo y Jira (AquaPort MVP)
 
-En concordancia con los estándares de gestión ágil de la asignatura (**`sprint2-dosw-proyectos.html`** y **`DOSW_Equipo_Piplup.html`**), el desarrollo del MVP de AquaPort se organizó formalmente en Jira aplicando la jerarquía ágil completa:  
-**`Épica` ➔ `Features` (incluyendo contrato Swagger/OpenAPI) ➔ `Historias de Usuario (HU)` ➔ `Subtareas Técnicas por capas de software`**, aplicando estimación con Planning Poker (Fibonacci) y la regla estricta de **Definition of Done (DoD) con evidencia**.
+En concordancia con los estándares de gestión ágil de la asignatura (**`sprint2-dosw-proyectos.html`** y **`DOSW_Equipo_Piplup.html`**), el desarrollo del MVP de AquaPort se organizó formalmente en Jira aplicando la jerarquía ágil completa:**`Épica` ➔ `Features` (incluyendo contrato Swagger/OpenAPI) ➔ `Historias de Usuario (HU)` ➔ `Subtareas Técnicas por capas de software`**, aplicando estimación con Planning Poker (Fibonacci) y la regla estricta de **Definition of Done (DoD) con evidencia**.
 
-> 🌐 **Enlace directo al Proyecto y Backlog en Jira:**  
+> 🌐 **Enlace directo al Proyecto y Backlog en Jira:**
 > 👉 [**Abrir Proyecto AquaPort en Atlassian Jira (Tablero AQUA)**](https://josealejandromartinezarias9.atlassian.net/jira/software/projects/AQUA/summary?atlOrigin=eyJpIjoiN2JlNGY5ZTE1OWIxNGMwNjljOGQ1M2VkN2I1OGVjN2QiLCJwIjoiaiJ9)
 
 ---
@@ -886,14 +890,14 @@ El backlog de AquaPort consolida la Épica, las Features funcionales y de docume
 
 ![Backlog General en Jira](docs/images/JiraGeneral.png)
 
-| Clave | Tipo | Resumen / Ítem | Épica / Padre | Estimación | Estado |
-| :---: | :---: | :--- | :---: | :---: | :---: |
-| **AQUA-1** | `Epic` | Digitalizar el monitoreo y reparto hídrico de la ECI... | — | — | Por hacer |
-| **AQUA-2** | `Feature` | FEAT-01: Gestión de la flota de drones acuáticos del campus | AQUA-1 | — | Por hacer |
-| **AQUA-3** | `Feature` | FEAT-02: Documentación y contratos de API con Swagger / OpenAPI | AQUA-1 | — | Por hacer |
-| **AQUA-4** | `Story` | HU-01: Consulta de estado y telemetría de la flota acuática | FEAT-01 | **5 pts** | Por hacer |
-| **AQUA-5** | `Story` | HU-02: Asignación manual de drone a misión de transporte | FEAT-01 | **13 pts** | Por hacer |
-| **AQUA-6** | `Story` | HU-03: Cancelación de misión en estado pendiente | FEAT-01 | **5 pts** | Por hacer |
+|      Clave      |    Tipo    | Resumen / Ítem                                                  | Épica / Padre |   Estimación   |  Estado  |
+| :--------------: | :---------: | :--------------------------------------------------------------- | :------------: | :--------------: | :-------: |
+| **AQUA-1** |  `Epic`  | Digitalizar el monitoreo y reparto hídrico de la ECI...         |       —       |        —        | Por hacer |
+| **AQUA-2** | `Feature` | FEAT-01: Gestión de la flota de drones acuáticos del campus    |     AQUA-1     |        —        | Por hacer |
+| **AQUA-3** | `Feature` | FEAT-02: Documentación y contratos de API con Swagger / OpenAPI |     AQUA-1     |        —        | Por hacer |
+| **AQUA-4** |  `Story`  | HU-01: Consulta de estado y telemetría de la flota acuática    |    FEAT-01    | **5 pts** | Por hacer |
+| **AQUA-5** |  `Story`  | HU-02: Asignación manual de drone a misión de transporte       |    FEAT-01    | **13 pts** | Por hacer |
+| **AQUA-6** |  `Story`  | HU-03: Cancelación de misión en estado pendiente               |    FEAT-01    | **5 pts** | Por hacer |
 
 ---
 
@@ -909,11 +913,13 @@ El backlog de AquaPort consolida la Épica, las Features funcionales y de docume
 #### 3. Features del Sistema
 
 ##### A. FEAT-01: Gestión de la flota de drones acuáticos del campus (AQUA-2)
+
 Módulo funcional de supervisión y control operativo que permite consultar el inventario y estado de carga de la flota, asignar unidades a misiones de transporte hídrico y gestionar el ciclo de despacho básico para el Operador Hídrico.
 
 ![Feature 01 en Jira](docs/images/JiraFeat01.png)
 
 ##### B. FEAT-02: Documentación y contratos de API con Swagger / OpenAPI (AQUA-3)
+
 Definición y publicación interactiva de los contratos de API REST mediante interfaces OpenAPI (SpringDoc) separadas por controlador, garantizando el contrato de integración formal entre frontend y backend conforme a las directrices de la guía de proyectos.
 
 ![Feature 02 en Jira](docs/images/JiraFeat02.png)
@@ -925,10 +931,8 @@ Definición y publicación interactiva de los contratos de API REST mediante int
 > **Criterio de Calidad DOSW:** Todas las historias se encuentran redactadas bajo la plantilla formal *`Como [rol], quiero [qué], para [beneficio]`*, utilizando exclusivamente roles humanos del dominio (`Operador Hídrico`) y evitando designar al "Sistema" como actor.
 
 ##### 📋 HU-01: Consulta de estado y telemetría de la flota acuática (AQUA-4 · 5 pts)
-* **Narrativa:**  
-  *Como* Operador Hídrico,  
-  *quiero* visualizar la lista de drones de la flota con su identificador, nivel de batería, estado actual y zona asignada,  
-  *para* evaluar la disponibilidad operativa de las unidades antes de despachar una nueva misión de transporte.
+
+* **Narrativa:***Como* Operador Hídrico,*quiero* visualizar la lista de drones de la flota con su identificador, nivel de batería, estado actual y zona asignada,*para* evaluar la disponibilidad operativa de las unidades antes de despachar una nueva misión de transporte.
 * **Criterios de Aceptación:**
   1. El sistema clasifica visualmente el estado de cada unidad entre DISPONIBLE, EN_MISION, RECARGANDO, MANTENIMIENTO y FALLO.
   2. Los drones con batería < 35% se presentan claramente como no aptos para despacho.
@@ -939,10 +943,8 @@ Definición y publicación interactiva de los contratos de API REST mediante int
 ---
 
 ##### 📋 HU-02: Asignación manual de drone a misión de transporte (AQUA-5 · 13 pts)
-* **Narrativa:**  
-  *Como* Operador Hídrico,  
-  *quiero* asignar manualmente un drone disponible a una solicitud de misión especificando puntos de partida, llegada y tipo de carga,  
-  *para* despachar oportunamente el transporte de muestras de agua o sensores en los cuerpos hídricos del campus.
+
+* **Narrativa:***Como* Operador Hídrico,*quiero* asignar manualmente un drone disponible a una solicitud de misión especificando puntos de partida, llegada y tipo de carga,*para* despachar oportunamente el transporte de muestras de agua o sensores en los cuerpos hídricos del campus.
 * **Criterios de Aceptación (Formato Gherkin / BDD):**
   - **Escenario 1 (Asignación válida):** Dado que el Operador Hídrico selecciona un drone registrado y en estado "DISPONIBLE" con batería $\ge 35\%$, cuando confirma el registro de la misión con datos válidos, entonces el sistema crea la instancia inmutable de la Misión con un ID alfanumérico único y actualiza el drone a "EN_MISION".
   - **Escenario 2 (Rechazo por RN-01 / RN-02):** Dado que el Operador Hídrico intenta asignar un drone con batería < 35% o en estado diferente a "DISPONIBLE", cuando solicita el registro, entonces el sistema rechaza la operación notificando el motivo en pantalla con la batería actual y la cota mínima requerida (35%).
@@ -950,26 +952,25 @@ Definición y publicación interactiva de los contratos de API REST mediante int
 ![HU 02 en Jira](docs/images/JiraHU02.png)
 
 ###### Descomposición en Subtareas Técnicas por Capas (AQUA-7 a AQUA-12):
+
 Siguiendo el template arquitectónico oficial (`Entidades` ➔ `DTOs` ➔ `Validator` ➔ `Service` ➔ `Controller` ➔ `Pruebas`), la HU-02 desglosa sus tareas técnicas con su respectiva Definition of Done (DoD) y evidencia requerida para su cierre:
 
 ![Subtareas Técnicas en Jira](docs/images/JiraSubTaks.png)
 
-| Clave | Subtarea Técnica | Capa Arquitectónica | Estimación | Criterio de Aceptación / Done (DoD) |
-| :---: | :--- | :---: | :---: | :--- |
-| **AQUA-7** | `SUB-01: Entidades y records de dominio` | Dominio Puro | 2 pts | Clases inmutables `Mision` (con Builder) y `DroneAcuatico` en `model.domain`, compilando sin anotaciones de persistencia ni DTOs. |
-| **AQUA-8** | `SUB-02: Request y Response DTOs con Bean Validation` | DTOs | 1 pt | `MisionRequestDTO` con validaciones de campos no nulos/no vacíos y `MisionResponseDTO` para la respuesta al cliente. |
-| **AQUA-9** | `SUB-03: Implementar ValidadorMision con reglas de negocio` | Validación | 2 pts | `ValidadorMision` verificando batería $\ge 35\%$, estado `DISPONIBLE` y locaciones no vacías, arrojando excepciones tipadas. |
-| **AQUA-10** | `SUB-04: Service de asignación con Streams y RegistradorMisiones` | Servicio / Negocio | 3 pts | Lógica desacoplada en `IMisionService` orquestando validador y persistencia en memoria, sin retornar DTOs directamente. |
-| **AQUA-11** | `SUB-05: Controller REST y documentación Swagger OpenAPI` | Presentación / Docs | 2 pts | Interfaz `MisionApi` con anotaciones OpenAPI y `MisionController` con endpoint `POST /api/v1/misiones` retornando HTTP 201. |
-| **AQUA-12** | `SUB-06: Pruebas unitarias con JUnit 5 y patrón AAA` | Pruebas Unitarias | 3 pts | Suite `ValidadorMisionTest` y `MisionServiceImplTest` con `@DisplayName` cubriendo casos positivos y negativos con JaCoCo $\ge 80\%$. |
+|       Clave       | Subtarea Técnica                                                    | Capa Arquitectónica | Estimación | Criterio de Aceptación / Done (DoD)                                                                                                         |
+| :---------------: | :------------------------------------------------------------------- | :------------------: | :---------: | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| **AQUA-7** | `SUB-01: Entidades y records de dominio`                           |     Dominio Puro     |    2 pts    | Clases inmutables`Mision` (con Builder) y `DroneAcuatico` en `model.domain`, compilando sin anotaciones de persistencia ni DTOs.       |
+| **AQUA-8** | `SUB-02: Request y Response DTOs con Bean Validation`              |         DTOs         |    1 pt    | `MisionRequestDTO` con validaciones de campos no nulos/no vacíos y `MisionResponseDTO` para la respuesta al cliente.                    |
+| **AQUA-9** | `SUB-03: Implementar ValidadorMision con reglas de negocio`        |     Validación     |    2 pts    | `ValidadorMision` verificando batería $\ge 35\%$, estado `DISPONIBLE` y locaciones no vacías, arrojando excepciones tipadas.         |
+| **AQUA-10** | `SUB-04: Service de asignación con Streams y RegistradorMisiones` |  Servicio / Negocio  |    3 pts    | Lógica desacoplada en`IMisionService` orquestando validador y persistencia en memoria, sin retornar DTOs directamente.                    |
+| **AQUA-11** | `SUB-05: Controller REST y documentación Swagger OpenAPI`         | Presentación / Docs |    2 pts    | Interfaz`MisionApi` con anotaciones OpenAPI y `MisionController` con endpoint `POST /api/v1/misiones` retornando HTTP 201.             |
+| **AQUA-12** | `SUB-06: Pruebas unitarias con JUnit 5 y patrón AAA`              |  Pruebas Unitarias  |    3 pts    | Suite`ValidadorMisionTest` y `MisionServiceImplTest` con `@DisplayName` cubriendo casos positivos y negativos con JaCoCo $\ge 80\%$. |
 
 ---
 
 ##### 📋 HU-03: Cancelación de misión en estado pendiente (AQUA-6 · 5 pts)
-* **Narrativa:**  
-  *Como* Operador Hídrico,  
-  *quiero* cancelar una misión de transporte que se encuentre en estado pendiente antes del inicio de navegación,  
-  *para* liberar el drone asignado en caso de imprevistos ambientales o errores en la solicitud.
+
+* **Narrativa:***Como* Operador Hídrico,*quiero* cancelar una misión de transporte que se encuentre en estado pendiente antes del inicio de navegación,*para* liberar el drone asignado en caso de imprevistos ambientales o errores en la solicitud.
 * **Criterios de Aceptación:**
   1. Solo se permite cancelar misiones en estado `PENDIENTE`. Si el drone ya está navegando (`EN_MISION`), el sistema rechaza la cancelación con código HTTP 422.
   2. Al confirmarse la cancelación, el drone retorna su estado inmediatamente a `DISPONIBLE`.
@@ -991,10 +992,13 @@ En cumplimiento con los lineamientos formales de modelado de software de DOSW (*
 #### 2. Elementos del Diagrama
 
 ##### A. Límite del Sistema
+
 * **Contenedor:** `AquaPort — Sistema Central MVP`. Delimita con precisión la frontera del software; todos los casos de uso (elipses) residen en su interior, mientras que los actores interactúan desde el exterior.
 
 ##### B. Actores (Roles Humanos del Dominio)
+
 Conforme a las reglas de calidad de la asignatura, se modelan roles humanos funcionales y **nunca se utiliza "Sistema" como actor**:
+
 1. **Operador Hídrico (Actor Principal):** Usuario técnico que opera la pantalla de monitoreo, consulta la telemetría en tiempo real, asigna drones a misiones de despacho y gestiona cancelaciones.
 2. **Solicitante (Actor Secundario):** Investigador, docente o laboratorista del campus que genera solicitudes de transporte para muestras hídricas o sensores (`RF-02`).
 3. **Administrador ECI (Actor de Supervisión):** Personal institucional que audita el estado general de los activos, revisa métricas operativas y supervisa el inventario de la flota (`RF-03`).
@@ -1003,16 +1007,16 @@ Conforme a las reglas de calidad de la asignatura, se modelan roles humanos func
 
 #### 3. Casos de Uso y Especificación de Relaciones
 
-| Código | Caso de Uso | Actor Primario | Tipo / Relación | Regla / Condición |
-| :---: | :--- | :---: | :---: | :--- |
-| **CU-01** | **Registrar misión de transporte (RF-01)** | Operador Hídrico | Caso Base Principal | Permite formalizar un despacho fluvial acoplando drone, origen, destino y carga. |
-| **CU-02** | **Consultar estado y telemetría de flota** | Operador Hídrico / Admin | Caso de Consulta | Lectura en tiempo real de batería, zona y estado de los drones. |
-| **CU-03** | **Cancelar misión pendiente** | Operador Hídrico | Gestión de Ciclo | Aborta misiones que aún no han iniciado su navegación activa. |
-| **CU-04** | **Solicitar transporte de muestra/sensor (RF-02)** | Solicitante | Caso de Entrada | Ingreso del requerimiento de transporte por parte del solicitante. |
-| **CU-05** | **Supervisar inventario de flota y auditoría (RF-03)** | Administrador ECI | Caso de Control | Monitoreo administrativo de disponibilidad y registro de activos. |
-| **CU-06** | **Validar disponibilidad y batería del drone** | Sistema Interno | **`<<include>>`** | **Obligatorio:** Se ejecuta SIEMPRE que se invoca `CU-01`. Sin verificar que el drone esté `DISPONIBLE` y con batería $\ge 35\%$, no se puede registrar la misión. |
-| **CU-07** | **Alertar batería crítica** | Sistema Interno | **`<<extend>>`** | **Condicional:** `[si batería del drone < 40%]`. Advierte preventivamente al operador antes del despacho. |
-| **CU-08** | **Notificar rechazo de asignación** | Sistema Interno | **`<<extend>>`** | **Condicional:** `[si batería < 35% o drone ocupado]`. Interrumpe la operación informando el motivo técnico exacto (RN-01 / RN-02). |
+|     Código     | Caso de Uso                                                   |      Actor Primario      |     Tipo / Relación     | Regla / Condición                                                                                                                                                                |
+| :-------------: | :------------------------------------------------------------ | :-----------------------: | :-----------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **CU-01** | **Registrar misión de transporte (RF-01)**             |     Operador Hídrico     |    Caso Base Principal    | Permite formalizar un despacho fluvial acoplando drone, origen, destino y carga.                                                                                                  |
+| **CU-02** | **Consultar estado y telemetría de flota**             | Operador Hídrico / Admin |     Caso de Consulta     | Lectura en tiempo real de batería, zona y estado de los drones.                                                                                                                  |
+| **CU-03** | **Cancelar misión pendiente**                          |     Operador Hídrico     |     Gestión de Ciclo     | Aborta misiones que aún no han iniciado su navegación activa.                                                                                                                   |
+| **CU-04** | **Solicitar transporte de muestra/sensor (RF-02)**      |        Solicitante        |      Caso de Entrada      | Ingreso del requerimiento de transporte por parte del solicitante.                                                                                                                |
+| **CU-05** | **Supervisar inventario de flota y auditoría (RF-03)** |     Administrador ECI     |      Caso de Control      | Monitoreo administrativo de disponibilidad y registro de activos.                                                                                                                 |
+| **CU-06** | **Validar disponibilidad y batería del drone**         |      Sistema Interno      | **`<<include>>`** | **Obligatorio:** Se ejecuta SIEMPRE que se invoca `CU-01`. Sin verificar que el drone esté `DISPONIBLE` y con batería $\ge 35\%$, no se puede registrar la misión. |
+| **CU-07** | **Alertar batería crítica**                           |      Sistema Interno      | **`<<extend>>`** | **Condicional:** `[si batería del drone < 40%]`. Advierte preventivamente al operador antes del despacho.                                                                |
+| **CU-08** | **Notificar rechazo de asignación**                    |      Sistema Interno      | **`<<extend>>`** | **Condicional:** `[si batería < 35% o drone ocupado]`. Interrumpe la operación informando el motivo técnico exacto (RN-01 / RN-02).                                    |
 
 ---
 
@@ -1054,6 +1058,7 @@ HEURÍSTICAS NIELSEN: Visibilidad del estado (#1), Prevención de errores (#5), 
 #### 2. Pantallas de los 3 Estados Operacionales
 
 ##### A. Estado Normal (Operación Estable de la Flota)
+
 * **Escenario:** Flota con disponibilidad regular, sin fallos técnicos activos ni alertas rojas bloqueantes. Permite el despacho ágil e inmediato de misiones con drones en óptimo nivel de carga.
 * **Métricas en Pantalla:** `2 disponible`, `1 en misión`, `1 recargando`, `0 fallo`.
 
@@ -1066,6 +1071,7 @@ HEURÍSTICAS NIELSEN: Visibilidad del estado (#1), Prevención de errores (#5), 
 ---
 
 ##### B. Estado Alerta (Incidencia Crítica y Diagnóstico de Fallo)
+
 * **Escenario:** Anomalía de telemetría detectada en una unidad (`AR-04` en estado `FALLO`), coexistiendo con una unidad en recarga crítica (`AR-03` al 18%).
 * **Métricas en Pantalla:** `1 disponible`, `1 en misión`, `1 recargando`, `1 fallo`.
 
@@ -1079,6 +1085,7 @@ HEURÍSTICAS NIELSEN: Visibilidad del estado (#1), Prevención de errores (#5), 
 ---
 
 ##### C. Estado Vacío / Empty State (Sin Unidades Disponibles para Asignación)
+
 * **Escenario:** Todos los drones se encuentran ocupados en navegación activa o en ciclo de carga (`0 disponibles`). El operador no puede despachar misiones de inmediato pero debe conocer cuándo se liberará el próximo recurso.
 * **Métricas en Pantalla:** `0 disponible`, `3 en misión`, `1 recargando`, `0 fallo`.
 
@@ -1093,14 +1100,156 @@ HEURÍSTICAS NIELSEN: Visibilidad del estado (#1), Prevención de errores (#5), 
 
 #### 3. Matriz Comparativa de Heurísticas de Nielsen por Estado
 
-| Heurística de Nielsen | Estado Normal | Estado Alerta | Estado Vacío (Empty State) |
-| :--- | :---: | :---: | :---: |
-| **#1 Visibilidad del estado** | Contadores verdes y radar despejado | Banner superior rojo con hora y zona de corte | Banner informativo con conteo `0 disponible` |
-| **#2 Concordancia con el mundo real** | Terminología fluvial y nombres de campus | Nombres de zonas de inspección técnica | Tiempos de espera en minutos comprensibles |
-| **#5 Prevención de errores** | Botón activo solo en drones $\ge 35\%$ | Deshabilitación visual al 55% de unidades no aptas | Todos los botones de asignación desactivados |
-| **#8 Diseño minimalista** | Máximo contraste, cero ornamentos superfluos | El color rojo se reserva estrictamente al fallo | Espacios vacíos limpios con guía técnica clara |
-| **#9 Recuperación de errores** | No aplica (no hay fallos activos) | Diagnóstico con sugerencia de intervención | Indicación de próximo drone disponible con hora |
+| Heurística de Nielsen                      |                 Estado Normal                 |                    Estado Alerta                    |            Estado Vacío (Empty State)            |
+| :------------------------------------------ | :-------------------------------------------: | :-------------------------------------------------: | :-----------------------------------------------: |
+| **#1 Visibilidad del estado**         |      Contadores verdes y radar despejado      |    Banner superior rojo con hora y zona de corte    |   Banner informativo con conteo`0 disponible`   |
+| **#2 Concordancia con el mundo real** |   Terminología fluvial y nombres de campus   |      Nombres de zonas de inspección técnica      |    Tiempos de espera en minutos comprensibles    |
+| **#5 Prevención de errores**         |   Botón activo solo en drones$\ge 35\%$   | Deshabilitación visual al 55% de unidades no aptas |   Todos los botones de asignación desactivados   |
+| **#8 Diseño minimalista**            | Máximo contraste, cero ornamentos superfluos |   El color rojo se reserva estrictamente al fallo   | Espacios vacíos limpios con guía técnica clara |
+| **#9 Recuperación de errores**       |       No aplica (no hay fallos activos)       |    Diagnóstico con sugerencia de intervención    | Indicación de próximo drone disponible con hora |
 
+---
 
+### Ejercicio 12 — TDD (Test-Driven Development) para ValidadorMision
 
+En este ejercicio se implementaron las reglas de validación de negocio para el componente `ValidadorMision` de AquaPort aplicando la metodología **Test-Driven Development (TDD)** en su ciclo formal:
 
+```
+  [ 🔴 RED ]       -->      [ 🟢 GREEN ]      -->      [ 🔵 REFACTOR ]
+Escribir prueba          Escribir código mínimo         Mejorar diseño y
+unitaria que falla       para pasar la prueba           mantener tests en verde
+```
+
+#### 1. Ciclo TDD y Reglas de Negocio Validadas
+
+Siguiendo el principio de TDD estricto, **las pruebas unitarias fueron escritas y confirmadas en fallo antes de codificar la lógica de producción**, lo cual queda formalmente registrado en el historial de commits de Git:
+
+1. **Commit 1 (Red):** `test(unit): add failing unit tests for ValidadorMision following TDD Red phase`
+2. **Commit 2 (Green):** `feat(validator): implement drone availability and zone validation rules to pass TDD Green phase`
+
+#### 2. Matriz de Casos de Prueba (Patrón AAA y JUnit 5)
+
+Cada caso de prueba fue desarrollado siguiendo el patrón **Arrange-Act-Assert (AAA)** y documentado con anotaciones `@DisplayName` declarativas:
+
+|      #      | Caso de Prueba /`@DisplayName`                                       | Entrada / Precondición (Arrange)                                                                     | Comportamiento Esperado (Act & Assert)                       |       Tipo de Prueba       |
+| :---------: | :--------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------- | :----------------------------------------------------------- | :-------------------------: |
+| **1** | Batería suficiente: Drone con batería$\ge 35\%$ puede ser asignado | Drone`AR-01` con 85% batería y disponible                                                          | `tieneBateriaSuficiente(drone)` retorna `true`           |    Positivo (Happy Path)    |
+| **2** | Batería crítica: Drone con batería$< 35\%$ NO puede ser asignado  | Drone`AR-03` con 18% batería                                                                       | `tieneBateriaSuficiente(drone)` retorna `false`          | Negativo / Límite de corte |
+| **3** | Punto de llegada nulo: Lanza`IllegalArgumentException`               | Parámetro`null` a `validarPuntoLlegada`                                                          | Lanza`IllegalArgumentException` con mensaje explicativo    |   Validación de entrada   |
+| **4** | Punto de llegada vacío: Lanza`IllegalArgumentException`             | Cadena en blanco`"   "` a `validarPuntoLlegada`                                                   | Lanza`IllegalArgumentException` con mensaje explicativo    |   Validación de entrada   |
+| **5** | Drone no disponible: Lanza`IllegalStateException` en validación     | Drone`AR-02` con `disponible = false`                                                             | Lanza`IllegalStateException` con identificación del drone |   Regla de disponibilidad   |
+| **6** | Zona inválida: Lanza`IllegalArgumentException` (Edge Case)          | Zona fuera del campus:`"Océano Atlántico"`                                                        | Lanza`IllegalArgumentException` ("Zona no autorizada")     |   Edge Case / Perímetro   |
+| **7** | Zona válida del campus: Pasa validación sin excepciones              | Zonas oficiales: Embalse Norte, Canal Central, Laguna Sur, Punto Ribereño Este, Laboratorio Hídrico | `assertDoesNotThrow(...)` para las 5 zonas oficiales       |    Positivo / Cobertura    |
+
+#### 3. Código de las Pruebas Unitarias (`ValidadorMisionTest.java`)
+
+```java
+package main.dosw.piplup;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DisplayName("Pruebas Unitarias TDD — ValidadorMision")
+class ValidadorMisionTest {
+
+    private ValidadorMision validador;
+
+    @BeforeEach
+    void setUp() {
+        validador = new ValidadorMision();
+    }
+
+    @Test
+    @DisplayName("1. Batería suficiente: Drone con batería >= 35% puede ser asignado")
+    void droneBateriaSuficiente_puedeAsignarse() {
+        // Arrange
+        DroneAcuatico drone = new DroneAcuatico("AR-01", "Aqua-Ranger 100", 85, true, "Embalse Norte");
+
+        // Act
+        boolean resultado = validador.tieneBateriaSuficiente(drone);
+
+        // Assert
+        assertTrue(resultado, "Un drone con 85% de batería debe ser admitido para la misión");
+    }
+
+    @Test
+    @DisplayName("2. Batería crítica: Drone con batería < 35% NO puede ser asignado")
+    void droneBateriaCritica_noAsignable() {
+        // Arrange
+        DroneAcuatico drone = new DroneAcuatico("AR-03", "Aqua-Ranger 100", 18, false, "Laguna Sur");
+
+        // Act
+        boolean resultado = validador.tieneBateriaSuficiente(drone);
+
+        // Assert
+        assertFalse(resultado, "Un drone con 18% de batería (< 35%) no debe ser admitido");
+    }
+
+    @Test
+    @DisplayName("3. Punto de llegada nulo: Lanza IllegalArgumentException")
+    void puntoLlegadaNulo_lanzaExcepcion() {
+        // Arrange, Act & Assert
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validarPuntoLlegada(null));
+        assertEquals("El punto de llegada no puede ser nulo ni estar vacío", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("4. Punto de llegada vacío: Lanza IllegalArgumentException")
+    void puntoLlegadaVacio_lanzaExcepcion() {
+        // Arrange, Act & Assert
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validarPuntoLlegada("   "));
+        assertEquals("El punto de llegada no puede ser nulo ni estar vacío", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("5. Drone no disponible: Lanza IllegalStateException en validación de asignación")
+    void droneNoDisponible_lanzaExcepcion() {
+        // Arrange
+        DroneAcuatico droneNoDisponible = new DroneAcuatico("AR-02", "Aqua-Ranger 100", 70, false, "Canal Central");
+      
+        // Act & Assert
+        IllegalStateException ex = assertThrows(IllegalStateException.class,
+                () -> validador.validarDroneDisponible(droneNoDisponible));
+        assertEquals("El drone asignado AR-02 no está disponible para operar", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("6. Zona inválida: Lanza IllegalArgumentException para zonas fuera del campus (Edge Case)")
+    void zonaInvalida_lanzaExcepcion() {
+        // Arrange, Act & Assert
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validarZona("Océano Atlántico"));
+        assertTrue(ex.getMessage().contains("Zona no autorizada"), 
+                "Debe indicar que la zona no está autorizada en el campus");
+    }
+
+    @Test
+    @DisplayName("7. Zona válida del campus: Pasa validación sin excepciones")
+    void zonaValida_noLanzaExcepcion() {
+        // Arrange, Act & Assert
+        assertDoesNotThrow(() -> validador.validarZona("Embalse Norte"));
+        assertDoesNotThrow(() -> validador.validarZona("Canal Central"));
+        assertDoesNotThrow(() -> validador.validarZona("Laguna Sur"));
+        assertDoesNotThrow(() -> validador.validarZona("Punto Ribereño Este"));
+        assertDoesNotThrow(() -> validador.validarZona("Laboratorio Hídrico"));
+    }
+}
+```
+
+#### 4. Evidencia de Ejecución de Pruebas (`mvn test`)
+
+![Ejecución de Pruebas Unitarias - ValidadorMision](docs/images/test-validador-mision.png)
+
+#### 5. Verificación de Historial Git (Commits TDD Red -> Green)
+
+![Historial de Commits TDD - Red a Green](docs/images/git-log-tdd.png)
+
+```text
+35fd378 feat(validator): implement drone availability and zone validation rules to pass TDD Green phase
+6137a3c test(unit): add failing unit tests for ValidadorMision following TDD Red phase
+```
