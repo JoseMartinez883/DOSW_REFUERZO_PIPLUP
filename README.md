@@ -2862,3 +2862,59 @@ En concordancia con el reto académico del Nivel Prinplup, se identificaron y re
 | **`AsignadorAutomatico.asignar()`**     | `if (seleccionado.getEstado() == EstadoDrone.FALLO)` | `droneEncontradoEnFallo_notificaYBuscaAlternativoExitosamente`                 | **Resiliencia Operativa:** Valida que ante un fallo de propulsor durante la asignación, el sistema no cancele la misión de inmediato sino que active la búsqueda de respaldo.                            |
 
 ---
+
+### 🔍 Ejercicio 14: SonarQube — Análisis Estático de la v2 (Fase Prinplup)
+
+En este ejercicio se ejecutó el análisis estático continuo y riguroso de calidad sobre **AquaPort v2 (Fase Prinplup)** utilizando **SonarQube Community Build**. Se subsanaron el 100% de los hallazgos de deuda técnica y code smells reportados, logrando un estado de excelencia de código con **0 Bugs, 0 Vulnerabilidades, 0 Code Smells (0 min de deuda técnica), 94.0% de Cobertura y 0.0% de Duplicación**, superando holgadamente los umbrales del Quality Gate institucional.
+
+---
+
+#### 1. Panel de Control de SonarQube (AquaPort v2 — Fase Prinplup)
+
+A continuación se presenta la evidencia oficial del análisis estático tras la remediación integral de los 47 hallazgos detectados en la versión base de la v2:
+
+![Reporte Oficial SonarQube — AquaPort v2 Fase Prinplup](docs/images/SonarQubePrinPlup.png)
+
+##### Métricas Consolidadas del Quality Gate:
+
+| Métrica de Calidad           | Meta / Límite Exigido | Valor Obtenido en AquaPort v2 | Calificación SonarQube | Estado del Quality Gate   |
+| :--------------------------- | :-------------------: | :---------------------------: | :--------------------: | :-----------------------: |
+| **Bugs (Reliability)**       |        0 bugs         |           **0 bugs**          |         **A**          | **SUPERADO (Impecable)**  |
+| **Vulnerabilidades**         |   0 vulnerabilidades  |     **0 vulnerabilidades**    |         **A**          | **SUPERADO (Impecable)**  |
+| **Security Hotspots**        |           0           |             **0**             |         **A**          | **SUPERADO (Impecable)**  |
+| **Deuda Técnica**            |        < 30 min       |       **0 min (0 issues)**    |         **A**          | **SUPERADO (Cero Deuda)** |
+| **Cobertura de Pruebas**     |         > 80%         |           **94.0%**           |           —            | **SUPERADO (94.0%)**      |
+| **Densidad de Duplicación**  |         < 5%          |            **0.0%**           |           —            | **SUPERADO (0.0%)**       |
+| **Líneas de Código (LOC)**   |           —           |           **1.2k**            |           —            | **Dentro de alcance v2**  |
+
+---
+
+#### 2. Matriz de Hallazgos Remediados y Justificación Técnica
+
+A continuación se detallan las categorías de incidencias identificadas por SonarQube y las refactorizaciones aplicadas en el código fuente:
+
+| Regla SonarQube | Archivo(s) Afectado(s) | Severidad Original | Hallazgo Detectado | Refactorización Aplicada y Justificación Técnica |
+| :--- | :--- | :---: | :--- | :--- |
+| **`java:S3776`** (Cognitive Complexity) | `AsignadorAutomatico.java` | **High** | El método `asignar(...)` presentaba una complejidad cognitiva de 23 (máximo permitido: 15) debido a múltiples anidamientos de `if-else` y bifurcaciones de rescate. | **Descomposición Cohesiva:** Se extrajeron tres métodos privados especializados (`resolverFalloConAlternativo`, `esDroneAptoParaMision`, `notificarSiCritica`). La complejidad cognitiva del método principal se redujo de 23 a **5**, incrementando la legibilidad y mantenibilidad. |
+| **`java:S2789`** (Optional null-check) | `AsignadorAutomatico.java` | **Medium** | Comprobaciones redundantes `if (optDrone != null)` sobre tipos `Optional<DroneAcuatico>`. | **Uso Idiomático de Optional:** Se eliminaron todas las comparaciones contra `null`. En su lugar, se emplean los métodos nativos de Java (`isPresent()`, `isEmpty()`, `filter()`, `map()`), garantizando el contrato de la API y previniendo `NullPointerException`. |
+| **`java:S108`** (Empty Blocks) | `AsignadorAutomatico.java` | **Medium** | Bloques de captura `catch` o condicionales sin sentencias ni comentarios explicativos. | **Limpieza de Código Muerto:** Se removieron los bloques vacíos superfluos asegurando que todas las ramas del flujo ejecuten lógica de contingencia válida o registro de traza. |
+| **`java:S106`** (Standard Output Usage) | `CentroControlObserver.java`<br>`TecnicoMantenimientoObserver.java`<br>`Ejercicio01Prinplup.java`<br>`Ejercicio03Prinplup.java` | **Medium** | Uso directo de `System.out.println` para emisión de alertas, logs y trazas de consola. | **Logger Profesional:** Se reemplazó el uso de salida estándar por instancias estáticas de `java.util.logging.Logger`. Esto permite desacoplar los mensajes de la consola, redirigir flujos a ficheros de auditoría y configurar niveles de severidad (`INFO`, `WARNING`, `SEVERE`). |
+| **`java:S1192`** (String Literals Duplication) | `Ejercicio03Prinplup.java` | **High** | Literales de cadena repetidos 3 o más veces: `"Embalse Norte"`, `"Canal Central"`, `" ✓ Drone seleccionado: "`. | **Extracción de Constantes:** Se definieron constantes `private static final String` reutilizables, centralizando los identificadores de zona y mensajes formateados para prevenir errores tipográficos y facilitar mantenimiento. |
+| **`java:S1128`** (Unused Imports) | `ConsultorFlotaPrinplupTest.java`<br>`RequerimientosPrinplupTest.java`<br>`SolidPrinciplesAuditTest.java` | **Low** | Imports de paquetes no referenciados (`Collections`, `PrioridadCriticaStrategy`, `ArrayList`). | **Optimización de Importaciones:** Se limpiaron todas las directivas de importación innecesarias, reduciendo la contaminación del espacio de nombres y mejorando los tiempos de análisis del compilador. |
+| **`java:S6073`** (Redundant Mockito Matchers) | `AsignadorAutomaticoTest.java` | **Low** | Invocaciones redundantes de `eq(...)` en argumentos cuando no se mezclaban con otros argument matchers de Mockito. | **Simplificación de Pruebas Mockito:** Se pasó directamente la referencia del objeto en los métodos `verify(...)`, siguiendo las mejores prácticas de Mockito 5. |
+
+---
+
+#### 3. Comando de Análisis Ejecutado
+
+El análisis estático de SonarQube se ejecutó contra el servidor local mediante el plugin oficial de Maven, integrando los resultados de ejecución de JaCoCo generados por la suite de pruebas unitarias:
+
+```bash
+mvn sonar:sonar \
+  "-Dsonar.host.url=http://localhost:9000" \
+  "-Dsonar.token=sqp_14b33ef59cd59e67f90fe1ec59cc5fd7e2847365"
+```
+
+El escaneo procesó las 54 clases del proyecto, vinculando el reporte XML de JaCoCo (`target/site/jacoco/jacoco.xml`) y certificando el pase del 100% de las reglas del perfil **Sonar way** para Java 21.
+
+---

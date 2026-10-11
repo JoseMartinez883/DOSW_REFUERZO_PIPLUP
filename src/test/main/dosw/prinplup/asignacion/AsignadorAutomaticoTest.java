@@ -129,7 +129,7 @@ class AsignadorAutomaticoTest {
         );
 
         // Primera llamada retorna el dron en fallo; la segunda llamada (con lista filtrada) retorna el alternativo
-        when(estrategiaMock.seleccionar(eq(flotaConFallo), eq("Muelle Sur")))
+        when(estrategiaMock.seleccionar(flotaConFallo, "Muelle Sur"))
                 .thenReturn(Optional.of(droneAveriado));
         when(estrategiaMock.seleccionar(argThat(lista -> lista != null && lista.contains(droneAlternativo) && !lista.contains(droneAveriado)), eq("Muelle Sur")))
                 .thenReturn(Optional.of(droneAlternativo));

@@ -5,7 +5,6 @@ import main.dosw.prinplup.alertas.NotificadorAlertas;
 import main.dosw.prinplup.alertas.TecnicoMantenimientoObserver;
 import main.dosw.prinplup.asignacion.AsignadorAutomatico;
 import main.dosw.prinplup.asignacion.MayorBateriaStrategy;
-import main.dosw.prinplup.asignacion.PrioridadCriticaStrategy;
 import main.dosw.prinplup.asignacion.ZonaCercanaStrategy;
 import main.dosw.prinplup.fabrica.FabricaDrones;
 import org.junit.jupiter.api.BeforeEach;
