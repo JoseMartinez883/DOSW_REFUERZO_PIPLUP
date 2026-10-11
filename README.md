@@ -2893,15 +2893,15 @@ A continuación se presenta la evidencia oficial del análisis estático tras la
 
 A continuación se detallan las categorías de incidencias identificadas por SonarQube y las refactorizaciones aplicadas en el código fuente:
 
-| Regla SonarQube                                        | Archivo(s) Afectado(s)                                                                                              | Severidad Original | Hallazgo Detectado                                                                                                                                                        | Refactorización Aplicada y Justificación Técnica                                                                                                                                                                                                                                                        |
-| :----------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ | :----------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`java:S3776`** (Cognitive Complexity)        | `AsignadorAutomatico.java`                                                                                        |   **High**   | El método`asignar(...)` presentaba una complejidad cognitiva de 23 (máximo permitido: 15) debido a múltiples anidamientos de `if-else` y bifurcaciones de rescate. | **Descomposición Cohesiva:** Se extrajeron tres métodos privados especializados (`resolverFalloConAlternativo`, `esDroneAptoParaMision`, `notificarSiCritica`). La complejidad cognitiva del método principal se redujo de 23 a **5**, incrementando la legibilidad y mantenibilidad. |
-| **`java:S2789`** (Optional null-check)         | `AsignadorAutomatico.java`                                                                                        |  **Medium**  | Comprobaciones redundantes`if (optDrone != null)` sobre tipos `Optional<DroneAcuatico>`.                                                                              | **Uso Idiomático de Optional:** Se eliminaron todas las comparaciones contra `null`. En su lugar, se emplean los métodos nativos de Java (`isPresent()`, `isEmpty()`, `filter()`, `map()`), garantizando el contrato de la API y previniendo `NullPointerException`.                   |
-| **`java:S108`** (Empty Blocks)                 | `AsignadorAutomatico.java`                                                                                        |  **Medium**  | Bloques de captura`catch` o condicionales sin sentencias ni comentarios explicativos.                                                                                   | **Limpieza de Código Muerto:** Se removieron los bloques vacíos superfluos asegurando que todas las ramas del flujo ejecuten lógica de contingencia válida o registro de traza.                                                                                                                  |
+| Regla SonarQube                                        | Archivo(s) Afectado(s)                                                                                            | Severidad Original | Hallazgo Detectado                                                                                                                                                        | Refactorización Aplicada y Justificación Técnica                                                                                                                                                                                                                                                        |
+| :----------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- | :----------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`java:S3776`** (Cognitive Complexity)        | `AsignadorAutomatico.java`                                                                                      |   **High**   | El método`asignar(...)` presentaba una complejidad cognitiva de 23 (máximo permitido: 15) debido a múltiples anidamientos de `if-else` y bifurcaciones de rescate. | **Descomposición Cohesiva:** Se extrajeron tres métodos privados especializados (`resolverFalloConAlternativo`, `esDroneAptoParaMision`, `notificarSiCritica`). La complejidad cognitiva del método principal se redujo de 23 a **5**, incrementando la legibilidad y mantenibilidad. |
+| **`java:S2789`** (Optional null-check)         | `AsignadorAutomatico.java`                                                                                      |  **Medium**  | Comprobaciones redundantes`if (optDrone != null)` sobre tipos `Optional<DroneAcuatico>`.                                                                              | **Uso Idiomático de Optional:** Se eliminaron todas las comparaciones contra `null`. En su lugar, se emplean los métodos nativos de Java (`isPresent()`, `isEmpty()`, `filter()`, `map()`), garantizando el contrato de la API y previniendo `NullPointerException`.                   |
+| **`java:S108`** (Empty Blocks)                 | `AsignadorAutomatico.java`                                                                                      |  **Medium**  | Bloques de captura`catch` o condicionales sin sentencias ni comentarios explicativos.                                                                                   | **Limpieza de Código Muerto:** Se removieron los bloques vacíos superfluos asegurando que todas las ramas del flujo ejecuten lógica de contingencia válida o registro de traza.                                                                                                                  |
 | **`java:S106`** (Standard Output Usage)        | `CentroControlObserver.javaTecnicoMantenimientoObserver.java``Ejercicio01Prinplup.javaEjercicio03Prinplup.java` |  **Medium**  | Uso directo de`System.out.println` para emisión de alertas, logs y trazas de consola.                                                                                  | **Logger Profesional:** Se reemplazó el uso de salida estándar por instancias estáticas de `java.util.logging.Logger`. Esto permite desacoplar los mensajes de la consola, redirigir flujos a ficheros de auditoría y configurar niveles de severidad (`INFO`, `WARNING`, `SEVERE`).     |
-| **`java:S1192`** (String Literals Duplication) | `Ejercicio03Prinplup.java`                                                                                        |   **High**   | Literales de cadena repetidos 3 o más veces:`"Embalse Norte"`, `"Canal Central"`, `" ✓ Drone seleccionado: "`.                                                    | **Extracción de Constantes:** Se definieron constantes `private static final String` reutilizables, centralizando los identificadores de zona y mensajes formateados para prevenir errores tipográficos y facilitar mantenimiento.                                                               |
+| **`java:S1192`** (String Literals Duplication) | `Ejercicio03Prinplup.java`                                                                                      |   **High**   | Literales de cadena repetidos 3 o más veces:`"Embalse Norte"`, `"Canal Central"`, `" ✓ Drone seleccionado: "`.                                                    | **Extracción de Constantes:** Se definieron constantes `private static final String` reutilizables, centralizando los identificadores de zona y mensajes formateados para prevenir errores tipográficos y facilitar mantenimiento.                                                               |
 | **`java:S1128`** (Unused Imports)              | `ConsultorFlotaPrinplupTest.javaRequerimientosPrinplupTest.java``SolidPrinciplesAuditTest.java`                 |   **Low**   | Imports de paquetes no referenciados (`Collections`, `PrioridadCriticaStrategy`, `ArrayList`).                                                                      | **Optimización de Importaciones:** Se limpiaron todas las directivas de importación innecesarias, reduciendo la contaminación del espacio de nombres y mejorando los tiempos de análisis del compilador.                                                                                         |
-| **`java:S6073`** (Redundant Mockito Matchers)  | `AsignadorAutomaticoTest.java`                                                                                    |   **Low**   | Invocaciones redundantes de`eq(...)` en argumentos cuando no se mezclaban con otros argument matchers de Mockito.                                                       | **Simplificación de Pruebas Mockito:** Se pasó directamente la referencia del objeto en los métodos `verify(...)`, siguiendo las mejores prácticas de Mockito 5.                                                                                                                               |
+| **`java:S6073`** (Redundant Mockito Matchers)  | `AsignadorAutomaticoTest.java`                                                                                  |   **Low**   | Invocaciones redundantes de`eq(...)` en argumentos cuando no se mezclaban con otros argument matchers de Mockito.                                                       | **Simplificación de Pruebas Mockito:** Se pasó directamente la referencia del objeto en los métodos `verify(...)`, siguiendo las mejores prácticas de Mockito 5.                                                                                                                               |
 
 ---
 
@@ -3081,6 +3081,7 @@ public class BateriaPromedioPorZonaCollector
 
 > [!NOTE]
 > **Decisión de Diseño y Justificación para Evaluación Académica:**
+>
 > 1. **Uso de `Logger` en lugar de `System.out.println`:** Siguiendo rigurosamente las métricas de calidad de código y las reglas de análisis estático de **SonarQube (Regla `java:S106`)**, se prohibió el uso de `System.out` en el código fuente. En su lugar, se implementó `java.util.logging.Logger`, proporcionando tipado semántico de niveles de severidad (`INFO`, `WARNING`, `SEVERE`), capacidades de auditoría profesional y desacoplamiento del flujo de salida estándar.
 > 2. **Tono Rojizo en la Consola de IntelliJ IDEA:** En Java, la implementación nativa de `java.util.logging.Logger` utiliza un `ConsoleHandler` que redirige los registros al canal estándar de diagnóstico del sistema (`System.err`). IntelliJ IDEA colorea por diseño este flujo en tono rojizo/salmón para diferenciar los logs de telemetría de la salida de datos sin formato. La ejecución es completamente limpia, sin errores ni excepciones, certificada por el estado: `Process finished with exit code 0`.
 
@@ -3091,5 +3092,112 @@ public class BateriaPromedioPorZonaCollector
 - **Pruebas Unitarias Ejecutadas:** **123 tests pasando sin fallos (0 failures, 0 errors).**
 - **Quality Gate JaCoCo:** Superado holgadamente ($\ge 80\%$ en instrucciones y ramas).
 - **Cobertura de la Capa Empoleon:** 100% de cobertura en las clases `CoordinadorRutasEmpoleon`, `BateriaPromedioPorZonaCollector`, `Waypoint`, `TramoRuta`, `DroneEnterprise` y `MisionEnterprise`.
+
+---
+
+### 🌿 Ejercicio 02: GitHub, GitFlow y Gobernanza de Repositorio en AquaPort Enterprise
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — GitHub y GitFlow:**
+> Configura en el repositorio: hook de pre-commit que valida el formato de Conventional Commits, protección de rama en `main` y `develop` (no push directo), y un `CHANGELOG.md` generado automáticamente desde los commits. El historial de la v3 debe mostrar únicamente commits descriptivos. Adjunta el log de git con al menos 10 commits del Enterprise.
+
+En el nivel de producción Enterprise, el historial de Git deja de ser un simple registro temporal y se convierte en **documentación viva de decisiones arquitectónicas**. La gobernanza del repositorio exige automatizaciones que garanticen consistencia semántica, protección estricta contra modificaciones no autorizadas en ramas base y trazabilidad formal de entregables.
+
+---
+
+#### 2. Configuración de Git Hooks Automatizados (`.githooks/`)
+
+Para asegurar que todos los desarrolladores del equipo cumplan de forma mandatoria con los estándares sin depender de memoria humana, se configuraron dos hooks en la carpeta `.githooks/`:
+
+##### 1. Validación de Conventional Commits (`.githooks/commit-msg`):
+
+Analiza el encabezado del mensaje de commit mediante una expresión regular estricta, bloqueando el commit si no sigue la estructura `<tipo>(<alcance>): <descripción>`:
+
+```bash
+#!/bin/sh
+commit_msg_file=$1
+commit_msg=$(head -n 1 "$commit_msg_file")
+
+regex="^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9_.-]+\))?: .{1,80}$"
+merge_regex="^Merge (branch|pull request) .+"
+
+if echo "$commit_msg" | grep -Eq "$merge_regex"; then
+    exit 0
+fi
+
+if ! echo "$commit_msg" | grep -Eq "$regex"; then
+    echo "==============================================================================="
+    echo " ERROR: Mensaje de commit no cumple con el estándar Conventional Commits."
+    echo "-------------------------------------------------------------------------------"
+    echo "Mensaje ingresado: '$commit_msg'"
+    echo "Formato requerido: <tipo>(<alcance opcional>): <descripción corta>"
+    echo "Tipos permitidos : feat, fix, docs, style, refactor, perf, test, build, ci, chore"
+    echo "==============================================================================="
+    exit 1
+fi
+exit 0
+```
+
+##### 2. Protección Pre-Commit contra Push Directo (`.githooks/pre-commit`):
+
+Impide realizar commits accidentales directamente sobre la rama protegida `main`, forzando el ciclo de vida a través de ramas feature y Pull Requests:
+
+```bash
+#!/bin/sh
+branch="$(git rev-parse --abbrev-ref HEAD)"
+if [ "$branch" = "main" ]; then
+    echo "ERROR: No está permitido hacer commit directo sobre la rama protegida 'main'."
+    echo "       Debes trabajar en una rama feature y enviar un Pull Request."
+    exit 1
+fi
+exit 0
+```
+
+##### 3. Activación Multiplataforma:
+
+Se establecieron scripts de instalación rápida para Windows PowerShell (`scripts/setup-hooks.ps1`) y entornos Unix/macOS (`scripts/setup-hooks.sh`), ejecutando:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+---
+
+#### 3. Políticas de Protección de Ramas (Branch Protection Rules)
+
+Se establecieron formalmente las reglas de protección de rama en GitHub para los entornos troncales (`main`, `develop` y la rama paraguas `feature/empoleon`):
+
+| Regla de Protección                                 |    `main` (Producción)    | `develop` (Staging / Integración) | `feature/empoleon` (Paraguas v3) | Justificación de Ingeniería                                                                           |
+| :--------------------------------------------------- | :--------------------------: | :----------------------------------: | :--------------------------------: | :------------------------------------------------------------------------------------------------------ |
+| **Bloqueo de Push Directo**                    |      ✅**Activo**      |          ✅**Activo**          |         ✅**Activo**         | Ningún desarrollador puede hacer`git push` directo; todos los cambios ingresan vía Pull Request.    |
+| **Revisiones Obligatorias (PR)**               |  ✅ Mínimo 2 aprobaciones  |       ✅ Mínimo 1 aprobación       |      ✅ Mínimo 1 aprobación      | Revisión entre pares obligatoria con resolución de hilos de discusión.                               |
+| **Status Checks Mandatorios**                  | ✅ Compilación + 100% tests |     ✅ Compilación + 100% tests     |  ✅ Compilación + Tests locales  | Los tests de Surefire y el Quality Gate JaCoCo deben pasar en verde antes de habilitar el botón merge. |
+| **Descarte de Aprobaciones Obsoletas**         |      ✅**Activo**      |          ✅**Activo**          |         ✅**Activo**         | Si se introduce un nuevo commit en el PR, las aprobaciones anteriores se invalidan automáticamente.    |
+| **Restricción de Fuerza (`no force push`)** |      ✅**Activo**      |          ✅**Activo**          |         ✅**Activo**         | Protege el historial público contra reescrituras de commits o eliminaciones accidentales.              |
+| **Administradores Incluidos**                  |      ✅**Activo**      |          ✅**Activo**          |         ✅**Activo**         | Nadie (ni los administradores) puede eludir las puertas de calidad de producción.                      |
+
+---
+
+#### 4. Registro Oficial de Cambios (`CHANGELOG.md`)
+
+Se integró en la raíz del repositorio el archivo [`CHANGELOG.md`](CHANGELOG.md) estructurado rigurosamente bajo el estándar **Keep a Changelog** y **Semantic Versioning (SemVer 2.0.0)**, clasificando cambios en `Added`, `Changed`, `Fixed` y `Deprecated` a lo largo de las 4 versiones históricas del producto:
+
+- **`[3.0.0-enterprise]`:** 60 drones, red de 4 zonas hídricas, rutas multi-etapa, custom collector y gobernanza de hooks.
+- **`[2.0.1]`:** Hotfix de batería mínima operacional al 20% y resolución de 47 issues SonarQube (0 min deuda técnica).
+- **`[2.0.0]`:** Versión 2.0 con patrones GoF (Factory Method, Strategy, Observer) y Quality Gate JaCoCo al 80%.
+- **`[1.0.0]`:** Versión MVP inicial con 4 drones básicos y validación unitaria.
+
+---
+
+#### 5. Evidencia Gráfica del Historial Git Trazable (Git Graph de Enterprise)
+
+Las siguientes capturas del árbol gráfico de Git (`Git Graph`) certifican que el 100% de los commits en la evolución Enterprise y las fases previas siguen rigurosamente el estándar **Conventional Commits** (`feat:`, `docs:`, `test:`, `merge:`) con fusiones explícitas (`--no-ff`):
+
+- **Parte 1 (Evolución de Commits y Convenciones Semánticas en el Árbol de Git):**
+  ![Historial Git Graph - Parte 1](docs/images/EmpoleonExercise02.png)
+
+- **Parte 2 (Ramas Feature y Fusiones GitFlow Recientes hacia `feature/empoleon` y `develop`):**
+  ![Historial Git Graph - Parte 2](docs/images/EmpoleonExercise02Part02.png)
 
 ---

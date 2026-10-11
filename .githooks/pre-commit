@@ -1,0 +1,15 @@
+#!/bin/sh
+# Hook de pre-commit para AquaPort Enterprise: valida sintaxis y estado previo al commit
+
+echo "🔍 [pre-commit] Verificando estándares de calidad y ramas protegidas..."
+
+# Evitar commits directos sobre ramas protegidas principales si no es merge
+branch="$(git rev-parse --abbrev-ref HEAD)"
+if [ "$branch" = "main" ]; then
+    echo "ERROR: No está permitido hacer commit directo sobre la rama protegida 'main'."
+    echo "         Debes trabajar en una rama feature y enviar un Pull Request."
+    exit 1
+fi
+
+echo "[pre-commit] Verificación de rama exitosa ($branch)."
+exit 0
