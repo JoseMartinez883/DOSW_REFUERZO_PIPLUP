@@ -1253,3 +1253,68 @@ class ValidadorMisionTest {
 35fd378 feat(validator): implement drone availability and zone validation rules to pass TDD Green phase
 6137a3c test(unit): add failing unit tests for ValidadorMision following TDD Red phase
 ```
+
+---
+
+### Ejercicio 13 — Medición de Cobertura con JaCoCo (ValidadorMision)
+
+Para este ejercicio se configuró el plugin `jacoco-maven-plugin` (versión `0.8.11`) en el `pom.xml` para medir la cobertura de código (*code coverage*) mediante instrumentación de bytecode durante la ejecución de las pruebas unitarias con JUnit 5.
+
+#### 1. Configuración de JaCoCo en `pom.xml`
+
+```xml
+<plugin>
+    <groupId>org.jacoco</groupId>
+    <artifactId>jacoco-maven-plugin</artifactId>
+    <version>0.8.11</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>prepare-agent</goal>
+            </goals>
+        </execution>
+        <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+                <goal>report</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+```
+
+#### 2. Reporte General de Paquete (`main.dosw.piplup`)
+
+El reporte general del paquete registra una métrica global del **35%**, debido a que existen clases ejecutoras de demostración (`Ejercicio01`, `Ejercicio03`, `Ejercicio04`) y clases auxiliares de otros ejercicios del MVP (`ConsultorFlota`, `RegistradorMisiones`, `RepositorioMisionesMemoria`, `NotificadorOperador`) que no corresponden al alcance de pruebas unitarias de este reto.
+
+No obstante, en esta misma tabla se observa con total claridad que la clase evaluada por el reto, **`ValidadorMision`**, alcanza el **100% de cobertura en instrucciones y 100% en ramas**:
+
+![Reporte General de JaCoCo](docs/images/JacocoGeneral.png)
+
+#### 3. Reporte Detallado de `ValidadorMision` (100% de Cobertura)
+
+Al ingresar a la vista detallada de **`ValidadorMision`**, se rectifica y comprueba el **cumplimiento riguroso de la exigencia solicitada** ($\ge 80\%$ de *line coverage*), logrando cobertura completa:
+
+* **Line Coverage:** **100%** (33 de 33 líneas ejecutadas y verificadas).
+* **Branch Coverage:** **100%** (30 de 30 ramas evaluadas, cubriendo todos los caminos lógicos de los condicionales).
+* **Instruction Coverage:** **100%** (134 de 134 instrucciones de bytecode).
+* **Method Coverage:** **100%** (8 de 8 métodos evaluados).
+* **Complejidad Ciclomática:** 23 caminos analizados sin ninguna línea o rama en rojo/amarillo.
+
+![Reporte Detallado JaCoCo - ValidadorMision](docs/images/JacocoValidadorMision.png)
+
+#### 4. Matriz de Cobertura Método por Método (`ValidadorMision`)
+
+| Método de `ValidadorMision` | Instrucciones | Ramas | Líneas | Estado JaCoCo |
+| :--- | :---: | :---: | :---: | :---: |
+| `validarAsignacion(Mision)` | 49 / 49 (100%) | 8 / 8 (100%) | 12 / 12 (100%) | ■ Verde |
+| `validarZona(String)` | 22 / 22 (100%) | 6 / 6 (100%) | 5 / 5 (100%) | ■ Verde |
+| `validarDroneDisponible(DroneAcuatico)` | 18 / 18 (100%) | 4 / 4 (100%) | 5 / 5 (100%) | ■ Verde |
+| `tieneBateriaSuficiente(DroneAcuatico)` | 12 / 12 (100%) | 4 / 4 (100%) | 3 / 3 (100%) | ■ Verde |
+| `validarPuntoLlegada(String)` | 11 / 11 (100%) | 4 / 4 (100%) | 3 / 3 (100%) | ■ Verde |
+| `validarPuntoPartida(String)` | 11 / 11 (100%) | 4 / 4 (100%) | 3 / 3 (100%) | ■ Verde |
+| Bloque estático `static {...}` | 8 / 8 (100%) | n/a | 1 / 1 (100%) | ■ Verde |
+| Constructor `ValidadorMision()` | 3 / 3 (100%) | n/a | 1 / 1 (100%) | ■ Verde |
+| **Total `ValidadorMision`** | **134 / 134 (100%)** | **30 / 30 (100%)** | **33 / 33 (100%)** | **■ Verde Absoluto** |
+
