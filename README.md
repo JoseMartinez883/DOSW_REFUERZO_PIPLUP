@@ -2092,14 +2092,14 @@ En cumplimiento con el estándar formal de ingeniería de software de la Escuela
 
 #### 1. FUNCIONALIDAD
 
-| Campo                          | Detalle de Especificación                                                                                                                                                                                                                                                                                                                                                   |
-| :----------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Código:**             | **AP-07** (Correspondiente a **RF-01** de la Fase Prinplup)                                                                                                                                                                                                                                                                                                      |
-| **Nombre:**              | **Asignar automáticamente drone a misión hídrica**                                                                                                                                                                                                                                                                                                                  |
-| **Descripción:**        | Permite al sistema determinar y asignar automáticamente el drone más adecuado para una misión de transporte solicitada, considerando la carga a transportar, las condiciones del agua en la zona de destino y la disponibilidad operativa de la flota, alertando al personal correspondiente si ocurre algún imprevisto.                                                 |
-| **Cómo se ejecutará:** | A través del panel de control de AquaPort al momento de registrar o confirmar una solicitud de misión de transporte.                                                                                                                                                                                                                                                       |
-| **Actor principal:**     | **Operador Hídrico**                                                                                                                                                                                                                                                                                                                                                  |
-| **Precondiciones:**      | 1. El sistema AquaPort debe estar en funcionamiento y con la flota de 15 drones registrada en el inventario.2. Se debe contar con la información ambiental y meteorológica de las zonas hídricas del campus.3. Debe existir al menos un drone en estado `DISPONIBLE` con nivel de batería seguro (mínimo 35% para misiones ordinarias y 50% para misiones críticas). |
+| Campo                          | Detalle de Especificación                                                                                                                                                                                                                                                                                                                                                  |
+| :----------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Código:**             | **AP-07** (Correspondiente a **RF-01** de la Fase Prinplup)                                                                                                                                                                                                                                                                                                     |
+| **Nombre:**              | **Asignar automáticamente drone a misión hídrica**                                                                                                                                                                                                                                                                                                                 |
+| **Descripción:**        | Permite al sistema determinar y asignar automáticamente el drone más adecuado para una misión de transporte solicitada, considerando la carga a transportar, las condiciones del agua en la zona de destino y la disponibilidad operativa de la flota, alertando al personal correspondiente si ocurre algún imprevisto.                                                |
+| **Cómo se ejecutará:** | A través del panel de control de AquaPort al momento de registrar o confirmar una solicitud de misión de transporte.                                                                                                                                                                                                                                                      |
+| **Actor principal:**     | **Operador Hídrico**                                                                                                                                                                                                                                                                                                                                                 |
+| **Precondiciones:**      | 1. El sistema AquaPort debe estar en funcionamiento y con la flota de 15 drones registrada en el inventario.2. Se debe contar con la información ambiental y meteorológica de las zonas hídricas del campus.3. Debe existir al menos un drone en estado`DISPONIBLE` con nivel de batería seguro (mínimo 35% para misiones ordinarias y 50% para misiones críticas). |
 
 ---
 
@@ -2877,15 +2877,15 @@ A continuación se presenta la evidencia oficial del análisis estático tras la
 
 ##### Métricas Consolidadas del Quality Gate:
 
-| Métrica de Calidad           | Meta / Límite Exigido | Valor Obtenido en AquaPort v2 | Calificación SonarQube | Estado del Quality Gate   |
-| :--------------------------- | :-------------------: | :---------------------------: | :--------------------: | :-----------------------: |
-| **Bugs (Reliability)**       |        0 bugs         |           **0 bugs**          |         **A**          | **SUPERADO (Impecable)**  |
-| **Vulnerabilidades**         |   0 vulnerabilidades  |     **0 vulnerabilidades**    |         **A**          | **SUPERADO (Impecable)**  |
-| **Security Hotspots**        |           0           |             **0**             |         **A**          | **SUPERADO (Impecable)**  |
-| **Deuda Técnica**            |        < 30 min       |       **0 min (0 issues)**    |         **A**          | **SUPERADO (Cero Deuda)** |
-| **Cobertura de Pruebas**     |         > 80%         |           **94.0%**           |           —            | **SUPERADO (94.0%)**      |
-| **Densidad de Duplicación**  |         < 5%          |            **0.0%**           |           —            | **SUPERADO (0.0%)**       |
-| **Líneas de Código (LOC)**   |           —           |           **1.2k**            |           —            | **Dentro de alcance v2**  |
+| Métrica de Calidad                | Meta / Límite Exigido | Valor Obtenido en AquaPort v2 | Calificación SonarQube |     Estado del Quality Gate     |
+| :--------------------------------- | :--------------------: | :---------------------------: | :---------------------: | :-----------------------------: |
+| **Bugs (Reliability)**       |         0 bugs         |       **0 bugs**       |       **A**       | **SUPERADO (Impecable)** |
+| **Vulnerabilidades**         |   0 vulnerabilidades   | **0 vulnerabilidades** |       **A**       | **SUPERADO (Impecable)** |
+| **Security Hotspots**        |           0           |          **0**          |       **A**       | **SUPERADO (Impecable)** |
+| **Deuda Técnica**           |        < 30 min        |  **0 min (0 issues)**  |       **A**       | **SUPERADO (Cero Deuda)** |
+| **Cobertura de Pruebas**     |         > 80%         |        **94.0%**        |           —           |   **SUPERADO (94.0%)**   |
+| **Densidad de Duplicación** |          < 5%          |        **0.0%**        |           —           |    **SUPERADO (0.0%)**    |
+| **Líneas de Código (LOC)** |           —           |        **1.2k**        |           —           | **Dentro de alcance v2** |
 
 ---
 
@@ -2893,15 +2893,15 @@ A continuación se presenta la evidencia oficial del análisis estático tras la
 
 A continuación se detallan las categorías de incidencias identificadas por SonarQube y las refactorizaciones aplicadas en el código fuente:
 
-| Regla SonarQube | Archivo(s) Afectado(s) | Severidad Original | Hallazgo Detectado | Refactorización Aplicada y Justificación Técnica |
-| :--- | :--- | :---: | :--- | :--- |
-| **`java:S3776`** (Cognitive Complexity) | `AsignadorAutomatico.java` | **High** | El método `asignar(...)` presentaba una complejidad cognitiva de 23 (máximo permitido: 15) debido a múltiples anidamientos de `if-else` y bifurcaciones de rescate. | **Descomposición Cohesiva:** Se extrajeron tres métodos privados especializados (`resolverFalloConAlternativo`, `esDroneAptoParaMision`, `notificarSiCritica`). La complejidad cognitiva del método principal se redujo de 23 a **5**, incrementando la legibilidad y mantenibilidad. |
-| **`java:S2789`** (Optional null-check) | `AsignadorAutomatico.java` | **Medium** | Comprobaciones redundantes `if (optDrone != null)` sobre tipos `Optional<DroneAcuatico>`. | **Uso Idiomático de Optional:** Se eliminaron todas las comparaciones contra `null`. En su lugar, se emplean los métodos nativos de Java (`isPresent()`, `isEmpty()`, `filter()`, `map()`), garantizando el contrato de la API y previniendo `NullPointerException`. |
-| **`java:S108`** (Empty Blocks) | `AsignadorAutomatico.java` | **Medium** | Bloques de captura `catch` o condicionales sin sentencias ni comentarios explicativos. | **Limpieza de Código Muerto:** Se removieron los bloques vacíos superfluos asegurando que todas las ramas del flujo ejecuten lógica de contingencia válida o registro de traza. |
-| **`java:S106`** (Standard Output Usage) | `CentroControlObserver.java`<br>`TecnicoMantenimientoObserver.java`<br>`Ejercicio01Prinplup.java`<br>`Ejercicio03Prinplup.java` | **Medium** | Uso directo de `System.out.println` para emisión de alertas, logs y trazas de consola. | **Logger Profesional:** Se reemplazó el uso de salida estándar por instancias estáticas de `java.util.logging.Logger`. Esto permite desacoplar los mensajes de la consola, redirigir flujos a ficheros de auditoría y configurar niveles de severidad (`INFO`, `WARNING`, `SEVERE`). |
-| **`java:S1192`** (String Literals Duplication) | `Ejercicio03Prinplup.java` | **High** | Literales de cadena repetidos 3 o más veces: `"Embalse Norte"`, `"Canal Central"`, `" ✓ Drone seleccionado: "`. | **Extracción de Constantes:** Se definieron constantes `private static final String` reutilizables, centralizando los identificadores de zona y mensajes formateados para prevenir errores tipográficos y facilitar mantenimiento. |
-| **`java:S1128`** (Unused Imports) | `ConsultorFlotaPrinplupTest.java`<br>`RequerimientosPrinplupTest.java`<br>`SolidPrinciplesAuditTest.java` | **Low** | Imports de paquetes no referenciados (`Collections`, `PrioridadCriticaStrategy`, `ArrayList`). | **Optimización de Importaciones:** Se limpiaron todas las directivas de importación innecesarias, reduciendo la contaminación del espacio de nombres y mejorando los tiempos de análisis del compilador. |
-| **`java:S6073`** (Redundant Mockito Matchers) | `AsignadorAutomaticoTest.java` | **Low** | Invocaciones redundantes de `eq(...)` en argumentos cuando no se mezclaban con otros argument matchers de Mockito. | **Simplificación de Pruebas Mockito:** Se pasó directamente la referencia del objeto en los métodos `verify(...)`, siguiendo las mejores prácticas de Mockito 5. |
+| Regla SonarQube                                        | Archivo(s) Afectado(s)                                                                                              | Severidad Original | Hallazgo Detectado                                                                                                                                                        | Refactorización Aplicada y Justificación Técnica                                                                                                                                                                                                                                                        |
+| :----------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ | :----------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`java:S3776`** (Cognitive Complexity)        | `AsignadorAutomatico.java`                                                                                        |   **High**   | El método`asignar(...)` presentaba una complejidad cognitiva de 23 (máximo permitido: 15) debido a múltiples anidamientos de `if-else` y bifurcaciones de rescate. | **Descomposición Cohesiva:** Se extrajeron tres métodos privados especializados (`resolverFalloConAlternativo`, `esDroneAptoParaMision`, `notificarSiCritica`). La complejidad cognitiva del método principal se redujo de 23 a **5**, incrementando la legibilidad y mantenibilidad. |
+| **`java:S2789`** (Optional null-check)         | `AsignadorAutomatico.java`                                                                                        |  **Medium**  | Comprobaciones redundantes`if (optDrone != null)` sobre tipos `Optional<DroneAcuatico>`.                                                                              | **Uso Idiomático de Optional:** Se eliminaron todas las comparaciones contra `null`. En su lugar, se emplean los métodos nativos de Java (`isPresent()`, `isEmpty()`, `filter()`, `map()`), garantizando el contrato de la API y previniendo `NullPointerException`.                   |
+| **`java:S108`** (Empty Blocks)                 | `AsignadorAutomatico.java`                                                                                        |  **Medium**  | Bloques de captura`catch` o condicionales sin sentencias ni comentarios explicativos.                                                                                   | **Limpieza de Código Muerto:** Se removieron los bloques vacíos superfluos asegurando que todas las ramas del flujo ejecuten lógica de contingencia válida o registro de traza.                                                                                                                  |
+| **`java:S106`** (Standard Output Usage)        | `CentroControlObserver.javaTecnicoMantenimientoObserver.java``Ejercicio01Prinplup.javaEjercicio03Prinplup.java` |  **Medium**  | Uso directo de`System.out.println` para emisión de alertas, logs y trazas de consola.                                                                                  | **Logger Profesional:** Se reemplazó el uso de salida estándar por instancias estáticas de `java.util.logging.Logger`. Esto permite desacoplar los mensajes de la consola, redirigir flujos a ficheros de auditoría y configurar niveles de severidad (`INFO`, `WARNING`, `SEVERE`).     |
+| **`java:S1192`** (String Literals Duplication) | `Ejercicio03Prinplup.java`                                                                                        |   **High**   | Literales de cadena repetidos 3 o más veces:`"Embalse Norte"`, `"Canal Central"`, `" ✓ Drone seleccionado: "`.                                                    | **Extracción de Constantes:** Se definieron constantes `private static final String` reutilizables, centralizando los identificadores de zona y mensajes formateados para prevenir errores tipográficos y facilitar mantenimiento.                                                               |
+| **`java:S1128`** (Unused Imports)              | `ConsultorFlotaPrinplupTest.javaRequerimientosPrinplupTest.java``SolidPrinciplesAuditTest.java`                 |   **Low**   | Imports de paquetes no referenciados (`Collections`, `PrioridadCriticaStrategy`, `ArrayList`).                                                                      | **Optimización de Importaciones:** Se limpiaron todas las directivas de importación innecesarias, reduciendo la contaminación del espacio de nombres y mejorando los tiempos de análisis del compilador.                                                                                         |
+| **`java:S6073`** (Redundant Mockito Matchers)  | `AsignadorAutomaticoTest.java`                                                                                    |   **Low**   | Invocaciones redundantes de`eq(...)` en argumentos cuando no se mezclaban con otros argument matchers de Mockito.                                                       | **Simplificación de Pruebas Mockito:** Se pasó directamente la referencia del objeto en los métodos `verify(...)`, siguiendo las mejores prácticas de Mockito 5.                                                                                                                               |
 
 ---
 
@@ -2916,5 +2916,180 @@ mvn sonar:sonar \
 ```
 
 El escaneo procesó las 54 clases del proyecto, vinculando el reporte XML de JaCoCo (`target/site/jacoco/jacoco.xml`) y certificando el pase del 100% de las reglas del perfil **Sonar way** para Java 21.
+
+---
+
+## 👑 Fase Empoleon — AquaPort Enterprise: Red Multi-Embalse
+
+En esta fase final de evolución, el sistema transiciona a **AquaPort Enterprise**: un ecosistema a escala de producción que coordina **60 drones acuáticos** interconectados a lo largo de **4 zonas hídricas** del campus universitario, gestionando rutas multi-etapa complejas con waypoints intermedios, coordinación de traspasos, y estándares rigurosos de arquitectura limpia por capas (`dominio`, `aplicacion`, `infraestructura`).
+
+---
+
+### ⚡ Ejercicio 01: Streams y Lambdas para Coordinar Rutas Multi-Etapa entre 60 Drones
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — Streams & Lambdas:**
+> Implementa:
+>
+> 1) Calcular la eficiencia de cada zona (`misiones completadas / misiones totales`).
+> 2) Encontrar el drone con el mejor historial de entregas exitosas.
+> 3) Planificar la ruta óptima multi-etapa seleccionando el drone disponible más cercano para cada tramo.
+> 4) Un Collector personalizado que agrupe los drones por zona y calcule la batería promedio por zona en una sola pasada.
+>    Justifica cuándo usar stream paralelo y por qué en los otros casos no aplica.
+
+---
+
+#### 2. Modelo de Dominio y Escala de la Red Enterprise
+
+Para soportar las rutas multi-etapa de 60 drones en AquaPort Enterprise, se implementó el modelo de dominio en `main.dosw.empoleon.dominio`:
+
+1. **`ZonaHidrica` (Enum):**
+   - **`EMBALSE_INVESTIGACION`** (Norte): Base de 15 drones buceadores (`BUCEADOR`, capacidad 300g).
+   - **`RED_CANALES`** (Campus): Base de 15 drones de superficie (`SUPERFICIAL`, capacidad 500g).
+   - **`LAGUNA_RESERVA`** (Sur): Base de 15 drones de carga pesada (`SEMISUMERGIDO`, capacidad 1500g).
+   - **`LABORATORIO_CENTRAL`** (Centro): Base de 15 drones de enlace rápido (`SUPERFICIAL`, capacidad 600g).
+2. **`Waypoint` (Record):** Punto geográfico/operativo con identificador, denominación, zona de pertenencia y secuencia ordinal.
+3. **`TramoRuta` (Record):** Segmento de navegación entre dos waypoints contiguos con distancia estimada en metros y dron asignado.
+4. **`DroneEnterprise`:** Extiende `DroneAcuatico` agregando contadores de entregas exitosas acumuladas (`entregasExitosas`) para analíticas de rendimiento.
+5. **`MisionEnterprise`:** Representa misiones compuestas por múltiples waypoints y tramos, con trazabilidad de estado (`PLANIFICADA`, `EN_TRANSITO`, `COMPLETADA`, `FALLIDA`, `CANCELADA`).
+
+---
+
+#### 3. Implementación de las 4 Operaciones con Streams & Lambdas
+
+En `CoordinadorRutasEmpoleon.java`, las operaciones se implementaron siguiendo principios de programación funcional pura e inmutabilidad:
+
+##### 1. Eficiencia por Zona (`calcularEficienciaPorZona`):
+
+```java
+public Map<String, Double> calcularEficienciaPorZona(List<MisionEnterprise> misiones) {
+    Map<String, List<MisionEnterprise>> porZona = misiones.stream()
+            .collect(Collectors.groupingBy(MisionEnterprise::getZonaOrigen));
+
+    return porZona.entrySet().stream()
+            .collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    entry -> calcularRatioExito(entry.getValue())
+            ));
+}
+
+private double calcularRatioExito(List<MisionEnterprise> lista) {
+    long completadas = lista.stream()
+            .filter(m -> m.getEstado() == EstadoMisionEnterprise.COMPLETADA)
+            .count();
+    return Math.round(((double) completadas / lista.size()) * 100.0) / 100.0;
+}
+```
+
+##### 2. Dron con Mejor Historial de Entregas (`encontrarDroneConMejorHistorial`):
+
+```java
+public Optional<DroneEnterprise> encontrarDroneConMejorHistorial(List<DroneEnterprise> flota) {
+    return flota.stream()
+            .reduce((d1, d2) -> d1.getEntregasExitosas() >= d2.getEntregasExitosas() ? d1 : d2);
+}
+```
+
+##### 3. Planificación de Ruta Óptima Multi-etapa (`planificarRutaOptimaMultiEtapa`):
+
+```java
+public List<TramoRuta> planificarRutaOptimaMultiEtapa(
+        List<Waypoint> waypoints,
+        List<DroneEnterprise> flota,
+        int pesoCargaGramos
+) {
+    validarParametrosRuta(waypoints, flota);
+    return IntStream.range(0, waypoints.size() - 1)
+            .mapToObj(i -> crearTramoConDroneOptimo(
+                    i, waypoints.get(i), waypoints.get(i + 1), flota, pesoCargaGramos
+            ))
+            .toList();
+}
+```
+
+##### 4. Collector Personalizado en Una Sola Pasada (`BateriaPromedioPorZonaCollector`):
+
+Implementa formalmente la interfaz `Collector<DroneAcuatico, Map<String, AcumuladorBateria>, Map<String, Double>>` para evitar dobles recorridos sobre la colección:
+
+```java
+public class BateriaPromedioPorZonaCollector
+        implements Collector<DroneAcuatico, Map<String, AcumuladorBateria>, Map<String, Double>> {
+
+    @Override
+    public Supplier<Map<String, AcumuladorBateria>> supplier() {
+        return HashMap::new;
+    }
+
+    @Override
+    public BiConsumer<Map<String, AcumuladorBateria>, DroneAcuatico> accumulator() {
+        return (map, drone) -> {
+            if (drone != null && drone.getZona() != null) {
+                map.computeIfAbsent(drone.getZona(), k -> new AcumuladorBateria())
+                        .agregar(drone.getBateria());
+            }
+        };
+    }
+
+    @Override
+    public BinaryOperator<Map<String, AcumuladorBateria>> combiner() {
+        return (map1, map2) -> {
+            map2.forEach((zona, acum) ->
+                    map1.computeIfAbsent(zona, k -> new AcumuladorBateria()).combinar(acum)
+            );
+            return map1;
+        };
+    }
+
+    @Override
+    public Function<Map<String, AcumuladorBateria>, Map<String, Double>> finisher() {
+        return map -> {
+            Map<String, Double> resultado = new HashMap<>();
+            map.forEach((zona, acum) -> resultado.put(zona, acum.promedio()));
+            return Collections.unmodifiableMap(resultado);
+        };
+    }
+
+    @Override
+    public Set<Characteristics> characteristics() {
+        return Set.of(Characteristics.UNORDERED);
+    }
+}
+```
+
+---
+
+#### 4. Justificación Técnica: Stream Paralelo vs Stream Secuencial
+
+| Criterio de Comparación               | Stream Secuencial (`.stream()`)                                                    | Stream Paralelo (`.parallelStream()`)                                                                   | Aplicación en AquaPort Enterprise                                                                                     |
+| :------------------------------------- | :----------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| **Mecanismo Interno**            | Un solo hilo de ejecución (`main` / invocador). Sin bifurcaciones.                | Utiliza`ForkJoinPool.commonPool()` para dividir el `Spliterator` recursivamente.                      | **Secuencial** para consultas cotidianas; **Paralelo** para cálculos de telemetría masiva.               |
+| **Overhead de Coordinación**    | **Cero overhead** de sincronización, particionamiento ni combinación.        | Requiere dividir la colección, gestionar hilos de trabajo y combinar buffers intermedios (`combiner`). | En colecciones de 60 elementos, el costo de fork/join supera el tiempo de cálculo simple.                             |
+| **Intensidad de Cómputo (CPU)** | Óptimo para operaciones ligeras (comparaciones simples, getters, mapeos rápidos).  | Óptimo cuando el costo de procesar cada elemento es elevado ($N \times Q \ge 10,000$).                 | Aplicado en`calcularSaludFlotaParalelo` simulando análisis matricial de telemetría y sensores.                     |
+| **Orden y Thread-Safety**        | Preserva el orden natural de la fuente sin riesgo de carreras (*race conditions*). | Requiere operaciones sin estado (*stateless*), asociativas y estructuras thread-safe.                   | En`planificarRutaOptimaMultiEtapa` el orden correlativo de los tramos ($i \to i+1$) exige secuencialidad estricta. |
+
+**Conclusión Arquitectónica:**
+
+- **¿Cuándo usar `parallelStream()`?** Cuando se procesan volúmenes masivos de datos ($> 10,000$ registros) o tareas altamente costosas en CPU (análisis predictivo de desgaste de batería, procesamiento espectral de turbidez), donde el paralelismo amortiza el overhead del pool.
+- **¿Por qué NO en los otros casos?** En la selección de ruta y cálculos de ratio con 60 drones, la partición de hilos introduce contención innecesaria en memoria y puede degradar la latencia de respuesta frente a un stream secuencial optimizado por el JIT compiler.
+
+---
+
+#### 5. Ejecución y Salida en Consola (`Ejercicio01Empoleon.java`)
+
+![Ejecución de Ejercicio01Empoleon en IntelliJ IDEA](docs/images/EmpoleonExecutionExercise01.png)
+
+> [!NOTE]
+> **Decisión de Diseño y Justificación para Evaluación Académica:**
+> 1. **Uso de `Logger` en lugar de `System.out.println`:** Siguiendo rigurosamente las métricas de calidad de código y las reglas de análisis estático de **SonarQube (Regla `java:S106`)**, se prohibió el uso de `System.out` en el código fuente. En su lugar, se implementó `java.util.logging.Logger`, proporcionando tipado semántico de niveles de severidad (`INFO`, `WARNING`, `SEVERE`), capacidades de auditoría profesional y desacoplamiento del flujo de salida estándar.
+> 2. **Tono Rojizo en la Consola de IntelliJ IDEA:** En Java, la implementación nativa de `java.util.logging.Logger` utiliza un `ConsoleHandler` que redirige los registros al canal estándar de diagnóstico del sistema (`System.err`). IntelliJ IDEA colorea por diseño este flujo en tono rojizo/salmón para diferenciar los logs de telemetría de la salida de datos sin formato. La ejecución es completamente limpia, sin errores ni excepciones, certificada por el estado: `Process finished with exit code 0`.
+
+---
+
+#### 6. Verificación Automatizada de Calidad
+
+- **Pruebas Unitarias Ejecutadas:** **123 tests pasando sin fallos (0 failures, 0 errors).**
+- **Quality Gate JaCoCo:** Superado holgadamente ($\ge 80\%$ en instrucciones y ramas).
+- **Cobertura de la Capa Empoleon:** 100% de cobertura en las clases `CoordinadorRutasEmpoleon`, `BateriaPromedioPorZonaCollector`, `Waypoint`, `TramoRuta`, `DroneEnterprise` y `MisionEnterprise`.
 
 ---
