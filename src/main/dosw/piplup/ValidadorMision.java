@@ -44,4 +44,30 @@ public class ValidadorMision {
         validarPuntoPartida(mision.getPuntoPartida());
         validarPuntoLlegada(mision.getPuntoLlegada());
     }
+
+    private static final java.util.Set<String> ZONAS_AUTORIZADAS = java.util.Set.of(
+            "Embalse Norte",
+            "Canal Central",
+            "Laguna Sur",
+            "Punto Ribereño Este",
+            "Laboratorio Hídrico"
+    );
+
+    public void validarDroneDisponible(DroneAcuatico drone) {
+        if (drone == null) {
+            throw new IllegalArgumentException("El drone no puede ser nulo");
+        }
+        if (!drone.disponible()) {
+            throw new IllegalStateException("El drone asignado " + drone.id() + " no está disponible para operar");
+        }
+    }
+
+    public void validarZona(String zona) {
+        if (zona == null || zona.isBlank()) {
+            throw new IllegalArgumentException("La zona no puede ser nula ni vacía");
+        }
+        if (!ZONAS_AUTORIZADAS.contains(zona.trim())) {
+            throw new IllegalArgumentException("Zona no autorizada en el campus: " + zona);
+        }
+    }
 }
