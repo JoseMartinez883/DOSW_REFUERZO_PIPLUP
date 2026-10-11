@@ -2505,6 +2505,172 @@ En el dominio universitario de la ECI, el `Operador Hídrico` es en sí mismo un
    - `CU-08` encapsula formalmente el patrón **Strategy** (`EstrategiaSeleccion`).
    - `CU-09` encapsula formalmente el patrón **Observer** (`NotificadorAlertas` hacia `CentroControlObserver` y `TecnicoMantenimientoObserver`).
 
+---
 
+### 🌊 Ejercicio 11: Mocks con IA — Flujo de Asignación Automática y Alerta Crítica (Fase Prinplup)
 
+En este ejercicio se diseñó el flujo completo de **Asignación Automática de Drones (AP-07)** para la consola operativa de **AquaPort v2 (Fase Prinplup)** mediante generación de prototipos visuales de alta fidelidad asistidos por Inteligencia Artificial. 
+
+El flujo contempla las 3 etapas del Happy Path de despacho autónomo más la pantalla crítica de contingencia ante ausencia de unidades compatibles para emergencias de máxima prioridad, aplicando el sistema de diseño corporativo (tema oscuro Slate `#12161A`, tipografía *Outfit / Inter*, acentos Ocean Teal `#1B7F8C` y Crimson `#DC2626`).
+
+---
+
+#### 1. Pantalla 1: Panel de Flota de 15 Drones Agrupados por Tipo (Dashboard General)
+
+Visualización de inventario en tiempo real de la flota completa de **15 drones acuáticos**, clasificados en sus 3 escuadrillas especializadas: **Superficiales** (5 unidades), **Semisumergidos** (5 unidades) y **Buceadores** (5 unidades).
+
+![Pantalla 1 — Panel de Flota de 15 Drones Agrupados por Tipo](docs/images/AquaPort_v2_Mock_Pantalla1_Flota.png)
+
+##### A. Prompt Estructurado para IA:
+```text
+[ROL]: Senior UI/UX Designer & Frontend Architect especializado en consolas de control marítimo y telemetría autónoma.
+[CONTEXTO]: Sistema AquaPort v2 (Escuela Colombiana de Ingeniería Julio Garavito). Flota hídrica autónoma de 15 drones acuáticos divididos en 3 familias físicas: Superficiales (AR-01 a AR-05), Semisumergidos (AR-06 a AR-10) y Buceadores (AR-11 a AR-15).
+[OBJETIVO]: Diseñar una pantalla de Dashboard de Flota con tema oscuro premium (Slate #12161A, acentos Ocean Teal #1B7F8C y Esmeralda #059669).
+[ESTRUCTURA DE INTERFAZ]:
+1. Barra superior de navegación con branding 'AquaPort v2 — Control de Flota', hora en vivo, indicador de conexión WebSocket 'EN LÍNEA' y perfil 'Operador Hídrico ECI'.
+2. Fila superior de 4 tarjetas métricas (KPIs): 'Total Flota: 15', 'Disponibles: 9', 'En Misión: 4', 'Mantenimiento: 2'.
+3. Barra de filtros interactivos por escuadrilla (Todos, Superficiales, Semisumergidos, Buceadores), zona hídrica (Embalse Norte, Canal Central, Laguna Sur) y estado operativo.
+4. Grilla principal organizada en 3 secciones colapsables (una por tipo de dron). Cada tarjeta de dron muestra:
+   - Identificador (ej. AR-06), modelo (Aqua-SemiSub 300) y etiqueta de tipo con micro-icono náutico.
+   - Badge de estado con código semáforo: 'DISPONIBLE' (verde esmeralda), 'EN MISIÓN' (azul zafiro), 'MANTENIMIENTO' (ámbar).
+   - Indicador de batería radial/barra con porcentaje numérico (ej. 88%) y autonomía estimada en minutos.
+   - Capacidad de carga máxima (ej. 1500g) y zona actual de fondeo.
+   - Botón de acción rápida 'Detalles / Telemetría'.
+[ESTILO]: Glassmorphism oscuro, bordes sutiles con brillo cyan, tipografía geométrica moderna (Inter/Outfit), alto contraste accesible WCAG AA+.
+```
+
+##### B. Desglose Funcional y Componentes:
+* **KPIs de Flota en Tiempo Real:** 4 contadores analíticos procesados mediante streams reactivos que informan disponibilidad inmediata al Operador Hídrico.
+* **Agrupación Taxonómica por Tipo:** Respeta la jerarquía de herencia del dominio (`DroneSuperficial`, `DroneSemisumergido`, `DroneBuceador`), facilitando la inspección visual de las 5 unidades de cada categoría.
+* **Telemetría Energética:** Codificación cromática de batería (Verde `> 60%`, Amarillo `35% - 60%`, Rojo `< 35%`) que alerta visualmente antes de cualquier despacho.
+
+---
+
+#### 2. Pantalla 2: Detalle de Misión con Drone Recomendado por Strategy (Evaluación Algorítmica)
+
+Pantalla de análisis y pre-despacho para la misión `MIS-201-V2`. Muestra la consulta en vivo de la API hidrológica externa y la resolución algorítmica del patrón **Strategy**, que selecciona al dron óptimo justificando los criterios técnicos aplicados.
+
+![Pantalla 2 — Detalle de Misión con Drone Recomendado y Justificación](docs/images/AquaPort_v2_Mock_Pantalla2_Detalle.png)
+
+##### A. Prompt Estructurado para IA:
+```text
+[ROL]: Lead Product Designer para sistemas de misión crítica y soporte de decisiones algorítmicas autónomas.
+[CONTEXTO]: AquaPort v2 - Módulo de Asignación Automática AP-07. Misión 'MIS-201-V2' para transporte de muestra biológica de agua (peso: 420g, prioridad: ALTA, destino: Laguna Central).
+[OBJETIVO]: Diseñar la pantalla de 'Detalle de Misión y Recomendación Algorítmica' donde el sistema expone de forma transparente por qué seleccionó a una unidad específica usando el patrón Strategy.
+[ESTRUCTURA DE INTERFAZ]:
+1. Panel izquierdo 'Solicitud de Misión #MIS-201-V2':
+   - Datos de carga: 420g de muestra biológica en contenedor estanco.
+   - Prioridad: Badge 'ALTA' (naranja brillante).
+   - Zona de retiro: Muelle Norte -> Zona Destino: Laguna Central (distancia: 850m).
+2. Widget de Telemetría Hídrica en Vivo (Datos de API externa integrada):
+   - Nivel de agitación: Oleaje moderado (0.35m altura de ola).
+   - Profundidad requerida de navegación: 4.2m.
+   - Corriente de deriva: 1.1 nudos.
+   - Veredicto de compatibilidad física: 'Apto para Escuadrilla Semisumergida (resiste oleaje > 0.3m)'.
+3. Panel central destacado 'Dron Recomendado por el Algoritmo':
+   - Tarjeta destacada con halo cyan: 'AR-06 — Aqua-SemiSub 300'.
+   - Nivel de batería: 88% (supera holgadamente el umbral de 35% y 50% de reserva).
+   - Ubicación: Muelle Norte (Distancia al punto de carga: 0m - In situ).
+   - Capacidad: 1500g (admite 420g con factor de seguridad del 28%).
+4. Sección 'Justificación del Algoritmo (EstrategiaSeleccion)':
+   - Desglose con checks de verificación:
+     * Check 1: 'ZonaCercanaStrategy — Unidad ubicada en el mismo muelle de carga (0m de trasvase inicial)'.
+     * Check 2: 'MayorBateriaStrategy — Mayor reserva energética en la sub-flota apta (88% vs 64% de AR-07)'.
+     * Check 3: 'Restricción Hídrica — Drones superficiales descartados por oleaje de 0.35m'.
+5. Botones de acción inferior:
+   - Botón Primario Teal: 'Confirmar Despacho Autónomo (Enter)' [Grande, accesible, Fitts's Law].
+   - Botón Secundario: 'Modificar Estrategia Manual'.
+   - Botón Cancelar: 'Rechazar Solicitud'.
+[ESTILO]: Dark Slate Theme, acentos Ocean Teal (#1B7F8C) y Cyan (#06B6D4), tarjetas translúcidas con blur backdrop.
+```
+
+##### B. Desglose Funcional y Resolución de Tensión AP-07 vs AP-08:
+* **Integración Hídrica Transparente:** La consola expone los datos crudos de oleaje y profundidad obtenidos de la API meteorológica externa (`CU-07`), permitiendo al operador auditar la idoneidad física de la escuadrilla antes del zarpe.
+* **Explicabilidad Algorítmica (XAI):** Se resuelven las tensiones entre `ZonaCercanaStrategy` y `MayorBateriaStrategy` mediante una lista jerarquizada de factores de ponderación, eliminando la opacidad de "caja negra".
+
+---
+
+#### 3. Pantalla 3: Confirmación de Asignación y Estado Actualizado de Flota (Post-Despacho)
+
+Retroalimentación inmediata del despacho exitoso. Confirma la transición de ciclo de vida del dron `AR-06` (de `DISPONIBLE` a `EN MISIÓN`), presenta el radar náutico con la trayectoria calculada y provee el código criptográfico de seguimiento.
+
+![Pantalla 3 — Confirmación de Asignación y Flota Actualizada](docs/images/AquaPort_v2_Mock_Pantalla3_Confirmacion.png)
+
+##### A. Prompt Estructurado para IA:
+```text
+[ROL]: Senior UX Designer enfocado en estados de confirmación operacional y retroalimentación en tiempo real.
+[CONTEXTO]: AquaPort v2 - Misión MIS-201-V2 asignada con éxito al dron AR-06 (Aqua-SemiSub 300).
+[OBJETIVO]: Diseñar la pantalla modal de confirmación de despacho exitoso y la actualización sincronizada del mapa de radar y tabla de flota.
+[ESTRUCTURA DE INTERFAZ]:
+1. Ventana modal de éxito centralizada con animación de checkmark en verde esmeralda (#059669):
+   - Título: '¡Misión Despachada Exitosamente!'.
+   - Código de Seguimiento emitido: 'TRK-2026-9941X' con botón 'Copiar Enlace'.
+   - Resumen del zarpe: 'Dron AR-06 navegando rumbo a Laguna Central'.
+   - Tiempo estimado de arribo (ETA): 6 minutos 40 segundos.
+   - Sello institucional: 'Autorización #NAV-882 validada por Centro de Control ECI'.
+2. Fondo de la pantalla visible tras el modal:
+   - Panel de flota actualizado: La tarjeta de 'AR-06' ahora exhibe el badge azul zafiro 'EN MISIÓN (Laguna Central)' y la métrica de 'Disponibles' desciende a 8 unidades.
+   - Mini-radar batimétrico del campus en el costado derecho con la ruta trazada en línea punteada cyan desde Muelle Norte hasta Laguna Central.
+3. Botones de pie de modal:
+   - Botón Primario: 'Monitorear Telemetría en Vivo' (redirige al mapa náutico).
+   - Botón Secundario: 'Volver al Panel de Flota'.
+[ESTILO]: Contraste elevado, micro-detalles en verde esmeralda y cyan, sensación de certeza operativa y alivio cognitivo.
+```
+
+##### B. Desglose Funcional y Cierre de Ciclo de Vida:
+* **Certeza Operacional:** Provee confirmación unívoca del despacho con sello de autorización institucional (`#NAV-882`), evitando pulsaciones duplicadas por parte del usuario (Ley de Fitts y Heurística #1).
+* **Consistencia de Estado:** Refleja en tiempo real la transición inmutable de la entidad en memoria (`AR-06.estado = EN_MISION`), sincronizando el radar perimetral y los KPIs globales de flota.
+
+---
+
+#### 4. Pantalla 4: Estado de Alerta Crítica — Misión Sin Drone Disponible (Manejo de Contingencias)
+
+Pantalla de interrupción de emergencia ante una misión prioritaria (`MIS-999-URG`, Prioridad **CRÍTICA**) donde ninguna unidad naval compatible se encuentra en estado apto o con carga requerida en el cuadrante solicitado.
+
+![Pantalla 4 — Alerta Crítica sin Drone Disponible](docs/images/AquaPort_v2_Mock_Pantalla4_AlertaCritica.png)
+
+##### A. Prompt Estructurado para IA:
+```text
+[ROL]: Mission-Critical Safety UX Expert especializado en diseño de interfaces para situaciones de fallo, desastre o indisponibilidad en operaciones navales.
+[CONTEXTO]: AquaPort v2 - Asignación fallida de misión 'MIS-999-URG' con prioridad CRÍTICA (sensor fluorimétrico de turbidez para Lago Profundo, profundidad requerida > 8 metros -> Requiere obligatoriamente un Buceador de la serie Aqua-Diver 500).
+[CONDICIÓN DE DISPARO]: La sub-flota de Buceadores (AR-11 a AR-15) no tiene unidades disponibles (3 en misión activa, 1 en mantenimiento de propulsores, 1 con batería en 28% por debajo del umbral de seguridad del 50%).
+[OBJETIVO]: Diseñar la pantalla de Alerta Crítica Bloqueante con máxima jerarquía visual, bordes en carmesí intenso (#DC2626) y disparo del patrón Observer hacia el Técnico y Centro de Control.
+[ESTRUCTURA DE INTERFAZ]:
+1. Banner superior de advertencia pulsante en rojo carmesí: 'ALERTA DE SISTEMA: ASIGNACIÓN AUTÓNOMA BLOQUEADA — MISIÓN CRÍTICA SIN UNIDADES APTAS'.
+2. Modal central de diagnóstico de fallo operacional:
+   - Icono de alerta octogonal en carmesí brillante con signo de exclamación.
+   - Código de Incidencia: '#INC-9901-CRIT' | Misión: 'MIS-999-URG' (Prioridad CRÍTICA).
+   - Diagnóstico claro y sin jerga incomprensible:
+     * Causa raíz: 'Profundidad de zona (8.5m) exige dron tipo BUCEADOR. Actualmente 0 de 5 unidades buceadoras están disponibles con reserva mínima del 50%'.
+   - Tabla de estado de la sub-escuadrilla afectada (AR-11 a AR-15):
+     * AR-11, AR-12, AR-13: 'EN MISIÓN ACTIVA' (retorno estimado: > 35 min).
+     * AR-14: 'FALLO TÉCNICO' (propulsor averiado).
+     * AR-15: 'BATERÍA INSUFICIENTE (28%)' (no cumple umbral de 50% para misiones críticas).
+3. Acciones automáticas ejecutadas por el patrón Observer:
+   - Box de notificación técnica: 'Orden de Servicio Técnico #OT-404 despachada automáticamente a Técnico de Mantenimiento'.
+   - Box de centro de control: 'Notificación acústica y visual emitida a Centro de Control ECI'.
+4. Botones de mitigación y contingencia:
+   - Botón Carmesí de Acción: 'Solicitar Intervención Inmediata de Guardia Náutica'.
+   - Botón Secundario: 'Poner Misión en Cola Prioritaria con Despacho de Respaldo'.
+   - Botón Cancelar: 'Cancelar Despacho y Reagendar'.
+[ESTILO]: Rojo carmesí (#DC2626), fondo gris carbón oscuro (#0F1115), tipografía en negrita monoespaciada para códigos técnicos, máxima visibilidad y urgencia operativa.
+```
+
+##### B. Desglose Funcional y Resiliencia del Sistema:
+* **Manejo Robusto de Excepciones:** Aplica la regla `RN-02` (reserva $\ge 50\%$ para emergencias críticas) impidiendo que el dron `AR-15` (28% batería) sea despachado irresponsablemente.
+* **Trazabilidad de Observadores (Observer Pattern):** Demuestra visualmente cómo el fallo genera una orden técnica de servicio (`#OT-404`) para el Técnico de Mantenimiento y un registro de bitácora (`#INC-9901`) en el Centro de Control ECI sin bloquear la interfaz general.
+
+---
+
+#### 5. Evaluación de Heurísticas de Jakob Nielsen en los Mocks
+
+| Heurística de Nielsen | Principio Teórico | Aplicación Concreta en los Mocks de AquaPort v2 |
+| :--- | :--- | :--- |
+| **#1: Visibilidad del Estado del Sistema** | El sistema debe mantener siempre informados a los usuarios de lo que está ocurriendo, mediante retroalimentación apropiada dentro de un tiempo razonable. | • Medidores de batería en tiempo real en las 15 tarjetas con código semáforo visual.<br>• Modales de confirmación con ETA exacto y radar con trayectoria en tiempo real.<br>• Banner pulsante carmesí inmediato cuando no es posible despachar una misión crítica. |
+| **#2: Coincidencia entre el Sistema y el Mundo Real** | El sistema debe hablar el lenguaje de los usuarios, con palabras, frases y conceptos familiares al usuario, en lugar de términos orientados al sistema. | • Empleo de vocabulario náutico estandarizado (*Muelle Norte*, *Oleaje*, *Buceador*, *Profundidad de calado*, *Deriva*).<br>• Iconografía marítima coherente (anclas, radares, hélices, batimetría). |
+| **#5: Prevención de Errores** | Mejor que los buenos mensajes de error es un diseño cuidadoso que impida que ocurra un problema en primer lugar. | • Bloqueo automático del botón de confirmación si el dron posee $< 35\%$ de batería (o $< 50\%$ en misiones críticas).<br>• Pre-validación obligatoria de compatibilidad física (peso y profundidad) antes de permitir la pulsación de despacho. |
+| **#8: Diseño Estético y Minimalista** | Los diálogos no deben contener información que sea irrelevante o rara vez necesaria. Toda unidad extra de información compite con la información relevante. | • Esquema de color sobrio Slate `#12161A` con acentos funcionales de alto contraste.<br>• Agrupación estructurada en bloques colapsables por escuadrilla (Ley de Miller: 3 a 5 tarjetas visibles por grupo).<br>• Ocultamiento progresivo de parámetros avanzados de telemetría detrás de un botón secundario. |
+| **#9: Ayudar a los Usuarios a Reconocer, Diagnosticar y Recuperarse de Errores** | Los mensajes de error deben expresarse en lenguaje sencillo (sin códigos oscuros), indicar con precisión el problema y sugerir de forma constructiva una solución. | • La pantalla de alerta crítica no muestra un genérico "Error 500", sino la causa raíz física: *0 de 5 buceadores disponibles para profundidad > 8m*.<br>• Ofrece rutas de escape claras: *Poner en Cola Prioritaria*, *Reasignar Emergencia* o *Contactar Guardia Náutica*. |
+
+---
 
