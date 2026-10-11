@@ -2004,12 +2004,12 @@ En este ejercicio se formalizan los **Requerimientos Funcionales (RF)** de las n
 
 Un RNF sin métrica objetiva es simplemente un deseo. Para AquaPort v2, todos los atributos de calidad de software (basados en el estándar ISO/IEC 25010) cuentan con especificaciones cuantificables y medibles:
 
-| Código | Atributo de Calidad (ISO 25010) | Especificación del RNF | Métrica Cuantitativa Objetivo | Herramienta de Medición / Verificación |
-| :---: | :--- | :--- | :---: | :--- |
-| **RNF-01** | **Rendimiento / Latencia de Selección** | El algoritmo de asignación automática debe resolver la selección del dron óptimo para flotas de hasta 30 unidades sin degradar la respuesta interactiva del operador. | **Latencia < 400 ms** para flotas de 30 drones. | JUnit 5 `assertTimeoutPreemptively` en `RequerimientosPrinplupTest`. |
-| **RNF-02** | **Rendimiento / Latencia de Alertas** | La difusión y entrega de alertas críticas de fallo a todos los observadores registrados (`CentroControlObserver`, `TecnicoMantenimientoObserver`) debe ejecutarse casi en tiempo real. | **Latencia < 50 ms** por evento de fallo. | JUnit 5 `assertTimeoutPreemptively` en `RequerimientosPrinplupTest`. |
-| **RNF-03** | **Disponibilidad y Confiabilidad (SLA)** | La plataforma central de despacho y supervisión debe garantizar continuidad operativa durante los horarios de laboratorio e investigación de la ECI. | **Disponibilidad >= 99.9% (uptime)** y **MTTR < 5 minutos** (Lunes a Sábado, 06:00 a 20:00). | Monitoreo de disponibilidad y pruebas de resiliencia operativa. |
-| **RNF-04** | **Capacidad / Concurrencia y Throughput** | El motor de misiones debe procesar ráfagas concurrentes de solicitudes de despacho sin bloqueos mutuos (*deadlocks*) ni pérdida de paquetes de misión. | **Throughput >= 50 solicitudes concurrentes/segundo** con **latencia total < 800 ms** y **tasa de error < 0.1%**. | JUnit 5 pruebas concurrentes multi-hilo (`CompletableFuture`) en `RequerimientosPrinplupTest`. |
+|     Código     | Atributo de Calidad (ISO 25010)                 | Especificación del RNF                                                                                                                                                                      |                                                   Métrica Cuantitativa Objetivo                                                   | Herramienta de Medición / Verificación                                                           |
+| :--------------: | :---------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------- |
+| **RNF-01** | **Rendimiento / Latencia de Selección**  | El algoritmo de asignación automática debe resolver la selección del dron óptimo para flotas de hasta 30 unidades sin degradar la respuesta interactiva del operador.                    |                                        **Latencia < 400 ms** para flotas de 30 drones.                                        | JUnit 5`assertTimeoutPreemptively` en `RequerimientosPrinplupTest`.                            |
+| **RNF-02** | **Rendimiento / Latencia de Alertas**     | La difusión y entrega de alertas críticas de fallo a todos los observadores registrados (`CentroControlObserver`, `TecnicoMantenimientoObserver`) debe ejecutarse casi en tiempo real. |                                           **Latencia < 50 ms** por evento de fallo.                                           | JUnit 5`assertTimeoutPreemptively` en `RequerimientosPrinplupTest`.                            |
+| **RNF-03** | **Disponibilidad y Confiabilidad (SLA)**  | La plataforma central de despacho y supervisión debe garantizar continuidad operativa durante los horarios de laboratorio e investigación de la ECI.                                       |              **Disponibilidad >= 99.9% (uptime)** y **MTTR < 5 minutos** (Lunes a Sábado, 06:00 a 20:00).              | Monitoreo de disponibilidad y pruebas de resiliencia operativa.                                    |
+| **RNF-04** | **Capacidad / Concurrencia y Throughput** | El motor de misiones debe procesar ráfagas concurrentes de solicitudes de despacho sin bloqueos mutuos (*deadlocks*) ni pérdida de paquetes de misión.                                  | **Throughput >= 50 solicitudes concurrentes/segundo** con **latencia total < 800 ms** y **tasa de error < 0.1%**. | JUnit 5 pruebas concurrentes multi-hilo (`CompletableFuture`) en `RequerimientosPrinplupTest`. |
 
 ---
 
@@ -2033,13 +2033,11 @@ Un RNF sin métrica objetiva es simplemente un deseo. Para AquaPort v2, todos lo
 ```
 
 ##### Justificación MoSCoW:
-- **Must Have (Críticos e Irremplazables):**  
-  La asignación automática mediante estrategias (`RF-01`) y la emisión de alertas inmediatas (`RF-02`) definen el valor central de la v2. Sin ellos, el sistema continuaría siendo un MVP manual de fase 1. Los requerimientos no funcionales de latencia de selección (`RNF-01`) y disponibilidad del servicio (`RNF-03`) son indispensables para que la plataforma sea viable y confiable en el campus.
-- **Should Have (Gran Valor, No Bloqueantes para el Core):**  
-  La integración con la API de condiciones hídricas (`RF-03`), la consola técnica de mantenimiento (`RF-04`) y la propagación de alertas ultra-rápidas (`RNF-02` < 50ms) agregan una capa robusta de prevención y logística. Si la API externa sufriera una degradación temporal, el operador puede continuar despachando con estrategias estándar.
-- **Could Have (Deseables si el Tiempo y Recursos lo Permiten):**  
-  El soporte de alta concurrencia masiva (`RNF-04` >= 50 req/s), la visualización gráfica avanzada en tiempo real de corrientes y el almacenamiento permanente de logs en base de datos aportan robustez ante picos de tráfico extremos, pero la operación regular del campus maneja volúmenes moderados.
-- **Won't Have (Excluidos de la v2, Planificados para Empoleon):**  
+
+- **Must Have (Críticos e Irremplazables):**La asignación automática mediante estrategias (`RF-01`) y la emisión de alertas inmediatas (`RF-02`) definen el valor central de la v2. Sin ellos, el sistema continuaría siendo un MVP manual de fase 1. Los requerimientos no funcionales de latencia de selección (`RNF-01`) y disponibilidad del servicio (`RNF-03`) son indispensables para que la plataforma sea viable y confiable en el campus.
+- **Should Have (Gran Valor, No Bloqueantes para el Core):**La integración con la API de condiciones hídricas (`RF-03`), la consola técnica de mantenimiento (`RF-04`) y la propagación de alertas ultra-rápidas (`RNF-02` < 50ms) agregan una capa robusta de prevención y logística. Si la API externa sufriera una degradación temporal, el operador puede continuar despachando con estrategias estándar.
+- **Could Have (Deseables si el Tiempo y Recursos lo Permiten):**El soporte de alta concurrencia masiva (`RNF-04` >= 50 req/s), la visualización gráfica avanzada en tiempo real de corrientes y el almacenamiento permanente de logs en base de datos aportan robustez ante picos de tráfico extremos, pero la operación regular del campus maneja volúmenes moderados.
+- **Won't Have (Excluidos de la v2, Planificados para Empoleon):**
   Las misiones multi-etapa con waypoints dinámicos y la reasignación en pleno vuelo ante contingencias intermedias requieren arquitectura por capas desacoplada con 60 drones (Fase Empoleon) y quedan deliberadamente fuera del alcance actual.
 
 ---
@@ -2083,3 +2081,132 @@ asignador.setEstrategia(new ZonaCercanaStrategy());
 Optional<DroneAcuatico> critica = asignador.seleccionarDrone(flota, "Laguna Sur");
 assertEquals("DRN-BUC-75", critica.get().getId());
 ```
+
+---
+
+### Ejercicio 07 — Plantilla DOSW para RF "AP-07 Asignar automáticamente drone a misión hídrica"
+
+En cumplimiento con el estándar formal de ingeniería de software de la Escuela Colombiana de Ingeniería, se documenta de forma exhaustiva el Requerimiento Funcional nuclear de la Fase Prinplup utilizando la estructura oficial de la asignatura (`Plantilla_Requerimientos_DOSW.docx`). Este requerimiento modela la transición de la asignación manual del MVP hacia la orquestación autónoma mediante sub-objetos anidados, validación de condiciones hídricas externas y propagación de eventos a observadores.
+
+---
+
+#### 1. FUNCIONALIDAD
+
+| Campo | Detalle de Especificación |
+| :--- | :--- |
+| **Código:** | **AP-07** (Correspondiente a **RF-01** de la Fase Prinplup) |
+| **Nombre:** | **Asignar automáticamente drone a misión hídrica** |
+| **Descripción:** | Permite al sistema determinar y asignar automáticamente el drone más adecuado para una misión de transporte solicitada, considerando la carga a transportar, las condiciones del agua en la zona de destino y la disponibilidad operativa de la flota, alertando al personal correspondiente si ocurre algún imprevisto. |
+| **Cómo se ejecutará:** | A través del panel de control de AquaPort al momento de registrar o confirmar una solicitud de misión de transporte. |
+| **Actor principal:** | **Operador Hídrico** |
+| **Precondiciones:** | 1. El sistema AquaPort debe estar en funcionamiento y con la flota de 15 drones registrada en el inventario.<br>2. Se debe contar con la información ambiental y meteorológica de las zonas hídricas del campus.<br>3. Debe existir al menos un drone en estado `DISPONIBLE` con nivel de batería seguro (mínimo 35% para misiones ordinarias y 50% para misiones críticas). |
+
+---
+
+#### 2. DATOS DE ENTRADA (Tipos Anidados y Sub-objetos)
+
+| Nombre del Campo | Descripción | Tipo de Campo | Reglas de Validación / Dominio | Obligatorio |
+| :--- | :--- | :--- | :--- | :---: |
+| `idMision` | Identificador único de la misión solicitada. | `String` | Formato alfanumérico no nulo ni vacío (ej. `MIS-201`). | Sí |
+| `puntoPartida` | Punto de acople o muelle donde se cargará el paquete. | `String` | Ubicación geográfica válida del campus (ej. `Embalse Norte`). | Sí |
+| `zonaDestino` | Zona hídrica de destino hacia donde navegará el dron. | `Enum` | Debe ser un valor válido del enumerador: `EMBALSE_NORTE`, `CANAL_CENTRAL`, `LAGUNA_SUR`, `RIBERA_ESTE`, `LAB_HIDRICO`. | Sí |
+| **`carga`** | **Sub-objeto que agrupa los atributos del bulto a transportar.** | **`Object` (Anidado)** | **Estructura compuesta obligatoria.** | **Sí** |
+| `carga.peso` | Peso neto de la muestra, sensor o instrumento en gramos. | `Integer` | Valor estrictamente mayor a 0 y menor o igual a **1500 gramos** (límite físico de la flota). | Sí |
+| `carga.tipo` | Categoría física del material transportado. | `Enum` | Uno de los valores predefinidos: `MUESTRA_AGUA`, `SENSOR`, `PAQUETE_LIGERO`, `EQUIPO_MEDICION`. | Sí |
+| `carga.prioridad` | Nivel de precedencia institucional de la entrega. | `Enum` | Valores: `CRITICA`, `ALTA`, `NORMAL`, `BAJA`. Si es `CRITICA`, activa la política de aptitud técnica y reserva alta. | Sí |
+| `estrategiaDeseada` | Política algorítmica específica sugerida por el operador. | `String` | Opcional: `MAYOR_BATERIA`, `ZONA_CERCANA`, `PRIORIDAD_CRITICA`. Si se omite, el sistema decide según la prioridad de la carga. | No |
+
+---
+
+#### 3. DATOS DE SALIDA (Sub-objetos de Drone Asignado y Telemetría)
+
+| Nombre del Campo | Descripción | Tipo de Campo | Reglas / Aplicación en AquaPort v2 | Obligatorio |
+| :--- | :--- | :--- | :--- | :---: |
+| `misionAsignada` | Instancia final inmutable de la misión configurada. | `Mision` | Creada tras validar todas las precondiciones con el dron enlazado. | Sí |
+| **`droneAsignado`** | **Sub-objeto que describe al dron seleccionado por el algoritmo.** | **`Object` (Anidado)** | **Calculado por el sistema según la estrategia activa de selección.** | **Sí (Salida)** |
+| `droneAsignado.id` | Identificador único de la unidad naval. | `String` | Formato estándar institucional: `AR-XX` o `DRN-XX`. | Sí (Salida) |
+| `droneAsignado.modelo` | Nombre comercial/técnico del modelo de hardware. | `String` | Cadena descriptiva (`Aqua-Surface 200`, `Aqua-SemiSub 300`, `Aqua-Diver 500`). | Sí (Salida) |
+| `droneAsignado.tipo` | Familia física del dron acuático. | `String` | Valor discreto: `SUPERFICIAL`, `SEMISUMERGIDO` o `BUCEADOR`. | Sí (Salida) |
+| `droneAsignado.bateria` | Porcentaje de energía remanente al momento del despacho. | `Integer` | Valor entero entre 0 y 100% (garantizado `>= 35%` o `>= 50%` en crítica). | Sí (Salida) |
+| `droneAsignado.zona` | Zona geográfica donde se encuentra apostado el dron. | `String` | Ubicación de acople actual en la red hídrica del campus. | Sí (Salida) |
+| `droneAsignado.capacidadCargaGramos` | Carga útil máxima certificada del dron seleccionado. | `Integer` | 500g para `SUPERFICIAL`, 1500g para `SEMISUMERGIDO`, 300g para `BUCEADOR`. | Sí (Salida) |
+| `condicionesHidricasConsultadas` | Instantánea ambiental recuperada de la API externa. | `Sub-objeto` | Registro de nivel de agitación (Calma/Moderada/Fuerte), profundidad (metros) y clima. | Sí (Salida) |
+| `codigoSeguimiento` | Token criptográfico o identificador único para monitoreo. | `String` | Hash para consulta de estado en tiempo real por el solicitante. | Sí (Salida) |
+| `mensajeExito` | Notificación emitida en consola y canales de monitoreo. | `String` | Confirmación formal: `[AquaPort - Notificación] Misión asignada exitosamente...` | Sí (Salida) |
+| `mensajeError` | Diagnóstico de rechazo ante excepciones de negocio. | `Exception` | Excepciones tipadas (`IllegalArgumentException`, `IllegalStateException`). | (En fallos) |
+
+---
+
+#### 4. FLUJO BÁSICO (Ciclo de Asignación en 7 Pasos)
+
+| Paso | Actor | Descripción | Excepciones |
+| :---: | :--- | :--- | :--- |
+| **1** | **Operador Hídrico** | Ingresa los datos de la solicitud de transporte, especificando la zona de destino y los datos del paquete (peso en gramos, tipo de carga y prioridad de la misión). | `IllegalArgumentException` si faltan datos o el peso es `<= 0`. |
+| **2** | **Operador Hídrico** | Solicita la asignación automática. El sistema consulta las condiciones del agua en la zona de destino (oleaje, corrientes y profundidad). | Flujo alterno **2a** si el agua presenta condiciones adversas. |
+| **3** | **Operador Hídrico** | El sistema filtra la flota activa e identifica los drones disponibles que son físicamente aptos para navegar en las condiciones del cuerpo de agua de esa zona. | Flujo alterno **3a** si no hay drones disponibles compatibles. |
+| **4** | **Operador Hídrico** | El sistema evalúa la prioridad de la misión y selecciona el drone más conveniente (priorizando cercanía y reserva si es crítica, o mayor batería si es ordinaria). | — |
+| **5** | **Operador Hídrico** | El sistema comprueba que el drone seleccionado cumpla con el peso del paquete y tenga suficiente nivel de batería (mínimo 35%, o 50% en misiones críticas). | Flujo alterno **5a** (peso excede capacidad) o **5b** (batería insuficiente o falla). |
+| **6** | **Operador Hídrico** | El sistema asigna formalmente el drone a la misión, cambia el estado del drone a "En Misión" y registra la operación. | `IllegalStateException` si el drone se encuentra bloqueado. |
+| **7** | **Operador Hídrico** | Recibe en pantalla la confirmación del despacho con el identificador del drone asignado, el código de seguimiento para el solicitante y el aviso emitido al Centro de Control. | Fin del flujo básico exitoso. |
+
+---
+
+#### 5. FLUJOS ALTERNOS
+
+| Paso | Actor | Descripción | Excepciones |
+| :---: | :--- | :--- | :--- |
+| **2a** | **Operador Hídrico** | Intenta despachar la misión pero las condiciones del agua en la zona son peligrosas (oleaje fuerte o corrientes excesivas). El sistema suspende la asignación y le muestra la advertencia en pantalla. | `IllegalStateException` (Operación suspendida por condiciones ambientales). |
+| **3a** | **Operador Hídrico** | Solicita la asignación pero no hay drones disponibles compatibles en la red hídrica. El sistema le notifica que no hay unidades libres y deja la misión en lista de espera. | `IllegalStateException` (Sin drones disponibles para la zona). |
+| **5a** | **Operador Hídrico** | Ingresa un paquete cuyo peso supera la capacidad máxima del tipo de drone requerido (ej. más de 300g para buceo o más de 1500g en total). El sistema rechaza la solicitud e informa el límite de peso permitido. | `IllegalArgumentException` (Carga excede la capacidad de transporte). |
+| **5b** | **Operador Hídrico** | El drone seleccionado reporta batería baja (< 35%) o una avería técnica. El sistema notifica al operador, emite una alerta al Centro de Control, genera una orden de servicio para el Técnico de Mantenimiento y reasigna con un drone de respaldo. | `IllegalStateException` (Alerta técnica emitida y orden generada al técnico). |
+
+---
+
+#### 6. REGLAS DE NEGOCIO (RN)
+
+|  Identificador  | Nombre de la Regla                                                          | Enunciado Normativo y Justificación Operacional                                                                                                                                                                                              |
+| :-------------: | :-------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **RN-01** | **Umbral Nominal de Batería (>= 35%)**                               | Todo dron asignado a una misión ordinaria debe contar con al menos un**35% de carga de batería** al momento de la salida, garantizando autonomía de ida, retorno y maniobras imprevistas.                                            |
+| **RN-02** | **Reserva Energética de Seguridad para Misiones Críticas (>= 50%)** | En misiones con prioridad`CRITICA`, el dron asignado debe contar con una reserva mínima del **50% de batería** para mitigar cualquier riesgo de apagado en trayectos de máxima relevancia investigativa.                           |
+| **RN-03** | **Límite Estructural del `DroneBuceador` (<= 300g)**               | El`DroneBuceador` no puede ser asignado bajo ninguna circunstancia para cargas que pesen más de **300 gramos**, dado que el sobrepeso descalibra los tanques de lastre y compromete la maniobrabilidad hidrodinámica en inmersión. |
+| **RN-04** | **Límite y Compatibilidad del `DroneSuperficial` (<= 500g)**       | El`DroneSuperficial` soporta hasta **500 gramos** de carga útil y queda estrictamente prohibido su despacho en canales con oleaje agitado o misiones que exijan inmersión sensorial.                                                |
+| **RN-05** | **Capacidad Máxima de Carga de la Flota (<= 1500g)**                 | Ninguna solicitud de misión puede aceptar paquetes que superen los**1500 gramos** (capacidad límite del modelo `Aqua-SemiSub 300` / `SEMISUMERGIDO`). Solicitudes superiores deben fraccionarse en dos misiones independientes.   |
+| **RN-06** | **Precedencia de Seguridad sobre Distancia**                          | La aptitud física del tipo de dron para tolerar las condiciones del cauce hídrico prevalece jerárquicamente sobre la cercanía geográfica del punto de atraque.                                                                           |
+| **RN-07** | **Inmutabilidad y Trazabilidad del Despacho**                         | Toda instancia de`Mision` construida es estrictamente inmutable; sus atributos de ruta, carga asignada y dron no pueden ser sobreescritos tras el registro formal.                                                                          |
+
+---
+
+#### 7. ANEXOS / PROTOTIPOS
+
+> **Evidencias de Implementación y Arquitectura:**
+>
+> 1. **Motor de Selección Algorítmica:** Implementado en `AsignadorAutomatico.java`, `MayorBateriaStrategy.java`, `ZonaCercanaStrategy.java` y `PrioridadCriticaStrategy.java`.
+> 2. **Despacho Desacoplado de Alertas:** Implementado en `NotificadorAlertas.java` y verificado con observadores simulados mediante Mockito en `AsignadorAutomaticoTest.java`.
+> 3. **Suite Automatizada de Requerimientos:** Evaluado integralmente en `RequerimientosPrinplupTest.java` (demostrando latencia algorítmica < 400ms y resolución de la tensión AP-07 vs AP-08).
+> 4. **Diagramas Arquitectónicos:** Diagrama de Contexto v2 visible en [DiagramC4v2.png](docs/images/DiagramC4v2.png) y Flujograma de Decisión en [Exercise06PrePinPlup.png](docs/images/Exercise06PrePinPlup.png).
+
+---
+
+#### 8. ABREVIATURAS
+
+|  Abreviatura  | Significado Técnico                                                          |
+| :------------: | :---------------------------------------------------------------------------- |
+|  **AP**  | AquaPort (Identificador formal de requerimientos del sistema)                 |
+|  **RF**  | Requerimiento Funcional                                                       |
+| **RNF** | Requerimiento No Funcional                                                    |
+|  **RN**  | Regla de Negocio                                                              |
+|  **C4**  | Context, Containers, Components, Code (Modelo de Arquitectura de Software)    |
+| **API** | Application Programming Interface (Interfaz de Programación de Aplicaciones) |
+| **ECI** | Escuela Colombiana de Ingeniería Julio Garavito                              |
+| **SLA** | Service Level Agreement (Acuerdo de Nivel de Servicio)                        |
+| **MTTR** | Mean Time To Recovery (Tiempo Medio de Recuperación ante Fallos)             |
+| **OCP** | Open/Closed Principle (Principio de Abierto/Cerrado)                          |
+| **TDD** | Test-Driven Development (Desarrollo Guiado por Pruebas)                       |
+
+---
+
+#### 9. HISTORIAL DE REVISIÓN
+
+| Elaborado por                           | Aprobado por                            |        Fecha        |    Versión    | Descripción y Justificación del Cambio                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| :-------------------------------------- | :-------------------------------------- | :------------------: | :-------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Jose Alejandro Martinez Arias** | **Jose Alejandro Martinez Arias** | **11/10/2026** | **2.0.0** | **Evolución completa del requerimiento para la Fase Prinplup (AquaPort v2):** Se introducen tipos anidados y sub-objetos para la carga (`carga.peso`, `carga.tipo`, `carga.prioridad`) y el dron asignado (`droneAsignado.id`, `droneAsignado.tipo`, `droneAsignado.bateria`), integración con la API de Condiciones Hídricas, ciclo básico en 7 pasos, gestión de 4 flujos alternos y 7 reglas de negocio basadas en el comportamiento de los 3 tipos de drones. |
