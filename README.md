@@ -642,6 +642,9 @@ public class Ejercicio04 {
 **Captura de ejecución:**
 ![ExecutionExercise04PiplupPhase.png](docs/images/ExecutionExercise04PiplupPhase.png)
 
+**Diagrama de Clases UML (Principios SRP y DIP):**
+![Diagrama de Clases UML - Ejercicio 04](docs/uml/DiagramClass.png)
+
 **Explicación:**
 
 1. **Principio de Responsabilidad Única (SRP):** En lugar de un objeto Dios (`GestorMision`) que guarde, valide, notifique e imprima simultáneamente, se modularizó el diseño en clases altamente cohesivas:
@@ -650,6 +653,10 @@ public class Ejercicio04 {
    - `NotificadorOperador`: Responsable de la salida y comunicación de alertas y confirmaciones hacia el operador.
    - `RepositorioMisionesMemoria`: Encargado únicamente de la persistencia de datos en memoria.
 2. **Principio de Inversión de Dependencias (DIP):** El servicio de alto nivel `RegistradorMisiones` no se acopla a ninguna implementación concreta de almacenamiento (evitando `new BaseDatosLocal()`), sino que depende de la abstracción `RepositorioMisiones`, inyectada a través de su constructor (`Constructor Injection`). Esto permite sustituir o extender libremente la persistencia (por bases de datos o mocks en pruebas) sin alterar las reglas de negocio.
+3. **Multiplicidad de Relaciones en el Diagrama:**
+   - `RegistradorMisiones` se asocia con multiplicidad `1` hacia `RepositorioMisiones`, `ValidadorMision` y `NotificadorOperador`.
+   - `RepositorioMisionesMemoria` almacena en memoria agregaciones de `0..*` instancias de `Mision`.
+   - Cada `Mision` contiene una referencia a exactamente `1` `DroneAcuatico`, `1` `TipoCarga` y `1` `EstadoMision`, mientras que estas entidades pueden pertenecer a `0..*` misiones a lo largo del ciclo operativo.
 
 ---
 
