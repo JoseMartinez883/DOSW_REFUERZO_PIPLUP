@@ -1,6 +1,7 @@
 # PIPLUP FASE 01— DOSW
 
 ## Datos personales:
+
 - Nombre y Apellido: Jose Alejandro Martinez Arias
 - Código de Estudiante: 1000104385
 - Curso: DOSW (Desarrollo y operaciones sofware)
@@ -10,6 +11,7 @@
 ### Ejercicio 01 — Filtrar y ordenar la flota de drones acuáticos disponibles
 
 Se requiere gestionar la flota de drones acuáticos a través del API de Streams de Java para:
+
 1. Filtrar los drones disponibles con batería mayor o igual al 35% y ordenarlos descendentemente según su nivel de carga.
 2. Obtener una lista con únicamente los identificadores (`id`) de los drones que se encuentren disponibles.
 3. Verificar si existe al menos un dron disponible con batería suficiente (>= 35%).
@@ -19,6 +21,7 @@ Se requiere gestionar la flota de drones acuáticos a través del API de Streams
 **Código implementado:**
 
 `DroneAcuatico.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -102,11 +105,11 @@ public class Ejercisio1 {
 }
 ```
 
-**Captura de ejecución:**  
+**Captura de ejecución:**
 ![ExecutionExercise01PiplupPhase.png](docs/images/ExecutionExercise01PiplupPhase.png)
 
-**Explicación:**  
-Se modela la entidad con el record inmutable `DroneAcuatico` y se resuelven las consultas mediante la API de Streams:
+**Explicación:**Se modela la entidad con el record inmutable `DroneAcuatico` y se resuelven las consultas mediante la API de Streams:
+
 - `filter()` para validar la disponibilidad y el umbral de carga.
 - `sorted()` junto con `Comparator.comparing().reversed()` para ordenar de mayor a menor batería.
 - `map()` con referencia a método (`DroneAcuatico::id`) para proyectar la lista de identificadores.
@@ -122,6 +125,7 @@ Configurar el repositorio base para AquaPort aplicando la metodología GitFlow. 
 **Código implementado:**
 
 `.gitignore`
+
 ```gitignore
 # Compiled class file
 *.class
@@ -165,6 +169,7 @@ target/
 ```
 
 `Flujo de comandos Git ejecutados:`
+
 ```bash
 # Inicialización y configuración de ramas base
 git init
@@ -193,6 +198,7 @@ git push -u origin feature/streams-consultor-flota
 ```
 
 **Pull Request:**
+
 - **Enlace:** [Feature/piplup dosw ejercicio 01 by JoseMartinez883 · Pull Request #1 · JoseMartinez883/DOSW_REFUERZO_PIPLUP](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/1)
 
 **Captura de ejecución:**
@@ -210,6 +216,7 @@ Implementar el patrón de diseño creacional Builder para la instanciación de o
 **Código implementado:**
 
 `TipoCarga.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -219,6 +226,7 @@ public enum TipoCarga {
 ```
 
 `EstadoMision.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -228,6 +236,7 @@ public enum EstadoMision {
 ```
 
 `Mision.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -321,6 +330,7 @@ public class Mision {
 ```
 
 `Ejercicio03.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -368,10 +378,10 @@ public class Ejercicio03 {
 }
 ```
 
-**Captura de ejecución:**  
+**Captura de ejecución:**
 ![ExecutionExercise03PiplupPhase.png](docs/images/ExecutionExercise03PiplupPhase.png)
 
-**Explicación:**  
+**Explicación:**
 Se encapsuló la construcción de la clase inmutable `Mision` mediante su clase anidada estática `Builder`. A través de una interfaz fluida se asignan los atributos requeridos, delegando al método `build()` la comprobación estricta de precondiciones: verifica que las cadenas no sean nulas ni estén compuestas únicamente por espacios en blanco (`isBlank()`), que las referencias a objetos/enums no sean nulas y que el `DroneAcuatico` asignado cumpla la regla de negocio de encontrarse en estado disponible. De no cumplirse alguna regla, interrumpe el flujo levantando una `IllegalStateException` descriptiva.
 
 ---
@@ -383,6 +393,7 @@ Diseño e implementación de la arquitectura del núcleo de AquaPort MVP aplican
 **Código implementado:**
 
 `RepositorioMisiones.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -402,6 +413,7 @@ public interface RepositorioMisiones {
 ```
 
 `RepositorioMisionesMemoria.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -447,6 +459,7 @@ public class RepositorioMisionesMemoria implements RepositorioMisiones {
 ```
 
 `ValidadorMision.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -494,6 +507,7 @@ public class ValidadorMision {
 ```
 
 `NotificadorOperador.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -518,6 +532,7 @@ public class NotificadorOperador {
 ```
 
 `RegistradorMisiones.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -560,6 +575,7 @@ public class RegistradorMisiones {
 ```
 
 `Ejercicio04.java`
+
 ```java
 package main.dosw.piplup;
 
@@ -623,10 +639,11 @@ public class Ejercicio04 {
 }
 ```
 
-**Captura de ejecución:**  
+**Captura de ejecución:**
 ![ExecutionExercise04PiplupPhase.png](docs/images/ExecutionExercise04PiplupPhase.png)
 
-**Explicación:**  
+**Explicación:**
+
 1. **Principio de Responsabilidad Única (SRP):** En lugar de un objeto Dios (`GestorMision`) que guarde, valide, notifique e imprima simultáneamente, se modularizó el diseño en clases altamente cohesivas:
    - `RegistradorMisiones`: Exclusivamente orquesta el registro y delegación de consultas.
    - `ValidadorMision`: Contiene y ejecuta estrictamente las validaciones del dominio (batería ≥35%, disponibilidad y parámetros consistentes).
@@ -643,6 +660,7 @@ Elaboración del **Diagrama de Contexto del Sistema (C4 Nivel 1)** para el siste
 **Código implementado / Especificación de Arquitectura:**
 
 #### 1. Actores y Sistemas:
+
 - **Operador Hídrico (Persona):** Personal de operaciones encargado de supervisar la flota de 4 drones Aqua-Ranger 100, consultar su disponibilidad y nivel de batería, y asignar manualmente los drones a las misiones de transporte.
 - **Solicitante (Persona):** Investigador, profesor o laboratorista del campus ECI que requiere transportar muestras de agua o sensores entre los puntos hídricos y el laboratorio.
 - **Administrador ECI (Persona):** Responsable de la gestión institucional que supervisa el uso de la flota y consulta reportes y estadísticas operativas.
@@ -650,12 +668,14 @@ Elaboración del **Diagrama de Contexto del Sistema (C4 Nivel 1)** para el siste
 - **Sistemas Externos:** Ninguno. El MVP opera de forma autónoma e independiente sin integraciones externas en esta fase.
 
 #### 2. Código del Diagrama en PlantUML (`docs/c4-context-piplup.puml`):
+
 El código fuente del diagrama se encuentra en `docs/c4-context-piplup.puml`.
 
-**Diagrama de Contexto:**  
+**Diagrama de Contexto:**
 ![c4-contexto-piplup.png](docs/uml/c4-contexto-piplup.png)
 
-**Explicación:**  
+**Explicación:**
+
 1. **Enfoque de Caja Negra (Nivel 1 C4):** El diagrama no expone ningún detalle interno del software (como clases Java `DroneAcuatico`, interfaces o patrones de diseño). Se enfoca exclusivamente en la delimitación del sistema respecto al mundo exterior.
 2. **Definición de Actores orientados a Roles:** Se definen los 3 roles humanos esenciales del MVP (`Operador Hídrico`, `Solicitante` y `Administrador ECI`), evitando nombres propios o cargos organizacionales rígidos.
 3. **Flujos Bidireccionales Claramente Etiquetados:** Cada interacción entre los actores y AquaPort MVP explicita el dato o evento que transita, demostrando el ciclo completo de solicitud, asignación manual, retroalimentación y reportería del MVP.
@@ -669,21 +689,96 @@ A continuación, se definen los requerimientos iniciales para la primera fase (P
 #### Requerimientos Funcionales (RF) y No Funcionales (RNF)
 
 **Requerimientos Funcionales (RF):**
+
 - **RF-01 (Must Have):** El **Operador Hídrico** debe poder registrar una misión de transporte, asignando manualmente un drone disponible de la flota, para despachar entregas en el campus.
 - **RF-02 (Must Have):** El **Solicitante** debe poder recibir un código único al solicitar una misión, para tener el rastreo visual del encargo a transportar (muestra de agua o sensor).
 - **RF-03 (Should Have):** El **Administrador ECI** debe poder consultar el inventario completo y el estado actual (batería, zona) de toda la flota de drones para supervisar los activos operacionales.
 
 **Requerimientos No Funcionales (RNF):**
+
 - **RNF-01 (Must Have):** *[Rendimiento]* La consulta de drones disponibles para el operador debe procesar los filtros y retornar la lista en menos de **200 milisegundos**, asumiendo una flota máxima de 10 drones simultáneos, medible mediante pruebas de carga en JUnit 5 con `assertTimeout`.
 - **RNF-02 (Must Have):** *[Usabilidad / Claridad]* Todos los mensajes de error arrojados por el sistema deben estar en idioma español, ser autoexplicativos y guiar al operador hídrico sobre cómo solucionar el fallo sin necesidad de consultar el manual externo.
 - **RNF-03 (Could Have):** *[Disponibilidad]* La plataforma central MVP de AquaPort debe asegurar un uptime (tiempo de actividad) del **99.5%** durante el horario hábil de investigación del campus (Lunes a Viernes, 6:00 AM - 8:00 PM).
 
 **Justificación MoSCoW para el MVP:**
+
 - **Must Have:** El registro de misiones (RF-01) y la generación de comprobantes (RF-02) son el núcleo de AquaPort, al igual que un rendimiento básico (RNF-01) y mensajes claros en el idioma del operador para evitar confusiones operativas (RNF-02). Sin ellos, el MVP no cumple su propósito ni es funcional para los usuarios finales.
 - **Should Have:** La consulta general del administrador (RF-03) agrega mucho valor administrativo, pero si no se entrega en el sprint inicial, el operador aún puede despachar drones.
 - **Could Have:** Alta disponibilidad estricta (RNF-03) es deseable para evitar interrupciones, pero durante el MVP (prueba de concepto), caídas ocasionales son tolerables mientras se estabiliza la arquitectura.
 - **Won't Have:** Asignación automática de drones a misiones y rutas multi-etapa complejas; estas funcionalidades quedan fuera del alcance del MVP y se planifican para la fase Prinplup.
 
+---
 
+### Ejercicio 07 — Plantilla DOSW para RF "Registrar misión de transporte"
 
+Utilizando la plantilla oficial de la asignatura para el análisis de requerimientos (`Plantilla_Requerimientos_DOSW.docx`), se documenta formalmente el Requerimiento Funcional principal de esta fase.
 
+#### FUNCIONALIDAD
+
+| Campo                          | Detalle                                                                                                                                      |
+| :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Código:**             | RF-01                                                                                                                                        |
+| **Nombre:**              | Registrar misión de transporte                                                                                                              |
+| **Descripción:**        | Permite registrar formalmente en el sistema una solicitud de misión, verificando la disponibilidad del drone y acoplándolo a la locación. |
+| **Cómo se ejecutará:** | A través de la consola/backend interactuando con la clase`RegistradorMisiones`.                                                           |
+| **Actor principal:**     | Operador Hídrico                                                                                                                            |
+| **Precondiciones:**      | El sistema debe estar inicializado y deben existir drones registrados en la flota.                                                           |
+
+#### DATOS DE ENTRADA
+
+| Nombre           | Descripción                        | Tipo de campo     | Reglas / Aplicación                                | Obligatorio |
+| :--------------- | :---------------------------------- | :---------------- | :-------------------------------------------------- | :---------- |
+| `idMision`     | Identificador único de la misión  | `String`        | No puede estar vacío ni contener solo espacios.    | Sí         |
+| `drone`        | Drone seleccionado para la misión  | `DroneAcuatico` | Debe estar instanciado correctamente en el sistema. | Sí         |
+| `puntoPartida` | Ubicación de inicio de la misión  | `String`        | No puede estar vacío ni contener solo espacios.    | Sí         |
+| `puntoLlegada` | Ubicación de destino de la misión | `String`        | No puede estar vacío ni contener solo espacios.    | Sí         |
+| `tipoCarga`    | Tipo de elemento a transportar      | `Enum`          | Debe ser un valor válido (ej.`MUESTRA_AGUA`).    | Sí         |
+
+#### DATOS DE SALIDA
+
+| Nombre               | Descripción                       | Tipo de campo | Reglas / Aplicación                                                      | Obligatorio |
+| :------------------- | :--------------------------------- | :------------ | :------------------------------------------------------------------------ | :---------- |
+| `misionRegistrada` | El objeto de la misión confirmada | `Mision`    | Se crea inmutablemente a través del patrón*Builder*.                  | Sí         |
+| `mensajeExito`     | Confirmación en consola           | `String`    | Mensaje descriptivo con prefijo`[AquaPort - Notificación]`.            | Sí         |
+| `mensajeError`     | Excepción en caso de fallo        | `Exception` | Excepciones como`IllegalArgumentException` o `IllegalStateException`. | (En fallos) |
+
+#### FLUJO BÁSICO
+
+| Paso | Actor             | Descripción                                                                                                                                                 | Excepciones                                                           |
+| :--- | :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| 1    | Operador Hídrico | Ingresa los datos de la nueva misión (ID, locaciones) y selecciona un drone de la flota. El sistema verifica internamente que los campos no estén vacíos. | `IllegalArgumentException` si hay datos inválidos.                 |
+| 2    | Operador Hídrico | Confirma el registro. El sistema verifica que el drone esté "DISPONIBLE" y con batería`>= 35%`.                                                          | `IllegalStateException` si no cumple las reglas de estado/batería. |
+| 3    | Operador Hídrico | Recibe la confirmación luego de que el sistema construye la`Mision` inmutable y la almacena exitosamente en memoria.                                      | `IllegalArgumentException` si el ID de la misión ya existe.        |
+
+#### FLUJO ALTERNO
+
+| Paso | Actor             | Descripción                                                                                                                             | Excepciones                                                |
+| :--- | :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------- |
+| 2a   | Operador Hídrico | Intenta confirmar el registro con un drone ocupado o sin batería. El sistema aborta la operación y le notifica el rechazo en pantalla. | `IllegalStateException` arrojada y mostrada al operador. |
+| 3a   | Operador Hídrico | Intenta registrar la misión con un identificador (`idMision`) previamente usado. El sistema aborta el registro.                       | `IllegalArgumentException` (Identificador duplicado).    |
+
+#### ANEXOS / PROTOTIPOS
+
+> **Notas y comentarios:** Al tratarse del MVP en su fase inicial (Piplup), el prototipo de interfaz es estrictamente a nivel de terminal/consola. Las validaciones de los flujos alternos se comprueban mediante pruebas unitarias o métodos `main` de demostración (ver captura de Ejercicio 04).
+
+#### REGLAS DE NEGOCIO
+
+| No.   | Descripción                                                                                                     |
+| :---- | :--------------------------------------------------------------------------------------------------------------- |
+| RN-01 | Todo drone asignado a una misión debe tener un nivel de batería estrictamente mayor o igual al**35%**.   |
+| RN-02 | Un drone solo puede ser asignado a una misión si su estado actual es**DISPONIBLE**.                       |
+| RN-03 | Las instancias de`Mision` deben ser inmutables para evitar modificaciones inconsistentes luego de su registro. |
+
+#### ABREVIATURAS
+
+| Abreviatura   | Significado                                      |
+| :------------ | :----------------------------------------------- |
+| **MVP** | Minimum Viable Product (Producto Mínimo Viable) |
+| **RF**  | Requerimiento Funcional                          |
+| **ID**  | Identificador Único                             |
+
+#### HISTORIAL DE REVISIÓN
+
+| Elaborado por | Aprobado por  | Fecha      | Descripción y Justificación de Cambios             |
+| :------------ | :------------ | :--------- | :--------------------------------------------------- |
+| Jose Martinez | Jose Martinez | 10/10/2026 | Versión inicial del documento para el MVP (Piplup). |
