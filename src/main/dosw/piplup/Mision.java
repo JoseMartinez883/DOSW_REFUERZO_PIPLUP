@@ -9,7 +9,7 @@ public class Mision {
     private final TipoCarga tipoCarga;
     private final EstadoMision estadoMision;
 
-    private Mision(String id, DroneAcuatico drone, String puntoLlegada, String puntoPartida, TipoCarga tipoCarga, EstadoMision estadoMision) {
+    Mision(String id, DroneAcuatico drone, String puntoLlegada, String puntoPartida, TipoCarga tipoCarga, EstadoMision estadoMision) {
         this.id = id;
         this.drone = drone;
         this.puntoLlegada = puntoLlegada;

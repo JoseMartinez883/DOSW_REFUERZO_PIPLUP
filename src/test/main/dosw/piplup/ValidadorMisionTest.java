@@ -92,4 +92,137 @@ class ValidadorMisionTest {
         assertDoesNotThrow(() -> validador.validarZona("Punto Ribereño Este"));
         assertDoesNotThrow(() -> validador.validarZona("Laboratorio Hídrico"));
     }
+
+    @Test
+    @DisplayName("8. Drone nulo en evaluación de batería: Retorna false")
+    void droneNulo_bateriaRetornaFalse() {
+        // Act & Assert
+        assertFalse(validador.tieneBateriaSuficiente(null), "Un drone nulo no debe ser considerado con batería suficiente");
+    }
+
+    @Test
+    @DisplayName("9. Punto de llegada válido: Pasa sin lanzar excepción")
+    void puntoLlegadaValido_noLanzaExcepcion() {
+        // Act & Assert
+        assertDoesNotThrow(() -> validador.validarPuntoLlegada("Laboratorio Hídrico"));
+    }
+
+    @Test
+    @DisplayName("10. Punto de partida nulo: Lanza IllegalArgumentException")
+    void puntoPartidaNulo_lanzaExcepcion() {
+        // Act & Assert
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validarPuntoPartida(null));
+        assertEquals("El punto de partida no puede ser nulo ni estar vacío", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("11. Punto de partida vacío: Lanza IllegalArgumentException")
+    void puntoPartidaVacio_lanzaExcepcion() {
+        // Act & Assert
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validarPuntoPartida("   "));
+        assertEquals("El punto de partida no puede ser nulo ni estar vacío", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("12. Punto de partida válido: Pasa sin lanzar excepción")
+    void puntoPartidaValido_noLanzaExcepcion() {
+        // Act & Assert
+        assertDoesNotThrow(() -> validador.validarPuntoPartida("Embalse Norte"));
+    }
+
+    @Test
+    @DisplayName("13. Drone disponible válido: No lanza excepción")
+    void droneDisponibleValido_noLanzaExcepcion() {
+        // Arrange
+        DroneAcuatico drone = new DroneAcuatico("AR-01", "Aqua-Ranger 100", 80, true, "Embalse Norte");
+
+        // Act & Assert
+        assertDoesNotThrow(() -> validador.validarDroneDisponible(drone));
+    }
+
+    @Test
+    @DisplayName("14. Drone nulo en disponibilidad: Lanza IllegalArgumentException")
+    void droneNuloEnDisponibilidad_lanzaExcepcion() {
+        // Act & Assert
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validarDroneDisponible(null));
+        assertEquals("El drone no puede ser nulo", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("15. Zona nula o vacía: Lanza IllegalArgumentException")
+    void zonaNulaOVacia_lanzaExcepcion() {
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> validador.validarZona(null));
+        assertThrows(IllegalArgumentException.class, () -> validador.validarZona("   "));
+    }
+
+    @Test
+    @DisplayName("16. Asignación con misión nula: Lanza IllegalArgumentException")
+    void asignacionMisionNula_lanzaExcepcion() {
+        // Act & Assert
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validarAsignacion(null));
+        assertEquals("La misión a validar no puede ser nula", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("17. Asignación con misión sin drone: Lanza IllegalStateException")
+    void asignacionMisionSinDrone_lanzaExcepcion() {
+        // Arrange
+        Mision misionSinDrone = new Mision("MIS-201", null, "Laboratorio Hídrico", "Embalse Norte",
+                TipoCarga.MUESTRA_AGUA, EstadoMision.PENDIENTE);
+
+        // Act & Assert
+        IllegalStateException ex = assertThrows(IllegalStateException.class,
+                () -> validador.validarAsignacion(misionSinDrone));
+        assertEquals("La misión requiere un drone acuático asignado", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("18. Asignación con drone no disponible: Lanza IllegalStateException")
+    void asignacionMisionDroneNoDisponible_lanzaExcepcion() {
+        // Arrange
+        DroneAcuatico noDisponible = new DroneAcuatico("AR-02", "Aqua-Ranger 100", 90, false, "Canal Central");
+        Mision mision = new Mision("MIS-202", noDisponible, "Laboratorio Hídrico", "Canal Central",
+                TipoCarga.MUESTRA_AGUA, EstadoMision.PENDIENTE);
+
+        // Act & Assert
+        IllegalStateException ex = assertThrows(IllegalStateException.class,
+                () -> validador.validarAsignacion(mision));
+        assertTrue(ex.getMessage().contains("no está disponible para operar"));
+    }
+
+    @Test
+    @DisplayName("19. Asignación con drone batería insuficiente: Lanza IllegalStateException")
+    void asignacionMisionDroneBateriaBaja_lanzaExcepcion() {
+        // Arrange
+        DroneAcuatico bateriaBaja = new DroneAcuatico("AR-03", "Aqua-Ranger 100", 20, true, "Laguna Sur");
+        Mision mision = new Mision("MIS-203", bateriaBaja, "Laboratorio Hídrico", "Laguna Sur",
+                TipoCarga.MUESTRA_AGUA, EstadoMision.PENDIENTE);
+
+        // Act & Assert
+        IllegalStateException ex = assertThrows(IllegalStateException.class,
+                () -> validador.validarAsignacion(mision));
+        assertTrue(ex.getMessage().contains("batería insuficiente"));
+    }
+
+    @Test
+    @DisplayName("20. Asignación de misión válida: Pasa validación completa sin excepciones")
+    void asignacionMisionValida_noLanzaExcepcion() {
+        // Arrange
+        DroneAcuatico droneOptimo = new DroneAcuatico("AR-01", "Aqua-Ranger 100", 95, true, "Embalse Norte");
+        Mision misionValida = new Mision.Builder()
+                .id("MIS-204")
+                .drone(droneOptimo)
+                .puntoPartida("Embalse Norte")
+                .puntoLlegada("Laboratorio Hídrico")
+                .tipoCarga(TipoCarga.MUESTRA_AGUA)
+                .build();
+
+        // Act & Assert
+        assertDoesNotThrow(() -> validador.validarAsignacion(misionValida));
+    }
 }
