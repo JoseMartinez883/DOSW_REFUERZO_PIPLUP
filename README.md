@@ -3196,8 +3196,305 @@ Las siguientes capturas del árbol gráfico de Git (`Git Graph`) certifican que 
 
 - **Parte 1 (Evolución de Commits y Convenciones Semánticas en el Árbol de Git):**
   ![Historial Git Graph - Parte 1](docs/images/EmpoleonExercise02.png)
-
 - **Parte 2 (Ramas Feature y Fusiones GitFlow Recientes hacia `feature/empoleon` y `develop`):**
   ![Historial Git Graph - Parte 2](docs/images/EmpoleonExercise02Part02.png)
+
+---
+
+### 🧩 Ejercicio 03: Patrones de Diseño Integrados en AquaPort Enterprise (Chain of Responsibility + Decorator + Adapter)
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — Patrones de Diseño:**
+> Implementa los 3 patrones integrados en el flujo Enterprise: la cadena valida antes de asignar, el decorator registra telemetría en cada misión, el adapter aísla la API externa. Escribe pruebas con Mockito para: que la cadena se detiene en el primer validador que falla, que el decorator registra sin alterar el comportamiento del drone, que el adapter convierte correctamente campos con valores límite.
+
+En el nivel Enterprise, la complejidad arquitectónica se mitiga integrando tres patrones GoF complementarios que resuelven responsabilidades desacopladas:
+
+1. **Chain of Responsibility:** Desacopla las reglas de negocio de pre-validación de misiones en eslabones independientes y secuenciales.
+2. **Decorator:** Extiende dinámicamente las capacidades operacionales de los drones (telemetría en tiempo real y firma criptográfica) sin alterar su jerarquía física ni romper Open/Closed Principle.
+3. **Adapter:** Aísla el núcleo de dominio de interfaces y contratos externos en inglés (`waterLevel`, `turbidity`), traduciéndolos al modelo limpio del sistema.
+
+---
+
+#### 2. Arquitectura de los 3 Patrones de Diseño Integrados
+
+```mermaid
+graph TD
+    subgraph Adapter["Patrón Adapter (Aislamiento de API Externa)"]
+        API["ClienteApiHidricaExterna<br/>(Respuesta JSON en inglés)"] -->|fetchWaterConditions| ADAPT["AdaptadorAPIHidrica<br/>(Implementa ProveedorCondicionesHidricas)"]
+        ADAPT -->|traduce y normaliza| DOM_COND["CondicionesHidricasDominio<br/>(nivelAgua, turbidez, esNavegable)"]
+    end
+
+    subgraph Chain["Patrón Chain of Responsibility (Validación Previa al Despacho)"]
+        DOM_COND -->|suministra condiciones| VAL_BAT["ValidadorBateria<br/>(Batería >= 20%)"]
+        VAL_BAT -->|Pasa si OK| VAL_CARGA["ValidadorCapacidadCarga<br/>(Carga útil <= Capacidad Dron)"]
+        VAL_CARGA -->|Pasa si OK| VAL_ZONA["ValidadorZonaActiva<br/>(Dron disponible en zona origen)"]
+        VAL_ZONA -->|Pasa si OK| VAL_HID["ValidadorCondicionesHidricas<br/>(Navegabilidad acuática segura)"]
+        VAL_BAT -.->|Falla: DETIENE| RECHAZO["ResultadoValidacion.fallo(...)"]
+        VAL_CARGA -.->|Falla: DETIENE| RECHAZO
+        VAL_ZONA -.->|Falla: DETIENE| RECHAZO
+        VAL_HID -.->|Falla: DETIENE| RECHAZO
+    end
+
+    subgraph Decorator["Patrón Decorator (Capas Operacionales sin Modificar Dron Base)"]
+        VAL_HID -->|Aprobado: Despacha| DEC_CIF["DroneConCifrado<br/>(Firma criptográfica SHA-256)"]
+        DEC_CIF -->|Envuelve a| DEC_MON["DroneConMonitoreo<br/>(Registro de telemetría y energía)"]
+        DEC_MON -->|Envuelve a| BASE["DroneOperacionalBase<br/>(Ejecuta tramo y consume batería)"]
+        BASE -->|Delega en| DRONE["DroneEnterprise<br/>(Flota física de 60 drones)"]
+    end
+
+    classDef adapterStyle fill:#0d233a,stroke:#22d3ee,stroke-width:2px,color:#e0f2fe;
+    classDef chainStyle fill:#1a1d36,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
+    classDef decoratorStyle fill:#0c2824,stroke:#34d399,stroke-width:2px,color:#d1fae5;
+    classDef errorStyle fill:#3f1414,stroke:#f87171,stroke-width:2px,color:#fee2e2;
+
+    class API,ADAPT,DOM_COND adapterStyle;
+    class VAL_BAT,VAL_CARGA,VAL_ZONA,VAL_HID chainStyle;
+    class DEC_CIF,DEC_MON,BASE,DRONE decoratorStyle;
+    class RECHAZO errorStyle;
+```
+
+---
+
+#### 3. Implementación Detallada de los Patrones
+
+##### 1. Chain of Responsibility (`CadenaValidacionMision`):
+
+La validación pasa secuencialmente por cuatro eslabones (`EslabonValidacion`):
+1. **`ValidadorBateria`:** Verifica que el dron posea $\ge 20\%$ de carga residual.
+2. **`ValidadorCapacidadCarga`:** Comprueba que la masa en gramos de la muestra no exceda la capacidad técnica del vehículo.
+3. **`ValidadorZonaActiva`:** Valida que el dron esté en estado `DISPONIBLE` y localizado en la zona origen requerida.
+4. **`ValidadorCondicionesHidricas`:** Verifica que las variables del espejo de agua permitan navegación segura.
+
+*Si cualquier eslabón falla, la evaluación se interrumpe inmediatamente sin invocar a los eslabones posteriores.*
+
+`ValidadorBateria.java` (Eslabón concreto con detención por fallo):
+```java
+package main.dosw.empoleon.aplicacion.cadena;
+
+import main.dosw.empoleon.dominio.DroneEnterprise;
+import main.dosw.empoleon.dominio.MisionEnterprise;
+import main.dosw.empoleon.dominio.adapter.CondicionesHidricasDominio;
+import main.dosw.empoleon.dominio.cadena.ResultadoValidacion;
+
+public class ValidadorBateria extends ValidadorBase {
+    private static final int UMBRAL_BATERIA_MINIMA = 20;
+
+    @Override
+    public ResultadoValidacion validar(
+            MisionEnterprise mision, DroneEnterprise drone, CondicionesHidricasDominio condiciones
+    ) {
+        if (drone == null || drone.getBateria() < UMBRAL_BATERIA_MINIMA) {
+            int bateriaActual = drone != null ? drone.getBateria() : 0;
+            return ResultadoValidacion.fallo(
+                    "Batería insuficiente (" + bateriaActual + "%). Mínimo requerido: " + UMBRAL_BATERIA_MINIMA + "%",
+                    "ValidadorBateria"
+            );
+        }
+        return pasarAlSiguiente(mision, drone, condiciones);
+    }
+}
+```
+
+`CadenaValidacionMision.java` (Ensamblador y orquestador de la cadena):
+```java
+package main.dosw.empoleon.aplicacion.cadena;
+
+import main.dosw.empoleon.dominio.DroneEnterprise;
+import main.dosw.empoleon.dominio.MisionEnterprise;
+import main.dosw.empoleon.dominio.adapter.CondicionesHidricasDominio;
+import main.dosw.empoleon.dominio.cadena.EslabonValidacion;
+import main.dosw.empoleon.dominio.cadena.ResultadoValidacion;
+
+public class CadenaValidacionMision {
+    private final EslabonValidacion primerEslabon;
+
+    public CadenaValidacionMision() {
+        this.primerEslabon = construirCadenaPorDefecto();
+    }
+
+    public static EslabonValidacion construirCadenaPorDefecto() {
+        ValidadorBateria valBateria = new ValidadorBateria();
+        ValidadorCapacidadCarga valCarga = new ValidadorCapacidadCarga();
+        ValidadorZonaActiva valZona = new ValidadorZonaActiva();
+        ValidadorCondicionesHidricas valHidrico = new ValidadorCondicionesHidricas();
+
+        valBateria.setSiguiente(valCarga);
+        valCarga.setSiguiente(valZona);
+        valZona.setSiguiente(valHidrico);
+
+        return valBateria;
+    }
+
+    public ResultadoValidacion validar(
+            MisionEnterprise mision, DroneEnterprise drone, CondicionesHidricasDominio condiciones
+    ) {
+        if (primerEslabon == null) return ResultadoValidacion.exito();
+        return primerEslabon.validar(mision, drone, condiciones);
+    }
+}
+```
+
+##### 2. Decorator (`DroneConMonitoreo` y `DroneConCifrado`):
+
+- **`DroneOperacional`:** Interfaz componente que define el contrato de ejecución de tramos y telemetría.
+- **`DroneConMonitoreo`:** Registra automáticamente timestamps, zona, coordenadas y porcentaje de batería en cada misión.
+- **`DroneConCifrado`:** Firma digitalmente el paquete de telemetría con sellado criptográfico AES-256 / SHA-256.
+
+`DroneOperacional.java` (Interfaz Componente base):
+```java
+package main.dosw.empoleon.dominio.decorator;
+
+import java.util.List;
+import main.dosw.empoleon.dominio.DroneEnterprise;
+
+public interface DroneOperacional {
+    String getId();
+    int getBateria();
+    String getZona();
+    int getCapacidadCargaGramos();
+    boolean isDisponible();
+    void consumirBateria(int porcentaje);
+    boolean ejecutarMision(String misionId, String tramoId);
+    List<String> getRegistroTelemetria();
+    DroneEnterprise getDroneBase();
+}
+```
+
+`DroneConMonitoreo.java` (Decorador concreto para telemetría transparente):
+```java
+package main.dosw.empoleon.dominio.decorator;
+
+public class DroneConMonitoreo extends DroneDecorator {
+    public DroneConMonitoreo(DroneOperacional decorado) {
+        super(decorado);
+    }
+
+    @Override
+    public boolean ejecutarMision(String misionId, String tramoId) {
+        registrarLog("[TELEMETRIA] Dron " + getId() + " en zona '" + getZona()
+                + "' iniciando mision " + misionId + " tramo " + tramoId + " (Bateria: " + getBateria() + "%)");
+        boolean resultado = super.ejecutarMision(misionId, tramoId);
+        registrarLog("[TELEMETRIA] Finalizado tramo " + tramoId + " con resultado: "
+                + (resultado ? "EXITOSO" : "RECHAZADO"));
+        return resultado;
+    }
+}
+```
+
+- **Apilamiento:** Ambos decoradores se encadenan transparentemente:
+  ```java
+  DroneOperacional droneSeguro = new DroneConCifrado(new DroneConMonitoreo(droneBase));
+  droneSeguro.ejecutarMision("MIS-ENT-001", "TR-1");
+  ```
+
+##### 3. Adapter (`AdaptadorAPIHidrica`):
+
+Convierte el DTO externo en inglés (`DatosHidricosExternosJson` con `waterLevel`, `turbidity`, `waveHeight`, `safeForNavigation`) al registro inmutable del dominio `CondicionesHidricasDominio`, normalizando valores negativos o extremos a límites físicos navegables seguros.
+
+`ProveedorCondicionesHidricas.java` (Puerto del Dominio):
+```java
+package main.dosw.empoleon.dominio.adapter;
+
+public interface ProveedorCondicionesHidricas {
+    CondicionesHidricasDominio consultarCondiciones(String zona);
+}
+```
+
+`AdaptadorAPIHidrica.java` (Adaptador de Infraestructura con Sanitización de Valores Límite):
+```java
+package main.dosw.empoleon.infraestructura.adapter;
+
+import java.util.Objects;
+import main.dosw.empoleon.dominio.adapter.CondicionesHidricasDominio;
+import main.dosw.empoleon.dominio.adapter.ProveedorCondicionesHidricas;
+
+public class AdaptadorAPIHidrica implements ProveedorCondicionesHidricas {
+    private final ClienteApiHidricaExterna clienteExterno;
+
+    public AdaptadorAPIHidrica(ClienteApiHidricaExterna clienteExterno) {
+        this.clienteExterno = Objects.requireNonNull(clienteExterno, "El cliente externo no puede ser nulo");
+    }
+
+    @Override
+    public CondicionesHidricasDominio consultarCondiciones(String zona) {
+        if (zona == null || zona.isBlank()) {
+            return CondicionesHidricasDominio.adversas();
+        }
+        DatosHidricosExternosJson respuesta = clienteExterno.fetchWaterConditions(zona);
+        if (respuesta == null) {
+            return CondicionesHidricasDominio.adversas();
+        }
+        // Sanitización y normalización de valores límite
+        double nivelAgua = Math.max(0.0, respuesta.waterLevel());
+        double turbidez = Math.max(0.0, respuesta.turbidity());
+        double alturaOlas = Math.max(0.0, respuesta.waveHeight());
+        boolean navegable = respuesta.safeForNavigation() && nivelAgua >= 0.5 && alturaOlas <= 1.5;
+
+        return new CondicionesHidricasDominio(nivelAgua, turbidez, alturaOlas, navegable);
+    }
+}
+```
+
+---
+
+#### 4. Verificación Automatizada con Mockito (3 Retos Obligatorios)
+
+En `PatronesEnterpriseTest.java` se implementaron las suites de pruebas con **Mockito 5.11**:
+
+```java
+@Test
+@DisplayName("RETO MOCKITO 1: La cadena de validación se detiene en el primer validador que falla")
+void testCadenaSeDetieneEnPrimerValidadorQueFalla() {
+    ValidadorBateria valBateria = new ValidadorBateria();
+    valBateria.setSiguiente(eslabonMock);
+
+    // Dron con batería insuficiente (15% < 20%)
+    DroneEnterprise droneBateriaBaja = new DroneEnterprise("D-LOW", "Aqua", TipoDrone.SUPERFICIAL, 15, ...);
+    ResultadoValidacion resultado = valBateria.validar(misionValida, droneBateriaBaja, condicionesValidas);
+
+    assertFalse(resultado.exitoso());
+    assertEquals("ValidadorBateria", resultado.validadorFalla());
+    // Verificación clave: el siguiente eslabón NUNCA fue llamado
+    verify(eslabonMock, never()).validar(any(), any(), any());
+}
+
+@Test
+@DisplayName("RETO MOCKITO 2: Decorator registra telemetría sin alterar el comportamiento base del drone")
+void testDecoratorRegistraSinAlterarComportamientoBase() {
+    when(droneOperacionalMock.getId()).thenReturn("DRN-MOCK-01");
+    when(droneOperacionalMock.ejecutarMision("M-100", "TR-1")).thenReturn(true);
+    DroneConMonitoreo droneMonitoreado = new DroneConMonitoreo(droneOperacionalMock);
+
+    boolean resultado = droneMonitoreado.ejecutarMision("M-100", "TR-1");
+
+    assertTrue(resultado);
+    verify(droneOperacionalMock, times(1)).ejecutarMision("M-100", "TR-1");
+    assertTrue(droneMonitoreado.getRegistroTelemetria().stream().anyMatch(l -> l.contains("[TELEMETRIA]")));
+}
+
+@Test
+@DisplayName("RETO MOCKITO 3: Adapter convierte correctamente campos con valores límite")
+void testAdapterConvierteCamposValoresLimite() {
+    DatosHidricosExternosJson respuestaLimite = new DatosHidricosExternosJson(-5.0, -10.0, -2.5, true);
+    when(clienteApiMock.fetchWaterConditions("Canal Central")).thenReturn(respuestaLimite);
+
+    AdaptadorAPIHidrica adaptador = new AdaptadorAPIHidrica(clienteApiMock);
+    CondicionesHidricasDominio resultado = adaptador.consultarCondiciones("Canal Central");
+
+    assertEquals(0.0, resultado.nivelAguaMetros());
+    assertEquals(0.0, resultado.turbidezNtu());
+    assertFalse(resultado.esNavegable()); // Sanitización: nivel de agua 0.0 < 0.5 marca no navegable
+}
+```
+
+---
+
+#### 5. Ejecución y Demostración en Consola (`Ejercicio03Empoleon.java`)
+
+![Ejecución de Ejercicio03Empoleon en IntelliJ IDEA](docs/images/EmpoleonExercise03.png)
+
+> [!NOTE]
+> La salida por consola se emite a través de `java.util.logging.Logger` conforme a las reglas de calidad de SonarQube (`java:S106`), garantizando observabilidad profesional y tipado semántico.
 
 ---
