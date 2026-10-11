@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOSW Academia — AquaPort</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --bg:#04090f;--sf:#080e18;--sf2:#0d1622;--sf3:#121d2c;
+  --bd:#1a2e45;--tx:#b8d4f0;--mu:#456080;
+  --c1:#22d3ee;--c2:#0891b2;--cg1:rgba(34,211,238,.16);
+  --m1:#38bdf8;--m2:#0284c7;--mg1:rgba(56,189,248,.16);
+  --i1:#818cf8;--i2:#4f46e5;--ig1:rgba(129,140,248,.18);
+  --ok:#34d399;--bl:#60a5fa;--rd:#fb7185;--am:#fbbf24;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:15px;line-height:1.72;min-height:100vh}
+
+.hero{position:relative;overflow:hidden;padding:3rem 2rem 2.2rem;text-align:center;border-bottom:1px solid var(--bd)}
+.hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 55% at 50% -5%,rgba(34,211,238,.07) 0%,transparent 65%)}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 40% 40% at 80% 110%,rgba(129,140,248,.05) 0%,transparent 60%)}
+.eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;color:var(--mu);margin-bottom:1rem}
+.hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:700;color:#fff;line-height:1.08;margin-bottom:.6rem}
+.aqua{background:linear-gradient(100deg,#22d3ee,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{color:var(--mu);max-width:580px;margin:0 auto 1.8rem;font-size:.91rem}
+
+.enu-hero{max-width:720px;margin:0 auto 1.6rem;background:linear-gradient(135deg,rgba(34,211,238,.06),rgba(129,140,248,.04));border:1px solid rgba(34,211,238,.2);border-radius:14px;padding:1.3rem 1.6rem;text-align:left}
+.enu-hero .el{font-family:var(--mono);font-size:.61rem;letter-spacing:.14em;color:var(--c1);margin-bottom:.5rem;display:block}
+.enu-hero h2{font-size:1.08rem;font-weight:700;color:#fff;margin-bottom:.4rem}
+.enu-hero p{font-size:.86rem;color:var(--mu);line-height:1.6}
+
+.evo-sel{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap}
+.eb{display:flex;align-items:center;gap:.55rem;padding:.55rem 1.3rem;border-radius:9px;border:1.5px solid transparent;font-family:var(--sans);font-size:.87rem;font-weight:600;cursor:pointer;background:var(--sf2);color:var(--mu);transition:all .2s}
+.eb span{font-size:1.2rem}
+.eb.pi{border-color:rgba(34,211,238,.22)}.eb.pi.active,.eb.pi:hover{background:rgba(34,211,238,.09);color:#a5f3fc;border-color:var(--c1);box-shadow:0 0 22px var(--cg1)}
+.eb.pr{border-color:rgba(56,189,248,.22)}.eb.pr.active,.eb.pr:hover{background:rgba(56,189,248,.09);color:#bae6fd;border-color:var(--m1);box-shadow:0 0 22px var(--mg1)}
+.eb.em{border-color:rgba(129,140,248,.22)}.eb.em.active,.eb.em:hover{background:rgba(129,140,248,.09);color:#c7d2fe;border-color:var(--i1);box-shadow:0 0 22px var(--ig1)}
+
+.gbar{max-width:860px;margin:.6rem auto 0;background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:.85rem 1.3rem}
+.grow{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+.glb{font-family:var(--mono);font-size:.7rem;color:var(--mu)}.gv{font-family:var(--mono);font-size:.7rem;color:var(--tx)}
+.gt{height:5px;background:var(--sf3);border-radius:3px;overflow:hidden}
+.gf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--c1),var(--i1));transition:width .4s}
+
+main{max-width:900px;margin:0 auto;padding:2rem 1.2rem 5rem}
+.ls{display:none}.ls.active{display:block}
+
+.lvb{display:flex;align-items:flex-start;gap:1.1rem;padding:1.2rem 1.4rem;border-radius:12px;border:1px solid;margin-bottom:.8rem}
+.lvb.pi{background:rgba(34,211,238,.04);border-color:rgba(34,211,238,.25)}
+.lvb.pr{background:rgba(56,189,248,.04);border-color:rgba(56,189,248,.25)}
+.lvb.em{background:rgba(129,140,248,.05);border-color:rgba(129,140,248,.25)}
+.lve{font-size:2.3rem;flex-shrink:0;line-height:1}
+.lvn{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:.2rem}
+.lvd{font-size:.83rem;color:var(--mu)}
+
+.enu{background:var(--sf);border:1px solid var(--bd);border-radius:11px;margin-bottom:1.4rem;overflow:hidden}
+.enu-h{display:flex;align-items:center;gap:.7rem;padding:.8rem 1.1rem;background:var(--sf2);cursor:pointer;user-select:none}
+.enu-h:hover{background:var(--sf3)}
+.epill{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;padding:.18rem .5rem;border-radius:4px;font-weight:600;flex-shrink:0}
+.pi .epill{background:rgba(34,211,238,.12);color:var(--c1)}
+.pr .epill{background:rgba(56,189,248,.12);color:var(--m1)}
+.em .epill{background:rgba(129,140,248,.12);color:var(--i1)}
+.etit{font-weight:600;font-size:.9rem;flex:1;color:var(--tx)}
+.enu-b{padding:1rem 1.3rem;font-size:.87rem;line-height:1.67;border-top:1px solid var(--bd)}
+.enu-b p{margin-bottom:.5rem;color:var(--mu)}.enu-b strong{color:var(--tx)}
+.enota{margin-top:.7rem;padding:.55rem .85rem;border-left:3px solid;border-radius:0 7px 7px 0;font-size:.83rem}
+.pi .enota{border-color:var(--c1);background:rgba(34,211,238,.05);color:var(--tx)}
+.pr .enota{border-color:var(--m1);background:rgba(56,189,248,.05);color:var(--tx)}
+.em .enota{border-color:var(--i1);background:rgba(129,140,248,.06);color:var(--tx)}
+
+.lp{background:var(--sf);border:1px solid var(--bd);border-radius:9px;padding:.75rem 1.1rem;margin-bottom:1.8rem}
+.lprow{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem}
+.lplb{font-family:var(--mono);font-size:.7rem;color:var(--mu)}.lpv{font-family:var(--mono);font-size:.7rem;color:var(--tx)}
+.lpt{height:4px;background:var(--sf3);border-radius:2px;overflow:hidden}
+.lpf{height:100%;border-radius:2px;transition:width .4s}
+.pi .lpf{background:linear-gradient(90deg,var(--c1),var(--c2))}
+.pr .lpf{background:linear-gradient(90deg,var(--m1),var(--m2))}
+.em .lpf{background:linear-gradient(90deg,var(--i1),var(--i2))}
+
+.tdiv{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;color:var(--mu);text-transform:uppercase;padding:.25rem 0 .45rem;border-bottom:1px solid var(--bd);margin-bottom:.7rem;margin-top:2rem}
+
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:9px;margin-bottom:.6rem;overflow:hidden}
+.ch-hd{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;cursor:pointer;transition:background .15s;user-select:none}
+.ch-hd:hover{background:var(--sf2)}
+.ico{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.level-piplup .ico{background:rgba(34,211,238,.1)}
+.level-prinplup .ico{background:rgba(56,189,248,.1)}
+.level-empoleon .ico{background:rgba(129,140,248,.1)}
+.cm{flex:1;min-width:0}.ct{font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)}.cs{font-size:.73rem;color:var(--mu);margin-top:.1rem}
+.db{display:flex;align-items:center;gap:.35rem;padding:.28rem .65rem;border-radius:5px;border:1px solid;font-family:var(--sans);font-size:.73rem;font-weight:600;cursor:pointer;flex-shrink:0;transition:all .18s;white-space:nowrap}
+.db.undone{border-color:var(--bd);background:transparent;color:var(--mu)}.db.undone:hover{border-color:var(--ok);color:var(--ok)}.db.done{border-color:var(--ok);background:rgba(52,211,153,.1);color:var(--ok)}
+.chv{color:var(--mu);font-size:.85rem;transition:transform .2s;flex-shrink:0}.card.open .chv{transform:rotate(90deg)}
+.cb{display:none;padding:0 1.1rem 1.2rem;border-top:1px solid var(--bd)}.card.open .cb{display:block;padding-top:1rem}
+
+h3{font-size:.88rem;font-weight:600;color:var(--c1);margin:1rem 0 .4rem}h3:first-child{margin-top:0}
+h4{font-size:.75rem;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.07em;margin:.85rem 0 .3rem}
+p{font-size:.86rem;margin-bottom:.5rem;color:var(--tx)}ul,ol{padding-left:1.35rem;margin-bottom:.65rem}li{font-size:.86rem;margin-bottom:.26rem;color:var(--tx)}strong{color:#fff;font-weight:600}
+code{font-family:var(--mono);background:rgba(255,255,255,.06);padding:.06em .32em;border-radius:3px;font-size:.78em;color:#7dd3fc}
+pre{background:#020810;border:1px solid var(--bd);border-radius:7px;padding:.85rem 1rem;overflow-x:auto;margin:.65rem 0 .85rem;font-family:var(--mono);font-size:.76rem;line-height:1.65;color:#c9d8e8}
+.kw{color:#fb7185}.ty{color:#7dd3fc}.st{color:#a5f3fc}.cmt{color:#2a4060;font-style:italic}.fn{color:#c4b5fd}.nu{color:#fde68a}.ok2{color:#34d399}.er{color:#f87171}
+.nt{border-left:3px solid;border-radius:0 6px 6px 0;padding:.6rem .9rem;margin:.65rem 0;font-size:.84rem}
+.nt strong{display:block;font-size:.67rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.2rem}
+.nt.warn{border-color:var(--rd);background:rgba(251,113,133,.05)}.nt.warn strong{color:var(--rd)}
+.nt.tip{border-color:var(--ok);background:rgba(52,211,153,.05)}.nt.tip strong{color:var(--ok)}
+.nt.info{border-color:var(--bl);background:rgba(96,165,250,.05)}.nt.info strong{color:var(--bl)}
+.nt.gold{border-color:var(--i1);background:rgba(129,140,248,.07)}.nt.gold strong{color:var(--i1)}
+table{width:100%;border-collapse:collapse;margin:.55rem 0;font-size:.8rem}
+th{background:var(--sf2);padding:.4rem .7rem;text-align:left;color:var(--mu);font-weight:500;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--bd)}
+td{padding:.4rem .7rem;border:1px solid var(--bd);vertical-align:top;color:var(--tx)}tr:nth-child(even) td{background:rgba(255,255,255,.01)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.55rem 0}@media(max-width:560px){.two{grid-template-columns:1fr}}
+.box{background:var(--sf2);border:1px solid var(--bd);border-radius:7px;padding:.7rem .85rem}
+.box h4{margin-top:0;color:var(--tx);text-transform:none;letter-spacing:0;font-size:.84rem}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;display:flex;gap:.65rem;align-items:flex-start;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.04);color:var(--tx)}
+.steps li::before{content:counter(s);width:19px;height:19px;border-radius:50%;background:var(--sf2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-family:var(--mono);color:var(--c1);flex-shrink:0;margin-top:.2rem}
+.lkb{text-align:center;padding:3rem 2rem;background:var(--sf);border:1px dashed var(--bd);border-radius:11px;margin:.5rem 0}
+.lkb .lki{font-size:2.8rem;margin-bottom:.8rem;display:block}
+.lkb h3{color:#fff;font-size:1rem;margin-bottom:.4rem;text-transform:none;letter-spacing:0}
+.lkb p{color:var(--mu);font-size:.84rem;max-width:380px;margin:0 auto}
+.badge{text-align:center;padding:1.8rem;border:1px solid;border-radius:11px;margin-top:1.5rem}
+.badge .bi{font-size:3rem;display:block;margin-bottom:.6rem}
+.badge h3{font-size:1.1rem;margin-bottom:.35rem;text-transform:none;letter-spacing:0}
+.badge p{font-size:.85rem}
+.badge.pi{background:rgba(34,211,238,.04);border-color:rgba(34,211,238,.28)}.badge.pi h3{color:var(--m1)}.badge.pi p{color:var(--mu)}
+.badge.pr{background:rgba(56,189,248,.04);border-color:rgba(56,189,248,.28)}.badge.pr h3{color:var(--i1)}.badge.pr p{color:var(--mu)}
+.badge.em{background:rgba(129,140,248,.06);border-color:rgba(129,140,248,.28)}.badge.em h3{color:var(--i1)}.badge.em p{color:var(--mu)}
+footer{text-align:center;padding:2.5rem 1rem;color:var(--mu);font-size:.75rem;border-top:1px solid var(--bd)}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="eyebrow">DOSW Company · ECI · 2026-2 · Prof. Andrés Cantór Urrego</div>
+  <h1><span class="aqua">AquaPort</span> Academia</h1>
+  <p class="hero-sub">Un sistema de drones acuáticos que evoluciona contigo. El mismo proyecto, el mismo código, más complejidad en cada nivel. Entiende el progreso.</p>
+  <div class="enu-hero">
+    <span class="el">ENUNCIADO BASE DEL PROYECTO</span>
+    <h2>🌊 AquaPort — Sistema de drones acuáticos de la ECI</h2>
+    <p>La Escuela Colombiana de Ingeniería necesita monitorear y gestionar el reparto de muestras, sensores y equipos entre sus zonas hídricas: embalses de investigación, canales del campus y puntos de recolección ambiental. Una flota de drones acuáticos autónomos ejecuta las misiones. Los operadores asignan las rutas, los drones navegan y el sistema registra cada evento. Este es el sistema que construirás en los tres niveles, siempre el mismo, madurando con cada evolución.</p>
+  </div>
+  <div class="evo-sel">
+    <button class="eb pi active" onclick="setLevel('piplup')"><span>💧</span>Piplup — Reparto básico</button>
+    <button class="eb pr" onclick="setLevel('prinplup')"><span>🌊</span>Prinplup — Flota autónoma</button>
+    <button class="eb em" onclick="setLevel('empoleon')"><span>👑</span>Empoleon — Red multi-embalse</button>
+  </div>
+</div>
+<div class="gbar">
+  <div class="grow"><span class="glb">Progreso total</span><span class="gv" id="gv">0 / 42 retos</span></div>
+  <div class="gt"><div class="gf" id="gf" style="width:0%"></div></div>
+</div>
+<main>
+
+<!-- ═══════════════ PIPLUP ═══════════════ -->
+<div class="ls level-piplup active" id="level-piplup">
+<div class="lvb pi"><div class="lve">💧</div><div>
+  <div class="lvn">Piplup — AquaPort MVP: reparto básico en el campus</div>
+  <div class="lvd">Aplica los fundamentos al sistema más simple posible. Completa los 14 retos para evolucionar.</div>
+</div></div>
+
+<div class="enu pi">
+  <div class="enu-h" onclick="toggleEnu(this)">
+    <span class="epill">ENUNCIADO PIPLUP</span>
+    <span class="etit">AquaPort MVP — 4 drones, zonas fijas, operador manual</span>
+    <span style="color:var(--mu)">›</span>
+  </div>
+  <div class="enu-b">
+    <p><strong>Contexto:</strong> La ECI tiene 4 drones acuáticos del mismo modelo (Aqua-Ranger 100). Solo transportan muestras de agua y sensores ligeros. Las zonas posibles son fijas: Embalse Norte, Canal Central, Laguna Sur, Punto Ribereño Este y Laboratorio Hídrico. Un operador selecciona manualmente qué drone asignar a cada misión.</p>
+    <p><strong>Flujo básico:</strong> El operador registra una solicitud de transporte (punto de partida, punto de llegada, tipo de carga) → revisa qué drones están disponibles y con batería suficiente → asigna uno manualmente → el drone ejecuta la misión por ruta predefinida → el operador confirma la entrega.</p>
+    <p><strong>Los objetos del sistema:</strong></p>
+    <p><code>DroneAcuatico(id:String, modelo:String, bateria:int, disponible:boolean, zona:String)</code></p>
+    <p><code>Mision(id:String, drone:DroneAcuatico, puntoPartida:String, puntoLlegada:String, tipoCarga:TipoCarga, estado:EstadoMision)</code></p>
+    <p><code>TipoCarga: Enum(MUESTRA_AGUA, SENSOR, PAQUETE_LIGERO)</code>&nbsp;&nbsp;&nbsp;<code>EstadoMision: Enum(PENDIENTE, EN_TRANSITO, ENTREGADA, FALLIDA)</code></p>
+    <div class="enota">💡 No agregues funcionalidades que no estén en el MVP. El sistema es simple a propósito — el valor está en aplicar bien los fundamentos.</div>
+  </div>
+</div>
+
+<div class="lp pi">
+  <div class="lprow"><span class="lplb">Retos Piplup completados</span><span class="lpv" id="pi-stat">0 / 14</span></div>
+  <div class="lpt"><div class="lpf" id="pi-fill" style="width:0%"></div></div>
+</div>
+
+<div class="tdiv">01 · Streams &amp; Lambdas</div>
+<div class="card" id="pi-streams">
+<div class="ch-hd" onclick="toggle('pi-streams')">
+  <div class="ico">⚡</div><div class="cm">
+  <div class="ct">Filtrar y ordenar la flota de drones acuáticos disponibles</div>
+  <div class="cs">filter · map · sorted · collect · anyMatch · count</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-streams')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>El contexto del reto</h3>
+<p>El operador necesita consultar la flota antes de asignar una misión: ver los drones disponibles, ordenarlos por batería y saber cuántos tienen suficiente energía para operar.</p>
+<h3>El modelo que usarás</h3>
+<pre><span class="kw">record</span> <span class="ty">DroneAcuatico</span>(
+    <span class="ty">String</span>  id,
+    <span class="ty">String</span>  modelo,
+    <span class="kw">int</span>     bateria,       <span class="cmt">// 0-100%</span>
+    <span class="kw">boolean</span> disponible,
+    <span class="ty">String</span>  zona           <span class="cmt">// "Embalse Norte", "Canal Central", etc.</span>
+) {}
+
+<span class="ty">List</span>&lt;<span class="ty">DroneAcuatico</span>&gt; flota = <span class="ty">List</span>.<span class="fn">of</span>(
+    <span class="kw">new</span> <span class="ty">DroneAcuatico</span>(<span class="st">"AR-01"</span>, <span class="st">"Aqua-Ranger 100"</span>, <span class="nu">92</span>, <span class="kw">true</span>,  <span class="st">"Embalse Norte"</span>),
+    <span class="kw">new</span> <span class="ty">DroneAcuatico</span>(<span class="st">"AR-02"</span>, <span class="st">"Aqua-Ranger 100"</span>, <span class="nu">45</span>, <span class="kw">true</span>,  <span class="st">"Canal Central"</span>),
+    <span class="kw">new</span> <span class="ty">DroneAcuatico</span>(<span class="st">"AR-03"</span>, <span class="st">"Aqua-Ranger 100"</span>, <span class="nu">18</span>, <span class="kw">false</span>, <span class="st">"Laguna Sur"</span>),
+    <span class="kw">new</span> <span class="ty">DroneAcuatico</span>(<span class="st">"AR-04"</span>, <span class="st">"Aqua-Ranger 100"</span>, <span class="nu">73</span>, <span class="kw">true</span>,  <span class="st">"Punto Ribereño Este"</span>)
+);</pre>
+<h3>Las 5 consultas que debes implementar solo con Streams</h3>
+<ol class="steps">
+  <li>Obtener la lista de drones disponibles con batería ≥ 35%, ordenados de mayor a menor batería.</li>
+  <li>Obtener solo los IDs de los drones disponibles (como <code>List&lt;String&gt;</code>).</li>
+  <li>¿Existe algún drone disponible con batería ≥ 35%? (retorna <code>boolean</code>)</li>
+  <li>Contar cuántos drones están disponibles.</li>
+  <li>Obtener el drone con mayor batería de toda la flota (retorna <code>Optional&lt;DroneAcuatico&gt;</code>).</li>
+</ol>
+<div class="nt warn"><strong>⚠ Prohibido</strong>Usar <code>for</code>, <code>while</code> o variables mutables externas al stream. Cada consulta es un stream distinto, de una sola cadena.</div>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Implementa las 5 consultas en una clase <code>ConsultorFlota</code> con un método por consulta. Cada método recibe la <code>List&lt;DroneAcuatico&gt;</code> como parámetro. Escribe un <code>main</code> que imprima los resultados de las 5 consultas con la flota de ejemplo.</div>
+</div></div>
+
+<div class="tdiv">02 · GitHub y GitFlow</div>
+<div class="card" id="pi-git">
+<div class="ch-hd" onclick="toggle('pi-git')">
+  <div class="ico">🌿</div><div class="cm">
+  <div class="ct">Repositorio de AquaPort con estructura GitFlow básica</div>
+  <div class="cs">main · develop · feature/ · commits atómicos · .gitignore</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-git')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>La estructura mínima del repositorio</h3>
+<pre><span class="cmt">main          → código que "vive en producción"
+develop       → integración continua del trabajo
+feature/streams-consultor-flota  → tu rama actual</span></pre>
+<div class="two">
+<div class="box"><h4>Commit ✓</h4><p><em>"feat: implementar ConsultorFlota con 5 consultas Stream"</em><br>Una sola cosa, verbo presente, en español.</p></div>
+<div class="box"><h4>Commit ✗</h4><p><em>"cambios", "arreglé cosas", "wip", "asdf"</em><br>No describe qué cambió ni por qué.</p></div>
+</div>
+<div class="nt warn"><strong>⚠ Los 3 errores que más penalizan</strong>Trabajar directo en <code>main</code>. Commits de 500 líneas que mezclan todo. Subir archivos <code>.class</code>, <code>target/</code> o <code>.idea/</code> al repo.</div>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Crea el repositorio de AquaPort. Configura el <code>.gitignore</code> para Java (excluye <code>target/</code>, <code>*.class</code>, <code>.idea/</code>). Crea la rama <code>develop</code> y desde ella la rama <code>feature/streams-consultor-flota</code>. Haz al menos 3 commits atómicos con el código del reto 01. Haz el merge a <code>develop</code> con Pull Request. Comparte el enlace al PR.</div>
+</div></div>
+
+<div class="tdiv">03 · Patrones de Diseño</div>
+<div class="card" id="pi-patrones">
+<div class="ch-hd" onclick="toggle('pi-patrones')">
+  <div class="ico">🧩</div><div class="cm">
+  <div class="ct">Builder para construir misiones válidas en AquaPort</div>
+  <div class="cs">Builder · validación en build() · encadenamiento fluido</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-patrones')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>El problema sin Builder</h3>
+<pre><span class="cmt">// ¿Cuál es el orden correcto de los parámetros? Nadie sabe.</span>
+<span class="ty">Mision</span> m = <span class="kw">new</span> <span class="ty">Mision</span>(<span class="st">"M-001"</span>, drone, <span class="st">"Embalse Norte"</span>, <span class="st">"Laboratorio Hídrico"</span>,
+                       <span class="ty">TipoCarga</span>.MUESTRA_AGUA, <span class="ty">EstadoMision</span>.PENDIENTE);</pre>
+<h3>El Builder que debes implementar</h3>
+<pre><span class="ty">Mision</span> mision = <span class="kw">new</span> <span class="ty">Mision</span>.<span class="ty">Builder</span>()
+    .<span class="fn">id</span>(<span class="st">"M-001"</span>)
+    .<span class="fn">drone</span>(droneAsignado)
+    .<span class="fn">puntoPartida</span>(<span class="st">"Embalse Norte"</span>)
+    .<span class="fn">puntoLlegada</span>(<span class="st">"Laboratorio Hídrico"</span>)
+    .<span class="fn">tipoCarga</span>(<span class="ty">TipoCarga</span>.MUESTRA_AGUA)
+    .<span class="fn">build</span>();  <span class="cmt">// lanza IllegalStateException si falta algún campo</span></pre>
+<div class="nt warn"><strong>⚠ El error más grave</strong><code>build()</code> que no valida nada. Si <code>drone</code> o <code>puntoLlegada</code> son null y el Builder los acepta silenciosamente, el objeto queda en estado inválido.</div>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Implementa el <code>Mision.Builder</code> con los 6 campos del MVP. El método <code>build()</code> debe validar que <code>id</code>, <code>drone</code>, <code>puntoPartida</code> y <code>puntoLlegada</code> no sean nulos ni vacíos, y que el drone esté disponible al momento de construir la misión. Si alguna validación falla, lanza <code>IllegalStateException</code> con un mensaje descriptivo en español.</div>
+</div></div>
+
+<div class="tdiv">04 · Principios SOLID</div>
+<div class="card" id="pi-solid">
+<div class="ch-hd" onclick="toggle('pi-solid')">
+  <div class="ico">🏗</div><div class="cm">
+  <div class="ct">SRP y DIP en el núcleo de AquaPort MVP</div>
+  <div class="cs">Una razón para cambiar · Depender de interfaces · No de concretos</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-solid')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>El código que viola SRP — identifícalo</h3>
+<pre><span class="kw">class</span> <span class="ty">GestorMision</span> {
+    <span class="kw">public void</span> <span class="fn">registrarMision</span>(<span class="ty">Mision</span> m) { <span class="cmt">/* guarda en lista */</span> }
+    <span class="kw">public void</span> <span class="fn">enviarNotificacionEmail</span>(<span class="ty">Mision</span> m) { <span class="cmt">/* envía email */</span> }
+    <span class="kw">public void</span> <span class="fn">calcularRutaOptima</span>(<span class="ty">Mision</span> m) { <span class="cmt">/* lógica de ruta */</span> }
+    <span class="kw">public void</span> <span class="fn">imprimirReporte</span>() { <span class="cmt">/* formatea e imprime */</span> }
+}</pre>
+<p>Esta clase tiene 4 razones para cambiar: la forma de guardar, el sistema de notificaciones, el algoritmo de rutas y el formato del reporte. Viola SRP.</p>
+<div class="two">
+<div class="box"><h4>Viola DIP ✗</h4><pre style="font-size:.72rem;margin:.3rem 0"><span class="kw">class</span> <span class="ty">AsignadorMision</span> {
+  <span class="kw">private</span> <span class="ty">BaseDatosLocal</span> bd =
+      <span class="kw">new</span> <span class="ty">BaseDatosLocal</span>(); <span class="cmt">// concreto</span>
+}</pre></div>
+<div class="box"><h4>Respeta DIP ✓</h4><pre style="font-size:.72rem;margin:.3rem 0"><span class="kw">class</span> <span class="ty">AsignadorMision</span> {
+  <span class="kw">private final</span> <span class="ty">RepositorioMisiones</span> repo;
+  <span class="kw">public</span> <span class="fn">AsignadorMision</span>(<span class="ty">RepositorioMisiones</span> r)
+      { <span class="kw">this</span>.repo = r; }
+}</pre></div>
+</div>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Diseña la estructura de clases para el MVP aplicando SRP: separa <code>RegistradorMisiones</code> (registra y consulta la lista), <code>ValidadorMision</code> (reglas de negocio) y <code>NotificadorOperador</code> (muestra mensajes al operador). Define la interfaz <code>RepositorioMisiones</code> con sus métodos y úsala en <code>RegistradorMisiones</code> por constructor injection. Entrega el diagrama de clases y el código.</div>
+</div></div>
+
+<div class="tdiv">05 · Diagrama de Contexto C4</div>
+<div class="card" id="pi-contexto">
+<div class="ch-hd" onclick="toggle('pi-contexto')">
+  <div class="ico">🗺</div><div class="cm">
+  <div class="ct">¿Qué es AquaPort MVP y quién interactúa con él?</div>
+  <div class="cs">Nivel 1 C4 · Actores · Sistema · Sin internos · Relaciones etiquetadas</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-contexto')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>El nivel 1 de C4: solo lo que se ve desde afuera</h3>
+<p>El diagrama de contexto no muestra clases ni métodos. Muestra el sistema como una caja negra y quién interactúa con él desde el exterior.</p>
+<pre><span class="cmt">Actores del MVP:
+  Operador Hídrico   → registra solicitudes y asigna drones manualmente
+  Solicitante        → pide el transporte de muestras o sensores
+  Administrador ECI  → gestiona la flota y consulta reportes
+
+Sistema externo (único en el MVP):
+  Ninguno — el MVP opera sin conexiones externas
+
+Flujos de información:
+  Operador    → AquaPort MVP: solicitud de misión, asignación de drone
+  AquaPort MVP → Operador: confirmación de asignación, estado de misión
+  Solicitante → AquaPort MVP: solicitud de transporte de muestra
+  AquaPort MVP → Solicitante: código de misión generado</span></pre>
+<div class="nt info"><strong>Regla clave</strong>El diagrama de contexto NO muestra clases Java. Solo muestra personas (actores) y sistemas (cajas) con flechas etiquetadas que describen QUÉ fluye entre ellos.</div>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Dibuja el diagrama de contexto C4 del AquaPort MVP. Usa una herramienta de diagramas (draw.io, Structurizr, PlantUML o similar). Incluye los 3 actores, el sistema AquaPort como caja central, y todas las relaciones etiquetadas con el dato que fluye. Sube el diagrama al repositorio en <code>docs/c4-contexto-piplup.png</code>.</div>
+</div></div>
+
+<div class="tdiv">06 · RF y RNF</div>
+<div class="card" id="pi-rf">
+<div class="ch-hd" onclick="toggle('pi-rf')">
+  <div class="ico">📋</div><div class="cm">
+  <div class="ct">Requisitos del MVP: funcionales, no funcionales y MoSCoW</div>
+  <div class="cs">RF con actor · RNF medible · MoSCoW justificado</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-rf')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt warn"><strong>⚠ RNF inútil</strong>"El sistema debe ser rápido" — ¿cuánto? ¿bajo qué carga? Sin métrica no es un requisito, es un deseo.</div>
+<div class="nt tip" style="margin-top:.3rem"><strong>✓ RNF correcto para AquaPort MVP</strong>"La consulta de drones disponibles debe retornar resultados en menos de 200ms con una flota de hasta 10 drones, medido con JUnit 5 <code>assertTimeout</code>."</div>
+<h3>MoSCoW para el MVP</h3>
+<table>
+<tr><th>Categoría</th><th>Ejemplos para AquaPort MVP</th></tr>
+<tr><td><strong>Must Have</strong></td><td>Ver flota disponible, Registrar misión, Asignar drone manualmente</td></tr>
+<tr><td><strong>Should Have</strong></td><td>Filtrar drones por zona, Ver historial de misiones del día</td></tr>
+<tr><td><strong>Could Have</strong></td><td>Exportar reporte de misiones, Notificar al solicitante</td></tr>
+<tr><td><strong>Won't Have</strong></td><td>Asignación automática, Rutas multi-etapa (van en Prinplup)</td></tr>
+</table>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Para el AquaPort MVP escribe: 3 RF (actor + acción + resultado observable) y 3 RNF con métrica concreta y realista. Aplica MoSCoW a los 6, justificando cada categoría con una oración.</div>
+</div></div>
+
+<div class="tdiv">07 · Plantilla DOSW</div>
+<div class="card" id="pi-plantilla">
+<div class="ch-hd" onclick="toggle('pi-plantilla')">
+  <div class="ico">📄</div><div class="cm">
+  <div class="ct">Plantilla DOSW para el RF "Registrar misión de transporte"</div>
+  <div class="cs">Tipos correctos · Sin "Seleccionador" · Precondición vs Regla de negocio</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-plantilla')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt warn"><strong>⚠ Los 2 errores que más penalizan</strong>
+<strong>"Seleccionador"</strong> como tipo de campo: es un elemento de UI. Usa <code>String</code>, <code>Integer</code>, <code>Enum(A,B)</code>.<br>
+<strong>"Lista de objetos"</strong>: nunca. Siempre especifica <code>List&lt;DroneAcuatico(id:String, bateria:int)&gt;</code> con los atributos.</div>
+<table>
+<tr><th>Campo</th><th>Qué va</th><th>Ejemplo para AquaPort</th></tr>
+<tr><td>Código</td><td>Sigla del proyecto + número</td><td>AP-01</td></tr>
+<tr><td>Nombre</td><td>Verbo + objeto</td><td>"Registrar misión de transporte de muestra"</td></tr>
+<tr><td>Actor</td><td>Rol (no persona)</td><td>"Operador Hídrico"</td></tr>
+<tr><td>Precondiciones</td><td>Qué debe existir ANTES</td><td>"Debe existir al menos un drone disponible con batería ≥35%"</td></tr>
+<tr><td>Tipo de campo</td><td>Tipo de dato real</td><td><code>String</code>, <code>Integer</code>, <code>Enum(MUESTRA_AGUA,SENSOR,PAQUETE_LIGERO)</code></td></tr>
+<tr><td>Lista en salida</td><td>Especificar atributos</td><td><code>List&lt;DroneAcuatico(id:String, bateria:int, zona:String)&gt;</code></td></tr>
+</table>
+<div class="two">
+<div class="box"><h4>Precondición ✓</h4><p>Existe ANTES de ejecutar. Sin ella no puede iniciar.<br><em>"Debe haber al menos 1 drone disponible con batería ≥35%."</em></p></div>
+<div class="box"><h4>Regla de Negocio ✓</h4><p>Restricción del dominio que aplica DURANTE la ejecución.<br><em>"Un drone no puede tener más de 1 misión activa simultánea."</em></p></div>
+</div>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Completa la plantilla DOSW para el RF "AP-01 Registrar misión de transporte de muestra". Incluye: código, nombre, actor, precondiciones, datos de entrada con TIPOS REALES (drone asignado con sus atributos, puntoPartida, puntoLlegada, tipoCarga), datos de salida (código de misión generado), flujo básico de 5 pasos, flujo alterno (drone sin batería suficiente, zona de destino inválida) y 2 reglas de negocio.</div>
+</div></div>
+
+<div class="tdiv">08 · Manual de Identidad y UX/UI</div>
+<div class="card" id="pi-ux">
+<div class="ch-hd" onclick="toggle('pi-ux')">
+  <div class="ico">🎨</div><div class="cm">
+  <div class="ct">Definir la identidad de AquaPort antes de diseñar una sola pantalla</div>
+  <div class="cs">Paleta hídrica · Tipografía · Nielsen aplicado · Identidad primero, mock después</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-ux')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt warn"><strong>⚠ El error más grave</strong>Ir a Figma o a la IA sin definir primero la identidad. Resultado: cada pantalla parece de una app diferente. PRIMERO identidad, LUEGO diseño.</div>
+<h3>Manual de identidad mínimo de AquaPort</h3>
+<table>
+<tr><th>Elemento</th><th>Orientación para AquaPort</th></tr>
+<tr><td>Color primario</td><td>Sistema de monitoreo hídrico: transmite calma, precisión y entorno natural. Piensa en azules profundos, cianes técnicos, verdes de monitoreo ambiental. Tú decides, pero justifícalo.</td></tr>
+<tr><td>Colores de estado</td><td>Drone disponible (verde), en misión (azul), recargando (amarillo ámbar), mantenimiento (gris), fallo (rojo). Son críticos para el operador.</td></tr>
+<tr><td>Tipografía</td><td>Una fuente para la interfaz (sans-serif moderna, legible en pantallas de monitoreo), monoespaciada para IDs de drones y códigos de misión.</td></tr>
+<tr><td>Tono de voz</td><td>Técnico, preciso y ambiental. El operador trabaja en contextos de investigación hídrica. Mensajes directos y sin ambigüedades.</td></tr>
+</table>
+<h3>Heurísticas de Nielsen críticas para el panel de AquaPort</h3>
+<table>
+<tr><th>Heurística</th><th>Aplicación en AquaPort</th></tr>
+<tr><td>#1 Visibilidad del estado</td><td>El estado de cada drone (disponible/en misión/recargando/fallo) debe verse de un vistazo sin clics adicionales.</td></tr>
+<tr><td>#3 Control del usuario</td><td>El operador puede cancelar una misión en estado PENDIENTE. Si no puede, pierde el control ante una asignación errónea.</td></tr>
+<tr><td>#5 Prevención de errores</td><td>Deshabilitar visualmente los drones con batería &lt;35%, no mostrar error después de intentar asignarlos.</td></tr>
+<tr><td>#8 Diseño minimalista</td><td>El panel muestra solo lo que el operador necesita para decidir: ID, batería, estado, zona actual.</td></tr>
+<tr><td>#9 Mensajes de error claros</td><td>"El drone AR-03 tiene batería insuficiente (18%). Mínimo requerido: 35%." No: "Error de asignación".</td></tr>
+</table>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>1. Define el manual de identidad básico de AquaPort (paleta con códigos hex, tipografía, colores de estado). 2. Genera con IA el mock del "Panel de monitoreo de la flota acuática" usando la identidad definida — muestra los 4 drones con su estado actual. 3. Verifica que el mock cumple al menos 5 de los 10 principios de Nielsen. Escribe cuáles cumple y cómo.</div>
+</div></div>
+
+<div class="tdiv">09 · Agilismo y Jira</div>
+<div class="card" id="pi-agil">
+<div class="ch-hd" onclick="toggle('pi-agil')">
+  <div class="ico">🏃</div><div class="cm">
+  <div class="ct">Organizar el desarrollo del MVP en Jira correctamente</div>
+  <div class="cs">Épica → Feature → HU correcta → Subtarea específica</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-agil')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>La jerarquía en AquaPort</h3>
+<ol class="steps">
+<li><strong>Épica:</strong> Objetivo estratégico que no cabe en un sprint.<br><em>"Digitalizar el monitoreo y reparto hídrico de la ECI mediante una flota de drones acuáticos supervisada"</em></li>
+<li><strong>Feature:</strong> Funcionalidad concreta que aporta valor completo al usuario.<br><em>"Gestión de la flota de drones acuáticos del campus"</em></li>
+<li><strong>Historia de Usuario:</strong> Siempre: <em>Como [rol], quiero [qué], para [beneficio].</em><br><em>"Como operador hídrico, quiero ver qué drones están disponibles y su nivel de batería para asignar la misión al drone más adecuado según la zona."</em></li>
+<li><strong>Subtarea:</strong> Acción técnica asignable a UNA persona.<br><em>"Implementar query que filtra drones disponibles con batería ≥35% en la zona destino usando Stream"</em></li>
+</ol>
+<div class="nt warn"><strong>⚠ Errores frecuentes en Jira</strong>HU sin "Como... quiero... para...". Subtareas con nombre vago: "codificar backend". Tickets que nunca se mueven del "To Do". Crear todo como "Story" sin jerarquía épica ni feature.</div>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>En Jira: crea la épica del MVP, la feature "Gestión de flota acuática", y 3 HU con formato correcto (ver flota, asignar drone a misión, cancelar misión pendiente). Para la HU de "asignar drone", agrega 3 subtareas concretas y 2 criterios de aceptación. Comparte captura.</div>
+</div></div>
+
+<div class="tdiv">10 · Diagramas de Casos de Uso</div>
+<div class="card" id="pi-uc">
+<div class="ch-hd" onclick="toggle('pi-uc')">
+  <div class="ico">🎯</div><div class="cm">
+  <div class="ct">Diagrama de CU para el RF "Registrar misión de transporte"</div>
+  <div class="cs">Actor · Sistema · &lt;&lt;include&gt;&gt; obligatorio · &lt;&lt;extend&gt;&gt; condicional</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-uc')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<table>
+<tr><th>Elemento</th><th>Regla</th><th>En AquaPort MVP</th></tr>
+<tr><td>Actor</td><td>Rol externo al sistema</td><td>Operador Hídrico, Solicitante, Administrador ECI</td></tr>
+<tr><td>Caso de uso</td><td>Elipse con verbo. Dentro del rectángulo del sistema.</td><td>"Registrar misión", "Ver flota", "Cancelar misión"</td></tr>
+<tr><td>&lt;&lt;include&gt;&gt;</td><td>SIEMPRE se ejecuta. Sin condición.</td><td>"Registrar misión" &lt;&lt;include&gt;&gt; "Validar disponibilidad del drone": sin validación no hay misión.</td></tr>
+<tr><td>&lt;&lt;extend&gt;&gt;</td><td>Solo bajo una condición específica.</td><td>"Registrar misión" &lt;&lt;extend&gt;&gt; "Alertar batería crítica": solo si batería &lt; 40%.</td></tr>
+</table>
+<div class="nt warn"><strong>⚠ La confusión más común</strong>include: siempre pasa. extend: pasa bajo una condición. Si puedes preguntarte "¿puede el CU base funcionar sin esto?", la respuesta determina si es include (no) o extend (sí).</div>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Dibuja el diagrama de CU para el RF "AP-01 Registrar misión". Incluye los 3 actores del MVP, el sistema AquaPort, todos los CU relevantes, al menos 1 &lt;&lt;include&gt;&gt; y 1 &lt;&lt;extend&gt;&gt; con la condición explicitada. Súbelo al repo en <code>docs/diagrama-cu-piplup.png</code>.</div>
+</div></div>
+
+<div class="tdiv">11 · Mocks con IA</div>
+<div class="card" id="pi-mocks">
+<div class="ch-hd" onclick="toggle('pi-mocks')">
+  <div class="ico">🖼</div><div class="cm">
+  <div class="ct">Generar el mock del panel de operador con el proceso correcto</div>
+  <div class="cs">Referencias → Identidad → Datos del RF → Prompt completo</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-mocks')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt warn"><strong>⚠ El error más grave</strong>Abrir la IA y escribir "diseña un panel de control de drones acuáticos". El resultado es genérico. El mock debe derivarse de la identidad que ya definiste y de los datos del RF específico.</div>
+<h3>El proceso correcto en 4 pasos</h3>
+<ol class="steps">
+<li><strong>Referencias:</strong> Busca 2 sistemas de monitoreo de flotas acuáticas o centros de control hídrico reales. Captura la pantalla de monitoreo específicamente.</li>
+<li><strong>Estilo:</strong> Usa la paleta, fuente y colores de estado que definiste en el reto 08.</li>
+<li><strong>Datos del RF:</strong> Del RF AP-01, extrae: qué datos necesita el operador (ver la flota) y qué muestra la pantalla (ID, batería, estado, zona de cada drone).</li>
+<li><strong>Prompt con contexto completo.</strong></li>
+</ol>
+<h3>Plantilla de prompt para AquaPort</h3>
+<pre><span class="cmt">Actúa como diseñador UX/UI senior de sistemas de monitoreo ambiental.
+SISTEMA: AquaPort — Panel de control de flota de drones acuáticos ECI
+PANTALLA: Panel de monitoreo de la flota (vista principal del operador)
+ESTILO: [tu paleta]. Tipografía [tu fuente]. Fondo oscuro tipo dashboard técnico hídrico.
+ACTOR: Operador Hídrico — necesita tomar decisiones rápidas sobre la flota
+DATOS A MOSTRAR POR DRONE: ID (formato AR-XX), batería en %, estado
+  (DISPONIBLE/EN_MISION/RECARGANDO/MANTENIMIENTO/FALLO), zona actual
+ACCIONES DEL OPERADOR: Seleccionar drone, Asignar a misión, Ver detalle
+ESTADOS DE LA PANTALLA:
+  1. Normal: flota con drones en distintos estados
+  2. Alerta: un drone en estado FALLO (destacado visualmente)
+  3. Vacío: todos los drones en misión simultáneamente
+Nielsen: visibilidad del estado (#1), minimalismo (#8), prevención errores (#5)</span></pre>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Genera los 3 estados del panel con IA. Las pantallas deben ser visualmente coherentes con tu identidad. Adjunta el prompt que usaste y anota qué heurísticas de Nielsen cumplen.</div>
+</div></div>
+
+<div class="tdiv">12 · TDD</div>
+<div class="card" id="pi-tdd">
+<div class="ch-hd" onclick="toggle('pi-tdd')">
+  <div class="ico">🧪</div><div class="cm">
+  <div class="ct">TDD para el ValidadorMision de AquaPort</div>
+  <div class="cs">Red → Green → Refactor · JUnit 5 · Patrón AAA</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-tdd')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>El ciclo — siempre en este orden</h3>
+<ol class="steps">
+<li><strong>Red:</strong> Escribe la prueba. El código no existe aún — la prueba falla. Esto es correcto y esperado.</li>
+<li><strong>Green:</strong> Escribe el código mínimo para que la prueba pase. Solo lo mínimo.</li>
+<li><strong>Refactor:</strong> Mejora la estructura sin cambiar el comportamiento. Las pruebas garantizan que no rompiste nada.</li>
+</ol>
+<h3>Las pruebas primero — ValidadorMision</h3>
+<pre><span class="kw">class</span> <span class="ty">ValidadorMisionTest</span> {
+    <span class="kw">private</span> <span class="ty">ValidadorMision</span> v;
+
+    <span class="fn">@BeforeEach</span>
+    <span class="kw">void</span> <span class="fn">setUp</span>() { v = <span class="kw">new</span> <span class="ty">ValidadorMision</span>(); }
+
+    <span class="fn">@Test</span>
+    <span class="fn">@DisplayName</span>(<span class="st">"Drone con batería ≥ 35% puede ser asignado"</span>)
+    <span class="kw">void</span> <span class="fn">droneBateriaSuficiente_puedeAsignarse</span>() {
+        <span class="cmt">// ARRANGE</span>
+        <span class="ty">DroneAcuatico</span> d = <span class="kw">new</span> <span class="ty">DroneAcuatico</span>(<span class="st">"AR-01"</span>, <span class="st">"Aqua-Ranger 100"</span>,
+                                               <span class="nu">85</span>, <span class="kw">true</span>, <span class="st">"Embalse Norte"</span>);
+        <span class="cmt">// ACT</span>
+        <span class="kw">boolean</span> resultado = v.<span class="fn">tieneBateriaSuficiente</span>(d);
+        <span class="cmt">// ASSERT</span>
+        assertTrue(resultado);
+    }
+
+    <span class="fn">@Test</span>
+    <span class="fn">@DisplayName</span>(<span class="st">"Drone con batería < 35% NO puede ser asignado"</span>)
+    <span class="kw">void</span> <span class="fn">droneBateriaCritica_noAsignable</span>() {
+        <span class="ty">DroneAcuatico</span> d = <span class="kw">new</span> <span class="ty">DroneAcuatico</span>(<span class="st">"AR-03"</span>, <span class="st">"Aqua-Ranger 100"</span>,
+                                               <span class="nu">18</span>, <span class="kw">false</span>, <span class="st">"Laguna Sur"</span>);
+        assertFalse(v.<span class="fn">tieneBateriaSuficiente</span>(d));
+    }
+
+    <span class="fn">@Test</span>
+    <span class="fn">@DisplayName</span>(<span class="st">"Punto de llegada nulo lanza IllegalArgumentException"</span>)
+    <span class="kw">void</span> <span class="fn">puntoLlegadaNulo_lanzaExcepcion</span>() {
+        assertThrows(<span class="ty">IllegalArgumentException</span>.<span class="kw">class</span>,
+            () -> v.<span class="fn">validarPuntoLlegada</span>(<span class="kw">null</span>));
+    }
+}</pre>
+<div class="nt warn"><strong>⚠ Los errores más frecuentes en TDD</strong>Escribir el código de producción antes que la prueba. Pruebas sin <code>@DisplayName</code>. Solo probar el happy path sin casos negativos. Un test con múltiples asserts que verifican cosas distintas.</div>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Implementa el <code>ValidadorMision</code> usando TDD estricto: primero la prueba (Red), luego el código mínimo (Green), luego refactoriza. Escribe pruebas para: batería suficiente, batería crítica, punto de llegada nulo, punto de llegada vacío, drone no disponible, zona inválida (caso edge). Los commits de las pruebas deben ser anteriores a los del código de producción.</div>
+</div></div>
+
+<div class="tdiv">13 · JaCoCo</div>
+<div class="card" id="pi-sonar">
+<div class="ch-hd" onclick="toggle('pi-sonar')">
+  <div class="ico">📊</div><div class="cm">
+  <div class="ct">Medir la cobertura del ValidadorMision con JaCoCo</div>
+  <div class="cs">80%+ line coverage · Verde en todas las clases · Sin ramas sin cubrir</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-sonar')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>Configura JaCoCo en tu pom.xml</h3>
+<pre><span class="kw">&lt;plugin&gt;</span>
+    <span class="ty">&lt;groupId&gt;</span>org.jacoco<span class="ty">&lt;/groupId&gt;</span>
+    <span class="ty">&lt;artifactId&gt;</span>jacoco-maven-plugin<span class="ty">&lt;/artifactId&gt;</span>
+    <span class="ty">&lt;version&gt;</span>0.8.11<span class="ty">&lt;/version&gt;</span>
+    <span class="kw">&lt;executions&gt;</span>
+        <span class="kw">&lt;execution&gt;&lt;goals&gt;&lt;goal&gt;</span>prepare-agent<span class="kw">&lt;/goal&gt;&lt;/goals&gt;&lt;/execution&gt;</span>
+        <span class="kw">&lt;execution&gt;</span>
+            <span class="ty">&lt;id&gt;</span>report<span class="ty">&lt;/id&gt;</span>
+            <span class="ty">&lt;phase&gt;</span>test<span class="ty">&lt;/phase&gt;</span>
+            <span class="kw">&lt;goals&gt;&lt;goal&gt;</span>report<span class="kw">&lt;/goal&gt;&lt;/goals&gt;</span>
+        <span class="kw">&lt;/execution&gt;</span>
+    <span class="kw">&lt;/executions&gt;</span>
+<span class="kw">&lt;/plugin&gt;</span></pre>
+<h3>Cómo leer el reporte</h3>
+<table>
+<tr><th>Color en el reporte</th><th>Significa</th><th>Acción</th></tr>
+<tr><td style="color:var(--ok)">■ Verde</td><td>Línea o rama cubierta por al menos una prueba</td><td>Bien</td></tr>
+<tr><td style="color:var(--am)">■ Amarillo</td><td>Rama parcialmente cubierta (falta el otro camino del if)</td><td>Agrega una prueba para la rama faltante</td></tr>
+<tr><td style="color:var(--rd)">■ Rojo</td><td>Línea o rama nunca ejecutada por ninguna prueba</td><td>Escribe la prueba o elimina el código muerto</td></tr>
+</table>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Ejecuta <code>mvn test</code> y abre el reporte JaCoCo en <code>target/site/jacoco/index.html</code>. El <code>ValidadorMision</code> debe tener ≥80% de line coverage. Si hay líneas en rojo: escribe las pruebas faltantes. Adjunta captura del reporte mostrando el porcentaje alcanzado.</div>
+</div></div>
+
+<div class="tdiv">14 · SonarQube</div>
+<div class="card" id="pi-sonarq">
+<div class="ch-hd" onclick="toggle('pi-sonarq')">
+  <div class="ico">🔍</div><div class="cm">
+  <div class="ct">Análisis estático del MVP con SonarQube</div>
+  <div class="cs">0 bugs · 0 vulnerabilidades · Code smells resueltos</div>
+  </div><button class="db undone" onclick="markDone(event,'pi-sonarq')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>Prioridad de issues en SonarQube</h3>
+<table>
+<tr><th>Tipo</th><th>Descripción</th><th>Prioridad</th></tr>
+<tr><td>🔴 Bug</td><td>Código que claramente produce un comportamiento incorrecto</td><td>Resolver siempre, primero</td></tr>
+<tr><td>🟠 Vulnerability</td><td>Código que puede ser explotado por un atacante</td><td>Resolver siempre</td></tr>
+<tr><td>🟡 Code Smell</td><td>Código difícil de mantener o entender</td><td>Resolver, pero es el último</td></tr>
+</table>
+<div class="nt warn"><strong>⚠ Nunca suprimas un issue con @SuppressWarnings</strong>Suprimir un issue es ignorarlo, no resolverlo. La deuda técnica sigue existiendo; solo la estás escondiendo.</div>
+<div class="nt tip"><strong>🎯 Reto Piplup</strong>Analiza el proyecto con SonarQube Community. Resuelve todos los Bugs y Vulnerabilities. Para cada Code Smell que resuelvas: documenta en el commit qué era el smell, por qué era un problema y cómo lo corregiste. La deuda técnica final debe ser 0 para el MVP. Adjunta captura del dashboard de SonarQube.</div>
+</div></div>
+
+<div class="badge pi" id="badge-piplup" style="display:none">
+<span class="bi">💧🌟💧</span>
+<h3>¡AquaPort MVP está operativo!</h3>
+<p>Completaste los 14 retos del nivel básico. Tu flota de 4 drones acuáticos ya funciona con los fundamentos bien aplicados. Es hora de escalar.</p>
+</div>
+</div><!-- fin level-piplup -->
+
+<!-- ═══════════════ PRINPLUP ═══════════════ -->
+<div class="ls level-prinplup" id="level-prinplup">
+<div class="lvb pr"><div class="lve">🌊</div><div>
+  <div class="lvn">Prinplup — AquaPort v2: flota autónoma con alertas</div>
+  <div class="lvd">15 drones de 3 tipos, asignación automática, alertas en tiempo real. Completa los 14 retos para evolucionar.</div>
+</div></div>
+
+<div class="enu pr">
+  <div class="enu-h" onclick="toggleEnu(this)">
+    <span class="epill">ENUNCIADO PRINPLUP</span>
+    <span class="etit">AquaPort v2 — 15 drones, 3 tipos, asignación automática por zona</span>
+    <span style="color:var(--mu)">›</span>
+  </div>
+  <div class="enu-b">
+    <p><strong>Contexto:</strong> La ECI amplía la flota a 15 drones de 3 tipos especializados: <strong>Superficial</strong> (para zonas tranquilas, carga hasta 500g), <strong>Semisumergido</strong> (puede operar en agua agitada, carga hasta 1.5kg) y <strong>Buceador</strong> (toma muestras a profundidad, carga hasta 300g). El sistema asigna automáticamente el drone más adecuado según la zona, el tipo de carga y las condiciones del agua. Un centro de control recibe alertas automáticas cuando un drone entra en fallo.</p>
+    <p><strong>Flujo v2:</strong> El sistema recibe la solicitud → consulta las condiciones del cuerpo de agua (nivel de agitación, profundidad requerida) → filtra drones aptos para esa zona → aplica la estrategia de selección activa → valida (batería, capacidad de carga, tipo de drone) → asigna automáticamente → notifica al centro de control.</p>
+    <p><strong>Objetos nuevos:</strong></p>
+    <p><code>DroneAcuatico</code> amplía a <code>DroneSuperf icial</code>, <code>DroneSemisumergido</code>, <code>DroneBuceador</code> (Factory Method)</p>
+    <p><code>EstadoDrone: Enum(DISPONIBLE, EN_MISION, RECARGANDO, MANTENIMIENTO, SUMERGIDO)</code></p>
+    <p><code>Prioridad: Enum(CRITICA, ALTA, NORMAL, BAJA)</code> — las misiones CRÍTICAS tienen precedencia absoluta</p>
+    <div class="enota">💡 El mismo modelo de dominio del MVP, pero ahora el sistema decide solo. El operador supervisa, no asigna.</div>
+  </div>
+</div>
+
+<div class="lp pr">
+  <div class="lprow"><span class="lplb">Retos Prinplup completados</span><span class="lpv" id="pr-stat">0 / 14</span></div>
+  <div class="lpt"><div class="lpf" id="pr-fill" style="width:0%"></div></div>
+</div>
+
+<div id="lock-prinplup" class="lkb">
+  <span class="lki">🔒</span>
+  <h3>Nivel bloqueado</h3>
+  <p>Completa los 14 retos de Piplup para desbloquear Prinplup. Llevas <span id="lock-pr-count">0</span> / 14.</p>
+</div>
+<div id="prinplup-content" style="display:none">
+
+<div class="tdiv">01 · Streams &amp; Lambdas</div>
+<div class="card" id="pr-streams">
+<div class="ch-hd" onclick="toggle('pr-streams')">
+  <div class="ico">⚡</div><div class="cm">
+  <div class="ct">Streams avanzados: groupingBy, flatMap y comparadores compuestos</div>
+  <div class="cs">groupingBy · flatMap · Comparator.comparing · reduce · partitioningBy</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-streams')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>Operaciones avanzadas para la flota de 15 drones</h3>
+<pre><span class="cmt">// Agrupar drones por tipo de drone</span>
+<span class="ty">Map</span>&lt;<span class="ty">String</span>, <span class="ty">List</span>&lt;<span class="ty">DroneAcuatico</span>&gt;&gt; porTipo =
+    flota.<span class="fn">stream</span>()
+         .<span class="fn">collect</span>(<span class="ty">Collectors</span>.<span class="fn">groupingBy</span>(<span class="ty">DroneAcuatico</span>::<span class="fn">getTipo</span>));
+
+<span class="cmt">// Ordenar por prioridad de misión y luego por batería restante</span>
+<span class="ty">List</span>&lt;<span class="ty">Mision</span>&gt; ordenadas = misiones.<span class="fn">stream</span>()
+    .<span class="fn">sorted</span>(<span class="ty">Comparator</span>.<span class="fn">comparing</span>(<span class="ty">Mision</span>::<span class="fn">getPrioridad</span>)
+                      .<span class="fn">thenComparing</span>(m -> m.<span class="fn">getDrone</span>().<span class="fn">getBateria</span>(), <span class="ty">Comparator</span>.<span class="fn">reverseOrder</span>()))
+    .<span class="fn">collect</span>(<span class="ty">Collectors</span>.<span class="fn">toList</span>());</pre>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Con la flota de 15 drones implementa: 1) Agrupar drones disponibles por tipo. 2) Obtener el drone óptimo para una zona dada (mayor batería, tipo compatible). 3) Calcular el promedio de batería por tipo de drone. 4) Separar misiones CRÍTICAS de las demás usando <code>partitioningBy</code>. 5) Listar todas las zonas únicas que cubre la flota activa.</div>
+</div></div>
+
+<div class="tdiv">02 · GitHub y GitFlow</div>
+<div class="card" id="pr-git">
+<div class="ch-hd" onclick="toggle('pr-git')">
+  <div class="ico">🌿</div><div class="cm">
+  <div class="ct">GitFlow completo con release y hotfix para la v2</div>
+  <div class="cs">release/v2.0 · hotfix/ · tags · merge strategy</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-git')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<pre><span class="cmt">main          → v1.0 (el MVP aprobado)
+develop       → integración de las features de la v2
+feature/asignacion-automatica
+feature/alertas-centro-control
+feature/factory-drones
+release/v2.0  → preparación de la release (solo bugfixes)
+hotfix/fix-bateria-critica → corrección urgente sobre main</span></pre>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Crea en tu repositorio las ramas de la v2 con GitFlow. Simula el flujo completo: 3 feature branches con sus PRs a develop, una rama release/v2.0 con al menos un commit de ajuste, y el merge final a main con tag <code>v2.0.0</code>. Documenta el flujo en el README con un diagrama de ramas.</div>
+</div></div>
+
+<div class="tdiv">03 · Patrones de Diseño</div>
+<div class="card" id="pr-patrones">
+<div class="ch-hd" onclick="toggle('pr-patrones')">
+  <div class="ico">🧩</div><div class="cm">
+  <div class="ct">Strategy + Observer + Factory Method para la asignación autónoma</div>
+  <div class="cs">EstrategiaSeleccion · ObservadorMision · FabricaDrones</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-patrones')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>Los 3 patrones de la v2 y su rol</h3>
+<div class="two">
+<div class="box"><h4>Strategy — ¿qué drone elegir?</h4><p>El <code>AsignadorAutomatico</code> delega la selección a la estrategia activa. Puede ser <code>MayorBateriaStrategy</code>, <code>ZonaCercanaStrategy</code> o <code>PrioridadCriticaStrategy</code>, sin que el asignador cambie.</p></div>
+<div class="box"><h4>Observer — ¿quién se entera?</h4><p>Cuando un drone entra en FALLO, el sistema notifica a todos los observadores registrados: <code>CentroControlObserver</code>, <code>TecnicoMantenimientoObserver</code>. Se añaden o quitan sin tocar el drone.</p></div>
+</div>
+<div class="box" style="margin-top:.7rem"><h4>Factory Method — ¿cómo crear cada tipo de drone?</h4><p>La <code>FabricaDrones</code> decide qué subclase instanciar según el tipo pedido. Añadir un nuevo tipo de drone no requiere tocar el código existente del asignador.</p></div>
+<div class="nt warn"><strong>⚠ Violación clásica del Strategy</strong><code>if (estrategia instanceof MayorBateriaStrategy)</code> dentro del <code>AsignadorAutomatico</code> — si tienes un instanceof, no estás usando el patrón correctamente.</div>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Implementa los 3 patrones integrados: la <code>FabricaDrones</code> crea los 3 tipos, el <code>AsignadorAutomatico</code> usa Strategy para seleccionar y notifica por Observer cuando hay fallo. Escribe una prueba con Mockito que verifique que al registrar una misión con drone en FALLO, todos los observadores son notificados exactamente una vez.</div>
+</div></div>
+
+<div class="tdiv">04 · Principios SOLID</div>
+<div class="card" id="pr-solid">
+<div class="ch-hd" onclick="toggle('pr-solid')">
+  <div class="ico">🏗</div><div class="cm">
+  <div class="ct">SOLID completo en la arquitectura de la v2</div>
+  <div class="cs">OCP · LSP · ISP aplicados a los 3 tipos de drones</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-solid')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>Open/Closed en la jerarquía de drones</h3>
+<p>Al agregar el cuarto tipo de drone (Sumergible Profundo), no debes modificar <code>AsignadorAutomatico</code> ni <code>ValidadorMision</code>. Solo agregas la nueva clase. Si tienes que tocar el asignador, viola OCP.</p>
+<h3>Liskov en los 3 tipos de drones</h3>
+<p>Donde el sistema acepta un <code>DroneAcuatico</code>, debe funcionar igual con <code>DroneSuperf icial</code>, <code>DroneSemisumergido</code> o <code>DroneBuceador</code>. Si alguno lanza una excepción o retorna null donde el padre retorna un Optional con valor, viola LSP.</p>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Audita todas las clases nuevas de la v2. Documenta en el README: qué principio aplica cada clase/interfaz y cómo. Para cada uno de los 5 principios SOLID, señala dónde en el código se respeta y por qué esa decisión de diseño importa en el contexto de AquaPort.</div>
+</div></div>
+
+<div class="tdiv">05 · Diagrama de Contexto C4</div>
+<div class="card" id="pr-contexto">
+<div class="ch-hd" onclick="toggle('pr-contexto')">
+  <div class="ico">🗺</div><div class="cm">
+  <div class="ct">AquaPort v2 conecta con sistemas externos reales por primera vez</div>
+  <div class="cs">API Hídrica · Centro de Control · Sistema de Alertas</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-contexto')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<pre><span class="cmt">Actores v2: Operador Hídrico, Solicitante, Administrador ECI,
+            Técnico de Mantenimiento (nuevo)
+
+Sistemas externos nuevos en v2:
+  - API Condiciones Hídricas  ← nivel de agitación, profundidad, temperatura
+  - Centro de Control ECI    ↔ registro de misión / autorización de ruta acuática
+  - Sistema de Alertas       ← notificación cuando drone entra en estado FALLO</span></pre>
+<div class="nt info"><strong>Regla clave del diagrama</strong>En cada flecha entre el sistema y un sistema externo, escribe QUÉ datos fluyen y en QUÉ dirección. Una flecha sin etiqueta no informa nada al lector.</div>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Actualiza el diagrama de contexto del MVP para reflejar la v2: agrega el nuevo actor y los 3 sistemas externos con sus flujos etiquetados. Compara las dos versiones en el mismo documento. ¿Qué creció? ¿Qué se mantuvo?</div>
+</div></div>
+
+<div class="tdiv">06 · RF y RNF</div>
+<div class="card" id="pr-rf">
+<div class="ch-hd" onclick="toggle('pr-rf')">
+  <div class="ico">📋</div><div class="cm">
+  <div class="ct">RF y RNF de la v2 — medibles, sin ambigüedades</div>
+  <div class="cs">RNF con métrica · Detectar contradicciones · MoSCoW justificado</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-rf')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt warn"><strong>⚠ RNF ambiguo — no sirve</strong>"El sistema debe ser rápido para asignar drones acuáticos" — ¿cuánto? ¿bajo qué condiciones?</div>
+<div class="nt tip" style="margin-top:.3rem"><strong>✓ RNF correcto para AquaPort v2</strong>"El algoritmo de asignación automática debe seleccionar el drone óptimo en menos de 400ms para una flota de hasta 30 drones, medido con JUnit 5 y <code>assertTimeout</code>."</div>
+<h3>Una tensión real de la v2 que debes detectar</h3>
+<div class="two">
+<div class="box"><h4>AP-07</h4><p>El sistema asigna automáticamente el drone de mayor batería disponible para cualquier misión hídrica.</p></div>
+<div class="box"><h4>AP-08</h4><p>Las misiones CRÍTICAS tienen prioridad absoluta: deben recibir el drone técnicamente más apto para la zona, independientemente de la batería.</p></div>
+</div>
+<p style="font-size:.84rem;color:var(--mu);margin-top:.5rem">Estos dos RF no son contradictorios pero sí tienen tensión: "mayor batería" vs "más apto para la zona". Debes detectarlo y documentarlo explícitamente.</p>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Para la v2 escribe: 4 RF de las nuevas funcionalidades (asignación automática, alertas de fallo, consulta de condiciones hídricas, gestión por técnico) y 4 RNF con métrica concreta. Aplica MoSCoW. Detecta la tensión entre AP-07 y AP-08 y documenta cómo resolverla.</div>
+</div></div>
+
+<div class="tdiv">07 · Plantilla DOSW</div>
+<div class="card" id="pr-plantilla">
+<div class="ch-hd" onclick="toggle('pr-plantilla')">
+  <div class="ico">📄</div><div class="cm">
+  <div class="ct">RF "Asignar automáticamente drone a misión hídrica" — sub-objetos correctos</div>
+  <div class="cs">Sub-índices · Tipos anidados · Flujos alternos múltiples</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-plantilla')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<table>
+<tr><th>Nombre</th><th>Tipo de campo</th><th>Reglas</th><th>Oblig.</th></tr>
+<tr><td>carga</td><td>—</td><td>—</td><td>Sí</td></tr>
+<tr><td>carga.peso</td><td><code>Integer</code></td><td>Entre 1 y 1500 gramos</td><td>Sí</td></tr>
+<tr><td>carga.tipo</td><td><code>Enum(MUESTRA_AGUA,SENSOR,PAQUETE_LIGERO,EQUIPO_MEDICION)</code></td><td>—</td><td>Sí</td></tr>
+<tr><td>carga.prioridad</td><td><code>Enum(CRITICA,ALTA,NORMAL,BAJA)</code></td><td>—</td><td>Sí</td></tr>
+<tr><td>zonaDestino</td><td><code>Enum(EMBALSE_NORTE,CANAL_CENTRAL,LAGUNA_SUR,RIBERA_ESTE,LAB_HIDRICO)</code></td><td>—</td><td>Sí</td></tr>
+<tr><td>droneAsignado</td><td>—</td><td>Calculado por el sistema según la estrategia activa</td><td>No (salida)</td></tr>
+<tr><td>droneAsignado.id</td><td><code>String</code></td><td>Formato AR-XX</td><td>No (salida)</td></tr>
+<tr><td>droneAsignado.tipo</td><td><code>String</code></td><td>SUPERFICIAL / SEMISUMERGIDO / BUCEADOR</td><td>No (salida)</td></tr>
+</table>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Completa la plantilla DOSW para el RF "AP-07 Asignar automáticamente drone a misión hídrica". Flujo básico: recibir solicitud → consultar condiciones hídricas → filtrar drones aptos para la zona → aplicar estrategia → validar (batería, capacidad, tipo compatible) → asignar → notificar observadores. Flujos alternos: sin drones disponibles, condiciones hídricas adversas, carga supera capacidad del tipo. Reglas de negocio: mín. 35% batería; el DroneBuceador no se asigna para cargas &gt;300g.</div>
+</div></div>
+
+<div class="tdiv">08 · Identidad y UX</div>
+<div class="card" id="pr-ux">
+<div class="ch-hd" onclick="toggle('pr-ux')">
+  <div class="ico">🎨</div><div class="cm">
+  <div class="ct">Sistema de diseño de AquaPort v2 y Leyes UX aplicadas</div>
+  <div class="cs">Componentes con estados · Ley de Fitts · Ley de Hick · Miller</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-ux')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<table>
+<tr><th>Componente</th><th>Estados a diseñar</th></tr>
+<tr><td>Tarjeta de drone acuático</td><td>Disponible (verde), En misión (azul), Recargando (amarillo), Mantenimiento (gris), Fallo (rojo), Sumergido (azul oscuro)</td></tr>
+<tr><td>Botón "Asignar misión"</td><td>Default, hover, procesando (spinner), éxito, deshabilitado</td></tr>
+<tr><td>Indicador de batería</td><td>≥60% (verde), 35-59% (amarillo), &lt;35% (rojo, con advertencia)</td></tr>
+</table>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Diseña el componente "Tarjeta de drone acuático" con sus 6 estados. Genera el flujo completo de asignación automática (3 pantallas: panel de flota → detalle de misión → confirmación). Documenta cómo aplicaste Fitts (botón de emergencia) y Hick (agrupación de 15 drones por tipo).</div>
+</div></div>
+
+<div class="tdiv">09 · Agilismo y Jira</div>
+<div class="card" id="pr-agil">
+<div class="ch-hd" onclick="toggle('pr-agil')">
+  <div class="ico">🏃</div><div class="cm">
+  <div class="ct">Sprint planning de la v2 en Jira con estimaciones reales</div>
+  <div class="cs">Story points · Velocity · Sprint goal · DoD</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-agil')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>El Definition of Done de la v2</h3>
+<ul>
+<li>El código compila sin warnings</li>
+<li>Las pruebas unitarias pasan (JUnit 5)</li>
+<li>JaCoCo reporta ≥80% de line coverage para la feature</li>
+<li>El PR tiene revisión aprobada por al menos otro miembro</li>
+<li>El diagrama C4 y la plantilla DOSW están actualizados</li>
+</ul>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Planifica el sprint de la v2 en Jira. Crea el Sprint Goal: "Completar el asignador automático con Strategy y las alertas con Observer". Agrega las HU de la v2 con Story Points estimados (usa Fibonacci: 1, 2, 3, 5, 8). Define el DoD para este sprint. Comparte captura del sprint activo.</div>
+</div></div>
+
+<div class="tdiv">10 · Diagramas de Casos de Uso</div>
+<div class="card" id="pr-uc">
+<div class="ch-hd" onclick="toggle('pr-uc')">
+  <div class="ico">🎯</div><div class="cm">
+  <div class="ct">Diagrama de CU extendido para la asignación automática</div>
+  <div class="cs">Nuevos actores · Generalización · &lt;&lt;include&gt;&gt; y &lt;&lt;extend&gt;&gt; encadenados</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-uc')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<p>La v2 agrega el Técnico de Mantenimiento y el Centro de Control como actores. El CU "Asignar misión automáticamente" incluye siempre "Validar condiciones hídricas" y se extiende con "Notificar fallo al técnico" solo cuando hay un drone en estado FALLO durante el proceso.</p>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Actualiza el diagrama de CU de la v2. Agrega el nuevo actor, el CU de asignación automática con su &lt;&lt;include&gt;&gt; obligatorio (validar condiciones) y su &lt;&lt;extend&gt;&gt; condicional (notificar fallo). Usa generalización si el Operador Hídrico hereda comportamiento del actor base. Sube el diagrama al repo en <code>docs/diagrama-cu-prinplup.png</code>.</div>
+</div></div>
+
+<div class="tdiv">11 · Mocks con IA</div>
+<div class="card" id="pr-mocks">
+<div class="ch-hd" onclick="toggle('pr-mocks')">
+  <div class="ico">🖼</div><div class="cm">
+  <div class="ct">Mock del flujo de asignación automática en 3 pantallas</div>
+  <div class="cs">Panel de flota → Detalle de misión → Confirmación de asignación</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-mocks')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Diseña el flujo completo de asignación automática con IA: Pantalla 1 (panel de flota de 15 drones agrupados por tipo), Pantalla 2 (detalle de la misión con el drone recomendado por el sistema y la razón de la selección), Pantalla 3 (confirmación con estado actualizado de la flota). Incluye el estado de alerta cuando hay una misión CRÍTICA sin drone disponible. Adjunta los 4 prompts usados (uno por pantalla más el de alerta).</div>
+</div></div>
+
+<div class="tdiv">12 · TDD</div>
+<div class="card" id="pr-tdd">
+<div class="ch-hd" onclick="toggle('pr-tdd')">
+  <div class="ico">🧪</div><div class="cm">
+  <div class="ct">TDD con Mockito para el AsignadorAutomatico</div>
+  <div class="cs">Mocks de dependencias · verify() · Casos edge de prioridad</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-tdd')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<pre><span class="fn">@ExtendWith</span>(<span class="ty">MockitoExtension</span>.<span class="kw">class</span>)
+<span class="kw">class</span> <span class="ty">AsignadorAutomaticoTest</span> {
+
+    <span class="fn">@Mock</span> <span class="ty">EstrategiaSeleccion</span> estrategiaMock;
+    <span class="fn">@Mock</span> <span class="ty">ObservadorMision</span>   observadorMock;
+    <span class="fn">@InjectMocks</span> <span class="ty">AsignadorAutomatico</span> asignador;
+
+    <span class="fn">@Test</span>
+    <span class="fn">@DisplayName</span>(<span class="st">"Misión CRÍTICA sin drones disponibles notifica a todos los observadores"</span>)
+    <span class="kw">void</span> <span class="fn">misionCritica_sinDrones_notificaObservadores</span>() {
+        <span class="cmt">// ARRANGE</span>
+        <span class="ty">Mision</span> mision = ... <span class="cmt">// prioridad CRITICA</span>
+        <span class="fn">when</span>(estrategiaMock.<span class="fn">seleccionar</span>(<span class="fn">any</span>(), <span class="fn">any</span>()))
+            .<span class="fn">thenReturn</span>(<span class="ty">Optional</span>.<span class="fn">empty</span>());
+        asignador.<span class="fn">registrarObservador</span>(observadorMock);
+        <span class="cmt">// ACT</span>
+        asignador.<span class="fn">asignar</span>(mision);
+        <span class="cmt">// ASSERT</span>
+        <span class="fn">verify</span>(observadorMock, <span class="fn">times</span>(<span class="nu">1</span>)).<span class="fn">notificarFalloAsignacion</span>(mision);
+    }
+}</pre>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Implementa el <code>AsignadorAutomatico</code> con TDD y Mockito. Pruebas obligatorias: asignación exitosa (happy path), misión CRÍTICA sin drones (notifica), drone encontrado en FALLO durante asignación (notifica + busca alternativo), lista de drones vacía, batería exactamente en el umbral mínimo (caso edge). JaCoCo ≥80% en el asignador.</div>
+</div></div>
+
+<div class="tdiv">13 · JaCoCo</div>
+<div class="card" id="pr-jacoco">
+<div class="ch-hd" onclick="toggle('pr-jacoco')">
+  <div class="ico">📊</div><div class="cm">
+  <div class="ct">80% de cobertura en toda la capa de dominio de la v2</div>
+  <div class="cs">Line coverage · Branch coverage · Ramas amarillas · Quality gate</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-jacoco')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<p>En la v2, el asignador automático tiene más ramas de lógica (prioridades, tipos de drone, condiciones hídricas). Las ramas amarillas en JaCoCo son las más comunes aquí.</p>
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Configura un Quality Gate de JaCoCo en Maven que falle el build si la cobertura cae por debajo del 80%. Adjunta el reporte mostrando ≥80% en todas las clases de dominio de la v2. Para cada rama amarilla (parcialmente cubierta): escribe la prueba faltante y documenta por qué esa rama es importante de probar.</div>
+</div></div>
+
+<div class="tdiv">14 · SonarQube</div>
+<div class="card" id="pr-sonar">
+<div class="ch-hd" onclick="toggle('pr-sonar')">
+  <div class="ico">🔍</div><div class="cm">
+  <div class="ct">Análisis estático de la v2: deuda técnica &lt;30 min</div>
+  <div class="cs">0 bugs · 0 vulnerabilidades · Deuda &lt;30 min · &lt;5% duplicación</div>
+  </div><button class="db undone" onclick="markDone(event,'pr-sonar')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt tip"><strong>🎯 Reto Prinplup</strong>Analiza la v2 completa con SonarQube. Logra: 0 bugs, 0 vulnerabilidades, deuda técnica &lt;30 min, duplicación &lt;5%. Para cada issue resuelto documenta en el commit: causa raíz, corrección aplicada y por qué esa corrección es la adecuada. Adjunta captura del dashboard de SonarQube con los 4 indicadores en verde.</div>
+</div></div>
+
+<div class="badge pr" id="badge-prinplup" style="display:none">
+<span class="bi">🌊⚡🌊</span>
+<h3>¡AquaPort v2 navega solo!</h3>
+<p>Tu flota de 15 drones ya se asigna automáticamente. El siguiente nivel: 60 drones, 4 zonas hídricas interconectadas, rutas multi-etapa.</p>
+</div>
+</div><!-- fin prinplup-content -->
+</div><!-- fin level-prinplup -->
+
+<!-- ═══════════════ EMPOLEON ═══════════════ -->
+<div class="ls level-empoleon" id="level-empoleon">
+<div class="lvb em"><div class="lve">👑</div><div>
+  <div class="lvn">Empoleon — AquaPort Enterprise: red multi-embalse</div>
+  <div class="lvd">60 drones, 4 zonas hídricas, rutas multi-etapa con waypoints. El nivel de producción.</div>
+</div></div>
+
+<div class="enu em">
+  <div class="enu-h" onclick="toggleEnu(this)">
+    <span class="epill">ENUNCIADO EMPOLEON</span>
+    <span class="etit">AquaPort Enterprise — 60 drones, 4 zonas, rutas multi-etapa</span>
+    <span style="color:var(--mu)">›</span>
+  </div>
+  <div class="enu-b">
+    <p><strong>Contexto:</strong> La ECI integra 4 zonas hídricas: <strong>Embalse de Investigación</strong> (norte, drones buceadores), <strong>Red de Canales</strong> (campus, drones superficiales), <strong>Laguna de Reserva</strong> (sur, drones semisumergidos) y <strong>Laboratorio Hídrico Central</strong> (destino común de muestras). Con 60 drones, misiones de rutas multi-etapa con waypoints intermedios, coordinación entre zonas y estándares de producción.</p>
+    <p><strong>Flujo Enterprise:</strong> La solicitud especifica origen, waypoints intermedios y destino final → el sistema planifica la ruta multi-etapa asignando un drone por tramo → coordina los traspasos entre drones en los waypoints → monitorea el estado en tiempo real → gestiona fallos en medio de la ruta con reasignación automática.</p>
+    <p><strong>Estándares:</strong> Arquitectura por capas (dominio sin dependencias externas), JaCoCo ≥85% line / ≥75% branch, SonarQube 0 bugs / 0 vulnerabilidades / deuda &lt;15 min, métodos ≤15 líneas, clases ≤150 líneas, DRY estricto.</p>
+    <div class="enota">💡 El mismo dominio de Piplup y Prinplup. La diferencia está en la escala, la arquitectura y los estándares de calidad — no en inventar nuevos objetos.</div>
+  </div>
+</div>
+
+<div class="lp em">
+  <div class="lprow"><span class="lplb">Retos Empoleon completados</span><span class="lpv" id="em-stat">0 / 14</span></div>
+  <div class="lpt"><div class="lpf" id="em-fill" style="width:0%"></div></div>
+</div>
+
+<div id="lock-empoleon" class="lkb">
+  <span class="lki">🔒</span>
+  <h3>Nivel bloqueado</h3>
+  <p>Completa los 14 retos de Prinplup para desbloquear Empoleon. Llevas <span id="lock-em-count">0</span> / 14.</p>
+</div>
+<div id="empoleon-content" style="display:none">
+
+<div class="tdiv">01 · Streams &amp; Lambdas</div>
+<div class="card" id="em-streams">
+<div class="ch-hd" onclick="toggle('em-streams')">
+  <div class="ico">⚡</div><div class="cm">
+  <div class="ct">Streams para coordinar rutas multi-etapa entre 60 drones</div>
+  <div class="cs">flatMap encadenado · reduce · custom Collector · Stream paralelo</div>
+  </div><button class="db undone" onclick="markDone(event,'em-streams')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<pre><span class="cmt">// Calcular la carga de trabajo total por zona</span>
+<span class="ty">Map</span>&lt;<span class="ty">String</span>, <span class="ty">Long</span>&gt; cargaPorZona = misiones.<span class="fn">stream</span>()
+    .<span class="fn">filter</span>(m -> m.<span class="fn">getEstado</span>() == <span class="ty">EstadoMision</span>.EN_TRANSITO)
+    .<span class="fn">flatMap</span>(m -> m.<span class="fn">getWaypoints</span>().<span class="fn">stream</span>())
+    .<span class="fn">collect</span>(<span class="ty">Collectors</span>.<span class="fn">groupingBy</span>(<span class="ty">Waypoint</span>::<span class="fn">getZona</span>, <span class="ty">Collectors</span>.<span class="fn">counting</span>()));</pre>
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Implementa: 1) Calcular la eficiencia de cada zona (misiones completadas / misiones totales). 2) Encontrar el drone con el mejor historial de entregas exitosas. 3) Planificar la ruta óptima multi-etapa seleccionando el drone disponible más cercano para cada tramo. 4) Un Collector personalizado que agrupe los drones por zona y calcule la batería promedio por zona en una sola pasada. Justifica cuándo usar stream paralelo y por qué en los otros casos no aplica.</div>
+</div></div>
+
+<div class="tdiv">02 · GitHub y GitFlow</div>
+<div class="card" id="em-git">
+<div class="ch-hd" onclick="toggle('em-git')">
+  <div class="ico">🌿</div><div class="cm">
+  <div class="ct">Historial de git limpio y trazable para AquaPort Enterprise</div>
+  <div class="cs">Conventional Commits · squash merge · rebase · tag semántico</div>
+  </div><button class="db undone" onclick="markDone(event,'em-git')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<p>En Enterprise el historial de git es documentación de arquitectura. Cada commit explica qué decisión se tomó y por qué. Los mensajes siguen Conventional Commits: <code>feat:</code>, <code>fix:</code>, <code>refactor:</code>, <code>test:</code>, <code>docs:</code>.</p>
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Configura en el repositorio: hook de pre-commit que valida el formato de Conventional Commits, protección de rama en main y develop (no push directo), y un CHANGELOG.md generado automáticamente desde los commits. El historial de la v3 debe mostrar únicamente commits descriptivos. Adjunta el log de git con al menos 10 commits del Enterprise.</div>
+</div></div>
+
+<div class="tdiv">03 · Patrones de Diseño</div>
+<div class="card" id="em-patrones">
+<div class="ch-hd" onclick="toggle('em-patrones')">
+  <div class="ico">🧩</div><div class="cm">
+  <div class="ct">Chain of Responsibility + Decorator + Adapter para Enterprise</div>
+  <div class="cs">ValidacionEnCadena · DroneConDecorator · AdaptadorAPIHidrica</div>
+  </div><button class="db undone" onclick="markDone(event,'em-patrones')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="two">
+<div class="box"><h4>Chain of Responsibility</h4><p>La validación de una misión Enterprise pasa por una cadena: <code>ValidadorBateria</code> → <code>ValidadorCapacidadCarga</code> → <code>ValidadorZonaActiva</code> → <code>ValidadorCondicionesHidricas</code>. Cada eslabón valida su responsabilidad y pasa o detiene la cadena.</p></div>
+<div class="box"><h4>Decorator</h4><p>Un <code>DroneConMonitoreo</code> envuelve cualquier drone y agrega registro de telemetría sin modificar la clase base. Se puede apilar: <code>DroneConCifrado(DroneConMonitoreo(droneBuceador))</code>.</p></div>
+</div>
+<div class="box" style="margin-top:.7rem"><h4>Adapter</h4><p>La API externa de condiciones hídricas retorna JSON con nombres de campo en inglés (<code>"waterLevel"</code>, <code>"turbidity"</code>). El <code>AdaptadorAPIHidrica</code> convierte esa respuesta al modelo del dominio (<code>NivelAgua</code>, <code>Turbidez</code>) sin que el dominio sepa que hay una API externa.</p></div>
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Implementa los 3 patrones integrados en el flujo Enterprise: la cadena valida antes de asignar, el decorator registra telemetría en cada misión, el adapter aísla la API externa. Escribe pruebas con Mockito para: que la cadena se detiene en el primer validador que falla, que el decorator registra sin alterar el comportamiento del drone, que el adapter convierte correctamente campos con valores límite.</div>
+</div></div>
+
+<div class="tdiv">04 · Principios SOLID</div>
+<div class="card" id="em-solid">
+<div class="ch-hd" onclick="toggle('em-solid')">
+  <div class="ico">🏗</div><div class="cm">
+  <div class="ct">Auditoría SOLID completa de la arquitectura Enterprise</div>
+  <div class="cs">Capas · Constructor injection · Dominio sin dependencias externas</div>
+  </div><button class="db undone" onclick="markDone(event,'em-solid')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>La regla de oro del nivel Empoleon</h3>
+<p>El paquete <code>dominio</code> no puede tener ningún import de librerías externas (Mockito, Jackson, HttpClient, etc.). Solo Java puro. Las dependencias externas viven en la capa de infraestructura y se inyectan por interfaz.</p>
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Audita toda la arquitectura con SonarQube y una revisión manual de imports. Verifica que: ninguna clase del dominio depende de infraestructura, todos los servicios reciben dependencias por constructor (no por campo ni setter), no hay ningún <code>new ClaseInfraestructura()</code> en el dominio. Documenta el mapa de dependencias entre capas.</div>
+</div></div>
+
+<div class="tdiv">05 · Diagrama de Contexto C4</div>
+<div class="card" id="em-contexto">
+<div class="ch-hd" onclick="toggle('em-contexto')">
+  <div class="ico">🗺</div><div class="cm">
+  <div class="ct">C4 nivel 2: contenedores de AquaPort Enterprise</div>
+  <div class="cs">Diagrama de contenedores · 4 zonas · Bases de datos · APIs externas</div>
+  </div><button class="db undone" onclick="markDone(event,'em-contexto')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<p>En Enterprise ya no basta el nivel 1 (contexto). Necesitas el nivel 2: los contenedores que componen el sistema (aplicación Java, base de datos, módulo de telemetría, adaptador de API hídrica) y cómo se comunican entre sí.</p>
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Dibuja el diagrama de contenedores C4 (nivel 2) de AquaPort Enterprise. Incluye: la aplicación principal, el módulo de telemetría, el adaptador de la API hídrica, la base de datos de misiones, y la integración con los 4 sistemas externos. Cada línea de comunicación debe indicar el protocolo y el dato que fluye. Sube el diagrama al repo en <code>docs/c4-contenedores-empoleon.png</code>.</div>
+</div></div>
+
+<div class="tdiv">06 · RF y RNF</div>
+<div class="card" id="em-rf">
+<div class="ch-hd" onclick="toggle('em-rf')">
+  <div class="ico">📋</div><div class="cm">
+  <div class="ct">Requisitos Enterprise: trazabilidad, SLA y gestión de fallos en ruta</div>
+  <div class="cs">SLA cuantificado · Trazabilidad de waypoints · Recuperación ante fallos</div>
+  </div><button class="db undone" onclick="markDone(event,'em-rf')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Escribe 5 RF del nivel Enterprise (rutas multi-etapa, reasignación automática ante fallo en waypoint, trazabilidad completa de la cadena de custodia de muestras, coordinación entre zonas, reportes de eficiencia por zona) y 5 RNF con métricas de producción: SLA de disponibilidad, tiempo máximo de reasignación, throughput de misiones simultáneas. Aplica MoSCoW y documenta todas las tensiones entre RF.</div>
+</div></div>
+
+<div class="tdiv">07 · Plantilla DOSW</div>
+<div class="card" id="em-plantilla">
+<div class="ch-hd" onclick="toggle('em-plantilla')">
+  <div class="ico">📄</div><div class="cm">
+  <div class="ct">RF "Ejecutar misión multi-etapa con waypoints" — máxima complejidad</div>
+  <div class="cs">Waypoints anidados · Flujos de reasignación · Reglas de coordinación</div>
+  </div><button class="db undone" onclick="markDone(event,'em-plantilla')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Completa la plantilla DOSW para el RF "AP-15 Ejecutar misión multi-etapa con waypoints". El flujo básico tiene 8+ pasos. Los flujos alternos cubren: fallo de drone en waypoint intermedio (reasignación), condiciones hídricas adversas en tramo específico (desvío de ruta), zona de destino temporalmente inactiva. Las reglas de negocio deben incluir la cadena de custodia de muestras y los umbrales de decisión para la reasignación automática.</div>
+</div></div>
+
+<div class="tdiv">08 · Identidad y UX</div>
+<div class="card" id="em-ux">
+<div class="ch-hd" onclick="toggle('em-ux')">
+  <div class="ico">🎨</div><div class="cm">
+  <div class="ct">Design system completo y mapa de flujos del Enterprise</div>
+  <div class="cs">Tokens de diseño · Accesibilidad WCAG AA · Flujo multi-etapa</div>
+  </div><button class="db undone" onclick="markDone(event,'em-ux')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Construye el design system completo de AquaPort Enterprise: tokens de diseño (color, tipografía, espaciado, radio de borde), todos los componentes con sus estados, y el mapa de flujos del Enterprise (6 pantallas: mapa de zonas → selección de ruta → asignación por tramos → monitoreo en tiempo real → alerta de fallo y reasignación → reporte de entrega). Verifica contraste WCAG AA en todos los colores de estado. Documenta qué leyes UX aplica cada pantalla.</div>
+</div></div>
+
+<div class="tdiv">09 · Agilismo y Jira</div>
+<div class="card" id="em-agil">
+<div class="ch-hd" onclick="toggle('em-agil')">
+  <div class="ico">🏃</div><div class="cm">
+  <div class="ct">Roadmap del Enterprise en Jira con 3 sprints planificados</div>
+  <div class="cs">Épica multi-sprint · Retrospectiva · Velocity real · Impedimentos</div>
+  </div><button class="db undone" onclick="markDone(event,'em-agil')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>En Jira: planifica el roadmap del Enterprise con 3 sprints. Sprint 1: arquitectura por capas y patrones Enterprise. Sprint 2: rutas multi-etapa y coordinación de zonas. Sprint 3: calidad (JaCoCo ≥85%, SonarQube 0 deuda). Para cada sprint define goal, capacidad del equipo y DoD Enterprise. Documenta una retrospectiva real de uno de los sprints anteriores (qué funcionó, qué no y qué cambiarás). Comparte captura del roadmap.</div>
+</div></div>
+
+<div class="tdiv">10 · Diagramas de Casos de Uso</div>
+<div class="card" id="em-uc">
+<div class="ch-hd" onclick="toggle('em-uc')">
+  <div class="ico">🎯</div><div class="cm">
+  <div class="ct">Diagrama de CU del Enterprise con todos los flujos de fallo</div>
+  <div class="cs">Reasignación automática · Coordinación entre zonas · Flujos excepcionales</div>
+  </div><button class="db undone" onclick="markDone(event,'em-uc')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Dibuja el diagrama de CU del Enterprise. Incluye los 5 flujos alternos del nivel Empoleon como extensiones: fallo de drone en waypoint, condición hídrica adversa en tramo, zona destino inactiva, cadena de custodia interrumpida, drone con batería crítica en mitad de ruta. Cada &lt;&lt;extend&gt;&gt; debe tener su condición explicitada. Sube el diagrama al repo en <code>docs/diagrama-cu-empoleon.png</code>.</div>
+</div></div>
+
+<div class="tdiv">11 · Mocks con IA</div>
+<div class="card" id="em-mocks">
+<div class="ch-hd" onclick="toggle('em-mocks')">
+  <div class="ico">🖼</div><div class="cm">
+  <div class="ct">Mock del mapa de zonas y el monitoreo de rutas multi-etapa</div>
+  <div class="cs">Vista de mapa · Progreso de waypoints · Panel de telemetría · Alerta de fallo</div>
+  </div><button class="db undone" onclick="markDone(event,'em-mocks')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Diseña con IA el flujo completo del Enterprise en 5 pantallas: mapa de las 4 zonas hídricas con drones en tiempo real, configuración de ruta multi-etapa con waypoints, monitoreo de progreso por tramo, alerta de fallo en waypoint con reasignación automática visible, y reporte final de la cadena de custodia. Cada pantalla debe mostrar datos realistas del dominio (IDs de drones, zonas, tipos de carga). Adjunta los 5 prompts usados.</div>
+</div></div>
+
+<div class="tdiv">12 · TDD</div>
+<div class="card" id="em-tdd">
+<div class="ch-hd" onclick="toggle('em-tdd')">
+  <div class="ico">🧪</div><div class="cm">
+  <div class="ct">TDD de las 3 capas: unitarias, integración y cobertura Enterprise</div>
+  <div class="cs">Unitarias del dominio · Integración entre capas · JaCoCo ≥85%</div>
+  </div><button class="db undone" onclick="markDone(event,'em-tdd')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Implementa las 3 capas de pruebas para AquaPort Enterprise. Unitarias del <code>PlanificadorRuta</code> (cada tramo de la ruta multi-etapa). Integración del flujo completo: solicitud → planificación → asignación por tramos → notificación de waypoints. Cobertura JaCoCo ≥85% incluyendo branch coverage. Los 5 flujos alternos del Enterprise (fallo en waypoint, zona inactiva, batería crítica en ruta, cadena de custodia interrumpida, condición hídrica adversa) deben tener su prueba.</div>
+</div></div>
+
+<div class="tdiv">13 · JaCoCo + SonarQube</div>
+<div class="card" id="em-sonar">
+<div class="ch-hd" onclick="toggle('em-sonar')">
+  <div class="ico">📊</div><div class="cm">
+  <div class="ct">AquaPort Enterprise: estándares de calidad de producción</div>
+  <div class="cs">85%+ cobertura · 0 bugs · Deuda técnica &lt;15min · Evolución de métricas</div>
+  </div><button class="db undone" onclick="markDone(event,'em-sonar')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<h3>La evolución de los estándares a través de los 3 niveles</h3>
+<table>
+<tr><th>Métrica</th><th>MVP (Piplup)</th><th>v2 (Prinplup)</th><th>Enterprise (Empoleon)</th></tr>
+<tr><td>Line coverage</td><td>80%</td><td>80%</td><td>≥85%</td></tr>
+<tr><td>Branch coverage</td><td>—</td><td>70%</td><td>≥75%</td></tr>
+<tr><td>Bugs SonarQube</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>Vulnerabilidades</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>Deuda técnica</td><td>0</td><td>&lt;30 min</td><td>&lt;15 min</td></tr>
+<tr><td>Duplicación</td><td>—</td><td>&lt;5%</td><td>&lt;3%</td></tr>
+</table>
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Configura el Quality Gate de Enterprise con los estándares de la tabla. Analiza el proyecto con SonarQube. Logra los 6 indicadores en verde. Para cada issue que encuentres: identifica la causa raíz, corrígela con refactorización o prueba adicional (nunca suprimiendo el issue) y documenta el commit con el que lo solucionaste.</div>
+</div></div>
+
+<div class="tdiv">14 · Arquitectura por capas</div>
+<div class="card" id="em-arq">
+<div class="ch-hd" onclick="toggle('em-arq')">
+  <div class="ico">🏛</div><div class="cm">
+  <div class="ct">Auditoría final de la arquitectura por capas de AquaPort Enterprise</div>
+  <div class="cs">Dominio · Aplicación · Infraestructura · Sin violaciones de capa</div>
+  </div><button class="db undone" onclick="markDone(event,'em-arq')">☐ Listo</button><span class="chv">›</span>
+</div>
+<div class="cb">
+<pre><span class="cmt">com.eci.aquaport
+  ├── dominio/        ← entidades, enums, interfaces de repositorio (solo Java puro)
+  ├── aplicacion/     ← casos de uso, servicios de aplicación
+  └── infraestructura/← implementaciones de repositorio, adaptadores de API, configuración</span></pre>
+<div class="nt warn"><strong>⚠ Violación más grave</strong>Un import de Jackson, HttpClient o cualquier librería externa en el paquete <code>dominio</code>. El dominio debe poder ejecutarse sin ninguna dependencia externa.</div>
+<div class="nt tip"><strong>🎯 Reto Empoleon</strong>Realiza la auditoría final de la arquitectura: verifica que no hay imports cruzados que violen la dirección de dependencias (infraestructura puede depender de aplicación y dominio; dominio no puede depender de nada externo). Genera el reporte de dependencias con una herramienta (ArchUnit, jQAssistant o revisión manual con grep). Documenta el resultado en el README del proyecto.</div>
+</div></div>
+
+<div class="badge em" id="badge-empoleon" style="display:block">
+<span class="bi">👑🌊👑</span>
+<h3>¡AquaPort Enterprise está listo para navegar!</h3>
+<p>Llevaste el mismo sistema de 4 drones en la ECI a una red de 60 drones entre 4 zonas hídricas interconectadas. Eso es ingeniería de software.</p>
+</div>
+</div><!-- fin empoleon-content -->
+</div><!-- fin level-empoleon -->
+
+</main>
+<footer>DOSW Company · Escuela Colombiana de Ingeniería · 2026-2 · Prof. Andrés Martín Cantór Urrego · Sistema AquaPort</footer>
+
+<script>
+const PI=['pi-streams','pi-git','pi-patrones','pi-solid','pi-contexto','pi-rf','pi-plantilla','pi-ux','pi-agil','pi-uc','pi-mocks','pi-tdd','pi-sonar','pi-sonarq'];
+const PR=['pr-streams','pr-git','pr-patrones','pr-solid','pr-contexto','pr-rf','pr-plantilla','pr-ux','pr-agil','pr-uc','pr-mocks','pr-tdd','pr-jacoco','pr-sonar'];
+const EM=['em-streams','em-git','em-patrones','em-solid','em-contexto','em-rf','em-plantilla','em-ux','em-agil','em-uc','em-mocks','em-tdd','em-sonar','em-arq'];
+
+function st(){try{return JSON.parse(localStorage.getItem('aquaport_p')||'{}');}catch{return{};}}
+function sv(s){localStorage.setItem('aquaport_p',JSON.stringify(s));}
+function uniq(a){return[...new Set(a)];}
+function cnt(ids,s){return uniq(ids).filter(id=>s[id]).length;}
+
+function markDone(e,id){e.stopPropagation();const s=st();s[id]=!s[id];sv(s);renderAll();}
+function toggle(id){document.getElementById(id).classList.toggle('open');}
+function toggleEnu(h){const b=h.parentNode.querySelector('.enu-b');b.style.display=b.style.display==='none'?'block':'none';}
+function setLevel(lv){
+  document.querySelectorAll('.ls').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.eb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('level-'+lv).classList.add('active');
+  const map={piplup:'pi',prinplup:'pr',empoleon:'em'};
+  document.querySelector('.eb.'+map[lv]).classList.add('active');
+}
+
+function renderAll(){
+  const s=st();
+  const piN=cnt(PI,s),prN=cnt(PR,s),emN=cnt(EM,s),tot=piN+prN+emN;
+
+  [...PI,...PR,...EM].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    const btn=el.querySelector('.db');if(!btn)return;
+    if(s[id]){btn.className='db done';btn.textContent='\u2713 Listo';}
+    else{btn.className='db undone';btn.textContent='\u2610 Listo';}
+  });
+
+  const piF=document.getElementById('pi-fill'),piS=document.getElementById('pi-stat');
+  if(piF)piF.style.width=Math.round(piN/14*100)+'%';
+  if(piS)piS.textContent=piN+' / 14';
+  const piB=document.getElementById('badge-piplup');
+  if(piB)piB.style.display=piN>=14?'block':'none';
+
+  const lprC=document.getElementById('lock-pr-count');if(lprC)lprC.textContent=piN;
+  const lpr=document.getElementById('lock-prinplup'),prc=document.getElementById('prinplup-content');
+  if(lpr)lpr.style.display=piN>=14?'none':'block';
+  if(prc)prc.style.display=piN>=14?'block':'none';
+  const prF=document.getElementById('pr-fill'),prS=document.getElementById('pr-stat');
+  if(prF)prF.style.width=Math.round(prN/14*100)+'%';
+  if(prS)prS.textContent=prN+' / 14';
+  const prB=document.getElementById('badge-prinplup');
+  if(prB)prB.style.display=prN>=14?'block':'none';
+
+  const lemC=document.getElementById('lock-em-count');if(lemC)lemC.textContent=prN;
+  const lem=document.getElementById('lock-empoleon'),emc=document.getElementById('empoleon-content');
+  if(lem)lem.style.display=prN>=14?'none':'block';
+  if(emc)emc.style.display=prN>=14?'block':'none';
+  const emF=document.getElementById('em-fill'),emS=document.getElementById('em-stat');
+  if(emF)emF.style.width=Math.round(emN/14*100)+'%';
+  if(emS)emS.textContent=emN+' / 14';
+
+  const gf=document.getElementById('gf'),gv=document.getElementById('gv');
+  if(gf)gf.style.width=Math.round(tot/42*100)+'%';
+  if(gv)gv.textContent=tot+' / 42 retos';
+}
+
+renderAll();
+</script>
+</body></html>
