@@ -2291,3 +2291,153 @@ El flujo de usuario modela el ciclo de vida de una asignación autónoma asistid
 
 - **Estructura en Bloques de 5 Unidades:** La flota total de 15 drones fue deliberadamente fragmentada en **3 escuadrillas de exactamente 5 drones** cada una. Al situar cada bloque dentro del límite inferior de Miller (5 ítems), el operador puede retener mentalmente el estado de cada escuadrilla, realizar escaneos visuales sin fatiga cognitiva y detectar anomalías en fracciones de segundo.
 
+---
+
+### 🌊 Ejercicio 09: Agilismo y Planificación de Sprint en Jira (Fase Prinplup)
+
+> **🎯 Reto Prinplup — Agilismo y Jira:**  
+> *"Planifica el sprint de la v2 en Jira. Crea el Sprint Goal: 'Completar el asignador automático con Strategy y las alertas con Observer'. Agrega las HU de la v2 con Story Points estimados (usa Fibonacci: 1, 2, 3, 5, 8). Define el DoD para este sprint. Comparte captura del sprint activo."*
+
+En este ejercicio se formaliza la planificación ágil (Scrum) de **AquaPort v2 (Fase Prinplup)** en Jira Software. Se define el objetivo nuclear del sprint, la velocidad y capacidad del equipo, los criterios de salida técnica (**Definition of Done**) y el desglose de **5 Historias de Usuario (HU)** estimadas en la secuencia de Fibonacci con sus respectivos criterios de aceptación BDD (Gherkin) y subtareas de ingeniería.
+
+---
+
+#### 1. Configuración General del Sprint en Jira
+
+> 🔗 **Acceso directo al tablero y backlog de Jira Software:**  
+> 👉 [**AquaPort — Tablero y Backlog de Sprint 2 en Atlassian Jira Cloud**](https://josealejandromartinezarias9.atlassian.net/jira/software/projects/AQUA/boards/69/backlog?epics=visible&atlOrigin=eyJpIjoiODc5MGQ0NTU1ZmQ1NGQ1MWE3ZTAzMWYxODBmZWExNDEiLCJwIjoiaiJ9)
+
+| Parámetro Ágil | Valor Configurado | Justificación y Contexto Operacional |
+| :--- | :--- | :--- |
+| **Proyecto:** | `AquaPort (AQUA)` | Proyecto de desarrollo de software del equipo Piplup en Jira Cloud. |
+| **Nombre del Sprint:** | `Sprint 2 — AquaPort v2` | Segundo ciclo iterativo correspondiente a la Fase Prinplup (11 oct – 25 oct). |
+| **Sprint Goal (Oficial):** | **"Completar el asignador automático con Strategy y las alertas con Observer"** | Foco de valor inmutable del sprint según la directriz metodológica DOSW. |
+| **Duración:** | `2 Semanas (10 días hábiles de desarrollo)` | Cadencia estándar de Scrum para entregas incrementales verificables. |
+| **Capacidad del Equipo:** | `24 Story Points (SP)` | 2 ingenieros de desarrollo con capacidad media de 12 SP cada uno. |
+| **Velocidad Comprometida:** | `21 Story Points (SP)` | Total estimado de las 5 HUs (deja un buffer de 3 SP para contingencias). |
+
+---
+
+#### 2. Definition of Done (DoD) Oficial del Sprint v2
+
+Para que cualquier Historia de Usuario o funcionalidad del Sprint 2 se considere finalizada (**Done**) y lista para su integración en la rama `develop`, debe satisfacer sin excepciones los siguientes 5 criterios de calidad:
+
+1. **Compilación Limpia:** El código fuente compila sin errores ni advertencias (`mvn clean compile`).
+2. **Pruebas Unitarias al 100% en Verde:** Toda la suite de pruebas unitarias pasa exitosamente con **JUnit 5 y Mockito** (`mvn test`, 82 pruebas actuales en verde).
+3. **Cobertura JaCoCo $\ge$ 80%:** El reporte automatizado de JaCoCo valida una cobertura de línea (*Line Coverage*) mayor o igual al 80% en todas las clases de dominio de la v2.
+4. **Revisión de Código Aprobada (Peer Review):** Todo cambio se tramita mediante rama `feature/*` y requiere la aprobación formal de al menos un revisor técnico antes del merge sin fast-forward (`--no-ff`).
+5. **Artefactos Arquitectónicos y Requerimientos Actualizados:** El Diagrama de Contexto C4 v2 (`DiagramC4v2.png`) y la Plantilla Formal DOSW (`AP-07`) están completamente actualizados y versionados en el repositorio.
+
+---
+
+#### 3. Matriz de Historias de Usuario (HU) con Estimación en Fibonacci (1, 2, 3, 5, 8)
+
+| Clave Jira | Historia de Usuario (HU) | Story Points (Fibonacci) | Prioridad | Subtareas Registradas en Jira | Complejidad / Justificación Técnica de la Estimación |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| **AQUA-13** | **HU-04: Asignación automática de drones mediante Strategy y validación hídrica (AP-07 & AP-08)** | **8 SP** | Alta | `AQUA-18`, `AQUA-19`, `AQUA-20` | **Complejidad Alta:** Abstracción `EstrategiaSeleccion`, 3 estrategias (`MayorBateria`, `ZonaCercana`, `PrioridadCritica`), orquestador `AsignadorAutomatico`, validación con API externa y resolución de la tensión entre batería máxima y aptitud de zona. |
+| **AQUA-14** | **HU-05: Sistema reactivo de notificación de alertas de fallo en tiempo real con Observer** | **5 SP** | Alta | `AQUA-21`, `AQUA-22` | **Complejidad Media-Alta:** Desacoplamiento total de observadores (`ObservadorMision`, `NotificadorAlertas`), gestión de suscriptores multicanal (`CentroControlObserver`, `TecnicoMantenimientoObserver`) y latencia RNF-02 $< 50$ ms. |
+| **AQUA-15** | **HU-06: Factoría de tipos especializados de drones (Superficial, Semisumergido, Buceador)** | **3 SP** | Media | `AQUA-24`, `AQUA-25` | **Complejidad Moderada:** Implementación de `FabricaDrones` bajo Factory Method, jerarquía polimórfica inmutable con restricciones físicas de peso y cumplimiento de SOLID (OCP y LSP). |
+| **AQUA-16** | **HU-07: Consultas analíticas y partición de flota con Streams avanzados** | **3 SP** | Media | `AQUA-27`, `AQUA-28` | **Complejidad Funcional:** Consultas puras sobre 15 drones con `groupingBy`, `partitioningBy`, cálculo de promedios de batería y comparadores compuestos `thenComparing`. |
+| **AQUA-17** | **HU-08: Gestión y trazabilidad de órdenes de servicio técnico por fallo de drone** | **2 SP** | Baja | `AQUA-32`, `AQUA-33` | **Complejidad Focalizada:** Manejo del estado `MANTENIMIENTO`, emisión de orden estructurada con causa de avería, taller ribereño y telemetría para el técnico. |
+| **TOTAL** | **Capacidad Total del Sprint 2** | **21 SP** | — | **10 Subtareas Activas** | **Cumplimiento al 100% del Sprint Goal** |
+
+---
+
+#### 4. Detalle y Criterios de Aceptación (Gherkin / BDD) de las Historias de Usuario
+
+##### A. HU-04 (AQUA-13): Asignación automática de drones mediante Strategy (8 SP)
+- **Como:** Operador Hídrico del campus ECI.
+- **Quiero que:** El sistema asigne automáticamente el drone óptimo a cada misión evaluando oleaje, tipo de carga y la estrategia activa.
+- **Para:** Despachar misiones críticas y regulares de inmediato sin depender de la selección manual humana.
+- **Criterios de Aceptación (BDD / Gherkin):**
+  - **Escenario 1 (Happy Path - Mayor Batería):**  
+    *Dado que* existen drones disponibles con batería $\ge 35\%$ y la estrategia activa es `MayorBateriaStrategy`,  
+    *Cuando* se solicita una misión regular en aguas mansas,  
+    *Entonces* el sistema selecciona el drone con mayor carga residual y actualiza su estado a `EN_MISION`.
+  - **Escenario 2 (Resolución Tensión AP-07 vs AP-08 - Misión Crítica):**  
+    *Dado que* la misión tiene prioridad `CRITICA` y destino en zona de oleaje agitado (*Canal Central*),  
+    *Cuando* se ejecuta la asignación bajo `PrioridadCriticaStrategy`,  
+    *Entonces* el sistema prioriza la aptitud técnica del `DroneSemisumergido` sobre un dron superficial con mayor batería, protegiendo la integridad de la muestra.
+  - **Escenario 3 (Flujo Alterno - Flota agotada):**  
+    *Dado que* ningún drone cumple el umbral mínimo ($\ge 35\%$ o capacidad de carga requerida),  
+    *Cuando* el asignador evalúa la flota,  
+    *Entonces* retorna `Optional.empty()` y notifica fallo de despacho al Centro de Control.
+
+##### B. HU-05 (AQUA-14): Alertas de fallo en tiempo real con Observer (5 SP)
+- **Como:** Centro de Control ECI y Técnico de Mantenimiento.
+- **Quiero:** Recibir notificaciones inmediatas ante cualquier dron en estado `FALLO`.
+- **Para:** Despachar asistencia técnica y reasignar misiones en menos de 5 minutos (MTTR).
+- **Criterios de Aceptación (BDD / Gherkin):**
+  - **Escenario 1 (Difusión multicanal en tiempo real):**  
+    *Dado que* un dron entra en estado `FALLO` por avería en propulsores o sensores,  
+    *Cuando* `NotificadorAlertas` difunde el evento,  
+    *Entonces* `CentroControlObserver` registra la alerta crítica y `TecnicoMantenimientoObserver` genera automáticamente la orden de trabajo técnica en menos de 50 ms (RNF-02).
+  - **Escenario 2 (Desacoplamiento sin impacto):**  
+    *Dado que* se añade o remueve un observador en tiempo de ejecución,  
+    *Cuando* ocurre una alerta,  
+    *Entonces* el sistema lo notifica sin requerir modificaciones en el asignador ni en la clase `DroneAcuatico`.
+
+##### C. HU-06 (AQUA-15): Factoría de tipos especializados de drones (3 SP)
+- **Como:** Administrador del Sistema ECI.
+- **Quiero:** Instanciar las unidades de la flota a través de `FabricaDrones`.
+- **Para:** Asegurar la consistencia de modelos y límites de carga útil sin exponer constructores concretos.
+- **Criterios de Aceptación (BDD / Gherkin):**
+  - **Escenario 1 (Instanciación por tipo):**  
+    *Dado que* se invoca `FabricaDrones.crearDrone(...)` con `TipoDrone.SEMISUMERGIDO`,  
+    *Cuando* la factoría procesa la llamada,  
+    *Entonces* retorna una instancia de `DroneSemisumergido` configurada con capacidad de 1500g y estado `DISPONIBLE`.
+  - **Escenario 2 (Validación de carga en DroneBuceador):**  
+    *Dado que* un dron es de tipo `BUCEADOR`,  
+    *Cuando* se evalúa para transportar una muestra $> 300$g,  
+    *Entonces* el sistema lo excluye por exceder su capacidad estructural máxima.
+
+##### D. HU-07 (AQUA-16): Consultas analíticas de flota con Streams (3 SP)
+- **Como:** Operador Hídrico.
+- **Quiero:** Ejecutar consultas agrupadas y filtradas sobre la flota de 15 drones.
+- **Para:** Visualizar disponibilidad por tipología, promedios de energía y aislar misiones críticas.
+- **Criterios de Aceptación (BDD / Gherkin):**
+  - **Escenario 1 (Agrupación y partición sin mutación):**  
+    *Dado que* la flota contiene 15 drones con telemetría activa,  
+    *Cuando* se ejecuta `ConsultorFlotaPrinplup`,  
+    *Entonces* retorna mapas inmutables con agrupación por tipo, partición de misiones críticas y zonas únicas sin modificar el estado de los objetos.
+
+##### E. HU-08 (AQUA-17): Gestión de órdenes de servicio técnico (2 SP)
+- **Como:** Técnico de Mantenimiento.
+- **Quiero:** Recibir una orden de trabajo estandarizada cada vez que se reporte una anomalía.
+- **Para:** Acudir con el instrumental exacto al cuerpo hídrico donde se encuentra la unidad.
+- **Criterios de Aceptación (BDD / Gherkin):**
+  - **Escenario 1 (Estructura de orden de trabajo):**  
+    *Dado que* un drone reporta alerta crítica,  
+    *Cuando* el técnico recibe la orden,  
+    *Entonces* incluye ID del dron, modelo, coordenadas/zona hídrica, carga residual y descripción del fallo.
+
+---
+
+#### 5. Evidencias del Sprint 2 y Backlog en Jira Software
+
+##### A. Tablero del Sprint 2 Activo (21 Story Points y Sprint Goal)
+El Sprint 2 se encuentra formalmente planificado y activo en Jira con las 5 historias de usuario correspondientes a la evolución Prinplup:
+
+![Tablero de Sprint 2 Activo en Jira — AquaPort v2](docs/images/JiraPrinPlupSprint02.png)
+
+##### B. Detalle de Historias de Usuario y Subtareas Técnicas en Jira
+
+###### 1. HU-04 (AQUA-13: 8 SP) — Asignación Automática con Strategy y Subtareas Técnicas:
+![Detalle HU-04 en Jira](docs/images/JiraHUAsignación%20automática%20de%20drones%20mediante%20Strategy%20y%20validación%20hídrica.png)
+
+![Subtareas de HU-04 en Jira](docs/images/JiraAsignación%20automática%20de%20drones%20mediante%20Strategy%20y%20validación%20hídrica%20-%20Tarea.png)
+
+###### 2. HU-05 (AQUA-14: 5 SP) — Sistema Reactivo de Alertas con Observer y Subtareas:
+![Detalle HU-05 en Jira](docs/images/Jira%20Sistema%20reactivo%20de%20notificación%20de%20alertas%20de%20fallo%20en%20tiempo%20real%20con%20Observer.png)
+
+###### 3. HU-06 (AQUA-15: 3 SP) — Factoría de Drones con Factory Method y Subtareas:
+![Detalle HU-06 en Jira](docs/images/Jira%20Factoría%20de%20tipos%20especializados%20de%20drones%20(Superficial,%20Semisumergido,%20Buceador).png)
+
+###### 4. HU-07 (AQUA-16: 3 SP) — Consultas Analíticas con Streams Avanzados y Subtareas:
+![Detalle HU-07 en Jira](docs/images/Jira%20Consultas%20analíticas%20y%20partición%20de%20flota%20con%20Streams%20avanzados.png)
+
+###### 5. HU-08 (AQUA-17: 2 SP) — Gestión de Órdenes Técnicas de Mantenimiento y Subtareas:
+![Detalle HU-08 en Jira](docs/images/Jira%20Gestión%20y%20trazabilidad%20de%20órdenes%20de%20servicio%20técnico%20por%20fallo%20de%20drone.png)
+
+
+
