@@ -44,4 +44,12 @@ public class ValidadorMision {
         validarPuntoPartida(mision.getPuntoPartida());
         validarPuntoLlegada(mision.getPuntoLlegada());
     }
+
+    public void validarDroneDisponible(DroneAcuatico drone) {
+        // Fase Red: método stub sin implementar para fallar la prueba
+    }
+
+    public void validarZona(String zona) {
+        // Fase Red: método stub sin implementar para fallar la prueba
+    }
 }
