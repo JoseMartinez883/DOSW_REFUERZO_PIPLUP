@@ -2092,72 +2092,72 @@ En cumplimiento con el estándar formal de ingeniería de software de la Escuela
 
 #### 1. FUNCIONALIDAD
 
-| Campo | Detalle de Especificación |
-| :--- | :--- |
-| **Código:** | **AP-07** (Correspondiente a **RF-01** de la Fase Prinplup) |
-| **Nombre:** | **Asignar automáticamente drone a misión hídrica** |
-| **Descripción:** | Permite al sistema determinar y asignar automáticamente el drone más adecuado para una misión de transporte solicitada, considerando la carga a transportar, las condiciones del agua en la zona de destino y la disponibilidad operativa de la flota, alertando al personal correspondiente si ocurre algún imprevisto. |
-| **Cómo se ejecutará:** | A través del panel de control de AquaPort al momento de registrar o confirmar una solicitud de misión de transporte. |
-| **Actor principal:** | **Operador Hídrico** |
-| **Precondiciones:** | 1. El sistema AquaPort debe estar en funcionamiento y con la flota de 15 drones registrada en el inventario.<br>2. Se debe contar con la información ambiental y meteorológica de las zonas hídricas del campus.<br>3. Debe existir al menos un drone en estado `DISPONIBLE` con nivel de batería seguro (mínimo 35% para misiones ordinarias y 50% para misiones críticas). |
+| Campo                          | Detalle de Especificación                                                                                                                                                                                                                                                                                                                                                   |
+| :----------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Código:**             | **AP-07** (Correspondiente a **RF-01** de la Fase Prinplup)                                                                                                                                                                                                                                                                                                      |
+| **Nombre:**              | **Asignar automáticamente drone a misión hídrica**                                                                                                                                                                                                                                                                                                                  |
+| **Descripción:**        | Permite al sistema determinar y asignar automáticamente el drone más adecuado para una misión de transporte solicitada, considerando la carga a transportar, las condiciones del agua en la zona de destino y la disponibilidad operativa de la flota, alertando al personal correspondiente si ocurre algún imprevisto.                                                 |
+| **Cómo se ejecutará:** | A través del panel de control de AquaPort al momento de registrar o confirmar una solicitud de misión de transporte.                                                                                                                                                                                                                                                       |
+| **Actor principal:**     | **Operador Hídrico**                                                                                                                                                                                                                                                                                                                                                  |
+| **Precondiciones:**      | 1. El sistema AquaPort debe estar en funcionamiento y con la flota de 15 drones registrada en el inventario.2. Se debe contar con la información ambiental y meteorológica de las zonas hídricas del campus.3. Debe existir al menos un drone en estado `DISPONIBLE` con nivel de batería seguro (mínimo 35% para misiones ordinarias y 50% para misiones críticas). |
 
 ---
 
 #### 2. DATOS DE ENTRADA (Tipos Anidados y Sub-objetos)
 
-| Nombre del Campo | Descripción | Tipo de Campo | Reglas de Validación / Dominio | Obligatorio |
-| :--- | :--- | :--- | :--- | :---: |
-| `idMision` | Identificador único de la misión solicitada. | `String` | Formato alfanumérico no nulo ni vacío (ej. `MIS-201`). | Sí |
-| `puntoPartida` | Punto de acople o muelle donde se cargará el paquete. | `String` | Ubicación geográfica válida del campus (ej. `Embalse Norte`). | Sí |
-| `zonaDestino` | Zona hídrica de destino hacia donde navegará el dron. | `Enum` | Debe ser un valor válido del enumerador: `EMBALSE_NORTE`, `CANAL_CENTRAL`, `LAGUNA_SUR`, `RIBERA_ESTE`, `LAB_HIDRICO`. | Sí |
-| **`carga`** | **Sub-objeto que agrupa los atributos del bulto a transportar.** | **`Object` (Anidado)** | **Estructura compuesta obligatoria.** | **Sí** |
-| `carga.peso` | Peso neto de la muestra, sensor o instrumento en gramos. | `Integer` | Valor estrictamente mayor a 0 y menor o igual a **1500 gramos** (límite físico de la flota). | Sí |
-| `carga.tipo` | Categoría física del material transportado. | `Enum` | Uno de los valores predefinidos: `MUESTRA_AGUA`, `SENSOR`, `PAQUETE_LIGERO`, `EQUIPO_MEDICION`. | Sí |
-| `carga.prioridad` | Nivel de precedencia institucional de la entrega. | `Enum` | Valores: `CRITICA`, `ALTA`, `NORMAL`, `BAJA`. Si es `CRITICA`, activa la política de aptitud técnica y reserva alta. | Sí |
-| `estrategiaDeseada` | Política algorítmica específica sugerida por el operador. | `String` | Opcional: `MAYOR_BATERIA`, `ZONA_CERCANA`, `PRIORIDAD_CRITICA`. Si se omite, el sistema decide según la prioridad de la carga. | No |
+| Nombre del Campo      | Descripción                                                           | Tipo de Campo                  | Reglas de Validación / Dominio                                                                                                      |  Obligatorio  |
+| :-------------------- | :--------------------------------------------------------------------- | :----------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- | :-----------: |
+| `idMision`          | Identificador único de la misión solicitada.                         | `String`                     | Formato alfanumérico no nulo ni vacío (ej.`MIS-201`).                                                                            |      Sí      |
+| `puntoPartida`      | Punto de acople o muelle donde se cargará el paquete.                 | `String`                     | Ubicación geográfica válida del campus (ej.`Embalse Norte`).                                                                    |      Sí      |
+| `zonaDestino`       | Zona hídrica de destino hacia donde navegará el dron.                | `Enum`                       | Debe ser un valor válido del enumerador:`EMBALSE_NORTE`, `CANAL_CENTRAL`, `LAGUNA_SUR`, `RIBERA_ESTE`, `LAB_HIDRICO`.     |      Sí      |
+| **`carga`**   | **Sub-objeto que agrupa los atributos del bulto a transportar.** | **`Object` (Anidado)** | **Estructura compuesta obligatoria.**                                                                                          | **Sí** |
+| `carga.peso`        | Peso neto de la muestra, sensor o instrumento en gramos.               | `Integer`                    | Valor estrictamente mayor a 0 y menor o igual a**1500 gramos** (límite físico de la flota).                                  |      Sí      |
+| `carga.tipo`        | Categoría física del material transportado.                          | `Enum`                       | Uno de los valores predefinidos:`MUESTRA_AGUA`, `SENSOR`, `PAQUETE_LIGERO`, `EQUIPO_MEDICION`.                               |      Sí      |
+| `carga.prioridad`   | Nivel de precedencia institucional de la entrega.                      | `Enum`                       | Valores:`CRITICA`, `ALTA`, `NORMAL`, `BAJA`. Si es `CRITICA`, activa la política de aptitud técnica y reserva alta.      |      Sí      |
+| `estrategiaDeseada` | Política algorítmica específica sugerida por el operador.           | `String`                     | Opcional:`MAYOR_BATERIA`, `ZONA_CERCANA`, `PRIORIDAD_CRITICA`. Si se omite, el sistema decide según la prioridad de la carga. |      No      |
 
 ---
 
 #### 3. DATOS DE SALIDA (Sub-objetos de Drone Asignado y Telemetría)
 
-| Nombre del Campo | Descripción | Tipo de Campo | Reglas / Aplicación en AquaPort v2 | Obligatorio |
-| :--- | :--- | :--- | :--- | :---: |
-| `misionAsignada` | Instancia final inmutable de la misión configurada. | `Mision` | Creada tras validar todas las precondiciones con el dron enlazado. | Sí |
-| **`droneAsignado`** | **Sub-objeto que describe al dron seleccionado por el algoritmo.** | **`Object` (Anidado)** | **Calculado por el sistema según la estrategia activa de selección.** | **Sí (Salida)** |
-| `droneAsignado.id` | Identificador único de la unidad naval. | `String` | Formato estándar institucional: `AR-XX` o `DRN-XX`. | Sí (Salida) |
-| `droneAsignado.modelo` | Nombre comercial/técnico del modelo de hardware. | `String` | Cadena descriptiva (`Aqua-Surface 200`, `Aqua-SemiSub 300`, `Aqua-Diver 500`). | Sí (Salida) |
-| `droneAsignado.tipo` | Familia física del dron acuático. | `String` | Valor discreto: `SUPERFICIAL`, `SEMISUMERGIDO` o `BUCEADOR`. | Sí (Salida) |
-| `droneAsignado.bateria` | Porcentaje de energía remanente al momento del despacho. | `Integer` | Valor entero entre 0 y 100% (garantizado `>= 35%` o `>= 50%` en crítica). | Sí (Salida) |
-| `droneAsignado.zona` | Zona geográfica donde se encuentra apostado el dron. | `String` | Ubicación de acople actual en la red hídrica del campus. | Sí (Salida) |
-| `droneAsignado.capacidadCargaGramos` | Carga útil máxima certificada del dron seleccionado. | `Integer` | 500g para `SUPERFICIAL`, 1500g para `SEMISUMERGIDO`, 300g para `BUCEADOR`. | Sí (Salida) |
-| `condicionesHidricasConsultadas` | Instantánea ambiental recuperada de la API externa. | `Sub-objeto` | Registro de nivel de agitación (Calma/Moderada/Fuerte), profundidad (metros) y clima. | Sí (Salida) |
-| `codigoSeguimiento` | Token criptográfico o identificador único para monitoreo. | `String` | Hash para consulta de estado en tiempo real por el solicitante. | Sí (Salida) |
-| `mensajeExito` | Notificación emitida en consola y canales de monitoreo. | `String` | Confirmación formal: `[AquaPort - Notificación] Misión asignada exitosamente...` | Sí (Salida) |
-| `mensajeError` | Diagnóstico de rechazo ante excepciones de negocio. | `Exception` | Excepciones tipadas (`IllegalArgumentException`, `IllegalStateException`). | (En fallos) |
+| Nombre del Campo                       | Descripción                                                             | Tipo de Campo                  | Reglas / Aplicación en AquaPort v2                                                    |      Obligatorio      |
+| :------------------------------------- | :----------------------------------------------------------------------- | :----------------------------- | :------------------------------------------------------------------------------------- | :--------------------: |
+| `misionAsignada`                     | Instancia final inmutable de la misión configurada.                     | `Mision`                     | Creada tras validar todas las precondiciones con el dron enlazado.                     |          Sí          |
+| **`droneAsignado`**            | **Sub-objeto que describe al dron seleccionado por el algoritmo.** | **`Object` (Anidado)** | **Calculado por el sistema según la estrategia activa de selección.**          | **Sí (Salida)** |
+| `droneAsignado.id`                   | Identificador único de la unidad naval.                                 | `String`                     | Formato estándar institucional:`AR-XX` o `DRN-XX`.                                |      Sí (Salida)      |
+| `droneAsignado.modelo`               | Nombre comercial/técnico del modelo de hardware.                        | `String`                     | Cadena descriptiva (`Aqua-Surface 200`, `Aqua-SemiSub 300`, `Aqua-Diver 500`).   |      Sí (Salida)      |
+| `droneAsignado.tipo`                 | Familia física del dron acuático.                                      | `String`                     | Valor discreto:`SUPERFICIAL`, `SEMISUMERGIDO` o `BUCEADOR`.                      |      Sí (Salida)      |
+| `droneAsignado.bateria`              | Porcentaje de energía remanente al momento del despacho.                | `Integer`                    | Valor entero entre 0 y 100% (garantizado`>= 35%` o `>= 50%` en crítica).          |      Sí (Salida)      |
+| `droneAsignado.zona`                 | Zona geográfica donde se encuentra apostado el dron.                    | `String`                     | Ubicación de acople actual en la red hídrica del campus.                             |      Sí (Salida)      |
+| `droneAsignado.capacidadCargaGramos` | Carga útil máxima certificada del dron seleccionado.                   | `Integer`                    | 500g para`SUPERFICIAL`, 1500g para `SEMISUMERGIDO`, 300g para `BUCEADOR`.        |      Sí (Salida)      |
+| `condicionesHidricasConsultadas`     | Instantánea ambiental recuperada de la API externa.                     | `Sub-objeto`                 | Registro de nivel de agitación (Calma/Moderada/Fuerte), profundidad (metros) y clima. |      Sí (Salida)      |
+| `codigoSeguimiento`                  | Token criptográfico o identificador único para monitoreo.              | `String`                     | Hash para consulta de estado en tiempo real por el solicitante.                        |      Sí (Salida)      |
+| `mensajeExito`                       | Notificación emitida en consola y canales de monitoreo.                 | `String`                     | Confirmación formal:`[AquaPort - Notificación] Misión asignada exitosamente...`   |      Sí (Salida)      |
+| `mensajeError`                       | Diagnóstico de rechazo ante excepciones de negocio.                     | `Exception`                  | Excepciones tipadas (`IllegalArgumentException`, `IllegalStateException`).         |      (En fallos)      |
 
 ---
 
 #### 4. FLUJO BÁSICO (Ciclo de Asignación en 7 Pasos)
 
-| Paso | Actor | Descripción | Excepciones |
-| :---: | :--- | :--- | :--- |
-| **1** | **Operador Hídrico** | Ingresa los datos de la solicitud de transporte, especificando la zona de destino y los datos del paquete (peso en gramos, tipo de carga y prioridad de la misión). | `IllegalArgumentException` si faltan datos o el peso es `<= 0`. |
-| **2** | **Operador Hídrico** | Solicita la asignación automática. El sistema consulta las condiciones del agua en la zona de destino (oleaje, corrientes y profundidad). | Flujo alterno **2a** si el agua presenta condiciones adversas. |
-| **3** | **Operador Hídrico** | El sistema filtra la flota activa e identifica los drones disponibles que son físicamente aptos para navegar en las condiciones del cuerpo de agua de esa zona. | Flujo alterno **3a** si no hay drones disponibles compatibles. |
-| **4** | **Operador Hídrico** | El sistema evalúa la prioridad de la misión y selecciona el drone más conveniente (priorizando cercanía y reserva si es crítica, o mayor batería si es ordinaria). | — |
-| **5** | **Operador Hídrico** | El sistema comprueba que el drone seleccionado cumpla con el peso del paquete y tenga suficiente nivel de batería (mínimo 35%, o 50% en misiones críticas). | Flujo alterno **5a** (peso excede capacidad) o **5b** (batería insuficiente o falla). |
-| **6** | **Operador Hídrico** | El sistema asigna formalmente el drone a la misión, cambia el estado del drone a "En Misión" y registra la operación. | `IllegalStateException` si el drone se encuentra bloqueado. |
-| **7** | **Operador Hídrico** | Recibe en pantalla la confirmación del despacho con el identificador del drone asignado, el código de seguimiento para el solicitante y el aviso emitido al Centro de Control. | Fin del flujo básico exitoso. |
+|    Paso    | Actor                       | Descripción                                                                                                                                                                     | Excepciones                                                                                       |
+| :---------: | :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
+| **1** | **Operador Hídrico** | Ingresa los datos de la solicitud de transporte, especificando la zona de destino y los datos del paquete (peso en gramos, tipo de carga y prioridad de la misión).             | `IllegalArgumentException` si faltan datos o el peso es `<= 0`.                               |
+| **2** | **Operador Hídrico** | Solicita la asignación automática. El sistema consulta las condiciones del agua en la zona de destino (oleaje, corrientes y profundidad).                                      | Flujo alterno**2a** si el agua presenta condiciones adversas.                               |
+| **3** | **Operador Hídrico** | El sistema filtra la flota activa e identifica los drones disponibles que son físicamente aptos para navegar en las condiciones del cuerpo de agua de esa zona.                 | Flujo alterno**3a** si no hay drones disponibles compatibles.                               |
+| **4** | **Operador Hídrico** | El sistema evalúa la prioridad de la misión y selecciona el drone más conveniente (priorizando cercanía y reserva si es crítica, o mayor batería si es ordinaria).         | —                                                                                                |
+| **5** | **Operador Hídrico** | El sistema comprueba que el drone seleccionado cumpla con el peso del paquete y tenga suficiente nivel de batería (mínimo 35%, o 50% en misiones críticas).                   | Flujo alterno**5a** (peso excede capacidad) o **5b** (batería insuficiente o falla). |
+| **6** | **Operador Hídrico** | El sistema asigna formalmente el drone a la misión, cambia el estado del drone a "En Misión" y registra la operación.                                                         | `IllegalStateException` si el drone se encuentra bloqueado.                                     |
+| **7** | **Operador Hídrico** | Recibe en pantalla la confirmación del despacho con el identificador del drone asignado, el código de seguimiento para el solicitante y el aviso emitido al Centro de Control. | Fin del flujo básico exitoso.                                                                    |
 
 ---
 
 #### 5. FLUJOS ALTERNOS
 
-| Paso | Actor | Descripción | Excepciones |
-| :---: | :--- | :--- | :--- |
-| **2a** | **Operador Hídrico** | Intenta despachar la misión pero las condiciones del agua en la zona son peligrosas (oleaje fuerte o corrientes excesivas). El sistema suspende la asignación y le muestra la advertencia en pantalla. | `IllegalStateException` (Operación suspendida por condiciones ambientales). |
-| **3a** | **Operador Hídrico** | Solicita la asignación pero no hay drones disponibles compatibles en la red hídrica. El sistema le notifica que no hay unidades libres y deja la misión en lista de espera. | `IllegalStateException` (Sin drones disponibles para la zona). |
-| **5a** | **Operador Hídrico** | Ingresa un paquete cuyo peso supera la capacidad máxima del tipo de drone requerido (ej. más de 300g para buceo o más de 1500g en total). El sistema rechaza la solicitud e informa el límite de peso permitido. | `IllegalArgumentException` (Carga excede la capacidad de transporte). |
+|     Paso     | Actor                       | Descripción                                                                                                                                                                                                                                            | Excepciones                                                                       |
+| :----------: | :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------- |
+| **2a** | **Operador Hídrico** | Intenta despachar la misión pero las condiciones del agua en la zona son peligrosas (oleaje fuerte o corrientes excesivas). El sistema suspende la asignación y le muestra la advertencia en pantalla.                                                | `IllegalStateException` (Operación suspendida por condiciones ambientales).    |
+| **3a** | **Operador Hídrico** | Solicita la asignación pero no hay drones disponibles compatibles en la red hídrica. El sistema le notifica que no hay unidades libres y deja la misión en lista de espera.                                                                          | `IllegalStateException` (Sin drones disponibles para la zona).                  |
+| **5a** | **Operador Hídrico** | Ingresa un paquete cuyo peso supera la capacidad máxima del tipo de drone requerido (ej. más de 300g para buceo o más de 1500g en total). El sistema rechaza la solicitud e informa el límite de peso permitido.                                    | `IllegalArgumentException` (Carga excede la capacidad de transporte).           |
 | **5b** | **Operador Hídrico** | El drone seleccionado reporta batería baja (< 35%) o una avería técnica. El sistema notifica al operador, emite una alerta al Centro de Control, genera una orden de servicio para el Técnico de Mantenimiento y reasigna con un drone de respaldo. | `IllegalStateException` (Alerta técnica emitida y orden generada al técnico). |
 
 ---
@@ -2215,7 +2215,7 @@ En cumplimiento con el estándar formal de ingeniería de software de la Escuela
 
 En este ejercicio se diseña e implementa el **Sistema de Diseño visual e interactivo de AquaPort v2 (Fase Prinplup)**, orientado a consolas de monitoreo continuo en modo oscuro de baja fatiga visual. Se modelan formalmente los componentes clave del sistema con todos sus estados semánticos, se diseña el flujo completo de asignación en 3 pantallas interactivas y se documenta la aplicación práctica de las **Leyes de Fitts, Hick y Miller**.
 
-> 🌐 **Prototipo Interactivo del Sistema de Diseño v2:**  
+> 🌐 **Prototipo Interactivo del Sistema de Diseño v2:**
 > 👉 [**Abrir AquaPort v2 — Sistema de Diseño y Mockup Interactivo (`docs/mockups/AquaPort_v2_Sistema_Diseno.html`)**](docs/mockups/AquaPort_v2_Sistema_Diseno.html)
 
 ---
@@ -2228,14 +2228,14 @@ La tarjeta de dron es el componente nuclear del panel de control. Para garantiza
 
 ##### Especificación de los 6 Estados de la Tarjeta:
 
-| Estado | Color Semántico | Icono / Forma | Comportamiento e Información Visual | Criterio de Uso Operacional |
-| :--- | :---: | :---: | :--- | :--- |
-| **1. Disponible** | Verde Esmeralda (`#3FBF8A`) | `●` Círculo lleno | Muestra batería (`>= 35%`), ubicación actual y capacidad de carga útil. Incluye el botón interactivo *"Seleccionar Drone"*. | Unidad lista para recibir asignaciones automáticas de misión. |
-| **2. En Misión** | Azul Cielo (`#4C9BE8`) | `▶` Flecha de avance | Muestra la ruta de navegación activa (ej. `Canal Central ➔ Lab`), telemetría en tiempo real y el tiempo estimado de arribo (ETA). | Unidad en tránsito por los canales o cuerpos hídricos del campus. |
-| **3. Recargando** | Amarillo Ámbar (`#E5B33A`) | `⚡` Rayo | Muestra el muelle de recarga asignado, la tasa de recarga y el tiempo restante para alcanzar el 100%. Botón deshabilitado. | Unidad conectada a la estación de carga; no disponible para despacho. |
-| **4. Mantenimiento** | Gris Neutro (`#8A979C`) | `◇` Rombo | Tarjeta con opacidad reducida (85%), indicando el taller técnico y la causa de la revisión preventiva o correctiva. | Fuera de servicio por calibración de propulsores o sensores. |
-| **5. Fallo Crítico** | Rojo Carmesí (`#E5604F`) | `▲` Triángulo de alerta | Fondo con matiz de advertencia, código de incidencia (`ERROR #F-88`), batería crítica y botón destacado para despachar asistencia técnica. | Unidad en emergencia; se emite orden automática al Técnico de Mantenimiento. |
-| **6. Sumergido** | Azul Profundo (`#257DA3`) | `≋` Olas de inmersión | Estado exclusivo del `DroneBuceador`: muestra la profundidad activa bajo el espejo de agua (ej. `4.2 m`) y enlace acústico por sonar. | Unidad ejecutando muestreo bentónico o telemetría subacuática. |
+| Estado                      |       Color Semántico       |        Icono / Forma        | Comportamiento e Información Visual                                                                                                              | Criterio de Uso Operacional                                                    |
+| :-------------------------- | :---------------------------: | :-------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------- |
+| **1. Disponible**     | Verde Esmeralda (`#3FBF8A`) |    `●` Círculo lleno    | Muestra batería (`>= 35%`), ubicación actual y capacidad de carga útil. Incluye el botón interactivo *"Seleccionar Drone"*.               | Unidad lista para recibir asignaciones automáticas de misión.                |
+| **2. En Misión**     |   Azul Cielo (`#4C9BE8`)   |   `▶` Flecha de avance   | Muestra la ruta de navegación activa (ej.`Canal Central ➔ Lab`), telemetría en tiempo real y el tiempo estimado de arribo (ETA).             | Unidad en tránsito por los canales o cuerpos hídricos del campus.            |
+| **3. Recargando**     | Amarillo Ámbar (`#E5B33A`) |         `⚡` Rayo         | Muestra el muelle de recarga asignado, la tasa de recarga y el tiempo restante para alcanzar el 100%. Botón deshabilitado.                       | Unidad conectada a la estación de carga; no disponible para despacho.         |
+| **4. Mantenimiento**  |   Gris Neutro (`#8A979C`)   |        `◇` Rombo        | Tarjeta con opacidad reducida (85%), indicando el taller técnico y la causa de la revisión preventiva o correctiva.                             | Fuera de servicio por calibración de propulsores o sensores.                  |
+| **5. Fallo Crítico** |  Rojo Carmesí (`#E5604F`)  | `▲` Triángulo de alerta | Fondo con matiz de advertencia, código de incidencia (`ERROR #F-88`), batería crítica y botón destacado para despachar asistencia técnica. | Unidad en emergencia; se emite orden automática al Técnico de Mantenimiento. |
+| **6. Sumergido**      |  Azul Profundo (`#257DA3`)  |  `≋` Olas de inmersión  | Estado exclusivo del`DroneBuceador`: muestra la profundidad activa bajo el espejo de agua (ej. `4.2 m`) y enlace acústico por sonar.         | Unidad ejecutando muestreo bentónico o telemetría subacuática.              |
 
 ---
 
@@ -2244,6 +2244,7 @@ La tarjeta de dron es el componente nuclear del panel de control. Para garantiza
 ![Botón Asignar Misión e Indicador de Batería](docs/images/AquaPort_v2_Buttons_Battery.png)
 
 ##### A. Botón "Asignar Misión" (Call to Action — 5 Estados Interactivos):
+
 1. **Default:** Fondo color marea institucional (`#1B7F8C`), borde sólido, tipografía semibold de alta legibilidad y cursor pointer.
 2. **Hover / Foco:** Elevación sutil (`translateY(-2px)`), resplandor cian sonar (`#7FD8C9`) con sombra difusa para indicar interactividad activa.
 3. **Procesando (Spinner):** Fondo atenuado (`#145963`), cursor en espera (`wait`), texto *"Asignando..."* y spinner SVG con animación de rotación continua a 360°.
@@ -2251,6 +2252,7 @@ La tarjeta de dron es el componente nuclear del panel de control. Para garantiza
 5. **Deshabilitado:** Fondo transparente, borde discontinuo tenue (`#2C5563`), opacidad al 60% y cursor no permitido (`not-allowed`) ante precondiciones insatisfechas.
 
 ##### B. Indicador de Batería (3 Rangos Semánticos de Seguridad):
+
 - **Rango Seguro (`>= 60%`):** Barra en verde esmeralda (`#3FBF8A`). Autonomía plena, apto para misiones de larga distancia y prioridad `CRITICA` sin restricciones.
 - **Rango Operativo (`35% - 59%`):** Barra en amarillo ámbar (`#E5B33A`). Nivel adecuado para misiones regulares de corto y mediano alcance dentro de la misma zona.
 - **Rango Crítico (`< 35%`):** Barra en rojo carmesí (`#E5604F`) con advertencia textual destacada. Bloqueo automático de asignación y retorno forzoso a estación de recarga.
@@ -2264,11 +2266,10 @@ El flujo de usuario modela el ciclo de vida de una asignación autónoma asistid
 ![Flujo Completo de Asignación Automática](docs/images/AquaPort_v2_Flow_Screens.png)
 
 ##### Las 3 Pantallas del Flujo:
-1. **Pantalla 1 — Panel de Control de la Flota (15 Drones):**  
-   Vista panorámica de la flota activa clasificada por tipologías físicas. Permite al operador consultar la disponibilidad global, filtrar por escuadrillas (5 superficiales, 5 semisumergidos, 5 buceadores) y activar una nueva misión o la parada de emergencia.
-2. **Pantalla 2 — Detalle de Misión y Validación Ambiental:**  
-   Formulario de captura con los campos de zona de destino y sub-objeto de carga (peso, tipo, prioridad). Se presenta un panel en tiempo real conectado a la **API Condiciones Hídricas** que evalúa el oleaje (ej. *Agitado Nivel 3/5*, corriente de *1.4 m/s*), recomendando automáticamente el dron óptimo (`AR-06 Semisumergido`) con base en el patrón *Strategy*.
-3. **Pantalla 3 — Confirmación y Despacho:**  
+
+1. **Pantalla 1 — Panel de Control de la Flota (15 Drones):**Vista panorámica de la flota activa clasificada por tipologías físicas. Permite al operador consultar la disponibilidad global, filtrar por escuadrillas (5 superficiales, 5 semisumergidos, 5 buceadores) y activar una nueva misión o la parada de emergencia.
+2. **Pantalla 2 — Detalle de Misión y Validación Ambiental:**Formulario de captura con los campos de zona de destino y sub-objeto de carga (peso, tipo, prioridad). Se presenta un panel en tiempo real conectado a la **API Condiciones Hídricas** que evalúa el oleaje (ej. *Agitado Nivel 3/5*, corriente de *1.4 m/s*), recomendando automáticamente el dron óptimo (`AR-06 Semisumergido`) con base en el patrón *Strategy*.
+3. **Pantalla 3 — Confirmación y Despacho:**
    Tarjeta central de confirmación con checkmark animado, asignación del código único de seguimiento (`MIS-201-V2`), dron vinculado, ruta autorizada, tiempo estimado de navegación y notificación confirmada hacia el Centro de Control.
 
 ---
@@ -2276,17 +2277,20 @@ El flujo de usuario modela el ciclo de vida de una asignación autónoma asistid
 #### 4. Leyes de Experiencia de Usuario (UX) Rigurosamente Aplicadas
 
 ##### A. Ley de Fitts (Ergonomía de Acción Rápida y Fitts's Law)
+
 > *"El tiempo requerido para alcanzar rápidamente un objetivo es una función de la distancia al objetivo y del tamaño del objetivo."*
 
 - **Botón de Parada de Emergencia:** Ubicado en la esquina superior derecha de la interfaz (un anclaje visual perimetral de rápido alcance), cuenta con dimensiones generosas (**48 px de altura y 220 px de ancho**), tipografía en negrita y color rojo carmesí con resplandor pulsante. Esto permite que el operador lo presione de forma refleja ante cualquier contingencia sin requerir puntería milimétrica.
 - **Botones de Acción Primaria:** Los botones de selección en cada tarjeta ocupan el **100% del ancho del contenedor**, maximizando el área táctil e interactiva para acelerar el despacho.
 
 ##### B. Ley de Hick (Minimización del Tiempo de Decisión y Hick's Law)
+
 > *"El tiempo que toma una persona tomar una decisión aumenta logarítmicamente conforme se incrementa el número y la complejidad de las opciones disponibles."*
 
 - **Agrupación Semántica de 15 Drones:** Si los 15 drones se mostraran en una sola lista lineal y desordenada, el tiempo de búsqueda y selección del operador crecería de forma desproporcionada. El diseño implementa **pestañas y filtros por tipología física** (`Superficial`, `Semisumergido`, `Buceador`), reduciendo las opciones activas simultáneas de 15 a únicamente **5 alternativas por pantalla**, acortando drásticamente el tiempo de decisión.
 
 ##### C. Ley de Miller (Control de la Carga Cognitiva y Chunking)
+
 > *"La memoria de trabajo de una persona promedio puede retener entre 5 y 9 fragmentos de información (el número mágico 7 ± 2)."*
 
 - **Estructura en Bloques de 5 Unidades:** La flota total de 15 drones fue deliberadamente fragmentada en **3 escuadrillas de exactamente 5 drones** cada una. Al situar cada bloque dentro del límite inferior de Miller (5 ítems), el operador puede retener mentalmente el estado de cada escuadrilla, realizar escaneos visuales sin fatiga cognitiva y detectar anomalías en fracciones de segundo.
@@ -2295,7 +2299,7 @@ El flujo de usuario modela el ciclo de vida de una asignación autónoma asistid
 
 ### 🌊 Ejercicio 09: Agilismo y Planificación de Sprint en Jira (Fase Prinplup)
 
-> **🎯 Reto Prinplup — Agilismo y Jira:**  
+> **🎯 Reto Prinplup — Agilismo y Jira:**
 > *"Planifica el sprint de la v2 en Jira. Crea el Sprint Goal: 'Completar el asignador automático con Strategy y las alertas con Observer'. Agrega las HU de la v2 con Story Points estimados (usa Fibonacci: 1, 2, 3, 5, 8). Define el DoD para este sprint. Comparte captura del sprint activo."*
 
 En este ejercicio se formaliza la planificación ágil (Scrum) de **AquaPort v2 (Fase Prinplup)** en Jira Software. Se define el objetivo nuclear del sprint, la velocidad y capacidad del equipo, los criterios de salida técnica (**Definition of Done**) y el desglose de **5 Historias de Usuario (HU)** estimadas en la secuencia de Fibonacci con sus respectivos criterios de aceptación BDD (Gherkin) y subtareas de ingeniería.
@@ -2304,17 +2308,17 @@ En este ejercicio se formaliza la planificación ágil (Scrum) de **AquaPort v2 
 
 #### 1. Configuración General del Sprint en Jira
 
-> 🔗 **Acceso directo al tablero y backlog de Jira Software:**  
+> 🔗 **Acceso directo al tablero y backlog de Jira Software:**
 > 👉 [**AquaPort — Tablero y Backlog de Sprint 2 en Atlassian Jira Cloud**](https://josealejandromartinezarias9.atlassian.net/jira/software/projects/AQUA/boards/69/backlog?epics=visible&atlOrigin=eyJpIjoiODc5MGQ0NTU1ZmQ1NGQ1MWE3ZTAzMWYxODBmZWExNDEiLCJwIjoiaiJ9)
 
-| Parámetro Ágil | Valor Configurado | Justificación y Contexto Operacional |
-| :--- | :--- | :--- |
-| **Proyecto:** | `AquaPort (AQUA)` | Proyecto de desarrollo de software del equipo Piplup en Jira Cloud. |
-| **Nombre del Sprint:** | `Sprint 2 — AquaPort v2` | Segundo ciclo iterativo correspondiente a la Fase Prinplup (11 oct – 25 oct). |
-| **Sprint Goal (Oficial):** | **"Completar el asignador automático con Strategy y las alertas con Observer"** | Foco de valor inmutable del sprint según la directriz metodológica DOSW. |
-| **Duración:** | `2 Semanas (10 días hábiles de desarrollo)` | Cadencia estándar de Scrum para entregas incrementales verificables. |
-| **Capacidad del Equipo:** | `24 Story Points (SP)` | 2 ingenieros de desarrollo con capacidad media de 12 SP cada uno. |
-| **Velocidad Comprometida:** | `21 Story Points (SP)` | Total estimado de las 5 HUs (deja un buffer de 3 SP para contingencias). |
+| Parámetro Ágil                  | Valor Configurado                                                                      | Justificación y Contexto Operacional                                          |
+| :-------------------------------- | :------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------- |
+| **Proyecto:**               | `AquaPort (AQUA)`                                                                    | Proyecto de desarrollo de software del equipo Piplup en Jira Cloud.            |
+| **Nombre del Sprint:**      | `Sprint 2 — AquaPort v2`                                                            | Segundo ciclo iterativo correspondiente a la Fase Prinplup (11 oct – 25 oct). |
+| **Sprint Goal (Oficial):**  | **"Completar el asignador automático con Strategy y las alertas con Observer"** | Foco de valor inmutable del sprint según la directriz metodológica DOSW.     |
+| **Duración:**              | `2 Semanas (10 días hábiles de desarrollo)`                                        | Cadencia estándar de Scrum para entregas incrementales verificables.          |
+| **Capacidad del Equipo:**   | `24 Story Points (SP)`                                                               | 2 ingenieros de desarrollo con capacidad media de 12 SP cada uno.              |
+| **Velocidad Comprometida:** | `21 Story Points (SP)`                                                               | Total estimado de las 5 HUs (deja un buffer de 3 SP para contingencias).       |
 
 ---
 
@@ -2332,83 +2336,76 @@ Para que cualquier Historia de Usuario o funcionalidad del Sprint 2 se considere
 
 #### 3. Matriz de Historias de Usuario (HU) con Estimación en Fibonacci (1, 2, 3, 5, 8)
 
-| Clave Jira | Historia de Usuario (HU) | Story Points (Fibonacci) | Prioridad | Subtareas Registradas en Jira | Complejidad / Justificación Técnica de la Estimación |
-| :---: | :--- | :---: | :---: | :---: | :--- |
-| **AQUA-13** | **HU-04: Asignación automática de drones mediante Strategy y validación hídrica (AP-07 & AP-08)** | **8 SP** | Alta | `AQUA-18`, `AQUA-19`, `AQUA-20` | **Complejidad Alta:** Abstracción `EstrategiaSeleccion`, 3 estrategias (`MayorBateria`, `ZonaCercana`, `PrioridadCritica`), orquestador `AsignadorAutomatico`, validación con API externa y resolución de la tensión entre batería máxima y aptitud de zona. |
-| **AQUA-14** | **HU-05: Sistema reactivo de notificación de alertas de fallo en tiempo real con Observer** | **5 SP** | Alta | `AQUA-21`, `AQUA-22` | **Complejidad Media-Alta:** Desacoplamiento total de observadores (`ObservadorMision`, `NotificadorAlertas`), gestión de suscriptores multicanal (`CentroControlObserver`, `TecnicoMantenimientoObserver`) y latencia RNF-02 $< 50$ ms. |
-| **AQUA-15** | **HU-06: Factoría de tipos especializados de drones (Superficial, Semisumergido, Buceador)** | **3 SP** | Media | `AQUA-24`, `AQUA-25` | **Complejidad Moderada:** Implementación de `FabricaDrones` bajo Factory Method, jerarquía polimórfica inmutable con restricciones físicas de peso y cumplimiento de SOLID (OCP y LSP). |
-| **AQUA-16** | **HU-07: Consultas analíticas y partición de flota con Streams avanzados** | **3 SP** | Media | `AQUA-27`, `AQUA-28` | **Complejidad Funcional:** Consultas puras sobre 15 drones con `groupingBy`, `partitioningBy`, cálculo de promedios de batería y comparadores compuestos `thenComparing`. |
-| **AQUA-17** | **HU-08: Gestión y trazabilidad de órdenes de servicio técnico por fallo de drone** | **2 SP** | Baja | `AQUA-32`, `AQUA-33` | **Complejidad Focalizada:** Manejo del estado `MANTENIMIENTO`, emisión de orden estructurada con causa de avería, taller ribereño y telemetría para el técnico. |
-| **TOTAL** | **Capacidad Total del Sprint 2** | **21 SP** | — | **10 Subtareas Activas** | **Cumplimiento al 100% del Sprint Goal** |
+|    Clave Jira    | Historia de Usuario (HU)                                                                                    | Story Points (Fibonacci) | Prioridad |     Subtareas Registradas en Jira     | Complejidad / Justificación Técnica de la Estimación                                                                                                                                                                                                                            |
+| :---------------: | :---------------------------------------------------------------------------------------------------------- | :----------------------: | :-------: | :-----------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **AQUA-13** | **HU-04: Asignación automática de drones mediante Strategy y validación hídrica (AP-07 & AP-08)** |      **8 SP**      |   Alta   | `AQUA-18`, `AQUA-19`, `AQUA-20` | **Complejidad Alta:** Abstracción `EstrategiaSeleccion`, 3 estrategias (`MayorBateria`, `ZonaCercana`, `PrioridadCritica`), orquestador `AsignadorAutomatico`, validación con API externa y resolución de la tensión entre batería máxima y aptitud de zona. |
+| **AQUA-14** | **HU-05: Sistema reactivo de notificación de alertas de fallo en tiempo real con Observer**          |      **5 SP**      |   Alta   |       `AQUA-21`, `AQUA-22`       | **Complejidad Media-Alta:** Desacoplamiento total de observadores (`ObservadorMision`, `NotificadorAlertas`), gestión de suscriptores multicanal (`CentroControlObserver`, `TecnicoMantenimientoObserver`) y latencia RNF-02 $< 50$ ms.                           |
+| **AQUA-15** | **HU-06: Factoría de tipos especializados de drones (Superficial, Semisumergido, Buceador)**         |      **3 SP**      |   Media   |       `AQUA-24`, `AQUA-25`       | **Complejidad Moderada:** Implementación de `FabricaDrones` bajo Factory Method, jerarquía polimórfica inmutable con restricciones físicas de peso y cumplimiento de SOLID (OCP y LSP).                                                                                |
+| **AQUA-16** | **HU-07: Consultas analíticas y partición de flota con Streams avanzados**                          |      **3 SP**      |   Media   |       `AQUA-27`, `AQUA-28`       | **Complejidad Funcional:** Consultas puras sobre 15 drones con `groupingBy`, `partitioningBy`, cálculo de promedios de batería y comparadores compuestos `thenComparing`.                                                                                            |
+| **AQUA-17** | **HU-08: Gestión y trazabilidad de órdenes de servicio técnico por fallo de drone**                |      **2 SP**      |   Baja   |       `AQUA-32`, `AQUA-33`       | **Complejidad Focalizada:** Manejo del estado `MANTENIMIENTO`, emisión de orden estructurada con causa de avería, taller ribereño y telemetría para el técnico.                                                                                                       |
+|  **TOTAL**  | **Capacidad Total del Sprint 2**                                                                      |     **21 SP**     |    —    |    **10 Subtareas Activas**    | **Cumplimiento al 100% del Sprint Goal**                                                                                                                                                                                                                                     |
 
 ---
 
 #### 4. Detalle y Criterios de Aceptación (Gherkin / BDD) de las Historias de Usuario
 
 ##### A. HU-04 (AQUA-13): Asignación automática de drones mediante Strategy (8 SP)
+
 - **Como:** Operador Hídrico del campus ECI.
 - **Quiero que:** El sistema asigne automáticamente el drone óptimo a cada misión evaluando oleaje, tipo de carga y la estrategia activa.
 - **Para:** Despachar misiones críticas y regulares de inmediato sin depender de la selección manual humana.
 - **Criterios de Aceptación (BDD / Gherkin):**
-  - **Escenario 1 (Happy Path - Mayor Batería):**  
-    *Dado que* existen drones disponibles con batería $\ge 35\%$ y la estrategia activa es `MayorBateriaStrategy`,  
-    *Cuando* se solicita una misión regular en aguas mansas,  
-    *Entonces* el sistema selecciona el drone con mayor carga residual y actualiza su estado a `EN_MISION`.
-  - **Escenario 2 (Resolución Tensión AP-07 vs AP-08 - Misión Crítica):**  
-    *Dado que* la misión tiene prioridad `CRITICA` y destino en zona de oleaje agitado (*Canal Central*),  
-    *Cuando* se ejecuta la asignación bajo `PrioridadCriticaStrategy`,  
-    *Entonces* el sistema prioriza la aptitud técnica del `DroneSemisumergido` sobre un dron superficial con mayor batería, protegiendo la integridad de la muestra.
-  - **Escenario 3 (Flujo Alterno - Flota agotada):**  
-    *Dado que* ningún drone cumple el umbral mínimo ($\ge 35\%$ o capacidad de carga requerida),  
-    *Cuando* el asignador evalúa la flota,  
+  - **Escenario 1 (Happy Path - Mayor Batería):***Dado que* existen drones disponibles con batería $\ge 35\%$ y la estrategia activa es `MayorBateriaStrategy`,*Cuando* se solicita una misión regular en aguas mansas,*Entonces* el sistema selecciona el drone con mayor carga residual y actualiza su estado a `EN_MISION`.
+  - **Escenario 2 (Resolución Tensión AP-07 vs AP-08 - Misión Crítica):***Dado que* la misión tiene prioridad `CRITICA` y destino en zona de oleaje agitado (*Canal Central*),*Cuando* se ejecuta la asignación bajo `PrioridadCriticaStrategy`,*Entonces* el sistema prioriza la aptitud técnica del `DroneSemisumergido` sobre un dron superficial con mayor batería, protegiendo la integridad de la muestra.
+  - **Escenario 3 (Flujo Alterno - Flota agotada):**
+    *Dado que* ningún drone cumple el umbral mínimo ($\ge 35\%$ o capacidad de carga requerida),
+    *Cuando* el asignador evalúa la flota,
     *Entonces* retorna `Optional.empty()` y notifica fallo de despacho al Centro de Control.
 
 ##### B. HU-05 (AQUA-14): Alertas de fallo en tiempo real con Observer (5 SP)
+
 - **Como:** Centro de Control ECI y Técnico de Mantenimiento.
 - **Quiero:** Recibir notificaciones inmediatas ante cualquier dron en estado `FALLO`.
 - **Para:** Despachar asistencia técnica y reasignar misiones en menos de 5 minutos (MTTR).
 - **Criterios de Aceptación (BDD / Gherkin):**
-  - **Escenario 1 (Difusión multicanal en tiempo real):**  
-    *Dado que* un dron entra en estado `FALLO` por avería en propulsores o sensores,  
-    *Cuando* `NotificadorAlertas` difunde el evento,  
-    *Entonces* `CentroControlObserver` registra la alerta crítica y `TecnicoMantenimientoObserver` genera automáticamente la orden de trabajo técnica en menos de 50 ms (RNF-02).
-  - **Escenario 2 (Desacoplamiento sin impacto):**  
-    *Dado que* se añade o remueve un observador en tiempo de ejecución,  
-    *Cuando* ocurre una alerta,  
+  - **Escenario 1 (Difusión multicanal en tiempo real):***Dado que* un dron entra en estado `FALLO` por avería en propulsores o sensores,*Cuando* `NotificadorAlertas` difunde el evento,*Entonces* `CentroControlObserver` registra la alerta crítica y `TecnicoMantenimientoObserver` genera automáticamente la orden de trabajo técnica en menos de 50 ms (RNF-02).
+  - **Escenario 2 (Desacoplamiento sin impacto):**
+    *Dado que* se añade o remueve un observador en tiempo de ejecución,
+    *Cuando* ocurre una alerta,
     *Entonces* el sistema lo notifica sin requerir modificaciones en el asignador ni en la clase `DroneAcuatico`.
 
 ##### C. HU-06 (AQUA-15): Factoría de tipos especializados de drones (3 SP)
+
 - **Como:** Administrador del Sistema ECI.
 - **Quiero:** Instanciar las unidades de la flota a través de `FabricaDrones`.
 - **Para:** Asegurar la consistencia de modelos y límites de carga útil sin exponer constructores concretos.
 - **Criterios de Aceptación (BDD / Gherkin):**
-  - **Escenario 1 (Instanciación por tipo):**  
-    *Dado que* se invoca `FabricaDrones.crearDrone(...)` con `TipoDrone.SEMISUMERGIDO`,  
-    *Cuando* la factoría procesa la llamada,  
-    *Entonces* retorna una instancia de `DroneSemisumergido` configurada con capacidad de 1500g y estado `DISPONIBLE`.
-  - **Escenario 2 (Validación de carga en DroneBuceador):**  
-    *Dado que* un dron es de tipo `BUCEADOR`,  
-    *Cuando* se evalúa para transportar una muestra $> 300$g,  
+  - **Escenario 1 (Instanciación por tipo):***Dado que* se invoca `FabricaDrones.crearDrone(...)` con `TipoDrone.SEMISUMERGIDO`,*Cuando* la factoría procesa la llamada,*Entonces* retorna una instancia de `DroneSemisumergido` configurada con capacidad de 1500g y estado `DISPONIBLE`.
+  - **Escenario 2 (Validación de carga en DroneBuceador):**
+    *Dado que* un dron es de tipo `BUCEADOR`,
+    *Cuando* se evalúa para transportar una muestra $> 300$g,
     *Entonces* el sistema lo excluye por exceder su capacidad estructural máxima.
 
 ##### D. HU-07 (AQUA-16): Consultas analíticas de flota con Streams (3 SP)
+
 - **Como:** Operador Hídrico.
 - **Quiero:** Ejecutar consultas agrupadas y filtradas sobre la flota de 15 drones.
 - **Para:** Visualizar disponibilidad por tipología, promedios de energía y aislar misiones críticas.
 - **Criterios de Aceptación (BDD / Gherkin):**
-  - **Escenario 1 (Agrupación y partición sin mutación):**  
-    *Dado que* la flota contiene 15 drones con telemetría activa,  
-    *Cuando* se ejecuta `ConsultorFlotaPrinplup`,  
+  - **Escenario 1 (Agrupación y partición sin mutación):**
+    *Dado que* la flota contiene 15 drones con telemetría activa,
+    *Cuando* se ejecuta `ConsultorFlotaPrinplup`,
     *Entonces* retorna mapas inmutables con agrupación por tipo, partición de misiones críticas y zonas únicas sin modificar el estado de los objetos.
 
 ##### E. HU-08 (AQUA-17): Gestión de órdenes de servicio técnico (2 SP)
+
 - **Como:** Técnico de Mantenimiento.
 - **Quiero:** Recibir una orden de trabajo estandarizada cada vez que se reporte una anomalía.
 - **Para:** Acudir con el instrumental exacto al cuerpo hídrico donde se encuentra la unidad.
 - **Criterios de Aceptación (BDD / Gherkin):**
-  - **Escenario 1 (Estructura de orden de trabajo):**  
-    *Dado que* un drone reporta alerta crítica,  
-    *Cuando* el técnico recibe la orden,  
+  - **Escenario 1 (Estructura de orden de trabajo):**
+    *Dado que* un drone reporta alerta crítica,
+    *Cuando* el técnico recibe la orden,
     *Entonces* incluye ID del dron, modelo, coordenadas/zona hídrica, carga residual y descripción del fallo.
 
 ---
@@ -2416,6 +2413,7 @@ Para que cualquier Historia de Usuario o funcionalidad del Sprint 2 se considere
 #### 5. Evidencias del Sprint 2 y Backlog en Jira Software
 
 ##### A. Tablero del Sprint 2 Activo (21 Story Points y Sprint Goal)
+
 El Sprint 2 se encuentra formalmente planificado y activo en Jira con las 5 historias de usuario correspondientes a la evolución Prinplup:
 
 ![Tablero de Sprint 2 Activo en Jira — AquaPort v2](docs/images/JiraPrinPlupSprint02.png)
@@ -2423,27 +2421,32 @@ El Sprint 2 se encuentra formalmente planificado y activo en Jira con las 5 hist
 ##### B. Detalle de Historias de Usuario y Subtareas Técnicas en Jira
 
 ###### 1. HU-04 (AQUA-13: 8 SP) — Asignación Automática con Strategy y Subtareas Técnicas:
-![Detalle HU-04 en Jira](docs/images/JiraHUAsignación%20automática%20de%20drones%20mediante%20Strategy%20y%20validación%20hídrica.png)
 
-![Subtareas de HU-04 en Jira](docs/images/JiraAsignación%20automática%20de%20drones%20mediante%20Strategy%20y%20validación%20hídrica%20-%20Tarea.png)
+![Detalle HU-04 en Jira](<docs/images/JiraHUAsignación%20automática%20de%20drones%20mediante%20Strategy%20y%20validación%20hídrica.png>)
+
+![Subtareas de HU-04 en Jira](<docs/images/JiraAsignación%20automática%20de%20drones%20mediante%20Strategy%20y%20validación%20hídrica%20-%20Tarea.png>)
 
 ###### 2. HU-05 (AQUA-14: 5 SP) — Sistema Reactivo de Alertas con Observer y Subtareas:
-![Detalle HU-05 en Jira](docs/images/Jira%20Sistema%20reactivo%20de%20notificación%20de%20alertas%20de%20fallo%20en%20tiempo%20real%20con%20Observer.png)
+
+![Detalle HU-05 en Jira](<docs/images/Jira%20Sistema%20reactivo%20de%20notificación%20de%20alertas%20de%20fallo%20en%20tiempo%20real%20con%20Observer.png>)
 
 ###### 3. HU-06 (AQUA-15: 3 SP) — Factoría de Drones con Factory Method y Subtareas:
-![Detalle HU-06 en Jira](docs/images/Jira%20Factoría%20de%20tipos%20especializados%20de%20drones%20(Superficial,%20Semisumergido,%20Buceador).png)
+
+![Detalle HU-06 en Jira](<docs/images/Jira%20Factoría%20de%20tipos%20especializados%20de%20drones%20(Superficial,%20Semisumergido,%20Buceador).png>)
 
 ###### 4. HU-07 (AQUA-16: 3 SP) — Consultas Analíticas con Streams Avanzados y Subtareas:
-![Detalle HU-07 en Jira](docs/images/Jira%20Consultas%20analíticas%20y%20partición%20de%20flota%20con%20Streams%20avanzados.png)
+
+![Detalle HU-07 en Jira](<docs/images/Jira%20Consultas%20analíticas%20y%20partición%20de%20flota%20con%20Streams%20avanzados.png>)
 
 ###### 5. HU-08 (AQUA-17: 2 SP) — Gestión de Órdenes Técnicas de Mantenimiento y Subtareas:
-![Detalle HU-08 en Jira](docs/images/Jira%20Gestión%20y%20trazabilidad%20de%20órdenes%20de%20servicio%20técnico%20por%20fallo%20de%20drone.png)
+
+![Detalle HU-08 en Jira](<docs/images/Jira%20Gestión%20y%20trazabilidad%20de%20órdenes%20de%20servicio%20técnico%20por%20fallo%20de%20drone.png>)
 
 ---
 
 ### 🌊 Ejercicio 10: Diagramas de Casos de Uso Extendidos (AquaPort v2 — Fase Prinplup)
 
-> **🎯 Reto Prinplup — Casos de Uso Extendidos:**  
+> **🎯 Reto Prinplup — Casos de Uso Extendidos:**
 > *"Actualiza el diagrama de CU de la v2. Agrega el nuevo actor, el CU de asignación automática con su `<<include>>` obligatorio (validar condiciones) y su `<<extend>>` condicional (notificar fallo). Usa generalización si el Operador Hídrico hereda comportamiento del actor base. Sube el diagrama al repo en `docs/images/DiagramCaseUsePrinPlup.png`."*
 
 En este ejercicio se actualiza y extiende formalmente el **Diagrama de Casos de Uso UML** para la arquitectura de **AquaPort v2 (Fase Prinplup)**. Se incorpora la jerarquía de actores mediante generalización, se introduce al **Técnico de Mantenimiento** y al **Centro de Control ECI**, se modela el caso de uso central autónomo (`CU-01: Asignar misión automáticamente`) y se formalizan los encadenamientos de inclusión obligatoria (`<<include>>`) y extensión condicional (`<<extend>>`).
@@ -2460,36 +2463,37 @@ En este ejercicio se actualiza y extiende formalmente el **Diagrama de Casos de 
 
 Conforme a las buenas prácticas de ingeniería de requisitos y el estándar DOSW, **el "Sistema" nunca se modela como un actor**. Los actores representan exclusivamente entidades externas (humanas o institucionales) que interactúan con la frontera del software:
 
-| Actor | Categoría UML | Rol y Responsabilidad Operativa en AquaPort v2 |
-| :--- | :---: | :--- |
-| **Solicitante** | Humano / Base | Investigador, docente o laboratorista del campus que solicita el transporte de muestras hídricas o sensores ambientales (`CU-04`). Actúa como **actor base**. |
-| **Operador Hídrico** | Humano / Especializado | Supervisor técnico que controla la consola central. **Hereda todas las capacidades del Solicitante** mediante generalización (`<<generalize>>`), y además posee permisos exclusivos para despacho automático (`CU-01`), cancelación de despachos (`CU-03`) y telemetría de flota (`CU-02`). |
-| **Administrador ECI** | Humano / Auditor | Personal directivo que audita el inventario global de la flota de 15 drones, horas de navegación y reportes históricos de servicio (`CU-05` y `CU-02`). |
-| **Técnico de Mantenimiento** | Humano / Campo (`Nuevo v2`) | Personal técnico de campo encargado de recibir las órdenes de servicio automáticas generadas ante fallos críticos en el agua (`CU-12`), diagnosticar propulsores/sensores y reparar las unidades. |
-| **Centro de Control ECI** | Sistema / Supervisor (`Nuevo v2`) | Entidad institucional externa encargada de supervisar el tráfico fluvial del campus, autorizar zonas náuticas y monitorear incidentes críticos en tiempo real (`CU-13`). |
+| Actor                               |           Categoría UML           | Rol y Responsabilidad Operativa en AquaPort v2                                                                                                                                                                                                                                                                 |
+| :---------------------------------- | :---------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Solicitante**               |            Humano / Base            | Investigador, docente o laboratorista del campus que solicita el transporte de muestras hídricas o sensores ambientales (`CU-04`). Actúa como **actor base**.                                                                                                                                        |
+| **Operador Hídrico**         |       Humano / Especializado       | Supervisor técnico que controla la consola central.**Hereda todas las capacidades del Solicitante** mediante generalización (`<<generalize>>`), y además posee permisos exclusivos para despacho automático (`CU-01`), cancelación de despachos (`CU-03`) y telemetría de flota (`CU-02`). |
+| **Administrador ECI**         |          Humano / Auditor          | Personal directivo que audita el inventario global de la flota de 15 drones, horas de navegación y reportes históricos de servicio (`CU-05` y `CU-02`).                                                                                                                                                  |
+| **Técnico de Mantenimiento** |    Humano / Campo (`Nuevo v2`)    | Personal técnico de campo encargado de recibir las órdenes de servicio automáticas generadas ante fallos críticos en el agua (`CU-12`), diagnosticar propulsores/sensores y reparar las unidades.                                                                                                        |
+| **Centro de Control ECI**     | Sistema / Supervisor (`Nuevo v2`) | Entidad institucional externa encargada de supervisar el tráfico fluvial del campus, autorizar zonas náuticas y monitorear incidentes críticos en tiempo real (`CU-13`).                                                                                                                                  |
 
 ##### A. Justificación de la Generalización de Actores (`Operador Hídrico ──▷ Solicitante`):
+
 En el dominio universitario de la ECI, el `Operador Hídrico` es en sí mismo un usuario habilitado para solicitar despachos hídricos (herencia funcional), pero su rol añade la responsabilidad especializada de supervisión autónoma y control de contingencias. Modelar esta relación mediante **generalización UML (`<<generalize>>`)** previene duplicidad de asociaciones en el diagrama y refleja con fidelidad el modelo de seguridad basado en roles (RBAC).
 
 ---
 
 #### 3. Matriz de Casos de Uso y Relaciones UML (`<<include>>` y `<<extend>>`)
 
-| Código | Caso de Uso | Actor Asociado | Tipo de Relación UML | Condición / Justificación Técnica |
-| :---: | :--- | :---: | :---: | :--- |
-| **CU-01** | **Asignar misión automáticamente (AP-07 / RF-01)** | Operador Hídrico | **Caso Base Nuclear** | Orquesta el despacho autónomo aplicando la estrategia contextual y validando las restricciones físicas del dron y del cuerpo hídrico. |
-| **CU-02** | **Consultar estado y telemetría de flota (Streams)** | Operador / Admin | Consulta Analítica | Consulta sin mutación de las 15 unidades agrupadas por tipo, promedios de batería y zonas cubiertas (`ConsultorFlotaPrinplup`). |
-| **CU-03** | **Cancelar misión pendiente** | Operador Hídrico | Gestión de Ciclo | Revoca misiones antes de la navegación activa, liberando el dron asignado a estado `DISPONIBLE`. |
-| **CU-04** | **Solicitar transporte de muestra/sensor (RF-02)** | Solicitante | Caso de Entrada | Ingreso de solicitud con sub-objetos de carga (`peso`, `tipo`, `prioridad`) y zona destino. |
-| **CU-05** | **Supervisar inventario de flota y auditoría (RF-03)** | Administrador ECI | Auditoría | Monitoreo administrativo de horas de vuelo, desgaste y disponibilidad de las 3 escuadrillas. |
-| **CU-06** | **Validar condiciones hídricas y aptitud de zona** | Sistema Interno | **`<<include>>`** de `CU-01` | **Obligatorio:** Se ejecuta SIEMPRE durante `CU-01`. Determina si el cuerpo de agua requiere drones de superficie, semisumergidos o buceadores. |
-| **CU-07** | **Consultar API externa de oleaje y profundidad** | Sistema Externo | **`<<include>>`** de `CU-06` | **Encadenamiento Obligatorio:** Para validar la zona (`CU-06`), el sistema consulta obligatoriamente el servicio meteorológico e hidrológico perimetral. |
-| **CU-08** | **Evaluar estrategia de selección (Strategy)** | Sistema Interno | **`<<include>>`** de `CU-01` | **Obligatorio:** Evalúa al vuelo la estrategia inyectada (`MayorBateria`, `ZonaCercana` o `PrioridadCritica`) resolviendo la tensión AP-07 vs AP-08. |
-| **CU-09** | **Notificar fallo al técnico y centro de control** | Sistema / Observadores | **`<<extend>>`** de `CU-01` | **Condicional:** `[si drone entra en FALLO durante la asignación o prueba previa]`. Interrumpe el flujo normal y difunde órdenes mediante el patrón *Observer*. |
-| **CU-10** | **Reasignar drone alternativo de flota** | Sistema Interno | **`<<extend>>`** de `CU-09` | **Encadenamiento Condicional:** `[si existe otra unidad apta disponible en la flota]`. Permite salvar el despacho sin cancelar la misión. |
-| **CU-11** | **Alertar batería crítica y abortar despacho** | Sistema Interno | **`<<extend>>`** de `CU-01` | **Condicional:** `[si batería remanente < 35%]`. Aplica la regla RN-01 bloqueando la navegación para evitar pérdidas materiales en el embalse. |
-| **CU-12** | **Recibir orden de servicio y reparar drone** | Técnico de Mantenimiento | Recepción Técnica | El técnico de campo recibe la boleta generada por `CU-09`, acude a la zona ribereña y restaura la unidad. |
-| **CU-13** | **Monitorear alertas críticas en tiempo real** | Centro de Control ECI | Monitoreo Perimetral | El centro institucional registra la anomalía en la bitácora de navegación del campus. |
+|     Código     | Caso de Uso                                                   |      Actor Asociado      |         Tipo de Relación UML         | Condición / Justificación Técnica                                                                                                                                         |
+| :-------------: | :------------------------------------------------------------ | :-----------------------: | :------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **CU-01** | **Asignar misión automáticamente (AP-07 / RF-01)**    |     Operador Hídrico     |      **Caso Base Nuclear**      | Orquesta el despacho autónomo aplicando la estrategia contextual y validando las restricciones físicas del dron y del cuerpo hídrico.                                     |
+| **CU-02** | **Consultar estado y telemetría de flota (Streams)**   |     Operador / Admin     |          Consulta Analítica          | Consulta sin mutación de las 15 unidades agrupadas por tipo, promedios de batería y zonas cubiertas (`ConsultorFlotaPrinplup`).                                          |
+| **CU-03** | **Cancelar misión pendiente**                          |     Operador Hídrico     |           Gestión de Ciclo           | Revoca misiones antes de la navegación activa, liberando el dron asignado a estado`DISPONIBLE`.                                                                           |
+| **CU-04** | **Solicitar transporte de muestra/sensor (RF-02)**      |        Solicitante        |            Caso de Entrada            | Ingreso de solicitud con sub-objetos de carga (`peso`, `tipo`, `prioridad`) y zona destino.                                                                            |
+| **CU-05** | **Supervisar inventario de flota y auditoría (RF-03)** |     Administrador ECI     |               Auditoría               | Monitoreo administrativo de horas de vuelo, desgaste y disponibilidad de las 3 escuadrillas.                                                                                 |
+| **CU-06** | **Validar condiciones hídricas y aptitud de zona**     |      Sistema Interno      | **`<<include>>`** de `CU-01` | **Obligatorio:** Se ejecuta SIEMPRE durante `CU-01`. Determina si el cuerpo de agua requiere drones de superficie, semisumergidos o buceadores.                      |
+| **CU-07** | **Consultar API externa de oleaje y profundidad**       |      Sistema Externo      | **`<<include>>`** de `CU-06` | **Encadenamiento Obligatorio:** Para validar la zona (`CU-06`), el sistema consulta obligatoriamente el servicio meteorológico e hidrológico perimetral.           |
+| **CU-08** | **Evaluar estrategia de selección (Strategy)**         |      Sistema Interno      | **`<<include>>`** de `CU-01` | **Obligatorio:** Evalúa al vuelo la estrategia inyectada (`MayorBateria`, `ZonaCercana` o `PrioridadCritica`) resolviendo la tensión AP-07 vs AP-08.           |
+| **CU-09** | **Notificar fallo al técnico y centro de control**     |  Sistema / Observadores  | **`<<extend>>`** de `CU-01` | **Condicional:** `[si drone entra en FALLO durante la asignación o prueba previa]`. Interrumpe el flujo normal y difunde órdenes mediante el patrón *Observer*. |
+| **CU-10** | **Reasignar drone alternativo de flota**                |      Sistema Interno      | **`<<extend>>`** de `CU-09` | **Encadenamiento Condicional:** `[si existe otra unidad apta disponible en la flota]`. Permite salvar el despacho sin cancelar la misión.                           |
+| **CU-11** | **Alertar batería crítica y abortar despacho**        |      Sistema Interno      | **`<<extend>>`** de `CU-01` | **Condicional:** `[si batería remanente < 35%]`. Aplica la regla RN-01 bloqueando la navegación para evitar pérdidas materiales en el embalse.                    |
+| **CU-12** | **Recibir orden de servicio y reparar drone**           | Técnico de Mantenimiento |          Recepción Técnica          | El técnico de campo recibe la boleta generada por`CU-09`, acude a la zona ribereña y restaura la unidad.                                                                 |
+| **CU-13** | **Monitorear alertas críticas en tiempo real**         |   Centro de Control ECI   |          Monitoreo Perimetral          | El centro institucional registra la anomalía en la bitácora de navegación del campus.                                                                                     |
 
 ---
 
@@ -2509,7 +2513,7 @@ En el dominio universitario de la ECI, el `Operador Hídrico` es en sí mismo un
 
 ### 🌊 Ejercicio 11: Mocks con IA — Flujo de Asignación Automática y Alerta Crítica (Fase Prinplup)
 
-En este ejercicio se diseñó el flujo completo de **Asignación Automática de Drones (AP-07)** para la consola operativa de **AquaPort v2 (Fase Prinplup)** mediante generación de prototipos visuales de alta fidelidad asistidos por Inteligencia Artificial. 
+En este ejercicio se diseñó el flujo completo de **Asignación Automática de Drones (AP-07)** para la consola operativa de **AquaPort v2 (Fase Prinplup)** mediante generación de prototipos visuales de alta fidelidad asistidos por Inteligencia Artificial.
 
 El flujo contempla las 3 etapas del Happy Path de despacho autónomo más la pantalla crítica de contingencia ante ausencia de unidades compatibles para emergencias de máxima prioridad, aplicando el sistema de diseño corporativo (tema oscuro Slate `#12161A`, tipografía *Outfit / Inter*, acentos Ocean Teal `#1B7F8C` y Crimson `#DC2626`).
 
@@ -2522,6 +2526,7 @@ Visualización de inventario en tiempo real de la flota completa de **15 drones 
 ![Pantalla 1 — Panel de Flota de 15 Drones Agrupados por Tipo](docs/images/AquaPort_v2_Mock_Pantalla1_Flota.png)
 
 ##### A. Prompt Estructurado para IA:
+
 ```text
 [ROL]: Senior UI/UX Designer & Frontend Architect especializado en consolas de control marítimo y telemetría autónoma.
 [CONTEXTO]: Sistema AquaPort v2 (Escuela Colombiana de Ingeniería Julio Garavito). Flota hídrica autónoma de 15 drones acuáticos divididos en 3 familias físicas: Superficiales (AR-01 a AR-05), Semisumergidos (AR-06 a AR-10) y Buceadores (AR-11 a AR-15).
@@ -2540,6 +2545,7 @@ Visualización de inventario en tiempo real de la flota completa de **15 drones 
 ```
 
 ##### B. Desglose Funcional y Componentes:
+
 * **KPIs de Flota en Tiempo Real:** 4 contadores analíticos procesados mediante streams reactivos que informan disponibilidad inmediata al Operador Hídrico.
 * **Agrupación Taxonómica por Tipo:** Respeta la jerarquía de herencia del dominio (`DroneSuperficial`, `DroneSemisumergido`, `DroneBuceador`), facilitando la inspección visual de las 5 unidades de cada categoría.
 * **Telemetría Energética:** Codificación cromática de batería (Verde `> 60%`, Amarillo `35% - 60%`, Rojo `< 35%`) que alerta visualmente antes de cualquier despacho.
@@ -2553,6 +2559,7 @@ Pantalla de análisis y pre-despacho para la misión `MIS-201-V2`. Muestra la co
 ![Pantalla 2 — Detalle de Misión con Drone Recomendado y Justificación](docs/images/AquaPort_v2_Mock_Pantalla2_Detalle.png)
 
 ##### A. Prompt Estructurado para IA:
+
 ```text
 [ROL]: Lead Product Designer para sistemas de misión crítica y soporte de decisiones algorítmicas autónomas.
 [CONTEXTO]: AquaPort v2 - Módulo de Asignación Automática AP-07. Misión 'MIS-201-V2' para transporte de muestra biológica de agua (peso: 420g, prioridad: ALTA, destino: Laguna Central).
@@ -2585,6 +2592,7 @@ Pantalla de análisis y pre-despacho para la misión `MIS-201-V2`. Muestra la co
 ```
 
 ##### B. Desglose Funcional y Resolución de Tensión AP-07 vs AP-08:
+
 * **Integración Hídrica Transparente:** La consola expone los datos crudos de oleaje y profundidad obtenidos de la API meteorológica externa (`CU-07`), permitiendo al operador auditar la idoneidad física de la escuadrilla antes del zarpe.
 * **Explicabilidad Algorítmica (XAI):** Se resuelven las tensiones entre `ZonaCercanaStrategy` y `MayorBateriaStrategy` mediante una lista jerarquizada de factores de ponderación, eliminando la opacidad de "caja negra".
 
@@ -2597,6 +2605,7 @@ Retroalimentación inmediata del despacho exitoso. Confirma la transición de ci
 ![Pantalla 3 — Confirmación de Asignación y Flota Actualizada](docs/images/AquaPort_v2_Mock_Pantalla3_Confirmacion.png)
 
 ##### A. Prompt Estructurado para IA:
+
 ```text
 [ROL]: Senior UX Designer enfocado en estados de confirmación operacional y retroalimentación en tiempo real.
 [CONTEXTO]: AquaPort v2 - Misión MIS-201-V2 asignada con éxito al dron AR-06 (Aqua-SemiSub 300).
@@ -2618,6 +2627,7 @@ Retroalimentación inmediata del despacho exitoso. Confirma la transición de ci
 ```
 
 ##### B. Desglose Funcional y Cierre de Ciclo de Vida:
+
 * **Certeza Operacional:** Provee confirmación unívoca del despacho con sello de autorización institucional (`#NAV-882`), evitando pulsaciones duplicadas por parte del usuario (Ley de Fitts y Heurística #1).
 * **Consistencia de Estado:** Refleja en tiempo real la transición inmutable de la entidad en memoria (`AR-06.estado = EN_MISION`), sincronizando el radar perimetral y los KPIs globales de flota.
 
@@ -2630,6 +2640,7 @@ Pantalla de interrupción de emergencia ante una misión prioritaria (`MIS-999-U
 ![Pantalla 4 — Alerta Crítica sin Drone Disponible](docs/images/AquaPort_v2_Mock_Pantalla4_AlertaCritica.png)
 
 ##### A. Prompt Estructurado para IA:
+
 ```text
 [ROL]: Mission-Critical Safety UX Expert especializado en diseño de interfaces para situaciones de fallo, desastre o indisponibilidad en operaciones navales.
 [CONTEXTO]: AquaPort v2 - Asignación fallida de misión 'MIS-999-URG' con prioridad CRÍTICA (sensor fluorimétrico de turbidez para Lago Profundo, profundidad requerida > 8 metros -> Requiere obligatoriamente un Buceador de la serie Aqua-Diver 500).
@@ -2657,6 +2668,7 @@ Pantalla de interrupción de emergencia ante una misión prioritaria (`MIS-999-U
 ```
 
 ##### B. Desglose Funcional y Resiliencia del Sistema:
+
 * **Manejo Robusto de Excepciones:** Aplica la regla `RN-02` (reserva $\ge 50\%$ para emergencias críticas) impidiendo que el dron `AR-15` (28% batería) sea despachado irresponsablemente.
 * **Trazabilidad de Observadores (Observer Pattern):** Demuestra visualmente cómo el fallo genera una orden técnica de servicio (`#OT-404`) para el Técnico de Mantenimiento y un registro de bitácora (`#INC-9901`) en el Centro de Control ECI sin bloquear la interfaz general.
 
@@ -2664,13 +2676,13 @@ Pantalla de interrupción de emergencia ante una misión prioritaria (`MIS-999-U
 
 #### 5. Evaluación de Heurísticas de Jakob Nielsen en los Mocks
 
-| Heurística de Nielsen | Principio Teórico | Aplicación Concreta en los Mocks de AquaPort v2 |
-| :--- | :--- | :--- |
-| **#1: Visibilidad del Estado del Sistema** | El sistema debe mantener siempre informados a los usuarios de lo que está ocurriendo, mediante retroalimentación apropiada dentro de un tiempo razonable. | • Medidores de batería en tiempo real en las 15 tarjetas con código semáforo visual.<br>• Modales de confirmación con ETA exacto y radar con trayectoria en tiempo real.<br>• Banner pulsante carmesí inmediato cuando no es posible despachar una misión crítica. |
-| **#2: Coincidencia entre el Sistema y el Mundo Real** | El sistema debe hablar el lenguaje de los usuarios, con palabras, frases y conceptos familiares al usuario, en lugar de términos orientados al sistema. | • Empleo de vocabulario náutico estandarizado (*Muelle Norte*, *Oleaje*, *Buceador*, *Profundidad de calado*, *Deriva*).<br>• Iconografía marítima coherente (anclas, radares, hélices, batimetría). |
-| **#5: Prevención de Errores** | Mejor que los buenos mensajes de error es un diseño cuidadoso que impida que ocurra un problema en primer lugar. | • Bloqueo automático del botón de confirmación si el dron posee $< 35\%$ de batería (o $< 50\%$ en misiones críticas).<br>• Pre-validación obligatoria de compatibilidad física (peso y profundidad) antes de permitir la pulsación de despacho. |
-| **#8: Diseño Estético y Minimalista** | Los diálogos no deben contener información que sea irrelevante o rara vez necesaria. Toda unidad extra de información compite con la información relevante. | • Esquema de color sobrio Slate `#12161A` con acentos funcionales de alto contraste.<br>• Agrupación estructurada en bloques colapsables por escuadrilla (Ley de Miller: 3 a 5 tarjetas visibles por grupo).<br>• Ocultamiento progresivo de parámetros avanzados de telemetría detrás de un botón secundario. |
-| **#9: Ayudar a los Usuarios a Reconocer, Diagnosticar y Recuperarse de Errores** | Los mensajes de error deben expresarse en lenguaje sencillo (sin códigos oscuros), indicar con precisión el problema y sugerir de forma constructiva una solución. | • La pantalla de alerta crítica no muestra un genérico "Error 500", sino la causa raíz física: *0 de 5 buceadores disponibles para profundidad > 8m*.<br>• Ofrece rutas de escape claras: *Poner en Cola Prioritaria*, *Reasignar Emergencia* o *Contactar Guardia Náutica*. |
+| Heurística de Nielsen                                                                 | Principio Teórico                                                                                                                                                    | Aplicación Concreta en los Mocks de AquaPort v2                                                                                                                                                                                                                                                                |
+| :------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **#1: Visibilidad del Estado del Sistema**                                       | El sistema debe mantener siempre informados a los usuarios de lo que está ocurriendo, mediante retroalimentación apropiada dentro de un tiempo razonable.           | • Medidores de batería en tiempo real en las 15 tarjetas con código semáforo visual.• Modales de confirmación con ETA exacto y radar con trayectoria en tiempo real.• Banner pulsante carmesí inmediato cuando no es posible despachar una misión crítica.                                            |
+| **#2: Coincidencia entre el Sistema y el Mundo Real**                            | El sistema debe hablar el lenguaje de los usuarios, con palabras, frases y conceptos familiares al usuario, en lugar de términos orientados al sistema.              | • Empleo de vocabulario náutico estandarizado (*Muelle Norte*, *Oleaje*, *Buceador*, *Profundidad de calado*, *Deriva*).• Iconografía marítima coherente (anclas, radares, hélices, batimetría).                                                                                               |
+| **#5: Prevención de Errores**                                                   | Mejor que los buenos mensajes de error es un diseño cuidadoso que impida que ocurra un problema en primer lugar.                                                     | • Bloqueo automático del botón de confirmación si el dron posee$< 35\%$ de batería (o $< 50\%$ en misiones críticas).• Pre-validación obligatoria de compatibilidad física (peso y profundidad) antes de permitir la pulsación de despacho.                                                       |
+| **#8: Diseño Estético y Minimalista**                                          | Los diálogos no deben contener información que sea irrelevante o rara vez necesaria. Toda unidad extra de información compite con la información relevante.       | • Esquema de color sobrio Slate`#12161A` con acentos funcionales de alto contraste.• Agrupación estructurada en bloques colapsables por escuadrilla (Ley de Miller: 3 a 5 tarjetas visibles por grupo).• Ocultamiento progresivo de parámetros avanzados de telemetría detrás de un botón secundario. |
+| **#9: Ayudar a los Usuarios a Reconocer, Diagnosticar y Recuperarse de Errores** | Los mensajes de error deben expresarse en lenguaje sencillo (sin códigos oscuros), indicar con precisión el problema y sugerir de forma constructiva una solución. | • La pantalla de alerta crítica no muestra un genérico "Error 500", sino la causa raíz física:*0 de 5 buceadores disponibles para profundidad > 8m*.• Ofrece rutas de escape claras: *Poner en Cola Prioritaria*, *Reasignar Emergencia* o *Contactar Guardia Náutica*.                          |
 
 ---
 
@@ -2714,16 +2726,16 @@ class AsignadorAutomaticoTest {
 
 #### 2. Matriz de los 5 Escenarios Obligatorios Probados
 
-| Escenario | Caso de Prueba | Condición de Entrada / Arrange | Comportamiento Esperado / Assert | Verificación Mockito |
-| :---: | :--- | :--- | :--- | :---: |
-| **1** | **Happy Path: Asignación Exitosa** | Dron apto en estado `DISPONIBLE`, batería suficiente (85%) y capacidad adecuada. | Retorna `Optional.of(drone)`. El dron transiciona inmediatamente a estado `EN_MISION`. | `verify(observadorMock, never()).notificarFalloAsignacion(any())` |
-| **2** | **Misión CRÍTICA sin Drones Disponibles** | Misión con `Prioridad.CRITICA`. La estrategia retorna `Optional.empty()`. | Retorna `Optional.empty()`. Se dispara alerta crítica por canal prioritario. | `verify(observadorMock, times(1)).notificarFalloAsignacion(mision)`<br>`verify(mockCentroControl, times(1)).notificarFalloAsignacion(mision)` |
-| **3** | **Drone en FALLO durante Asignación** | La estrategia selecciona un dron cuyo estado físico está en `FALLO`. | Emite alerta técnica inmediata. Filtra la flota excluyendo la unidad averiada, reevalúa y **asigna exitosamente un dron alternativo de respaldo**. | `verify(observadorMock, times(1)).notificarFallo(eq(droneAveriado), contains("FALLO"))` |
-| **4** | **Lista de Drones Vacía** | Flota de entrada `Collections.emptyList()`. | • En misión **NORMAL**: Retorna `empty` sin saturar observadores.<br>• En misión **CRÍTICA**: Retorna `empty` y **notifica alerta inmediata**. | `verify(observadorMock, times(1)).notificarFalloAsignacion(misionCritica)` |
-| **5a** | **Edge Case: Batería en 35% (Límite Nominal)** | Misión regular con dron cuya batería es exactamente el **35%** (`RN-01`). | Asignación **exitosa** (el umbral del 35% es inclusivo para permitir máxima eficiencia). | Transiciona a `EN_MISION` |
-| **5b** | **Edge Case: Batería en 34% (Sub-umbral Nominal)** | Misión regular con dron en **34%** (1% por debajo del mínimo). | Asignación **rechazada** (`Optional.empty()`), el dron permanece en `DISPONIBLE`. | Ninguna mutación de estado |
-| **5c** | **Edge Case: Batería en 50% (Límite Crítico)** | Misión `CRITICA` con dron cuya batería es exactamente el **50%** (`RN-02`). | Asignación **exitosa** (cumple la reserva estricta de salvaguarda). | Transiciona a `EN_MISION` |
-| **5d** | **Edge Case: Batería en 49% (Sub-umbral Crítico)** | Misión `CRITICA` con dron en **49%** de batería. | Asignación **rechazada** y notifica alerta de fallo a observadores registrados. | `verify(observadorMock, times(1)).notificarFalloAsignacion(misionCritica)` |
+|  Escenario  | Caso de Prueba                                             | Condición de Entrada / Arrange                                                        | Comportamiento Esperado / Assert                                                                                                                                     |                                                           Verificación Mockito                                                           |
+| :----------: | :--------------------------------------------------------- | :------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------: |
+| **1** | **Happy Path: Asignación Exitosa**                  | Dron apto en estado`DISPONIBLE`, batería suficiente (85%) y capacidad adecuada.     | Retorna`Optional.of(drone)`. El dron transiciona inmediatamente a estado `EN_MISION`.                                                                            |                                    `verify(observadorMock, never()).notificarFalloAsignacion(any())`                                    |
+| **2** | **Misión CRÍTICA sin Drones Disponibles**          | Misión con`Prioridad.CRITICA`. La estrategia retorna `Optional.empty()`.          | Retorna`Optional.empty()`. Se dispara alerta crítica por canal prioritario.                                                                                       | `verify(observadorMock, times(1)).notificarFalloAsignacion(mision)verify(mockCentroControl, times(1)).notificarFalloAsignacion(mision)` |
+| **3** | **Drone en FALLO durante Asignación**               | La estrategia selecciona un dron cuyo estado físico está en`FALLO`.                | Emite alerta técnica inmediata. Filtra la flota excluyendo la unidad averiada, reevalúa y**asigna exitosamente un dron alternativo de respaldo**.            |                         `verify(observadorMock, times(1)).notificarFallo(eq(droneAveriado), contains("FALLO"))`                         |
+| **4** | **Lista de Drones Vacía**                           | Flota de entrada`Collections.emptyList()`.                                           | • En misión**NORMAL**: Retorna `empty` sin saturar observadores.• En misión **CRÍTICA**: Retorna `empty` y **notifica alerta inmediata**. |                               `verify(observadorMock, times(1)).notificarFalloAsignacion(misionCritica)`                               |
+| **5a** | **Edge Case: Batería en 35% (Límite Nominal)**     | Misión regular con dron cuya batería es exactamente el**35%** (`RN-01`).     | Asignación**exitosa** (el umbral del 35% es inclusivo para permitir máxima eficiencia).                                                                      |                                                        Transiciona a`EN_MISION`                                                        |
+| **5b** | **Edge Case: Batería en 34% (Sub-umbral Nominal)**  | Misión regular con dron en**34%** (1% por debajo del mínimo).                  | Asignación**rechazada** (`Optional.empty()`), el dron permanece en `DISPONIBLE`.                                                                          |                                                        Ninguna mutación de estado                                                        |
+| **5c** | **Edge Case: Batería en 50% (Límite Crítico)**    | Misión`CRITICA` con dron cuya batería es exactamente el **50%** (`RN-02`). | Asignación**exitosa** (cumple la reserva estricta de salvaguarda).                                                                                            |                                                        Transiciona a`EN_MISION`                                                        |
+| **5d** | **Edge Case: Batería en 49% (Sub-umbral Crítico)** | Misión`CRITICA` con dron en **49%** de batería.                              | Asignación**rechazada** y notifica alerta de fallo a observadores registrados.                                                                                |                               `verify(observadorMock, times(1)).notificarFalloAsignacion(misionCritica)`                               |
 
 ---
 
@@ -2733,14 +2745,120 @@ class AsignadorAutomaticoTest {
 
 Tras la ejecución de la suite completa de pruebas unitarias (**100 tests totales ejecutados sin fallos**), el reporte oficial de JaCoCo en el paquete `main.dosw.prinplup.asignacion` arrojó las siguientes métricas:
 
-| Componente | Instrucciones Totales | Instrucciones Cubiertas | % Cobertura JaCoCo | Métodos Cubiertos | Estado Quality Gate |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **`AsignadorAutomatico`** | 329 | 298 | **90.6%** | **20 / 20 (100%)** | **SUPERADO ($\ge 80\%$)** |
-| **`MayorBateriaStrategy`** | 29 | 29 | **100.0%** | **3 / 3 (100%)** | **SUPERADO ($\ge 80\%$)** |
-| **`PrioridadCriticaStrategy`** | 53 | 53 | **100.0%** | **4 / 4 (100%)** | **SUPERADO ($\ge 80\%$)** |
-| **`ZonaCercanaStrategy`** | 68 | 68 | **100.0%** | **5 / 5 (100%)** | **SUPERADO ($\ge 80\%$)** |
-| **`EstrategiaSeleccion`** | 5 | 5 | **100.0%** | **1 / 1 (100%)** | **SUPERADO ($\ge 80\%$)** |
-| **Total Paquete `asignacion`** | **484** | **453** | **93.6%** | **33 / 33 (100%)** | **SUPERADO ($\ge 80\%$)** |
+| Componente                             | Instrucciones Totales | Instrucciones Cubiertas | % Cobertura JaCoCo |    Métodos Cubiertos    |        Estado Quality Gate        |
+| :------------------------------------- | :-------------------: | :---------------------: | :----------------: | :----------------------: | :-------------------------------: |
+| **`AsignadorAutomatico`**      |          329          |           298           |  **90.6%**  | **20 / 20 (100%)** | **SUPERADO ($\ge 80\%$)** |
+| **`MayorBateriaStrategy`**     |          29          |           29           |  **100.0%**  |  **3 / 3 (100%)**  | **SUPERADO ($\ge 80\%$)** |
+| **`PrioridadCriticaStrategy`** |          53          |           53           |  **100.0%**  |  **4 / 4 (100%)**  | **SUPERADO ($\ge 80\%$)** |
+| **`ZonaCercanaStrategy`**      |          68          |           68           |  **100.0%**  |  **5 / 5 (100%)**  | **SUPERADO ($\ge 80\%$)** |
+| **`EstrategiaSeleccion`**      |           5           |            5            |  **100.0%**  |  **1 / 1 (100%)**  | **SUPERADO ($\ge 80\%$)** |
+| **Total Paquete `asignacion`** |     **484**     |      **453**      |  **93.6%**  | **33 / 33 (100%)** | **SUPERADO ($\ge 80\%$)** |
 
 ---
 
+### 📊 Ejercicio 13: JaCoCo — Quality Gate al 80% y Cobertura Exhaustiva de Dominio (Fase Prinplup)
+
+En este ejercicio se configuró el **Quality Gate formal de JaCoCo en Maven** para salvaguardar la calidad del código de **AquaPort v2 (Fase Prinplup)** y se ejecutó la suite de pruebas exhaustivas sobre toda la capa de dominio (`main.dosw.prinplup` y sus subpaquetes), alcanzando un **98% de cobertura en instrucciones y 92% en ramas** con todas las barras en verde.
+
+---
+
+#### 1. Configuración del Quality Gate en Maven (`pom.xml`)
+
+Se incorporó la meta `check` en el ciclo de vida de compilación (`test` / `verify`) con un límite estricto del **80% mínimo** de cobertura en instrucciones:
+
+```xml
+<plugin>
+    <groupId>org.jacoco</groupId>
+    <artifactId>jacoco-maven-plugin</artifactId>
+    <version>0.8.11</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>prepare-agent</goal>
+            </goals>
+        </execution>
+        <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+                <goal>report</goal>
+            </goals>
+        </execution>
+        <execution>
+            <id>jacoco-check</id>
+            <phase>test</phase>
+            <goals>
+                <goal>check</goal>
+            </goals>
+            <configuration>
+                <rules>
+                    <rule>
+                        <element>BUNDLE</element>
+                        <limits>
+                            <limit>
+                                <counter>INSTRUCTION</counter>
+                                <value>COVEREDRATIO</value>
+                                <minimum>0.80</minimum>
+                            </limit>
+                        </limits>
+                    </rule>
+                </rules>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
+
+##### Evidencia de Aprobación del Quality Gate en Consola:
+
+```text
+[INFO] --- jacoco:0.8.11:check (jacoco-check) @ DOSW_REFUERZO_PIPLUP ---
+[INFO] Loading execution data file ...\target\jacoco.exec
+[INFO] Analyzed bundle 'DOSW_REFUERZO_PIPLUP' with 34 classes
+[INFO] All coverage checks have been met.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] Total time:  8.390 s
+[INFO] Finished at: 2026-10-11T07:39:44-05:00
+[INFO] ------------------------------------------------------------------------
+```
+
+---
+
+#### 2. Evidencia Visual del Reporte de Dominio en Verde ($\ge 80\%$)
+
+La siguiente captura certifica que **todas las clases del paquete de dominio central de la v2 (`main.dosw.prinplup`)** superan holgadamente el Quality Gate del 80%:
+
+![Reporte Oficial JaCoCo — Dominio v2 main.dosw.prinplup](docs/images/JacocoCoverPrinPlupExercise13.png)
+
+---
+
+#### 3. Métricas de Cobertura de las Clases de Dominio de AquaPort v2
+
+| Clase / Entidad                                |      Líneas Cubiertas      | Cobertura Instrucciones |    Cobertura Ramas    |    Métodos Cubiertos    |        Estado Quality Gate        |
+| :--------------------------------------------- | :-------------------------: | :---------------------: | :--------------------: | :-----------------------: | :-------------------------------: |
+| **`DroneAcuatico`**                    |       37 / 37 (100%)       |      **99%**      |     **91%**     |      23 / 23 (100%)      | **SUPERADO ($\ge 80\%$)** |
+| **`Mision`**                           |       10 / 10 (100%)       |     **100%**     | **n/a (Record)** |      10 / 10 (100%)      | **SUPERADO ($\ge 80\%$)** |
+| **`ConsultorFlotaPrinplup`**           |       47 / 47 (100%)       |      **99%**      |     **94%**     |      13 / 13 (100%)      | **SUPERADO ($\ge 80\%$)** |
+| **`Ejercicio01Prinplup`**              |        28 / 29 (96%)        |      **99%**      |     **100%**     |        3 / 4 (75%)        | **SUPERADO ($\ge 80\%$)** |
+| **`Ejercicio03Prinplup`**              |        39 / 40 (97%)        |      **97%**      |     **75%**     |        4 / 5 (80%)        | **SUPERADO ($\ge 80\%$)** |
+| **`EstadoDrone`**                      |        7 / 7 (100%)        |     **100%**     |     **100%**     |       1 / 1 (100%)       | **SUPERADO ($\ge 80\%$)** |
+| **`Prioridad`**                        |        5 / 5 (100%)        |     **100%**     |     **100%**     |       1 / 1 (100%)       | **SUPERADO ($\ge 80\%$)** |
+| **`TipoDrone`**                        |        4 / 4 (100%)        |     **100%**     |     **100%**     |       1 / 1 (100%)       | **SUPERADO ($\ge 80\%$)** |
+| **Total Paquete `main.dosw.prinplup`** | **177 / 179 (98.8%)** |     **98.0%**     |    **92.0%**    | **56 / 58 (96.5%)** | **SUPERADO ($\ge 80\%$)** |
+
+---
+
+#### 4. Análisis y Resolución de Ramas Amarillas (Branch Coverage)
+
+En concordancia con el reto académico del Nivel Prinplup, se identificaron y resolvieron sistemáticamente las ramas condicionales que se encontraban parcialmente cubiertas (color amarillo en JaCoCo):
+
+| Clase y Método                                 | Rama Condicional Analizada                             | Prueba Unitaria Agregada                                                         | Causa Raíz y Justificación Técnica de Importancia                                                                                                                                                              |
+| :---------------------------------------------- | :----------------------------------------------------- | :------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`DroneAcuatico.equals()`**            | `if (this == o) return true;`                        | `assertEquals(base, base)` en `DroneAcuaticoTest`                            | **Identidad Reflexiva:** Si dos referencias apuntan a la misma instancia en memoria de un dron en la flota, se omite la costosa comparación campo por campo, optimizando el rendimiento.                   |
+| **`DroneAcuatico.equals()`**            | `if (o == null                                         |                                                                                  | getClass() != o.getClass())`                                                                                                                                                                                      |
+| **`DroneAcuatico.puedeCargar()`**       | `pesoGramos <= capacidadCargaGramos`                 | `assertTrue(drone.puedeCargar(500))` y `assertFalse(drone.puedeCargar(501))` | **Seguridad Física Fluvial:** Verifica el comportamiento en el límite estricto de masa útil certificada (500g para superficial, 1500g semisumergido, 300g buceo), impidiendo hundimientos por sobrepeso. |
+| **`FabricaDrones` (Especializaciones)** | Constructores con`Math.min(capacidad, MAX)`          | `testConstructoresSobrecargadosEspecializaciones` en `FabricaDronesTest`     | **Invariante de Dominio:** Garantiza que incluso si un solicitante intenta forzar un dron buceador con 500g de carga, la fábrica lo tope rigurosamente en su límite físico seguro de 300g.               |
+| **`AsignadorAutomatico.asignar()`**     | `if (seleccionado.getEstado() == EstadoDrone.FALLO)` | `droneEncontradoEnFallo_notificaYBuscaAlternativoExitosamente`                 | **Resiliencia Operativa:** Valida que ante un fallo de propulsor durante la asignación, el sistema no cancele la misión de inmediato sino que active la búsqueda de respaldo.                            |
+
+---
