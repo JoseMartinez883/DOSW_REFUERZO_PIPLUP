@@ -9,7 +9,9 @@ public class TecnicoMantenimientoObserver implements ObservadorMision {
 
     @Override
     public void notificarFallo(DroneAcuatico drone, String motivo) {
+        String droneId = (drone != null) ? drone.getId() : "N/A";
+        String zona = (drone != null) ? drone.getZona() : "Zona General";
         System.out.println("[TÉCNICO MANTENIMIENTO] ORDEN DE SERVICIO: Asignada revisión física urgente al drone " +
-                drone.getId() + " en zona " + drone.getZona() + " por causa: " + motivo);
+                droneId + " en zona " + zona + " por causa: " + motivo);
     }
 }

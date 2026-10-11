@@ -61,6 +61,10 @@ public class DroneAcuatico {
         return estado == EstadoDrone.DISPONIBLE;
     }
 
+    public boolean puedeCargar(int pesoGramos) {
+        return pesoGramos <= this.capacidadCargaGramos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

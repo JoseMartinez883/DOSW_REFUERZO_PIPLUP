@@ -2674,3 +2674,73 @@ Pantalla de interrupción de emergencia ante una misión prioritaria (`MIS-999-U
 
 ---
 
+### 🧪 Ejercicio 12: TDD con Mockito para el AsignadorAutomático (Fase Prinplup)
+
+En este ejercicio se implementó y validó el componente central de asignación autónoma `AsignadorAutomatico` siguiendo la disciplina **Test-Driven Development (TDD)** y aislando sus dependencias operacionales mediante **Mocks de Mockito**.
+
+La suite de pruebas en `AsignadorAutomaticoTest.java` garantiza el cumplimiento de los contratos de diseño de los patrones **Strategy** (`EstrategiaSeleccion`) y **Observer** (`ObservadorMision`, `CentroControlObserver`, `TecnicoMantenimientoObserver`), cubriendo el Happy Path, casos de fallo, reasignación con respaldo y los casos edge de umbrales energéticos de seguridad (reglas de negocio `RN-01` y `RN-02`).
+
+---
+
+#### 1. Arquitectura de Aislamiento y Mocks con Mockito
+
+Para evitar dependencias con bases de datos, redes o estados mutables externos, se aplicó la extensión `@ExtendWith(MockitoExtension.class)`:
+
+```java
+@ExtendWith(MockitoExtension.class)
+class AsignadorAutomaticoTest {
+
+    @Mock
+    private EstrategiaSeleccion estrategiaMock;
+
+    @Mock
+    private ObservadorMision observadorMock;
+
+    @Mock
+    private ObservadorMision mockCentroControl;
+
+    @Mock
+    private ObservadorMision mockTecnicoMantenimiento;
+
+    private AsignadorAutomatico asignador;
+    // ...
+}
+```
+
+* **`estrategiaMock`:** Simula dinámicamente la resolución algorítmica (`when(estrategiaMock.seleccionar(any(), any())).thenReturn(...)`), permitiendo inducir escenarios de flota vacía, drones averiados o selección óptima.
+* **`observadorMock` / `mockCentroControl`:** Valida que las alertas críticas y órdenes de contingencia sean emitidas de forma reactiva y con la cardinalidad exacta mediante `verify(..., times(1))` o `verify(..., never())`.
+
+---
+
+#### 2. Matriz de los 5 Escenarios Obligatorios Probados
+
+| Escenario | Caso de Prueba | Condición de Entrada / Arrange | Comportamiento Esperado / Assert | Verificación Mockito |
+| :---: | :--- | :--- | :--- | :---: |
+| **1** | **Happy Path: Asignación Exitosa** | Dron apto en estado `DISPONIBLE`, batería suficiente (85%) y capacidad adecuada. | Retorna `Optional.of(drone)`. El dron transiciona inmediatamente a estado `EN_MISION`. | `verify(observadorMock, never()).notificarFalloAsignacion(any())` |
+| **2** | **Misión CRÍTICA sin Drones Disponibles** | Misión con `Prioridad.CRITICA`. La estrategia retorna `Optional.empty()`. | Retorna `Optional.empty()`. Se dispara alerta crítica por canal prioritario. | `verify(observadorMock, times(1)).notificarFalloAsignacion(mision)`<br>`verify(mockCentroControl, times(1)).notificarFalloAsignacion(mision)` |
+| **3** | **Drone en FALLO durante Asignación** | La estrategia selecciona un dron cuyo estado físico está en `FALLO`. | Emite alerta técnica inmediata. Filtra la flota excluyendo la unidad averiada, reevalúa y **asigna exitosamente un dron alternativo de respaldo**. | `verify(observadorMock, times(1)).notificarFallo(eq(droneAveriado), contains("FALLO"))` |
+| **4** | **Lista de Drones Vacía** | Flota de entrada `Collections.emptyList()`. | • En misión **NORMAL**: Retorna `empty` sin saturar observadores.<br>• En misión **CRÍTICA**: Retorna `empty` y **notifica alerta inmediata**. | `verify(observadorMock, times(1)).notificarFalloAsignacion(misionCritica)` |
+| **5a** | **Edge Case: Batería en 35% (Límite Nominal)** | Misión regular con dron cuya batería es exactamente el **35%** (`RN-01`). | Asignación **exitosa** (el umbral del 35% es inclusivo para permitir máxima eficiencia). | Transiciona a `EN_MISION` |
+| **5b** | **Edge Case: Batería en 34% (Sub-umbral Nominal)** | Misión regular con dron en **34%** (1% por debajo del mínimo). | Asignación **rechazada** (`Optional.empty()`), el dron permanece en `DISPONIBLE`. | Ninguna mutación de estado |
+| **5c** | **Edge Case: Batería en 50% (Límite Crítico)** | Misión `CRITICA` con dron cuya batería es exactamente el **50%** (`RN-02`). | Asignación **exitosa** (cumple la reserva estricta de salvaguarda). | Transiciona a `EN_MISION` |
+| **5d** | **Edge Case: Batería en 49% (Sub-umbral Crítico)** | Misión `CRITICA` con dron en **49%** de batería. | Asignación **rechazada** y notifica alerta de fallo a observadores registrados. | `verify(observadorMock, times(1)).notificarFalloAsignacion(misionCritica)` |
+
+---
+
+#### 3. Resultados de Cobertura JaCoCo en la Capa de Asignación
+
+![Reporte Oficial JaCoCo — main.dosw.prinplup.asignacion](docs/images/JacocoCoverPrinPlup.png)
+
+Tras la ejecución de la suite completa de pruebas unitarias (**100 tests totales ejecutados sin fallos**), el reporte oficial de JaCoCo en el paquete `main.dosw.prinplup.asignacion` arrojó las siguientes métricas:
+
+| Componente | Instrucciones Totales | Instrucciones Cubiertas | % Cobertura JaCoCo | Métodos Cubiertos | Estado Quality Gate |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **`AsignadorAutomatico`** | 329 | 298 | **90.6%** | **20 / 20 (100%)** | **SUPERADO ($\ge 80\%$)** |
+| **`MayorBateriaStrategy`** | 29 | 29 | **100.0%** | **3 / 3 (100%)** | **SUPERADO ($\ge 80\%$)** |
+| **`PrioridadCriticaStrategy`** | 53 | 53 | **100.0%** | **4 / 4 (100%)** | **SUPERADO ($\ge 80\%$)** |
+| **`ZonaCercanaStrategy`** | 68 | 68 | **100.0%** | **5 / 5 (100%)** | **SUPERADO ($\ge 80\%$)** |
+| **`EstrategiaSeleccion`** | 5 | 5 | **100.0%** | **1 / 1 (100%)** | **SUPERADO ($\ge 80\%$)** |
+| **Total Paquete `asignacion`** | **484** | **453** | **93.6%** | **33 / 33 (100%)** | **SUPERADO ($\ge 80\%$)** |
+
+---
+

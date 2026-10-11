@@ -36,4 +36,12 @@ public record Mision(
     public int getPesoCargaGramos() {
         return pesoCargaGramos;
     }
+
+    public String zonaDestino() {
+        return puntoLlegada;
+    }
+
+    public int pesoGramos() {
+        return pesoCargaGramos;
+    }
 }

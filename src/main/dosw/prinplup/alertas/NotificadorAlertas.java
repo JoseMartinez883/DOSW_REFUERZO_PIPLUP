@@ -1,6 +1,7 @@
 package main.dosw.prinplup.alertas;
 
 import main.dosw.prinplup.DroneAcuatico;
+import main.dosw.prinplup.Mision;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,12 @@ public class NotificadorAlertas {
     public void emitirAlertaFallo(DroneAcuatico drone, String motivo) {
         for (ObservadorMision observador : observadores) {
             observador.notificarFallo(drone, motivo);
+        }
+    }
+
+    public void notificarFalloAsignacion(Mision mision) {
+        for (ObservadorMision observador : observadores) {
+            observador.notificarFalloAsignacion(mision);
         }
     }
 

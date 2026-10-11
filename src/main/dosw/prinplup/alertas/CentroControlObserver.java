@@ -9,8 +9,9 @@ public class CentroControlObserver implements ObservadorMision {
 
     @Override
     public void notificarFallo(DroneAcuatico drone, String motivo) {
-        System.out.println("[CENTRO DE CONTROL] ALERTA CRÍTICA: Drone " + drone.getId() +
-                " (" + drone.getTipo() + ") en estado FALLO. Motivo: " + motivo +
-                ". Batería: " + drone.getBateria() + "% | Zona: " + drone.getZona());
+        String info = (drone != null)
+                ? "Drone " + drone.getId() + " (" + drone.getTipo() + "). Batería: " + drone.getBateria() + "% | Zona: " + drone.getZona()
+                : "Sin drone físico asignado";
+        System.out.println("[CENTRO DE CONTROL] ALERTA CRÍTICA: " + info + ". Motivo: " + motivo);
     }
 }
