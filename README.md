@@ -1905,3 +1905,68 @@ Para garantizar que estas decisiones arquitectónicas no se degraden con el tiem
 4. **ISP:** Consistencia y atomicidad de las interfaces funcionales.
 5. **SRP:** Delimitación de responsabilidades de la fábrica y los observadores.
 
+---
+
+### Ejercicio 05 — Diagrama de Contexto C4 del Sistema AquaPort v2
+
+En este ejercicio se actualiza el **Diagrama de Contexto del Sistema (Nivel 1 del modelo C4)** para representar formalmente la arquitectura perimetral de **AquaPort v2 (Fase Prinplup)**. En esta fase, el sistema evoluciona de un entorno aislado de asignación manual a un ecosistema conectado en tiempo real con actores especializados y sistemas institucionales externos.
+
+---
+
+#### 1. Diagrama de Contexto C4 — AquaPort v2 (Fase Prinplup)
+
+El diagrama delimita el sistema central como una caja negra de software, identificando con precisión a las personas (*Persons*) que interactúan directamente con él y a los sistemas externos (*Software Systems*) con los que intercambia datos de forma bidireccional mediante flujos debidamente etiquetados:
+
+![Diagrama de Contexto C4 v2](docs/images/DiagramC4v2.png)
+
+##### Elementos del Diagrama de Contexto v2:
+
+1. **AquaPort v2 (`[Software System]` — Sistema Central):**  
+   Plataforma central autónoma encargada de gestionar y despachar la flota de 15 drones acuáticos especializados (`Superficial`, `Semisumergido`, `Buceador`), seleccionar drones óptimos mediante algoritmos desacoplados (`Strategy`) y emitir alertas inmediatas de contingencia mediante publicación de eventos (`Observer`).
+2. **Actores Humanos (`[Person]`):**
+   - **Solicitante:** Investigador, docente o estudiante de la ECI que solicita el traslado de muestras hídricas o sensores ambientales. Recibe el código de seguimiento de misión y el estado operativo.
+   - **Operador Hídrico:** Supervisor operativo encargado de validar las asignaciones automáticas, monitorizar la telemetría, batería y estado operativo de los 15 drones en las distintas zonas del campus.
+   - **Administrador ECI:** Personal directivo que consulta métricas consolidadas de rendimiento, horas de navegación, disponibilidad y reportes históricos de uso.
+   - **Técnico de Mantenimiento (`[NUEVO]`):** Personal técnico de campo que recibe las órdenes de servicio generadas automáticamente ante incidentes críticos (estado `FALLO`) y registra el retorno de drones reparados a la flota.
+3. **Sistemas Externos (`[Software System]`):**
+   - **API Condiciones Hídricas (`[NUEVO]`):** Servicio meteorológico e hidrológico de la Escuela que suministra variables ambientales en tiempo real (nivel de agitación del agua, profundidad del cauce, clima y temperatura) para orientar la selección del tipo de dron adecuado.
+   - **Centro de Control ECI (`[NUEVO]`):** Sistema institucional central que evalúa los planes de navegación propuestos, valida la compatibilidad con otras operaciones del campus y emite permisos de tránsito acuático en canales autorizados.
+   - **Sistema de Alertas (`[NUEVO]`):** Infraestructura institucional de telecomunicaciones y difusión de emergencias que distribuye alertas inmediatas de contingencia a los canales de radio y mensajería cuando un dron reporta falla crítica.
+
+---
+
+#### 2. Diagrama de Contexto C4 — AquaPort MVP (Fase Piplup de Referencia)
+
+A modo de referencia comparativa, el diagrama de contexto inicial del MVP modelaba un alcance delimitado exclusivamente a operaciones manuales sin integración de sistemas externos:
+
+![Diagrama de Contexto C4 MVP](docs/uml/c4-contexto-piplup.png)
+
+---
+
+#### 3. Análisis Comparativo Exhaustivo: ¿Qué Creció? vs ¿Qué se Mantuvo?
+
+| Dimensión de Análisis | Versión Anterior (AquaPort MVP - Piplup) | Versión Actual (AquaPort v2 - Prinplup) | Impacto Arquitectónico y Operativo |
+| :--- | :--- | :--- | :--- |
+| **Actores Humanos** | 3 actores (`Solicitante`, `Operador Hídrico`, `Administrador ECI`). | 4 actores (Se incorpora el **Técnico de Mantenimiento**). | Permite cerrar el ciclo de mantenimiento reactivo y preventivo asistido por el patrón *Observer*. |
+| **Sistemas Externos** | 0 sistemas externos (sistema autocontenido sin dependencias perimetrales). | **3 sistemas externos** (`API Condiciones Hídricas`, `Centro de Control ECI`, `Sistema de Alertas`). | Transforma a AquaPort en un sistema distribuido e integrado con la infraestructura física e institucional de la Escuela. |
+| **Flujos de Información** | Flujos manuales básicos de registro, consulta e inspección. | **Flujos bidireccionales etiquetados** con contratos de datos específicos (telemetría, clima, autorización de ruta y órdenes técnicas). | Elimina la ambigüedad en los límites del sistema definiendo exactamente qué dato viaja y en qué dirección. |
+| **Escala de la Flota** | 4 drones homogéneos del mismo modelo (`Aqua-Ranger 100`). | **15 drones clasificados en 3 familias físicas** (`Superficial`, `Semisumergido`, `Buceador`). | Demanda algoritmos de selección inteligente según resistencia física y capacidad de inmersión. |
+| **Modelo de Asignación** | Asignación 100% manual por decisión visual del Operador Hídrico. | **Asignación autónoma algorítmica** basada en el patrón *Strategy* y variables ambientales. | Reduce la latencia de despacho y mitiga el error humano en misiones urgentes y de alta prioridad. |
+| **Gestión de Incidentes** | Manejo de excepciones locales y mensajes informativos en consola. | **Publicación desacoplada de alertas críticas** a través de canales múltiples en tiempo real. | Garantiza atención inmediata de contingencias en el espejo de agua evitando pérdidas materiales. |
+
+##### ¿Qué creció?
+1. **Un nuevo actor humano especializado:** El **Técnico de Mantenimiento**, encargado de la recepción de órdenes físicas de reparación y la reincorporación formal de drones dados de alta.
+2. **Tres interfaces con sistemas externos:**
+   - La **API Condiciones Hídricas** para contextualizar la toma de decisiones algorítmicas con variables del entorno acuático.
+   - El **Centro de Control ECI** para formalizar la gobernanza y seguridad de las vías navegables institucionales.
+   - El **Sistema de Alertas** para radiodifundir contingencias de flota sin acoplamiento con la lógica de negocio.
+3. **Flujos de comunicación enriquecidos:** Todas las aristas del grafo contienen semántica bidireccional clara (p. ej., "Consulta nivel de agitación / Retorna condiciones ambientales" y "Envía plan de navegación / Devuelve permiso de navegación").
+4. **Escala y diversidad de la flota:** De 4 a 15 drones autónomos categorizados.
+
+##### ¿Qué se mantuvo?
+1. **Los tres actores esenciales de la comunidad ECI:** El **Solicitante** continúa requiriendo el transporte de cargas, el **Operador Hídrico** mantiene la supervisión global de las operaciones acuáticas y el **Administrador ECI** sigue accediendo a las estadísticas y el inventario.
+2. **El propósito fundacional del sistema:** Proveer transporte acuático sustentable, seguro y eficiente en la red de canales, embalses y lagunas del campus universitario.
+3. **La delimitación del nivel 1 de C4 (Caja Negra):** El sistema AquaPort se presenta como una entidad conceptual única sin revelar todavía su división interna en contenedores o componentes (reservado para niveles C4 posteriores).
+4. **La integridad y trazabilidad de las misiones:** El concepto central de `Mision` inmutable, con puntos de partida/llegada y tipos de carga estandarizados, permanece inalterado como piedra angular del dominio.
+
+
