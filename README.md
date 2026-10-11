@@ -1771,3 +1771,137 @@ asignador.registrarMisionConDrone(new Mision("MIS-CRIT-777", dEnFallo, ...));
 
 - **Parte 2 (Selección por Prioridad Crítica y Alertas en Tiempo Real con Observer):**
 ![Ejercicio03Prinplup02.png](docs/images/Ejercicio03Prinplup02.png)
+
+---
+
+### 🏗 Ejercicio 04: Auditoría Completa de Principios SOLID en AquaPort v2
+
+#### 1. Enunciado y Objetivos del Reto
+> **🎯 Reto Prinplup — Principios SOLID:**  
+> Audita todas las clases nuevas de la v2. Documenta en el README: qué principio aplica cada clase/interfaz y cómo. Para cada uno de los 5 principios SOLID, señala dónde en el código se respeta y por qué esa decisión de diseño importa en el contexto de AquaPort.
+
+En esta fase de evolución arquitectónica (Nivel Prinplup), AquaPort transiciona de un sistema de registro manual a una plataforma autónoma de despacho de drones con monitoreo reactivo. Esta transición exige el cumplimiento estricto de los cinco principios de diseño orientado a objetos **SOLID** para prevenir la rigidez, fragilidad y acoplamiento excesivo.
+
+---
+
+#### 2. Matriz de Auditoría SOLID por Clase e Interfaz de la v2
+
+A continuación se auditan todas las clases e interfaces incorporadas en la v2, detallando los principios aplicados y su justificación técnica:
+
+| Componente | Paquete | Principio(s) Principal(es) | Cómo lo Aplica en el Código | Justificación en el Dominio AquaPort |
+| :--- | :--- | :--- | :--- | :--- |
+| `DroneAcuatico` | `main.dosw.prinplup` | **SRP, LSP** | Define exclusivamente el estado fundamental y contrato de un vehículo acuático autónomo. No gestiona asignaciones ni comunicaciones externas. | Permite tratar a cualquier vehículo de la flota de manera uniforme sin importar su submarca o hardware físico. |
+| `DroneSuperficial` | `main.dosw.prinplup.fabrica` | **LSP, OCP** | Extiende `DroneAcuatico` fijando capacidad de 500g y modelo de superficie sin alterar el comportamiento esperado del padre. | Garantiza misiones seguras en aguas mansas (embalses) sin romper el contrato del drone. |
+| `DroneSemisumergido` | `main.dosw.prinplup.fabrica` | **LSP, OCP** | Extiende `DroneAcuatico` fijando capacidad de 1500g y casco resistente para aguas agitadas. | Provee capacidad de carga pesada en canales sin requerir código especial en el despachador. |
+| `DroneBuceador` | `main.dosw.prinplup.fabrica` | **LSP, OCP** | Extiende `DroneAcuatico` fijando capacidad de 300g y sensores de profundidad para toma subacuática. | Especializado en muestreo profundo sin invalidar los métodos de consulta de batería o estado. |
+| `FabricaDrones` | `main.dosw.prinplup.fabrica` | **SRP, OCP** | Su única responsabilidad es instanciar la subclase correcta según el enum `TipoDrone`. Desacopla al resto de la aplicación de los constructores concretos. | Si se adquiere un 4to tipo de drone (p. ej. *Sumergible Profundo*), solo se amplía la fábrica sin tocar el asignador. |
+| `EstrategiaSeleccion` | `main.dosw.prinplup.asignacion` | **ISP, OCP, DIP** | Interfaz atómica con un solo método `seleccionarDrone(...)`. Es la abstracción sobre la cual opera el asignador. | Permite que AquaPort incorpore nuevos algoritmos de inteligencia de asignación sin modificar el núcleo del despachador. |
+| `MayorBateriaStrategy` | `main.dosw.prinplup.asignacion` | **SRP, OCP** | Responsabilidad exclusiva: buscar el drone con mayor carga residual respetando el umbral de seguridad operacional (>= 20%). | Maximiza la disponibilidad energética de la flota y previene pérdidas de drones por batería agotada. |
+| `ZonaCercanaStrategy` | `main.dosw.prinplup.asignacion` | **SRP, OCP** | Responsabilidad exclusiva: priorizar drones que ya estén presentes en la zona de la misión para minimizar traslados. | Reduce tiempos de espera para recolección de muestras urgentes en zonas distantes. |
+| `PrioridadCriticaStrategy` | `main.dosw.prinplup.asignacion` | **SRP, OCP** | Responsabilidad exclusiva: filtrar exclusivamente drones con reserva energética de seguridad (>= 50%). | Asegura éxito en misiones de emergencia ambiental crítica sin riesgo de interrupción. |
+| `AsignadorAutomatico` | `main.dosw.prinplup.asignacion` | **SRP, OCP, DIP** | Coordina el flujo de asignación delegando la decisión en `EstrategiaSeleccion` y las alertas en `NotificadorAlertas`. No usa `instanceof`. | Es el orquestador central autónomo de la v2; mantiene alta cohesión y bajo acoplamiento con algoritmos y canales de aviso. |
+| `ObservadorMision` | `main.dosw.prinplup.alertas` | **ISP, DIP** | Interfaz granular con un único método `notificarFallo(...)`. Desacopla emisores de receptores. | Permite suscribir cualquier sistema (SCADA, mensajería, consola) sin alterar el asignador. |
+| `CentroControlObserver` | `main.dosw.prinplup.alertas` | **SRP, DIP** | Responsabilidad exclusiva: formatear y desplegar alertas visuales en la consola central del operador. | Facilita la supervisión humana inmediata ante emergencias de flota. |
+| `TecnicoMantenimientoObserver` | `main.dosw.prinplup.alertas` | **SRP, DIP** | Responsabilidad exclusiva: generar la orden técnica de inspección y reparación física para el personal de campo. | Automatiza la logística de mantenimiento preventivo y correctivo en la ECI. |
+| `NotificadorAlertas` | `main.dosw.prinplup.alertas` | **SRP, OCP** | Responsabilidad exclusiva: gestionar la lista de suscriptores y difundir eventos de fallo sin conocer sus implementaciones. | Aisla la lógica de suscripción y despacho 'publish-subscribe' del dominio principal. |
+
+---
+
+#### 3. Auditoría Detallada de los 5 Principios SOLID con Evidencia en Código
+
+##### 1. Single Responsibility Principle (SRP) — Responsabilidad Única
+- **Dónde se respeta en el código:**  
+  En `AsignadorAutomatico.java`, la clase se limita estrictamente a orquestar la asignación y detectar incidentes:
+  ```java
+  public Optional<DroneAcuatico> seleccionarDrone(List<DroneAcuatico> flota, String zona) {
+      return estrategia.seleccionarDrone(flota, zona); // No calcula matemáticas ni filtra listas directamente
+  }
+  ```
+  La lógica de selección pertenece exclusivamente a las implementaciones de `EstrategiaSeleccion`, la instanciación a `FabricaDrones` y el despacho de mensajes a `NotificadorAlertas`.
+- **Por qué importa en AquaPort:**  
+  Si cambia el protocolo de telecomunicaciones de alertas (por ejemplo, enviar un correo o mensaje MQTT), el algoritmo de asignación de rutas y selección de drones permanece intacto.
+
+---
+
+##### 2. Open/Closed Principle (OCP) — Abierto para Extensión, Cerrado para Modificación
+- **Dónde se respeta en el código:**  
+  En `AsignadorAutomatico.java`, la selección de drones es **polimórfica pura**, sin condicionales `if (estrategia instanceof MayorBateriaStrategy)`:
+  ```java
+  // Cero instanceof: abierto a infinitas estrategias futuras
+  public Optional<DroneAcuatico> seleccionarDrone(List<DroneAcuatico> flota, String zona) {
+      return estrategia.seleccionarDrone(flota, zona);
+  }
+  ```
+  Si se introduce un 4to tipo de drone (`DroneSumergibleProfundo`), se hereda de `DroneAcuatico` y se añade a `FabricaDrones`. `AsignadorAutomatico` y las estrategias existentes siguen funcionando sin tocar una sola línea de su código.
+- **Por qué importa en AquaPort:**  
+  La escuela ECI puede incorporar nuevos modelos de drones o nuevas políticas hídricas durante futuros cortes académicos sin riesgo de introducir fallos de regresión en las misiones operativas.
+
+---
+
+##### 3. Liskov Substitution Principle (LSP) — Sustitución de Liskov
+- **Dónde se respeta en el código:**  
+  En `DroneAcuatico.java` y sus subclases (`DroneSuperficial`, `DroneSemisumergido`, `DroneBuceador`), todas las subclases honran rigurosamente el contrato de su clase base:
+  ```java
+  // Cualquier subtipo puede sustituir a DroneAcuatico en colecciones heterogéneas
+  List<DroneAcuatico> flota = List.of(
+      new DroneSuperficial("D-1", 90, EstadoDrone.DISPONIBLE, "Embalse"),
+      new DroneSemisumergido("D-2", 85, EstadoDrone.DISPONIBLE, "Canal"),
+      new DroneBuceador("D-3", 75, EstadoDrone.DISPONIBLE, "Laguna")
+  );
+  ```
+  Ninguna subclase sobreescribe métodos para lanzar `UnsupportedOperationException`, ni devuelve valores nulos donde el padre garantiza contratos válidos, ni debilita las precondiciones de capacidad y batería.
+- **Por qué importa en AquaPort:**  
+  El planificador de flota puede iterar, clasificar, ordenar y despachar cualquier drone sin tener que verificar si es un buceador o superficial, evitando comportamientos anómalos o excepciones inesperadas en tiempo de ejecución.
+
+---
+
+##### 4. Interface Segregation Principle (ISP) — Segregación de Interfaces
+- **Dónde se respeta en el código:**  
+  Las interfaces creadas en la v2 son precisas, cohesivas y contienen exactamente la firma funcional requerida:
+  ```java
+  // EstrategiaSeleccion: Solo expone el contrato de selección algorítmica
+  public interface EstrategiaSeleccion {
+      Optional<DroneAcuatico> seleccionarDrone(List<DroneAcuatico> dronesDisponibles, String zona);
+  }
+
+  // ObservadorMision: Solo expone el contrato de recepción de fallos
+  public interface ObservadorMision {
+      void notificarFallo(DroneAcuatico drone, String motivo);
+  }
+  ```
+  Ninguna de las dos interfaces agrupa métodos irrelevantes (como persistencia en base de datos o validación de credenciales).
+- **Por qué importa en AquaPort:**  
+  Evita que los componentes que solo necesitan escuchar fallos (como un sistema de alarmas físicas en el muelle) se vean forzados a implementar métodos relacionados con la planificación de rutas o cálculo de batería.
+
+---
+
+##### 5. Dependency Inversion Principle (DIP) — Inversión de Dependencias
+- **Dónde se respeta en el código:**  
+  En `AsignadorAutomatico.java`, la clase de alto nivel no depende de implementaciones concretas, sino de las interfaces abstractas `EstrategiaSeleccion` y `ObservadorMision`:
+  ```java
+  public class AsignadorAutomatico {
+      private EstrategiaSeleccion estrategia; // Abstracción, no MayorBateriaStrategy
+      private final NotificadorAlertas notificador; // Gestiona ObservadorMision (abstracciones)
+
+      public AsignadorAutomatico(EstrategiaSeleccion estrategia, NotificadorAlertas notificador) {
+          this.estrategia = Objects.requireNonNull(estrategia);
+          this.notificador = Objects.requireNonNull(notificador);
+      }
+      ...
+  }
+  ```
+  Las dependencias se suministran mediante inyección de dependencias en el constructor y a través del método `setEstrategia(...)`.
+- **Por qué importa en AquaPort:**  
+  Permite realizar pruebas unitarias aisladas con **Mocks de Mockito** (`mockCentroControl`, `mockTecnico`) sin depender de bases de datos o terminales físicas, garantizando una arquitectura altamente testeable y desacoplada.
+
+---
+
+#### 4. Verificación Automatizada (`SolidPrinciplesAuditTest.java`)
+
+Para garantizar que estas decisiones arquitectónicas no se degraden con el tiempo, se desarrolló la suite de pruebas unitarias `SolidPrinciplesAuditTest.java` (78 tests del proyecto pasando en verde, 0 fallos), comprobando programáticamente:
+1. **LSP:** Sustitución perfecta de los 3 subtipos en colecciones heterogéneas del despachador.
+2. **OCP:** Incorporación dinámica de nuevas estrategias de selección y nuevos observadores de alerta al vuelo sin modificar una sola línea de código existente.
+3. **DIP:** Inyección fluida de dependencias abstractas en el asignador.
+4. **ISP:** Consistencia y atomicidad de las interfaces funcionales.
+5. **SRP:** Delimitación de responsabilidades de la fábrica y los observadores.
+
