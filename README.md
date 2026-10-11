@@ -1466,5 +1466,126 @@ Con la culminación exitosa del **Ejercicio 14**, el equipo Piplup ha completado
 
 ¡AquaPort MVP está 100% operativo, verificado y listo para evolucionar al nivel **Prinplup**! 🌊💧
 
+---
+
+# PRINPLUP FASE 02 — DOSW (AquaPort v2: Flota Autónoma y Gestión Avanzada)
+
+### Ejercicio 01 — Streams avanzados: groupingBy, flatMap y comparadores compuestos
+
+En este ejercicio se escala la flota de AquaPort a **15 drones acuáticos** distribuidos en 3 tipos especializados (`Superficial`, `Semisumergido`, `Buceador`) y se resuelven consultas complejas utilizando la API de Streams avanzada de Java 21, prohibiendo estructuras iterativas tradicionales (`for`, `while`) o variables mutables externas.
+
+#### 1. Modelo de Dominio de AquaPort v2
+
+- **`TipoDrone`:** `SUPERFICIAL` (aguas tranquilas, hasta 500g), `SEMISUMERGIDO` (aguas agitadas/corriente, hasta 1500g), `BUCEADOR` (profundidad, hasta 300g).
+- **`EstadoDrone`:** `DISPONIBLE`, `EN_MISION`, `RECARGANDO`, `MANTENIMIENTO`, `SUMERGIDO`.
+- **`Prioridad`:** `CRITICA`, `ALTA`, `NORMAL`, `BAJA` (las misiones críticas tienen precedencia absoluta).
+- **`DroneAcuatico`:** Record inmutable con atributos de telemetría, capacidad de carga en gramos y métodos de disponibilidad.
+- **`Mision`:** Record inmutable asociando drone asignado, ruta, prioridad y carga.
+
+#### 2. Las 5 Consultas con Streams Avanzados (`ConsultorFlotaPrinplup.java`)
+
+1. **Agrupar drones disponibles por tipo (`groupingBy`):**
+   ```java
+   public Map<TipoDrone, List<DroneAcuatico>> agruparDronesDisponiblesPorTipo(List<DroneAcuatico> drones) {
+       return drones.stream()
+               .filter(DroneAcuatico::isDisponible)
+               .collect(Collectors.groupingBy(DroneAcuatico::tipo));
+   }
+   ```
+
+2. **Obtener drone óptimo para una zona dada (mayor batería y tipo compatible):**
+   ```java
+   public Optional<DroneAcuatico> obtenerDroneOptimoParaZona(List<DroneAcuatico> drones, String zona) {
+       return drones.stream()
+               .filter(DroneAcuatico::isDisponible)
+               .filter(drone -> drone.zona().equalsIgnoreCase(zona))
+               .filter(drone -> esCompatibleConZona(drone.tipo(), zona))
+               .max(Comparator.comparingInt(DroneAcuatico::bateria));
+   }
+   ```
+
+3. **Calcular el promedio de batería por tipo de drone (`averagingDouble`):**
+   ```java
+   public Map<TipoDrone, Double> calcularPromedioBateriaPorTipo(List<DroneAcuatico> drones) {
+       return drones.stream()
+               .collect(Collectors.groupingBy(
+                       DroneAcuatico::tipo,
+                       Collectors.averagingDouble(DroneAcuatico::bateria)
+               ));
+   }
+   ```
+
+4. **Separar misiones CRÍTICAS de las demás (`partitioningBy`):**
+   ```java
+   public Map<Boolean, List<Mision>> separarMisionesCriticas(List<Mision> misiones) {
+       return misiones.stream()
+               .collect(Collectors.partitioningBy(
+                       m -> m.prioridad() == Prioridad.CRITICA
+               ));
+   }
+   ```
+
+5. **Listar todas las zonas únicas que cubre la flota activa (`distinct` + `sorted`):**
+   ```java
+   public List<String> listarZonasUnicasFlotaActiva(List<DroneAcuatico> drones) {
+       return drones.stream()
+               .filter(DroneAcuatico::isDisponible)
+               .map(DroneAcuatico::zona)
+               .filter(Objects::nonNull)
+               .filter(z -> !z.isBlank())
+               .distinct()
+               .sorted()
+               .toList();
+   }
+   ```
+
+---
+
+#### 3. Ejecución y Demostración (`Ejercicio01Prinplup.java`)
+
+```java
+// Inicialización de la flota de 15 drones (5 Superficiales, 5 Semisumergidos, 5 Buceadores)
+List<DroneAcuatico> flota = crearFlota15Drones();
+List<Mision> misiones = crearMisionesEjemplo(flota);
+ConsultorFlotaPrinplup consultor = new ConsultorFlotaPrinplup();
+
+System.out.println("=== AquaPort v2 — Nivel Prinplup: Ejercicio 01 (Streams Avanzados) ===");
+System.out.println("\n1. Drones disponibles agrupados por tipo:");
+System.out.println(consultor.agruparDronesDisponiblesPorTipo(flota));
+
+System.out.println("\n2. Drone óptimo para 'Canal Central' (aguas agitadas):");
+System.out.println(consultor.obtenerDroneOptimoParaZona(flota, CANAL_CENTRAL));
+
+System.out.println("\n3. Promedio de batería por tipo de drone:");
+System.out.println(consultor.calcularPromedioBateriaPorTipo(flota));
+
+System.out.println("\n4. Partición de misiones (CRÍTICAS vs Demás):");
+Map<Boolean, List<Mision>> particionMisiones = consultor.separarMisionesCriticas(misiones);
+System.out.println("- Críticas: " + particionMisiones.get(true));
+System.out.println("- Regulares: " + particionMisiones.get(false));
+
+System.out.println("\n5. Zonas únicas cubiertas por la flota activa:");
+System.out.println(consultor.listarZonasUnicasFlotaActiva(flota));
+```
+
+**Captura de ejecución:**
+
+- **Parte 1 (Consultas 1 y 2 — Drones disponibles por tipo y Drone óptimo para Canal Central):**
+![ExecutionExercise01PrinplupPhasePart01.png](docs/images/ExecutionExercise01PrinplupPhasePart01.png)
+
+- **Parte 2 (Consultas 3, 4 y 5 — Promedio de batería por tipo, Partición de misiones críticas y Zonas únicas cubiertas):**
+![ExecutionExercise01PrinplupPhasePart02.png](docs/images/ExecutionExercise01PrinplupPhasePart02.png)
+
+---
+
+#### 4. Explicación Técnica y Principios Aplicados
+
+1. **`Collectors.groupingBy`:** Clasifica los elementos del flujo en un mapa según la función clasificadora (`DroneAcuatico::tipo`), particionando la flota en listas independientes por cada especialización técnica.
+2. **Evaluación de Compatibilidad y `max()` con `Comparator`:** Aplica filtrado por precondiciones operativas (disponibilidad y adecuación hidrológica del tipo de drone para la zona solicitada) y extrae el elemento óptimo en un `Optional` seguro mediante `Comparator.comparingInt(DroneAcuatico::bateria)`.
+3. **`Collectors.averagingDouble`:** Operación de reducción estadística downstream acoplada al agrupamiento, calculando de manera atómica el promedio de carga por categoría sin variables acumuladoras externas.
+4. **`Collectors.partitioningBy`:** Caso especializado de particionamiento binario (`Map<Boolean, List<T>>`) que separa de forma eficiente las misiones con prioridad `CRITICA` (`true`) de las de prioridad regular (`false`).
+5. **Proyección, unicidad y ordenamiento:** Encadenamiento de `map(DroneAcuatico::zona)`, `distinct()` (basado en `hashCode/equals` de `String`) y `sorted()` para devolver una lista inmutable con los puntos de presencia activa.
+
+
 
 
