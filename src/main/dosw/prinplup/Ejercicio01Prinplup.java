@@ -3,8 +3,11 @@ package main.dosw.prinplup;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class Ejercicio01Prinplup {
+
+    private static final Logger LOGGER = Logger.getLogger(Ejercicio01Prinplup.class.getName());
 
     private static final String MODELO_SUPERFICIAL = "Aqua-Surface 200";
     private static final String MODELO_SEMISUMERGIDO = "Aqua-SemiSub 300";
@@ -55,36 +58,36 @@ public class Ejercicio01Prinplup {
     }
 
     public static void main(String[] args) {
-        System.out.println("=== AquaPort v2 — Nivel Prinplup: Ejercicio 01 (Streams Avanzados) ===");
+        LOGGER.info("=== AquaPort v2 — Nivel Prinplup: Ejercicio 01 (Streams Avanzados) ===");
 
         List<DroneAcuatico> flota = crearFlota15Drones();
         List<Mision> misiones = crearMisionesEjemplo(flota);
         ConsultorFlotaPrinplup consultor = new ConsultorFlotaPrinplup();
 
         // 1. Agrupar drones disponibles por tipo
-        System.out.println("\n1. Drones disponibles agrupados por tipo:");
+        LOGGER.info("\n1. Drones disponibles agrupados por tipo:");
         Map<TipoDrone, List<DroneAcuatico>> porTipo = consultor.agruparDronesDisponiblesPorTipo(flota);
-        System.out.println(porTipo);
+        LOGGER.info(() -> String.valueOf(porTipo));
 
         // 2. Obtener el drone óptimo para una zona dada (ej. Canal Central)
-        System.out.println("\n2. Drone óptimo para 'Canal Central' (aguas agitadas):");
+        LOGGER.info("\n2. Drone óptimo para 'Canal Central' (aguas agitadas):");
         Optional<DroneAcuatico> optimoCanal = consultor.obtenerDroneOptimoParaZona(flota, CANAL_CENTRAL);
-        System.out.println(optimoCanal);
+        LOGGER.info(() -> String.valueOf(optimoCanal));
 
         // 3. Calcular el promedio de batería por tipo de drone
-        System.out.println("\n3. Promedio de batería por tipo de drone:");
+        LOGGER.info("\n3. Promedio de batería por tipo de drone:");
         Map<TipoDrone, Double> promedios = consultor.calcularPromedioBateriaPorTipo(flota);
-        System.out.println(promedios);
+        LOGGER.info(() -> String.valueOf(promedios));
 
         // 4. Separar misiones CRÍTICAS de las demás usando partitioningBy
-        System.out.println("\n4. Partición de misiones (CRÍTICAS vs Demás):");
+        LOGGER.info("\n4. Partición de misiones (CRÍTICAS vs Demás):");
         Map<Boolean, List<Mision>> particionMisiones = consultor.separarMisionesCriticas(misiones);
-        System.out.println("- Críticas: " + particionMisiones.get(true));
-        System.out.println("- Regulares: " + particionMisiones.get(false));
+        LOGGER.info(() -> "- Críticas: " + particionMisiones.get(true));
+        LOGGER.info(() -> "- Regulares: " + particionMisiones.get(false));
 
         // 5. Listar todas las zonas únicas que cubre la flota activa
-        System.out.println("\n5. Zonas únicas cubiertas por la flota activa:");
+        LOGGER.info("\n5. Zonas únicas cubiertas por la flota activa:");
         List<String> zonasUnicas = consultor.listarZonasUnicasFlotaActiva(flota);
-        System.out.println(zonasUnicas);
+        LOGGER.info(() -> String.valueOf(zonasUnicas));
     }
 }

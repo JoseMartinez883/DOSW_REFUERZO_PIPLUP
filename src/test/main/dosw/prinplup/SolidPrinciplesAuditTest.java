@@ -2,7 +2,6 @@ package main.dosw.prinplup;
 
 import main.dosw.prinplup.alertas.CentroControlObserver;
 import main.dosw.prinplup.alertas.ObservadorMision;
-import main.dosw.prinplup.alertas.TecnicoMantenimientoObserver;
 import main.dosw.prinplup.asignacion.AsignadorAutomatico;
 import main.dosw.prinplup.asignacion.EstrategiaSeleccion;
 import main.dosw.prinplup.asignacion.MayorBateriaStrategy;
@@ -13,7 +12,6 @@ import main.dosw.prinplup.fabrica.FabricaDrones;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;

@@ -68,7 +68,6 @@ public class AsignadorAutomatico {
 
     /**
      * Delega de forma polimórfica en la estrategia activa para seleccionar el drone óptimo.
-     * No realiza verificaciones por 'instanceof', respetando estrictamente OCP y Strategy.
      */
     public Optional<DroneAcuatico> seleccionarDrone(List<DroneAcuatico> flota, String zona) {
         return invocarEstrategia(flota, zona);
@@ -76,9 +75,6 @@ public class AsignadorAutomatico {
 
     /**
      * Asigna automáticamente un dron para la misión usando la flota interna configurada.
-     *
-     * @param mision Misión a despachar
-     * @return Optional con el dron asignado o empty si no hubo unidad apta
      */
     public Optional<DroneAcuatico> asignar(Mision mision) {
         return asignar(mision, this.flota);
@@ -86,12 +82,6 @@ public class AsignadorAutomatico {
 
     /**
      * Asigna automáticamente un dron para la misión a partir de una lista explícita de candidatos.
-     * Ejecuta validación de condiciones hídricas/carga, umbral de batería (35% regular, 50% crítica),
-     * detecta fallos notificando a observadores y busca unidades alternativas de respaldo.
-     *
-     * @param mision Misión a despachar
-     * @param flotac Lista de drones candidatos
-     * @return Optional con el dron asignado en estado EN_MISION o empty
      */
     public Optional<DroneAcuatico> asignar(Mision mision, List<DroneAcuatico> flotac) {
         if (mision == null) {
@@ -103,92 +93,78 @@ public class AsignadorAutomatico {
                 ? UMBRAL_BATERIA_CRITICA
                 : UMBRAL_BATERIA_NOMINAL;
 
-        // Invocamos la estrategia de selección (soporta tanto mocks como implementaciones reales)
         Optional<DroneAcuatico> seleccionadoOpt = invocarEstrategia(candidatos, mision.zonaDestino());
 
-        // Si no se encuentra ningún dron por la estrategia
-        if (seleccionadoOpt == null || seleccionadoOpt.isEmpty()) {
-            if (mision.prioridad() == Prioridad.CRITICA) {
-                notificador.notificarFalloAsignacion(mision);
-            }
+        if (seleccionadoOpt.isEmpty()) {
+            notificarSiCritica(mision);
             return Optional.empty();
         }
 
         DroneAcuatico seleccionado = seleccionadoOpt.get();
 
-        // Si el dron devuelto por la estrategia se encuentra en estado FALLO:
         if (seleccionado.getEstado() == EstadoDrone.FALLO) {
-            notificador.emitirAlertaFallo(
-                    seleccionado,
-                    "Drone " + seleccionado.getId() + " en estado FALLO detectado durante proceso de asignación"
-            );
-
-            final String idFallo = seleccionado.getId();
-            // Búsqueda de reemplazo alternativo en la flota
-            List<DroneAcuatico> alternativos = candidatos.stream()
-                    .filter(d -> !d.getId().equals(idFallo))
-                    .filter(d -> d.getEstado() == EstadoDrone.DISPONIBLE)
-                    .filter(d -> d.getBateria() >= umbralMinimo)
-                    .filter(d -> d.puedeCargar(mision.pesoGramos()))
-                    .toList();
-
-            if (alternativos.isEmpty()) {
-                if (mision.prioridad() == Prioridad.CRITICA) {
-                    notificador.notificarFalloAsignacion(mision);
-                }
-                return Optional.empty();
-            }
-
-            Optional<DroneAcuatico> alternativoOpt = invocarEstrategia(alternativos, mision.zonaDestino());
-            if (alternativoOpt == null || alternativoOpt.isEmpty()) {
-                if (mision.prioridad() == Prioridad.CRITICA) {
-                    notificador.notificarFalloAsignacion(mision);
-                }
+            Optional<DroneAcuatico> alternativoOpt = resolverFalloConAlternativo(seleccionado, candidatos, mision, umbralMinimo);
+            if (alternativoOpt.isEmpty()) {
+                notificarSiCritica(mision);
                 return Optional.empty();
             }
             seleccionado = alternativoOpt.get();
         }
 
-        // Validación de umbrales físicos finales (RN-01, RN-02 y capacidad de carga)
-        if (seleccionado.getEstado() != EstadoDrone.DISPONIBLE
-                || seleccionado.getBateria() < umbralMinimo
-                || !seleccionado.puedeCargar(mision.pesoGramos())) {
-
-            if (mision.prioridad() == Prioridad.CRITICA) {
-                notificador.notificarFalloAsignacion(mision);
-            }
+        if (!esDroneAptoParaMision(seleccionado, mision, umbralMinimo)) {
+            notificarSiCritica(mision);
             return Optional.empty();
         }
 
-        // Happy Path: Asignación exitosa y transición a EN_MISION
         seleccionado.setEstado(EstadoDrone.EN_MISION);
         return Optional.of(seleccionado);
+    }
+
+    private Optional<DroneAcuatico> resolverFalloConAlternativo(
+            DroneAcuatico enFallo, List<DroneAcuatico> candidatos, Mision mision, int umbralMinimo
+    ) {
+        notificador.emitirAlertaFallo(
+                enFallo,
+                "Drone " + enFallo.getId() + " en estado FALLO detectado durante proceso de asignación"
+        );
+
+        final String idFallo = enFallo.getId();
+        List<DroneAcuatico> alternativos = candidatos.stream()
+                .filter(d -> !d.getId().equals(idFallo))
+                .filter(d -> esDroneAptoParaMision(d, mision, umbralMinimo))
+                .toList();
+
+        if (alternativos.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return invocarEstrategia(alternativos, mision.zonaDestino());
+    }
+
+    private boolean esDroneAptoParaMision(DroneAcuatico drone, Mision mision, int umbralMinimo) {
+        return drone.getEstado() == EstadoDrone.DISPONIBLE
+                && drone.getBateria() >= umbralMinimo
+                && drone.puedeCargar(mision.pesoGramos());
+    }
+
+    private void notificarSiCritica(Mision mision) {
+        if (mision.prioridad() == Prioridad.CRITICA) {
+            notificador.notificarFalloAsignacion(mision);
+        }
     }
 
     private Optional<DroneAcuatico> invocarEstrategia(List<DroneAcuatico> candidatos, String zona) {
         if (estrategia == null) {
             return Optional.empty();
         }
-        try {
-            Optional<DroneAcuatico> opt = estrategia.seleccionar(candidatos, zona);
-            if (opt != null) {
-                return opt;
-            }
-        } catch (Exception ignored) {
-        }
-        try {
-            Optional<DroneAcuatico> opt2 = estrategia.seleccionarDrone(candidatos, zona);
-            if (opt2 != null) {
-                return opt2;
-            }
-        } catch (Exception ignored) {
-        }
-        return Optional.empty();
+        return Objects.requireNonNullElseGet(
+                estrategia.seleccionar(candidatos, zona),
+                Optional::empty
+        );
     }
 
     /**
      * Registra una misión validando el estado del drone asignado.
-     * Si el drone se encuentra en estado FALLO, notifica inmediatamente a todos los observadores registrados.
      */
     public boolean registrarMisionConDrone(Mision mision) {
         if (mision == null) {
