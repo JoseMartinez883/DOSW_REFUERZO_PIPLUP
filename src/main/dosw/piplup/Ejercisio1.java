@@ -1,31 +1,37 @@
 package main.dosw.piplup;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Ejercisio1 {
+
+    private static final Logger LOGGER = Logger.getLogger(Ejercisio1.class.getName());
+    private static final String MODELO_DRONE = "Aqua-Ranger 100";
+
     public static void main(String[] args){
         List<DroneAcuatico> flota = List.of(
-            new DroneAcuatico("AR-01", "Aqua-Ranger 100", 92, true,  "Embalse Norte"),
-            new DroneAcuatico("AR-02", "Aqua-Ranger 100", 45, true,  "Canal Central"),
-            new DroneAcuatico("AR-03", "Aqua-Ranger 100", 18, false, "Laguna Sur"),
-            new DroneAcuatico("AR-04", "Aqua-Ranger 100", 73, true,  "Punto Ribereño Este")
+            new DroneAcuatico("AR-01", MODELO_DRONE, 92, true,  "Embalse Norte"),
+            new DroneAcuatico("AR-02", MODELO_DRONE, 45, true,  "Canal Central"),
+            new DroneAcuatico("AR-03", MODELO_DRONE, 18, false, "Laguna Sur"),
+            new DroneAcuatico("AR-04", MODELO_DRONE, 73, true,  "Punto Ribereño Este")
         );
 
         ConsultorFlota consultor = new ConsultorFlota();
 
-        System.out.println("1. Disponibles con batería >= 35% ordenados:");
-        System.out.println(consultor.obtainDroneAvailableWithEnoughBattery(flota));
+        LOGGER.info("1. Disponibles con batería >= 35% ordenados:");
+        LOGGER.log(Level.INFO, "{0}", consultor.obtainDroneAvailableWithEnoughBattery(flota));
 
-        System.out.println("\n2. IDs de drones disponibles:");
-        System.out.println(consultor.obtainIdsDronesAvailable(flota));
+        LOGGER.info("\n2. IDs de drones disponibles:");
+        LOGGER.log(Level.INFO, "{0}", consultor.obtainIdsDronesAvailable(flota));
 
-        System.out.println("\n3. ¿Existe algún disponible con batería >= 35%?");
-        System.out.println(consultor.existsDroneAvailableWithEnoughBattery(flota));
+        LOGGER.info("\n3. ¿Existe algún disponible con batería >= 35%?");
+        LOGGER.log(Level.INFO, "{0}", consultor.existsDroneAvailableWithEnoughBattery(flota));
 
-        System.out.println("\n4. Total de drones disponibles:");
-        System.out.println(consultor.amountDronesAvailable(flota));
+        LOGGER.info("\n4. Total de drones disponibles:");
+        LOGGER.log(Level.INFO, "{0}", consultor.amountDronesAvailable(flota));
 
-        System.out.println("\n5. Drone con mayor batería:");
-        System.out.println(consultor.obtainDroneWithLargestBattery(flota));
+        LOGGER.info("\n5. Drone con mayor batería:");
+        LOGGER.log(Level.INFO, "{0}", consultor.obtainDroneWithLargestBattery(flota));
     }
 }

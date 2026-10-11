@@ -1,19 +1,27 @@
 package main.dosw.piplup;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Ejercicio03 {
+
+    private static final Logger LOGGER = Logger.getLogger(Ejercicio03.class.getName());
+    private static final String EMBALSE_NORTE = "Embalse Norte";
+
     public static void main(String[] args) {
-        DroneAcuatico droneValido = new DroneAcuatico("AR-01", "Aqua-Ranger 100", 85, true, "Embalse Norte");
+        DroneAcuatico droneValido = new DroneAcuatico("AR-01", "Aqua-Ranger 100", 85, true, EMBALSE_NORTE);
         DroneAcuatico droneNoDisponible = new DroneAcuatico("AR-03", "Aqua-Ranger 100", 18, false, "Laguna Sur");
 
         Mision misionValida = new Mision.Builder()
                 .id("M-001")
                 .drone(droneValido)
-                .puntoPartida("Embalse Norte")
+                .puntoPartida(EMBALSE_NORTE)
                 .puntoLlegada("Laboratorio Hídrico")
                 .tipoCarga(TipoCarga.MUESTRA_AGUA)
                 .build();
 
-        System.out.println("Misión construida correctamente: " + misionValida.getId() + " - " + misionValida.getEstadoMision());
+        LOGGER.log(Level.INFO, "Misión construida correctamente: {0} - {1}",
+                new Object[]{misionValida.getId(), misionValida.getEstadoMision()});
 
         // 2. Validación de disponibilidad del drone
         try {
@@ -25,7 +33,7 @@ public class Ejercicio03 {
                     .tipoCarga(TipoCarga.MUESTRA_AGUA)
                     .build();
         } catch (IllegalStateException e) {
-            System.out.println("Excepción capturada esperada: " + e.getMessage());
+            LOGGER.log(Level.INFO, "Excepción capturada esperada: {0}", e.getMessage());
         }
 
         // 3. Validación de campos obligatorios o vacíos
@@ -33,11 +41,11 @@ public class Ejercicio03 {
             new Mision.Builder()
                     .id("")
                     .drone(droneValido)
-                    .puntoPartida("Embalse Norte")
+                    .puntoPartida(EMBALSE_NORTE)
                     .puntoLlegada("   ")
                     .build();
         } catch (IllegalStateException e) {
-            System.out.println("Excepción capturada esperada: " + e.getMessage());
+            LOGGER.log(Level.INFO, "Excepción capturada esperada: {0}", e.getMessage());
         }
     }
 }

@@ -75,6 +75,11 @@ public class Mision {
             return this;
         }
 
+        public Builder estadoMision(EstadoMision estadoMision) {
+            this.estadoMision = estadoMision;
+            return this;
+        }
+
         public Mision build() {
             if (id == null || drone == null || puntoLlegada == null || tipoCarga == null
                     || puntoPartida == null || id.isBlank() || puntoLlegada.isBlank() || puntoPartida.isBlank()) {
@@ -83,7 +88,7 @@ public class Mision {
                 throw new IllegalStateException("El drone asignado no se encuentra disponible");
             }
 
-            return new Mision(id, drone, puntoLlegada, puntoPartida, tipoCarga, EstadoMision.PENDIENTE);
+            return new Mision(id, drone, puntoLlegada, puntoPartida, tipoCarga, this.estadoMision);
         }
     }
 }
