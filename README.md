@@ -2439,5 +2439,72 @@ El Sprint 2 se encuentra formalmente planificado y activo en Jira con las 5 hist
 ###### 5. HU-08 (AQUA-17: 2 SP) — Gestión de Órdenes Técnicas de Mantenimiento y Subtareas:
 ![Detalle HU-08 en Jira](docs/images/Jira%20Gestión%20y%20trazabilidad%20de%20órdenes%20de%20servicio%20técnico%20por%20fallo%20de%20drone.png)
 
+---
+
+### 🌊 Ejercicio 10: Diagramas de Casos de Uso Extendidos (AquaPort v2 — Fase Prinplup)
+
+> **🎯 Reto Prinplup — Casos de Uso Extendidos:**  
+> *"Actualiza el diagrama de CU de la v2. Agrega el nuevo actor, el CU de asignación automática con su `<<include>>` obligatorio (validar condiciones) y su `<<extend>>` condicional (notificar fallo). Usa generalización si el Operador Hídrico hereda comportamiento del actor base. Sube el diagrama al repo en `docs/images/DiagramCaseUsePrinPlup.png`."*
+
+En este ejercicio se actualiza y extiende formalmente el **Diagrama de Casos de Uso UML** para la arquitectura de **AquaPort v2 (Fase Prinplup)**. Se incorpora la jerarquía de actores mediante generalización, se introduce al **Técnico de Mantenimiento** y al **Centro de Control ECI**, se modela el caso de uso central autónomo (`CU-01: Asignar misión automáticamente`) y se formalizan los encadenamientos de inclusión obligatoria (`<<include>>`) y extensión condicional (`<<extend>>`).
+
+---
+
+#### 1. Diagrama de Casos de Uso Extendido de AquaPort v2
+
+![Diagrama de Casos de Uso Extendido — AquaPort v2](docs/images/DiagramCaseUsePrinPlup.png)
+
+---
+
+#### 2. Especificación de Actores del Dominio
+
+Conforme a las buenas prácticas de ingeniería de requisitos y el estándar DOSW, **el "Sistema" nunca se modela como un actor**. Los actores representan exclusivamente entidades externas (humanas o institucionales) que interactúan con la frontera del software:
+
+| Actor | Categoría UML | Rol y Responsabilidad Operativa en AquaPort v2 |
+| :--- | :---: | :--- |
+| **Solicitante** | Humano / Base | Investigador, docente o laboratorista del campus que solicita el transporte de muestras hídricas o sensores ambientales (`CU-04`). Actúa como **actor base**. |
+| **Operador Hídrico** | Humano / Especializado | Supervisor técnico que controla la consola central. **Hereda todas las capacidades del Solicitante** mediante generalización (`<<generalize>>`), y además posee permisos exclusivos para despacho automático (`CU-01`), cancelación de despachos (`CU-03`) y telemetría de flota (`CU-02`). |
+| **Administrador ECI** | Humano / Auditor | Personal directivo que audita el inventario global de la flota de 15 drones, horas de navegación y reportes históricos de servicio (`CU-05` y `CU-02`). |
+| **Técnico de Mantenimiento** | Humano / Campo (`Nuevo v2`) | Personal técnico de campo encargado de recibir las órdenes de servicio automáticas generadas ante fallos críticos en el agua (`CU-12`), diagnosticar propulsores/sensores y reparar las unidades. |
+| **Centro de Control ECI** | Sistema / Supervisor (`Nuevo v2`) | Entidad institucional externa encargada de supervisar el tráfico fluvial del campus, autorizar zonas náuticas y monitorear incidentes críticos en tiempo real (`CU-13`). |
+
+##### A. Justificación de la Generalización de Actores (`Operador Hídrico ──▷ Solicitante`):
+En el dominio universitario de la ECI, el `Operador Hídrico` es en sí mismo un usuario habilitado para solicitar despachos hídricos (herencia funcional), pero su rol añade la responsabilidad especializada de supervisión autónoma y control de contingencias. Modelar esta relación mediante **generalización UML (`<<generalize>>`)** previene duplicidad de asociaciones en el diagrama y refleja con fidelidad el modelo de seguridad basado en roles (RBAC).
+
+---
+
+#### 3. Matriz de Casos de Uso y Relaciones UML (`<<include>>` y `<<extend>>`)
+
+| Código | Caso de Uso | Actor Asociado | Tipo de Relación UML | Condición / Justificación Técnica |
+| :---: | :--- | :---: | :---: | :--- |
+| **CU-01** | **Asignar misión automáticamente (AP-07 / RF-01)** | Operador Hídrico | **Caso Base Nuclear** | Orquesta el despacho autónomo aplicando la estrategia contextual y validando las restricciones físicas del dron y del cuerpo hídrico. |
+| **CU-02** | **Consultar estado y telemetría de flota (Streams)** | Operador / Admin | Consulta Analítica | Consulta sin mutación de las 15 unidades agrupadas por tipo, promedios de batería y zonas cubiertas (`ConsultorFlotaPrinplup`). |
+| **CU-03** | **Cancelar misión pendiente** | Operador Hídrico | Gestión de Ciclo | Revoca misiones antes de la navegación activa, liberando el dron asignado a estado `DISPONIBLE`. |
+| **CU-04** | **Solicitar transporte de muestra/sensor (RF-02)** | Solicitante | Caso de Entrada | Ingreso de solicitud con sub-objetos de carga (`peso`, `tipo`, `prioridad`) y zona destino. |
+| **CU-05** | **Supervisar inventario de flota y auditoría (RF-03)** | Administrador ECI | Auditoría | Monitoreo administrativo de horas de vuelo, desgaste y disponibilidad de las 3 escuadrillas. |
+| **CU-06** | **Validar condiciones hídricas y aptitud de zona** | Sistema Interno | **`<<include>>`** de `CU-01` | **Obligatorio:** Se ejecuta SIEMPRE durante `CU-01`. Determina si el cuerpo de agua requiere drones de superficie, semisumergidos o buceadores. |
+| **CU-07** | **Consultar API externa de oleaje y profundidad** | Sistema Externo | **`<<include>>`** de `CU-06` | **Encadenamiento Obligatorio:** Para validar la zona (`CU-06`), el sistema consulta obligatoriamente el servicio meteorológico e hidrológico perimetral. |
+| **CU-08** | **Evaluar estrategia de selección (Strategy)** | Sistema Interno | **`<<include>>`** de `CU-01` | **Obligatorio:** Evalúa al vuelo la estrategia inyectada (`MayorBateria`, `ZonaCercana` o `PrioridadCritica`) resolviendo la tensión AP-07 vs AP-08. |
+| **CU-09** | **Notificar fallo al técnico y centro de control** | Sistema / Observadores | **`<<extend>>`** de `CU-01` | **Condicional:** `[si drone entra en FALLO durante la asignación o prueba previa]`. Interrumpe el flujo normal y difunde órdenes mediante el patrón *Observer*. |
+| **CU-10** | **Reasignar drone alternativo de flota** | Sistema Interno | **`<<extend>>`** de `CU-09` | **Encadenamiento Condicional:** `[si existe otra unidad apta disponible en la flota]`. Permite salvar el despacho sin cancelar la misión. |
+| **CU-11** | **Alertar batería crítica y abortar despacho** | Sistema Interno | **`<<extend>>`** de `CU-01` | **Condicional:** `[si batería remanente < 35%]`. Aplica la regla RN-01 bloqueando la navegación para evitar pérdidas materiales en el embalse. |
+| **CU-12** | **Recibir orden de servicio y reparar drone** | Técnico de Mantenimiento | Recepción Técnica | El técnico de campo recibe la boleta generada por `CU-09`, acude a la zona ribereña y restaura la unidad. |
+| **CU-13** | **Monitorear alertas críticas en tiempo real** | Centro de Control ECI | Monitoreo Perimetral | El centro institucional registra la anomalía en la bitácora de navegación del campus. |
+
+---
+
+#### 4. Justificación Rigurosa de Buenas Prácticas UML 2.5
+
+1. **Diferenciación Semántica Estricta entre `<<include>>` y `<<extend>>`:**
+   - **Inclusión Obligatoria (`<<include>>`):** La validación de condiciones hídricas (`CU-06`) y la evaluación algorítmica (`CU-08`) forman parte indispensable del algoritmo nuclear `CU-01`. La flecha nace en el caso base (`CU-01`) y apunta hacia el comportamiento incluido.
+   - **Extensión Condicional (`<<extend>>`):** Las notificaciones de contingencia (`CU-09`) y alerta de batería (`CU-11`) NO ocurren en una asignación exitosa regular (Happy Path); se activan únicamente ante puntos de extensión explícitos (*Extension Points*) cuando se satisfacen las condiciones de guarda (`[drone en FALLO]` o `[batería < 35%]`). La flecha nace en el caso de extensión y apunta hacia el caso base que enriquece.
+2. **Encadenamiento Formal:**
+   - **Encadenamiento de Inclusiones:** `CU-01` ➔ `<<include>>` ➔ `CU-06` ➔ `<<include>>` ➔ `CU-07`. Demuestra cómo la validación abstracta delega en la integración técnica con la API externa.
+   - **Encadenamiento de Extensiones:** `CU-10` ➔ `<<extend>>` ➔ `CU-09` ➔ `<<extend>>` ➔ `CU-01`. Modela la resiliencia del sistema: ante un fallo detectado (`CU-09`), el sistema intenta una reasignación automática de respaldo (`CU-10`).
+3. **Mapeo Directo con los Patrones de Diseño de la v2:**
+   - `CU-08` encapsula formalmente el patrón **Strategy** (`EstrategiaSeleccion`).
+   - `CU-09` encapsula formalmente el patrón **Observer** (`NotificadorAlertas` hacia `CentroControlObserver` y `TecnicoMantenimientoObserver`).
+
+
 
 
