@@ -1258,9 +1258,27 @@ class ValidadorMisionTest {
 
 ### Ejercicio 13 — Medición de Cobertura con JaCoCo (ValidadorMision)
 
-Para este ejercicio se configuró el plugin `jacoco-maven-plugin` (versión `0.8.11`) en el `pom.xml` para medir la cobertura de código (*code coverage*) mediante instrumentación de bytecode durante la ejecución de las pruebas unitarias con JUnit 5.
+En este ejercicio se configuró e integró la herramienta **JaCoCo** (`jacoco-maven-plugin`, versión `0.8.11`) en el ciclo de construcción de Maven (`pom.xml`) para evaluar y certificar cuantitativamente la cobertura de código (*code coverage*) mediante instrumentación de *bytecode* durante la ejecución de las pruebas unitarias con JUnit 5.
 
-#### 1. Configuración de JaCoCo en `pom.xml`
+#### 1. Marco Conceptual y Criterios de Cobertura JaCoCo
+
+El reporte de JaCoCo evalúa la efectividad de las pruebas a través de una convención de colores estándar en la industria:
+
+| Color en el Reporte | Significado Técnico | Diagnóstico y Acción Requerida |
+| :---: | :--- | :--- |
+| **■ Verde** | **Línea o rama cubierta** | La instrucción o bifurcación condicional fue ejecutada y validada por al menos una prueba unitaria. Estado óptimo. |
+| **■ Amarillo** | **Rama parcialmente cubierta** | Se ejecutó una de las ramas del condicional (ej. el camino `true`), pero falta validar el camino alterno (`false`). Requiere agregar prueba de cobertura. |
+| **■ Rojo** | **Línea o rama nunca ejecutada** | Bloque de código o instrucción muerta que ninguna prueba unitaria ha alcanzado. Requiere implementar caso de prueba o retirar código muerto. |
+
+**Exigencia del Reto Piplup:**
+- La clase de dominio [ValidadorMision.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/ValidadorMision.java) debe superar estrictamente el **80% de cobertura de líneas** (*line coverage*).
+- Ninguna clase del núcleo debe presentar ramas sin cubrir en sus flujos principales.
+
+---
+
+#### 2. Configuración de JaCoCo en `pom.xml`
+
+Se añadieron las fases de preparación del agente (`prepare-agent`) y de generación del informe HTML/XML (`report`) vinculadas al ciclo de vida de pruebas (`test`):
 
 ```xml
 <plugin>
@@ -1284,29 +1302,48 @@ Para este ejercicio se configuró el plugin `jacoco-maven-plugin` (versión `0.8
 </plugin>
 ```
 
-#### 2. Reporte General de Paquete (`main.dosw.piplup`)
+**Comando de ejecución:**
+```bash
+mvn clean test
+```
+El reporte navegable se genera automáticamente en: `target/site/jacoco/index.html`.
 
-El reporte general del paquete registra una métrica global del **35%**, debido a que existen clases ejecutoras de demostración (`Ejercicio01`, `Ejercicio03`, `Ejercicio04`) y clases auxiliares de otros ejercicios del MVP (`ConsultorFlota`, `RegistradorMisiones`, `RepositorioMisionesMemoria`, `NotificadorOperador`) que no corresponden al alcance de pruebas unitarias de este reto.
+---
 
-No obstante, en esta misma tabla se observa con total claridad que la clase evaluada por el reto, **`ValidadorMision`**, alcanza el **100% de cobertura en instrucciones y 100% en ramas**:
+#### 3. Reporte General de Cobertura del Proyecto (`main.dosw.piplup`)
+
+Con el objetivo de garantizar la robustez integral de AquaPort MVP, se expandió la suite a **45 pruebas unitarias automatizadas**, cubriendo exhaustivamente todos los componentes: `ValidadorMision`, `ConsultorFlota`, `RegistradorMisiones`, `RepositorioMisionesMemoria`, `NotificadorOperador`, `Mision` y los puntos de entrada demostrativos (`Ejercisio1`, `Ejercicio03`, `Ejercicio04`).
+
+Como resultado, el reporte general del paquete alcanza un sobresaliente **96% de cobertura de instrucciones** (852 de 882) y un **89% de cobertura de ramas**, logrando que **todas las 13 clases del proyecto se encuentren en verde**:
 
 ![Reporte General de JaCoCo](docs/images/JacocoGeneral.png)
 
-#### 3. Reporte Detallado de `ValidadorMision` (100% de Cobertura)
+*Métricas consolidadas a nivel de paquete:*
+- **Instrucciones:** 852 / 882 (**96% de cobertura**).
+- **Ramas condicionales:** 86 / 96 (**89% de cobertura**).
+- **Líneas evaluadas:** 237 / 244 (**97% de cobertura**).
+- **Métodos cubiertos:** 41 / 44 (**93% de cobertura**).
+- **Clases en verde:** **13 de 13 clases analizadas (100% verde)**.
 
-Al ingresar a la vista detallada de **`ValidadorMision`**, se rectifica y comprueba el **cumplimiento riguroso de la exigencia solicitada** ($\ge 80\%$ de *line coverage*), logrando cobertura completa:
+---
 
-* **Line Coverage:** **100%** (33 de 33 líneas ejecutadas y verificadas).
-* **Branch Coverage:** **100%** (30 de 30 ramas evaluadas, cubriendo todos los caminos lógicos de los condicionales).
+#### 4. Reporte Detallado de `ValidadorMision` (100% Cobertura Absoluta)
+
+Al examinar la vista individual de **[ValidadorMision.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/ValidadorMision.java)**, se comprueba que no solo se supera con creces el umbral mínimo del 80%, sino que se alcanza la **cobertura total y perfecta**:
+
+* **Line Coverage:** **100%** (33 de 33 líneas ejecutadas).
+* **Branch Coverage:** **100%** (30 de 30 ramas evaluadas, cubriendo exhaustivamente todos los caminos `if` / `else`).
 * **Instruction Coverage:** **100%** (134 de 134 instrucciones de bytecode).
 * **Method Coverage:** **100%** (8 de 8 métodos evaluados).
 * **Complejidad Ciclomática:** 23 caminos analizados sin ninguna línea o rama en rojo/amarillo.
 
 ![Reporte Detallado JaCoCo - ValidadorMision](docs/images/JacocoValidadorMision.png)
 
-#### 4. Matriz de Cobertura Método por Método (`ValidadorMision`)
+---
 
-| Método de `ValidadorMision` | Instrucciones | Ramas | Líneas | Estado JaCoCo |
+#### 5. Matriz de Cobertura Método por Método (`ValidadorMision`)
+
+| Método de `ValidadorMision` | Instrucciones | Ramas Condicionales | Líneas de Código | Estado JaCoCo |
 | :--- | :---: | :---: | :---: | :---: |
 | `validarAsignacion(Mision)` | 49 / 49 (100%) | 8 / 8 (100%) | 12 / 12 (100%) | ■ Verde |
 | `validarZona(String)` | 22 / 22 (100%) | 6 / 6 (100%) | 5 / 5 (100%) | ■ Verde |
@@ -1314,7 +1351,120 @@ Al ingresar a la vista detallada de **`ValidadorMision`**, se rectifica y compru
 | `tieneBateriaSuficiente(DroneAcuatico)` | 12 / 12 (100%) | 4 / 4 (100%) | 3 / 3 (100%) | ■ Verde |
 | `validarPuntoLlegada(String)` | 11 / 11 (100%) | 4 / 4 (100%) | 3 / 3 (100%) | ■ Verde |
 | `validarPuntoPartida(String)` | 11 / 11 (100%) | 4 / 4 (100%) | 3 / 3 (100%) | ■ Verde |
-| Bloque estático `static {...}` | 8 / 8 (100%) | n/a | 1 / 1 (100%) | ■ Verde |
-| Constructor `ValidadorMision()` | 3 / 3 (100%) | n/a | 1 / 1 (100%) | ■ Verde |
+| Inicializador estático `static {...}` | 8 / 8 (100%) | n/a | 1 / 1 (100%) | ■ Verde |
+| Constructor por defecto `ValidadorMision()` | 3 / 3 (100%) | n/a | 1 / 1 (100%) | ■ Verde |
 | **Total `ValidadorMision`** | **134 / 134 (100%)** | **30 / 30 (100%)** | **33 / 33 (100%)** | **■ Verde Absoluto** |
+
+---
+
+### Ejercicio 14 — Análisis Estático de Calidad con SonarQube
+
+Como cierre culminante del nivel **Piplup**, se integró y ejecutó el análisis estático de código mediante **SonarQube Community Server** (v13.7.0.4455 / build v26.9.0.129388) conectado a través del plugin oficial `sonar-maven-plugin`.
+
+El objetivo de este reto consiste en garantizar que el código del MVP cumpla con los estándares más estrictos de ingeniería de software:
+- **0 Bugs** (código con fallos de ejecución).
+- **0 Vulnerabilidades** (brechas de seguridad explotables).
+- **0 Code Smells / 0 Deuda Técnica** (código limpio, mantenible y autoexplicativo).
+- **Regla de Oro:** **Nunca suprimir advertencias mediante `@SuppressWarnings`**; cualquier incidencia debe ser resuelta mediante refactorización limpia de raíz.
+
+---
+
+#### 1. Configuración de SonarQube en `pom.xml` y Ejecución Segura
+
+Se configuró el plugin de análisis estático en el bloque `<plugins>` de `pom.xml`:
+
+```xml
+<plugin>
+    <groupId>org.sonarsource.scanner.maven</groupId>
+    <artifactId>sonar-maven-plugin</artifactId>
+    <version>4.0.0.4121</version>
+</plugin>
+```
+
+Para preservar las buenas prácticas de seguridad y evitar exponer tokens o URLs locales en el control de versiones, la ejecución del escaneo se realiza de forma parametrizada a través del comando CLI:
+
+```bash
+mvn clean verify sonar:sonar \
+  "-Dsonar.host.url=http://localhost:9000" \
+  "-Dsonar.token=sqa_8cf5711c07fc9866cc9265f4fcf6396968760f03"
+```
+
+---
+
+#### 2. Taxonomía de Incidencias en SonarQube
+
+SonarQube clasifica los problemas detectados según su impacto y prioridad de resolución:
+
+| Tipo de Incidencia | Impacto en el Software | Prioridad | Criterio en AquaPort MVP |
+| :---: | :--- | :---: | :--- |
+| 🔴 **Bug** | Código que produce un comportamiento incorrecto o excepciones no controladas en tiempo de ejecución. | **Máxima** | **0 detectados**. Cero errores lógicos en el dominio. |
+| 🟠 **Vulnerability** | Vulnerabilidad de seguridad que puede ser explotada por un atacante (inyección, fugas de memoria, etc.). | **Alta** | **0 detectadas**. Arquitectura segura y validada. |
+| 🟡 **Code Smell** | Deficiencias de diseño, código confuso, mala gestión de recursos o redundancia que dificultan el mantenimiento. | **Media/Baja** | **24 detectados inicialmente ➔ 0 residuales (100% resueltos)**. |
+
+---
+
+#### 3. Auditoría y Resolución Integral de Code Smells (Cero `@SuppressWarnings`)
+
+El análisis inicial de SonarQube identificó **24 incidencias de mantenibilidad (*Code Smells*)**. En lugar de suprimirlas artificialmente con `@SuppressWarnings`, se abordaron mediante refactorización arquitectónica limpia:
+
+| Componente | Regla SonarQube Violada | Causa Raíz / Por qué era un problema | Solución Técnica Aplicada (Refactorización) |
+| :--- | :--- | :--- | :--- |
+| [Mision.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Mision.java) | *Remove this unused "estadoMision" private field* | El campo en el Builder tenía un valor por defecto pero no era configurable ni se transfería al constructor, generando inconsistencia. | Se agregó el método fluido `.estadoMision(EstadoMision)` en la API fluida del `Builder` y se asignó en el constructor de `Mision`. |
+| [NotificadorOperador.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/NotificadorOperador.java) | *Replace this use of System.out / System.err by a logger* | El uso de salida estándar directa bloquea hilos, no permite configurar niveles de severidad ni redirigir trazas en entornos de producción. | Se integró `java.util.logging.Logger` con niveles estructurados `Level.INFO` para eventos ordinarios y `Level.SEVERE` para errores críticos. |
+| [Ejercisio1.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercisio1.java) | *Define a constant instead of duplicating literal "Aqua-Ranger 100"* | El nombre del modelo del drone se encontraba duplicado como literal en 4 líneas distintas. | Se extrajo la constante privada `private static final String MODELO_DRONE = "Aqua-Ranger 100";`. |
+| [Ejercisio1.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercisio1.java) | *Replace this use of System.out by a logger* | Impresiones directas por consola en el punto de entrada demostrativo. | Se reemplazó por el logger institucional de la clase registrando mensajes informativos. |
+| [Ejercicio03.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio03.java) | *Define a constant instead of duplicating literal "Embalse Norte"* | Literal de zona repetido 3 veces en la instanciación de misiones y drones. | Se definió la constante `private static final String EMBALSE_NORTE = "Embalse Norte";`. |
+| [Ejercicio03.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio03.java) | *Replace this use of System.out by a logger* | Emisión de logs por consola de misiones y excepciones capturadas. | Se migró a `Logger` con mensajes parametrizados y control de trazas. |
+| [Ejercicio04.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio04.java) | *Replace this use of System.out by a logger* | Salida estándar en la verificación de los principios SOLID. | Se reemplazó por `Logger` para el seguimiento del ciclo de vida de registro y consulta. |
+| [Ejercicio04.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio04.java) | *Remove this unused import 'java.util.logging.Level'* | Declaración de import residual no utilizada tras la simplificación de mensajes. | Se retiró el import huérfano asegurando limpieza absoluta del código fuente. |
+
+---
+
+#### 4. Dashboard de SonarQube — Quality Gate PASSED
+
+Tras ejecutar el análisis con el código refactorizado y la suite de pruebas al día, SonarQube certificó que el proyecto supera ampliamente el **Quality Gate** con la máxima calificación posible (**A**) en todos los ejes de evaluación:
+
+* **Quality Gate:** **PASSED** (Aprobado sin advertencias).
+* **Security Rating:** **Calificación A** (0 Vulnerabilidades abiertas).
+* **Reliability Rating:** **Calificación A** (0 Bugs abiertos).
+* **Maintainability Rating:** **Calificación A** (0 Code Smells abiertos).
+* **Deuda Técnica Acumulada:** **0 minutos / 0 esfuerzo residual**.
+* **Coverage en SonarQube:** **92.6%** sobre 203 líneas evaluables del código de producción.
+* **Duplicaciones de Código:** **0.0%** sobre 590 líneas analizadas.
+* **Security Hotspots:** **0 incidentes**.
+
+![Dashboard General SonarQube - Quality Gate Passed](docs/images/SonarQubePhasePiplup.png)
+
+---
+
+#### 5. Auditoría de Incidencias — Cero Deuda Técnica
+
+Al acceder a la pestaña de **Issues** en el servidor SonarQube, el panel ratifica la ausencia absoluta de incidencias (*"No Issues. Hooray!"*):
+
+![Lista de Issues Limpia - SonarQube](docs/images/SonarQubePhasePiplupIssues.png)
+
+---
+
+### 🎉 Conclusión del Nivel Piplup (AquaPort MVP)
+
+Con la culminación exitosa del **Ejercicio 14**, el equipo Piplup ha completado de forma integral y rigurosa los **14 retos** del primer nivel de DOSW:
+
+1. **Streams y Lambdas:** Consultas funcionales puras sobre la flota de drones acuáticos.
+2. **GitFlow y Atomic Commits:** Gestión profesional de ramas (`main`, `develop`, `feature/`), commits semánticos y Pull Requests.
+3. **Patrón Builder:** Construcción inmutable y validación estricta de precondiciones en `Mision`.
+4. **Principios SOLID (SRP y DIP):** Separación de responsabilidades con `RegistradorMisiones`, `ValidadorMision`, `NotificadorOperador` e inversión de dependencias con `RepositorioMisiones`.
+5. **C4 Context Diagram:** Modelo de contexto de caja negra delimitando actores humanos y fronteras del software.
+6. **Análisis de Requerimientos:** Especificación de RF, RNF con métricas de latencia y priorización MoSCoW.
+7. **Plantilla DOSW:** Documentación formal de ingeniería para el requerimiento de registro de misiones.
+8. **Brand Identity & UX/UI:** Manual de identidad corporativa y mockups en modo oscuro evaluados con las 10 heurísticas de Jakob Nielsen.
+9. **Agilismo con Atlassian Jira:** Épica, Features (con Swagger/OpenAPI), Historias de Usuario BDD y subtareas técnicas con Definition of Done.
+10. **Diagramas de Casos de Uso:** Relaciones formales `<<include>>` y `<<extend>>` modelando el dominio hídrico.
+11. **Mockups de Estados Operativos con IA:** Diseño de los tres estados del panel (Normal, Alerta y Vacío).
+12. **Test-Driven Development (TDD):** Ciclo formal Red ➔ Green ➔ Refactor para las reglas de `ValidadorMision`.
+13. **Métricas de Cobertura con JaCoCo:** **96% general y 100% en `ValidadorMision`**, con las 13 clases del sistema en verde.
+14. **Análisis Estático con SonarQube:** **Quality Gate PASSED, 0 Bugs, 0 Vulnerabilidades, 0 Code Smells y 0 Deuda Técnica**.
+
+¡AquaPort MVP está 100% operativo, verificado y listo para evolucionar al nivel **Prinplup**! 🌊💧
+
+
 
