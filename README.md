@@ -3498,3 +3498,226 @@ void testAdapterConvierteCamposValoresLimite() {
 > La salida por consola se emite a través de `java.util.logging.Logger` conforme a las reglas de calidad de SonarQube (`java:S106`), garantizando observabilidad profesional y tipado semántico.
 
 ---
+
+### 🏗 Ejercicio 04: Auditoría SOLID Completa de la Arquitectura Enterprise
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — Principios SOLID:**
+> Audita toda la arquitectura con SonarQube y una revisión manual de imports. Verifica que:
+> 1. Ninguna clase del dominio depende de infraestructura.
+> 2. Todos los servicios reciben dependencias por constructor (no por campo ni setter).
+> 3. No hay ningún `new ClaseInfraestructura()` en el dominio ni en la aplicación.
+> 4. Documenta el mapa de dependencias entre capas.
+>
+> **La regla de oro del nivel Empoleon:**
+> El paquete `dominio` no puede tener ningún import de librerías externas (Mockito, Jackson, HttpClient, etc.). Solo Java puro. Las dependencias externas viven en la capa de infraestructura y se inyectan por interfaz.
+
+---
+
+#### 2. Mapa Arquitectónico de Capas e Inversión de Dependencias (Hexagonal / Clean Architecture)
+
+El siguiente diagrama Mermaid documenta el flujo unidireccional y la inversión de dependencias: las capas internas jamás dependen de las externas, y la infraestructura implementa puertos declarados en el dominio.
+
+```mermaid
+graph TD
+    subgraph Dominio["Capa de Dominio (100% Java Puro - Regla de Oro)"]
+        ENT["DroneEnterprise<br/>MisionEnterprise<br/>ZonaHidrica"]
+        PORT["ProveedorCondicionesHidricas<br/>(Puerto SPI)"]
+        CONTRATO["DroneOperacional<br/>EslabonValidacion"]
+    end
+
+    subgraph Aplicacion["Capa de Aplicación (Casos de Uso y Orquestación)"]
+        SRV["DespachadorMisionesEnterprise<br/>(Constructor Injection)"]
+        COORD["CoordinadorRutasEmpoleon"]
+        CADENA["CadenaValidacionMision<br/>ValidadorBateria<br/>ValidadorCapacidadCarga..."]
+    end
+
+    subgraph Infraestructura["Capa de Infraestructura (Adaptadores y APIs Externas)"]
+        ADAPT["AdaptadorAPIHidrica<br/>(Implementa ProveedorCondicionesHidricas)"]
+        CLIENT["ClienteApiHidricaExterna<br/>(DTOs JSON en inglés)"]
+    end
+
+    %% Relaciones
+    SRV -->|Usa| PORT
+    SRV -->|Usa| CADENA
+    SRV -->|Usa| CONTRATO
+    SRV -->|Usa| ENT
+    CADENA -->|Implementa| CONTRATO
+    ADAPT -.->|Implementa DIP| PORT
+    ADAPT -->|Consume| CLIENT
+
+    classDef domStyle fill:#0c2824,stroke:#34d399,stroke-width:2px,color:#d1fae5;
+    classDef appStyle fill:#1a1d36,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
+    classDef infraStyle fill:#0d233a,stroke:#22d3ee,stroke-width:2px,color:#e0f2fe;
+
+    class ENT,PORT,CONTRATO domStyle;
+    class SRV,COORD,CADENA appStyle;
+    class ADAPT,CLIENT infraStyle;
+```
+
+---
+
+#### 3. Auditoría Detallada de los 5 Principios SOLID
+
+| Principio | Definición en AquaPort Enterprise | Implementación Concreta en el Código |
+| :--- | :--- | :--- |
+| **S — Single Responsibility (Responsabilidad Única)** | Cada clase u objeto responde a un único actor y tiene una sola razón para cambiar. | • `ValidadorBateria`: Solo valida umbral energético $\ge 20\%$.<br/>• `DroneConMonitoreo`: Solo agrega trazas de telemetría.<br/>• `AdaptadorAPIHidrica`: Solo adapta el modelo JSON externo al dominio.<br/>• `DespachadorMisionesEnterprise`: Solo orquesta la verificación y el despacho. |
+| **O — Open/Closed (Abierto/Cerrado)** | Los módulos están abiertos a la extensión pero cerrados a la modificación. | • Se pueden incorporar nuevos validadores (`EslabonValidacion`) sin tocar la cadena base.<br/>• Se pueden apilar nuevos decoradores (`DroneDecorator`) sin modificar el comportamiento ni la estructura de `DroneEnterprise`.<br/>• Se pueden conectar nuevas fuentes hídricas implementando `ProveedorCondicionesHidricas`. |
+| **L — Liskov Substitution (Sustitución de Liskov)** | Los subtipos deben poder sustituir a sus tipos base sin alterar la corrección del programa. | • Cualquier `DroneDecorator` (`DroneConMonitoreo`, `DroneConCifrado`) puede sustituir a `DroneOperacional` en cualquier flujo o servicio sin lanzar excepciones inesperadas ni alterar los contratos de estado.<br/>• Cualquier `ValidadorBase` sustituye a `EslabonValidacion`. |
+| **I — Interface Segregation (Segregación de Interfaces)** | Los clientes no deben ser forzados a depender de contratos o métodos que no utilizan. | • `ProveedorCondicionesHidricas`: Define exactamente un método cohesivo (`consultarCondiciones(zona)`).<br/>• `EslabonValidacion`: Segrega la lógica de validación secuencial sin mezclar persistencia ni monitoreo.<br/>• `DroneOperacional`: Contrato específico para operaciones en misión. |
+| **D — Dependency Inversion (Inversión de Dependencias)** | Los módulos de alto nivel no deben depender de los de bajo nivel; ambos dependen de abstracciones. | • `DespachadorMisionesEnterprise` depende de la interfaz `ProveedorCondicionesHidricas` y de `CadenaValidacionMision`.<br/>• No existe ningún `new ClaseInfraestructura()` dentro de `dominio` ni `aplicacion`.<br/>• La infraestructura depende hacia adentro implementando los puertos del dominio. |
+
+---
+
+#### 4. Cumplimiento de la "Regla de Oro de Empoleon" y Constructor Injection
+
+##### 1. Regla de Oro: Dominio 100% Puro
+Una inspección estricta de imports sobre todo el árbol `main.dosw.empoleon.dominio` certifica:
+- **0 imports de librerías externas:** Sin dependencias de Mockito, Jackson, HttpClient, Spring o Jakarta.
+- **0 acoplamientos con infraestructura:** El dominio desconoce completamente adaptadores, clientes HTTP o DTOs externos.
+- Solo tipos estándar del JDK (`java.util`, `java.util.function`, `java.util.stream`).
+
+##### 2. Inyección por Constructor Estricta (Inmutabilidad)
+Todas las dependencias requeridas en servicios y adaptadores se declaran como campos inmutables `final` y se exigen obligatoriamente a través del constructor, previniendo estados inconsistentes o inyecciones por campo/setter:
+
+`DespachadorMisionesEnterprise.java` (Servicio de Aplicación desacoplado):
+```java
+package main.dosw.empoleon.aplicacion;
+
+import java.util.Objects;
+import main.dosw.empoleon.aplicacion.cadena.CadenaValidacionMision;
+import main.dosw.empoleon.dominio.DroneEnterprise;
+import main.dosw.empoleon.dominio.MisionEnterprise;
+import main.dosw.empoleon.dominio.adapter.CondicionesHidricasDominio;
+import main.dosw.empoleon.dominio.adapter.ProveedorCondicionesHidricas;
+import main.dosw.empoleon.dominio.cadena.ResultadoValidacion;
+import main.dosw.empoleon.dominio.decorator.DroneOperacional;
+
+public class DespachadorMisionesEnterprise {
+
+    private final CadenaValidacionMision cadenaValidacion;
+    private final ProveedorCondicionesHidricas proveedorCondiciones;
+
+    public DespachadorMisionesEnterprise(
+            CadenaValidacionMision cadenaValidacion,
+            ProveedorCondicionesHidricas proveedorCondiciones
+    ) {
+        this.cadenaValidacion = Objects.requireNonNull(cadenaValidacion, "La cadena no puede ser nula");
+        this.proveedorCondiciones = Objects.requireNonNull(proveedorCondiciones, "El proveedor no puede ser nulo");
+    }
+
+    public ResultadoValidacion validarDespacho(
+            MisionEnterprise mision, DroneEnterprise drone, String zona
+    ) {
+        CondicionesHidricasDominio condiciones = proveedorCondiciones.consultarCondiciones(zona);
+        return cadenaValidacion.validar(mision, drone, condiciones);
+    }
+
+    public boolean despacharMision(
+            MisionEnterprise mision, DroneOperacional droneOperacional, String zona, String tramoId
+    ) {
+        ResultadoValidacion resultado = validarDespacho(mision, droneOperacional.getDroneBase(), zona);
+        if (!resultado.exitoso()) {
+            return false;
+        }
+        return droneOperacional.ejecutarMision(mision.getId(), tramoId);
+    }
+}
+```
+
+---
+
+#### 5. Pruebas Automatizadas de Arquitectura (`SolidArchitectureAuditTest.java`)
+
+Se implementó una suite automatizada de pruebas con JUnit 5 que realiza análisis estático y reflexivo en tiempo de test para certificar la arquitectura:
+
+```java
+@Test
+@DisplayName("SOLID REGLA DE ORO: El paquete dominio no tiene imports externos ni de infraestructura")
+void testReglaDeOroDominioSinDependenciasExternasNiInfraestructura() throws IOException {
+    try (Stream<Path> paths = Files.walk(DOMINIO_PATH)) {
+        List<Path> javaFiles = paths.filter(p -> p.toString().endsWith(".java")).toList();
+        for (Path file : javaFiles) {
+            List<String> lines = Files.readAllLines(file);
+            for (String line : lines) {
+                if (line.trim().startsWith("import ")) {
+                    String importedClass = line.trim().substring(7, line.indexOf(';')).trim();
+                    assertFalse(importedClass.contains("infraestructura"));
+                    assertFalse(importedClass.startsWith("org.mockito"));
+                    assertFalse(importedClass.startsWith("com.fasterxml"));
+                    assertFalse(importedClass.startsWith("java.net.http"));
+                }
+            }
+        }
+    }
+}
+```
+
+---
+
+#### 6. Ejecución y Demostración en Consola (`Ejercicio04Empoleon.java`)
+
+`Ejercicio04Empoleon.java` (Clase Principal Demostradora):
+```java
+package main.dosw.empoleon;
+
+import java.util.List;
+import java.util.logging.Logger;
+import main.dosw.empoleon.aplicacion.DespachadorMisionesEnterprise;
+import main.dosw.empoleon.aplicacion.cadena.CadenaValidacionMision;
+import main.dosw.empoleon.dominio.DroneEnterprise;
+import main.dosw.empoleon.dominio.EstadoMisionEnterprise;
+import main.dosw.empoleon.dominio.MisionEnterprise;
+import main.dosw.empoleon.dominio.ZonaHidrica;
+import main.dosw.empoleon.dominio.cadena.ResultadoValidacion;
+import main.dosw.empoleon.dominio.decorator.DroneConCifrado;
+import main.dosw.empoleon.dominio.decorator.DroneConMonitoreo;
+import main.dosw.empoleon.dominio.decorator.DroneOperacional;
+import main.dosw.empoleon.dominio.decorator.DroneOperacionalBase;
+import main.dosw.empoleon.infraestructura.adapter.AdaptadorAPIHidrica;
+import main.dosw.empoleon.infraestructura.adapter.ClienteApiHidricaExterna;
+import main.dosw.empoleon.infraestructura.adapter.DatosHidricosExternosJson;
+import main.dosw.prinplup.EstadoDrone;
+import main.dosw.prinplup.Prioridad;
+import main.dosw.prinplup.TipoDrone;
+
+public class Ejercicio04Empoleon {
+    private static final Logger LOGGER = Logger.getLogger(Ejercicio04Empoleon.class.getName());
+
+    public static void main(String[] args) {
+        LOGGER.info("=== AquaPort Enterprise – Fase Empoleon: Ejercicio 04 (Principios SOLID) ===");
+        // Configuración de dependencias vía constructor
+        ClienteApiHidricaExterna apiExterna = zona -> new DatosHidricosExternosJson(3.5, 12.0, 0.3, true);
+        AdaptadorAPIHidrica adaptador = new AdaptadorAPIHidrica(apiExterna);
+        CadenaValidacionMision cadena = new CadenaValidacionMision();
+        DespachadorMisionesEnterprise despachador = new DespachadorMisionesEnterprise(cadena, adaptador);
+
+        // Envoltorio con decoradores operacionales
+        DroneEnterprise dronFisico = new DroneEnterprise(
+                "DRN-ENT-04", "Aqua-Explorer Enterprise", TipoDrone.SEMISUMERGIDO, 85,
+                EstadoDrone.DISPONIBLE, ZonaHidrica.LAGUNA_RESERVA.getNombre(), 1200, 15
+        );
+        DroneOperacional droneSeguro = new DroneConCifrado(
+                new DroneConMonitoreo(new DroneOperacionalBase(dronFisico))
+        );
+
+        // Despacho desacoplado
+        MisionEnterprise mision = new MisionEnterprise(
+                "MIS-ENT-004", "Monitoreo químico en Laguna",
+                ZonaHidrica.LAGUNA_RESERVA.getNombre(), ZonaHidrica.LABORATORIO_CENTRAL.getNombre(),
+                List.of(), List.of(), EstadoMisionEnterprise.PLANIFICADA, Prioridad.CRITICA, 600
+        );
+        ResultadoValidacion prevalidacion = despachador.validarDespacho(mision, dronFisico, ZonaHidrica.LAGUNA_RESERVA.getNombre());
+        boolean despachoExitoso = despachador.despacharMision(mision, droneSeguro, ZonaHidrica.LAGUNA_RESERVA.getNombre(), "TR-1");
+    }
+}
+```
+
+![Ejecución de Ejercicio04Empoleon en IntelliJ IDEA](docs/images/EmpoleonExercise04.png)
+
+> [!NOTE]
+> La salida por consola se emite a través de `java.util.logging.Logger` conforme a las reglas de calidad de SonarQube (`java:S106`), garantizando observabilidad profesional y tipado semántico.
+
+---
+
