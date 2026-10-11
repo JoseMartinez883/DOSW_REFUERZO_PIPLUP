@@ -1211,7 +1211,7 @@ class ValidadorMisionTest {
     void droneNoDisponible_lanzaExcepcion() {
         // Arrange
         DroneAcuatico droneNoDisponible = new DroneAcuatico("AR-02", "Aqua-Ranger 100", 70, false, "Canal Central");
-    
+  
         // Act & Assert
         IllegalStateException ex = assertThrows(IllegalStateException.class,
                 () -> validador.validarDroneDisponible(droneNoDisponible));
@@ -1616,13 +1616,13 @@ A continuación se presenta el diagrama completo del ciclo de ramificación ejec
 
 Todas las integraciones se realizaron estrictamente mediante **Pull Requests en GitHub**, siguiendo políticas de revisión, integración continua y trazabilidad académica:
 
-| Rama | Rama Base | Pull Request en GitHub | Commit Hash / Referencia | Propósito y Cambios Realizados |
-| :--- | :--- | :--- | :--- | :--- |
-| `feature/asignacion-automatica` | `develop` | [**PR #3: feature/asignacion-automatica**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/3) | `5b937c8` | Implementación de la estrategia de selección autónoma de drones (`EstrategiaSeleccion`, `MayorBateriaStrategy`). |
-| `feature/alertas-centro-control` | `develop` | [**PR #4: feature/alertas-centro-control**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/4) | `4cf6045` | Implementación del patrón Observer (`ObservadorMision`, `CentroControlObserver`, `TecnicoMantenimientoObserver`, `NotificadorAlertas`) y tests con Mockito. |
-| `feature/factory-drones` | `develop` | [**PR #5: feature/factory-drones**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/5) | `959fca3` | Implementación del patrón Factory Method (`FabricaDrones`) y subclases especializadas (`DroneSuperficial`, `DroneSemisumergido`, `DroneBuceador`). |
-| `release/v2.0` | `main` | [**PR #6: release/v2.0**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/6) | `5f1d79f` / `26146d8` | Preparación de lanzamiento v2.0.0: commit de ajuste actualizando versión oficial en `pom.xml` a `2.0.0`. Merge a `main` con [**tag v2.0.0**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/releases/tag/v2.0.0). |
-| `hotfix/fix-bateria-critica` | `main` | [**PR #7: hotfix/fix-bateria-critica**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/7) | `1783cbb` / `f6a2a03` | Corrección crítica de producción: se implementó el umbral de seguridad operacional `UMBRAL_BATERIA_MINIMA = 20%` en la selección para evitar varamientos, bump a versión `2.0.1` y [**tag v2.0.1**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/releases/tag/v2.0.1). |
+| Rama                               | Rama Base   | Pull Request en GitHub                                                                                           | Commit Hash / Referencia  | Propósito y Cambios Realizados                                                                                                                                                                                                                                                                 |
+| :--------------------------------- | :---------- | :--------------------------------------------------------------------------------------------------------------- | :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `feature/asignacion-automatica`  | `develop` | [**PR #3: feature/asignacion-automatica**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/3)  | `5b937c8`               | Implementación de la estrategia de selección autónoma de drones (`EstrategiaSeleccion`, `MayorBateriaStrategy`).                                                                                                                                                                         |
+| `feature/alertas-centro-control` | `develop` | [**PR #4: feature/alertas-centro-control**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/4) | `4cf6045`               | Implementación del patrón Observer (`ObservadorMision`, `CentroControlObserver`, `TecnicoMantenimientoObserver`, `NotificadorAlertas`) y tests con Mockito.                                                                                                                           |
+| `feature/factory-drones`         | `develop` | [**PR #5: feature/factory-drones**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/5)         | `959fca3`               | Implementación del patrón Factory Method (`FabricaDrones`) y subclases especializadas (`DroneSuperficial`, `DroneSemisumergido`, `DroneBuceador`).                                                                                                                                    |
+| `release/v2.0`                   | `main`    | [**PR #6: release/v2.0**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/6)                   | `5f1d79f` / `26146d8` | Preparación de lanzamiento v2.0.0: commit de ajuste actualizando versión oficial en`pom.xml` a `2.0.0`. Merge a `main` con [**tag v2.0.0**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/releases/tag/v2.0.0).                                                          |
+| `hotfix/fix-bateria-critica`     | `main`    | [**PR #7: hotfix/fix-bateria-critica**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/7)     | `1783cbb` / `f6a2a03` | Corrección crítica de producción: se implementó el umbral de seguridad operacional`UMBRAL_BATERIA_MINIMA = 20%` en la selección para evitar varamientos, bump a versión `2.0.1` y [**tag v2.0.1**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/releases/tag/v2.0.1). |
 
 ---
 
@@ -1633,3 +1633,141 @@ Todas las integraciones se realizaron estrictamente mediante **Pull Requests en 
 3. **Estabilización de Release (`release/v2.0`):** Al finalizar las 3 features planificadas para la v2, se bifurcó una rama de release dedicada donde únicamente se efectuaron tareas de empaquetado y ajuste de versión (`2.0.0` en `pom.xml`), protegiendo `main` de código inestable y liberando `develop` para futuros sprints.
 4. **Etiquetado Semántico Oficial (`v2.0.0`):** Una vez aprobado el PR #6 hacia `main`, se generó el tag anotado `v2.0.0`, constituyendo el hito formal de entrega de la flota autónoma con alertas y patrones de diseño.
 5. **Ciclo de Hotfix Operativo (`hotfix/fix-bateria-critica`):** Permitió subsanar de emergencia una regla de seguridad de batería sobre producción sin tener que esperar un nuevo ciclo de desarrollo, incorporando la solución de inmediato a `main` (tag `v2.0.1`) y retroalimentándola a `develop` para mantener sincronizados todos los entornos.
+
+---
+
+### 🧩 Ejercicio 03: Patrones de Diseño Integrados (Strategy + Observer + Factory Method)
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Prinplup — Patrones de Diseño:**
+> Implementa los 3 patrones integrados: la `FabricaDrones` crea los 3 tipos, el `AsignadorAutomatico` usa Strategy para seleccionar y notifica por Observer cuando hay fallo. Escribe una prueba con Mockito que verifique que al registrar una misión con drone en FALLO, todos los observadores son notificados exactamente una vez.
+
+El propósito de este ejercicio es estructurar una arquitectura desacoplada, flexible y extensible para la flota autónoma de AquaPort v2 mediante la combinación sinérgica de tres patrones de diseño fundamentales de GoF:
+
+- **Factory Method:** Para centralizar y parametrizar la creación de la jerarquía especializada de drones acuáticos.
+- **Strategy:** Para encapsular las diversas políticas algorítmicas de selección de drones sin acoplar el asignador ni recurrir a condicionales o `instanceof`.
+- **Observer:** Para desacoplar el motor de misiones de los sistemas receptores de eventos críticos (Centro de Control y Técnico de Mantenimiento).
+
+---
+
+#### 2. Arquitectura de los 3 Patrones de Diseño Integrados
+
+```
+           ┌──────────────────────┐
+           │    FabricaDrones     │ (Factory Method)
+           └──────────┬───────────┘
+                      │ crea
+                      ▼
+              ┌───────────────┐
+              │ DroneAcuatico │
+              └───────▲───────┘
+                      │ hereda
+        ┌─────────────┼─────────────┐
+        │             │             │
+┌───────────────┐ ┌───────────────┐ ┌───────────────┐
+│DroneSuperfic. │ │DroneSemisum.  │ │ DroneBuceador │
+│(max: 500g)    │ │(max: 1500g)   │ │(max: 300g)    │
+└───────────────┘ └───────────────┘ └───────────────┘
+
+                      │ usado por
+                      ▼
+           ┌──────────────────────┐   delega selección    ┌──────────────────────┐
+           │  AsignadorAutomatico ├──────────────────────►│  EstrategiaSeleccion │ (Strategy)
+           └──────────┬───────────┘                       └───────────▲──────────┘
+                      │                                               │ implementa
+                      │ notifica en fallo                 ┌───────────┼───────────┐
+                      ▼                                   │           │           │
+           ┌──────────────────────┐               ┌──────────────┐┌──────────────┐┌──────────────┐
+           │  NotificadorAlertas  │               │ MayorBateria ││ ZonaCercana  ││ Prioridad    │
+           └──────────┬───────────┘ (Observer)    │ Strategy     ││ Strategy     ││ CriticaStrat.│
+                      │                           └──────────────┘└──────────────┘└──────────────┘
+                      ├──────────────────────────┐
+                      ▼                          ▼
+           ┌──────────────────────┐   ┌──────────────────────────┐
+           │ CentroControlObserver│   │TecnicoMantenimientoObserv│
+           └──────────────────────┘   └──────────────────────────┘
+```
+
+1. **Factory Method (`FabricaDrones`):**
+
+   - Instancia polimórficamente las subclases `DroneSuperficial`, `DroneSemisumergido` y `DroneBuceador`.
+   - Asigna los límites de carga y modelos técnicos por defecto de forma transparente para el cliente (`500g`, `1500g` y `300g` respectivamente).
+2. **Strategy (`EstrategiaSeleccion`):**
+
+   - El `AsignadorAutomatico` delega completamente la toma de decisiones al objeto de estrategia inyectado.
+   - Implementaciones concretas:
+     * `MayorBateriaStrategy`: Elige el drone disponible con mayor porcentaje energético respetando el umbral de seguridad (>= 20%).
+     * `ZonaCercanaStrategy`: Prioriza drones en la misma zona para optimizar tiempos de respuesta.
+     * `PrioridadCriticaStrategy`: Exige al menos 50% de reserva de batería para operaciones de alto impacto.
+   - **Garantía OCP:** El `AsignadorAutomatico` carece de sentencias `instanceof`, garantizando cumplimiento riguroso de Open/Closed Principle.
+3. **Observer (`NotificadorAlertas` & `ObservadorMision`):**
+
+   - Los suscriptores `CentroControlObserver` y `TecnicoMantenimientoObserver` se registran dinámicamente en el sujeto observable.
+   - Cuando se intenta registrar una misión cuyo drone asignado está en estado `FALLO`, el evento se difunde automáticamente a todos los observadores registrados sin que el drone o la misión conozcan a los destinatarios.
+
+---
+
+#### 3. Verificación con Mockito (`AsignadorAutomaticoTest.java`)
+
+Se implementó la suite de pruebas unitarias integradas utilizando **Mockito 5.11** para verificar el comportamiento de interacción del patrón Observer:
+
+```java
+@Test
+@DisplayName("RETO 03 OBLIGATORIO: Al registrar una misión con drone en FALLO, todos los observadores son notificados exactamente una vez")
+void debeNotificarATodosLosObservadoresExactamenteUnaVezAlRegistrarMisionConDroneEnFallo() {
+    // 1. Registrar ambos observadores simulados con @Mock
+    asignador.registrarObservador(mockCentroControl);
+    asignador.registrarObservador(mockTecnicoMantenimiento);
+
+    // 2. Crear drone en estado FALLO utilizando FabricaDrones
+    DroneAcuatico droneEnFallo = FabricaDrones.crearDrone(
+            TipoDrone.BUCEADOR, "DRN-FALLO-99", 10, EstadoDrone.FALLO, "Embalse Norte"
+    );
+
+    Mision misionConFallo = new Mision(
+            "MIS-CRIT-999", droneEnFallo, "Embalse Norte", "Laboratorio Hídrico",
+            Prioridad.CRITICA, "MUESTRA_AGUA", 250
+    );
+
+    // 3. Ejecutar registro de la misión
+    boolean resultado = asignador.registrarMisionConDrone(misionConFallo);
+
+    // 4. Aserciones y verificación de contrato Observer con Mockito
+    assertFalse(resultado);
+    verify(mockCentroControl, times(1)).notificarFallo(eq(droneEnFallo), contains("FALLO"));
+    verify(mockTecnicoMantenimiento, times(1)).notificarFallo(eq(droneEnFallo), contains("FALLO"));
+}
+```
+
+---
+
+#### 4. Ejecución y Demostración (`Ejercicio03Prinplup.java`)
+
+```java
+// Creación mediante FabricaDrones
+DroneAcuatico dSuperficial = FabricaDrones.crearDrone(TipoDrone.SUPERFICIAL, "DRN-SUP-01", 90, EstadoDrone.DISPONIBLE, "Embalse Norte");
+DroneAcuatico dSemisumergido = FabricaDrones.crearDrone(TipoDrone.SEMISUMERGIDO, "DRN-SEMI-01", 75, EstadoDrone.DISPONIBLE, "Canal Central");
+DroneAcuatico dBuceador = FabricaDrones.crearDrone(TipoDrone.BUCEADOR, "DRN-BUC-01", 85, EstadoDrone.DISPONIBLE, "Laguna Sur");
+DroneAcuatico dEnFallo = FabricaDrones.crearDrone(TipoDrone.BUCEADOR, "DRN-BUC-99", 12, EstadoDrone.FALLO, "Embalse Norte");
+
+// Selección dinámica con Strategy
+AsignadorAutomatico asignador = new AsignadorAutomatico(new MayorBateriaStrategy());
+asignador.seleccionarDrone(flota, "Canal Central"); // Mayor batería: DRN-SUP-01 (90%)
+
+asignador.setEstrategia(new ZonaCercanaStrategy());
+asignador.seleccionarDrone(flota, "Canal Central"); // Misma zona: DRN-SEMI-01 (75%)
+
+// Notificación con Observer ante Fallo
+asignador.registrarObservador(new CentroControlObserver());
+asignador.registrarObservador(new TecnicoMantenimientoObserver());
+asignador.registrarMisionConDrone(new Mision("MIS-CRIT-777", dEnFallo, ...));
+```
+
+**Capturas de ejecución en IntelliJ IDEA:**
+
+- **Parte 1 (Instanciación con Factory Method y Selección Dinámica con Strategy):**
+![Ejercicio03Prinplup01.png](docs/images/Ejercicio03Prinplup01.png)
+
+- **Parte 2 (Selección por Prioridad Crítica y Alertas en Tiempo Real con Observer):**
+![Ejercicio03Prinplup02.png](docs/images/Ejercicio03Prinplup02.png)
