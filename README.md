@@ -1767,17 +1767,17 @@ asignador.registrarMisionConDrone(new Mision("MIS-CRIT-777", dEnFallo, ...));
 **Capturas de ejecución en IntelliJ IDEA:**
 
 - **Parte 1 (Instanciación con Factory Method y Selección Dinámica con Strategy):**
-![Ejercicio03Prinplup01.png](docs/images/Ejercicio03Prinplup01.png)
-
+  ![Ejercicio03Prinplup01.png](docs/images/Ejercicio03Prinplup01.png)
 - **Parte 2 (Selección por Prioridad Crítica y Alertas en Tiempo Real con Observer):**
-![Ejercicio03Prinplup02.png](docs/images/Ejercicio03Prinplup02.png)
+  ![Ejercicio03Prinplup02.png](docs/images/Ejercicio03Prinplup02.png)
 
 ---
 
 ### 🏗 Ejercicio 04: Auditoría Completa de Principios SOLID en AquaPort v2
 
 #### 1. Enunciado y Objetivos del Reto
-> **🎯 Reto Prinplup — Principios SOLID:**  
+
+> **🎯 Reto Prinplup — Principios SOLID:**
 > Audita todas las clases nuevas de la v2. Documenta en el README: qué principio aplica cada clase/interfaz y cómo. Para cada uno de los 5 principios SOLID, señala dónde en el código se respeta y por qué esa decisión de diseño importa en el contexto de AquaPort.
 
 En esta fase de evolución arquitectónica (Nivel Prinplup), AquaPort transiciona de un sistema de registro manual a una plataforma autónoma de despacho de drones con monitoreo reactivo. Esta transición exige el cumplimiento estricto de los cinco principios de diseño orientado a objetos **SOLID** para prevenir la rigidez, fragilidad y acoplamiento excesivo.
@@ -1788,59 +1788,64 @@ En esta fase de evolución arquitectónica (Nivel Prinplup), AquaPort transicion
 
 A continuación se auditan todas las clases e interfaces incorporadas en la v2, detallando los principios aplicados y su justificación técnica:
 
-| Componente | Paquete | Principio(s) Principal(es) | Cómo lo Aplica en el Código | Justificación en el Dominio AquaPort |
-| :--- | :--- | :--- | :--- | :--- |
-| `DroneAcuatico` | `main.dosw.prinplup` | **SRP, LSP** | Define exclusivamente el estado fundamental y contrato de un vehículo acuático autónomo. No gestiona asignaciones ni comunicaciones externas. | Permite tratar a cualquier vehículo de la flota de manera uniforme sin importar su submarca o hardware físico. |
-| `DroneSuperficial` | `main.dosw.prinplup.fabrica` | **LSP, OCP** | Extiende `DroneAcuatico` fijando capacidad de 500g y modelo de superficie sin alterar el comportamiento esperado del padre. | Garantiza misiones seguras en aguas mansas (embalses) sin romper el contrato del drone. |
-| `DroneSemisumergido` | `main.dosw.prinplup.fabrica` | **LSP, OCP** | Extiende `DroneAcuatico` fijando capacidad de 1500g y casco resistente para aguas agitadas. | Provee capacidad de carga pesada en canales sin requerir código especial en el despachador. |
-| `DroneBuceador` | `main.dosw.prinplup.fabrica` | **LSP, OCP** | Extiende `DroneAcuatico` fijando capacidad de 300g y sensores de profundidad para toma subacuática. | Especializado en muestreo profundo sin invalidar los métodos de consulta de batería o estado. |
-| `FabricaDrones` | `main.dosw.prinplup.fabrica` | **SRP, OCP** | Su única responsabilidad es instanciar la subclase correcta según el enum `TipoDrone`. Desacopla al resto de la aplicación de los constructores concretos. | Si se adquiere un 4to tipo de drone (p. ej. *Sumergible Profundo*), solo se amplía la fábrica sin tocar el asignador. |
-| `EstrategiaSeleccion` | `main.dosw.prinplup.asignacion` | **ISP, OCP, DIP** | Interfaz atómica con un solo método `seleccionarDrone(...)`. Es la abstracción sobre la cual opera el asignador. | Permite que AquaPort incorpore nuevos algoritmos de inteligencia de asignación sin modificar el núcleo del despachador. |
-| `MayorBateriaStrategy` | `main.dosw.prinplup.asignacion` | **SRP, OCP** | Responsabilidad exclusiva: buscar el drone con mayor carga residual respetando el umbral de seguridad operacional (>= 20%). | Maximiza la disponibilidad energética de la flota y previene pérdidas de drones por batería agotada. |
-| `ZonaCercanaStrategy` | `main.dosw.prinplup.asignacion` | **SRP, OCP** | Responsabilidad exclusiva: priorizar drones que ya estén presentes en la zona de la misión para minimizar traslados. | Reduce tiempos de espera para recolección de muestras urgentes en zonas distantes. |
-| `PrioridadCriticaStrategy` | `main.dosw.prinplup.asignacion` | **SRP, OCP** | Responsabilidad exclusiva: filtrar exclusivamente drones con reserva energética de seguridad (>= 50%). | Asegura éxito en misiones de emergencia ambiental crítica sin riesgo de interrupción. |
-| `AsignadorAutomatico` | `main.dosw.prinplup.asignacion` | **SRP, OCP, DIP** | Coordina el flujo de asignación delegando la decisión en `EstrategiaSeleccion` y las alertas en `NotificadorAlertas`. No usa `instanceof`. | Es el orquestador central autónomo de la v2; mantiene alta cohesión y bajo acoplamiento con algoritmos y canales de aviso. |
-| `ObservadorMision` | `main.dosw.prinplup.alertas` | **ISP, DIP** | Interfaz granular con un único método `notificarFallo(...)`. Desacopla emisores de receptores. | Permite suscribir cualquier sistema (SCADA, mensajería, consola) sin alterar el asignador. |
-| `CentroControlObserver` | `main.dosw.prinplup.alertas` | **SRP, DIP** | Responsabilidad exclusiva: formatear y desplegar alertas visuales en la consola central del operador. | Facilita la supervisión humana inmediata ante emergencias de flota. |
-| `TecnicoMantenimientoObserver` | `main.dosw.prinplup.alertas` | **SRP, DIP** | Responsabilidad exclusiva: generar la orden técnica de inspección y reparación física para el personal de campo. | Automatiza la logística de mantenimiento preventivo y correctivo en la ECI. |
-| `NotificadorAlertas` | `main.dosw.prinplup.alertas` | **SRP, OCP** | Responsabilidad exclusiva: gestionar la lista de suscriptores y difundir eventos de fallo sin conocer sus implementaciones. | Aisla la lógica de suscripción y despacho 'publish-subscribe' del dominio principal. |
+| Componente                       | Paquete                           | Principio(s) Principal(es) | Cómo lo Aplica en el Código                                                                                                                                  | Justificación en el Dominio AquaPort                                                                                        |
+| :------------------------------- | :-------------------------------- | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| `DroneAcuatico`                | `main.dosw.prinplup`            | **SRP, LSP**         | Define exclusivamente el estado fundamental y contrato de un vehículo acuático autónomo. No gestiona asignaciones ni comunicaciones externas.               | Permite tratar a cualquier vehículo de la flota de manera uniforme sin importar su submarca o hardware físico.             |
+| `DroneSuperficial`             | `main.dosw.prinplup.fabrica`    | **LSP, OCP**         | Extiende`DroneAcuatico` fijando capacidad de 500g y modelo de superficie sin alterar el comportamiento esperado del padre.                                   | Garantiza misiones seguras en aguas mansas (embalses) sin romper el contrato del drone.                                      |
+| `DroneSemisumergido`           | `main.dosw.prinplup.fabrica`    | **LSP, OCP**         | Extiende`DroneAcuatico` fijando capacidad de 1500g y casco resistente para aguas agitadas.                                                                   | Provee capacidad de carga pesada en canales sin requerir código especial en el despachador.                                 |
+| `DroneBuceador`                | `main.dosw.prinplup.fabrica`    | **LSP, OCP**         | Extiende`DroneAcuatico` fijando capacidad de 300g y sensores de profundidad para toma subacuática.                                                          | Especializado en muestreo profundo sin invalidar los métodos de consulta de batería o estado.                              |
+| `FabricaDrones`                | `main.dosw.prinplup.fabrica`    | **SRP, OCP**         | Su única responsabilidad es instanciar la subclase correcta según el enum`TipoDrone`. Desacopla al resto de la aplicación de los constructores concretos. | Si se adquiere un 4to tipo de drone (p. ej.*Sumergible Profundo*), solo se amplía la fábrica sin tocar el asignador.     |
+| `EstrategiaSeleccion`          | `main.dosw.prinplup.asignacion` | **ISP, OCP, DIP**    | Interfaz atómica con un solo método`seleccionarDrone(...)`. Es la abstracción sobre la cual opera el asignador.                                           | Permite que AquaPort incorpore nuevos algoritmos de inteligencia de asignación sin modificar el núcleo del despachador.    |
+| `MayorBateriaStrategy`         | `main.dosw.prinplup.asignacion` | **SRP, OCP**         | Responsabilidad exclusiva: buscar el drone con mayor carga residual respetando el umbral de seguridad operacional (>= 20%).                                    | Maximiza la disponibilidad energética de la flota y previene pérdidas de drones por batería agotada.                      |
+| `ZonaCercanaStrategy`          | `main.dosw.prinplup.asignacion` | **SRP, OCP**         | Responsabilidad exclusiva: priorizar drones que ya estén presentes en la zona de la misión para minimizar traslados.                                         | Reduce tiempos de espera para recolección de muestras urgentes en zonas distantes.                                          |
+| `PrioridadCriticaStrategy`     | `main.dosw.prinplup.asignacion` | **SRP, OCP**         | Responsabilidad exclusiva: filtrar exclusivamente drones con reserva energética de seguridad (>= 50%).                                                        | Asegura éxito en misiones de emergencia ambiental crítica sin riesgo de interrupción.                                     |
+| `AsignadorAutomatico`          | `main.dosw.prinplup.asignacion` | **SRP, OCP, DIP**    | Coordina el flujo de asignación delegando la decisión en`EstrategiaSeleccion` y las alertas en `NotificadorAlertas`. No usa `instanceof`.              | Es el orquestador central autónomo de la v2; mantiene alta cohesión y bajo acoplamiento con algoritmos y canales de aviso. |
+| `ObservadorMision`             | `main.dosw.prinplup.alertas`    | **ISP, DIP**         | Interfaz granular con un único método`notificarFallo(...)`. Desacopla emisores de receptores.                                                              | Permite suscribir cualquier sistema (SCADA, mensajería, consola) sin alterar el asignador.                                  |
+| `CentroControlObserver`        | `main.dosw.prinplup.alertas`    | **SRP, DIP**         | Responsabilidad exclusiva: formatear y desplegar alertas visuales en la consola central del operador.                                                          | Facilita la supervisión humana inmediata ante emergencias de flota.                                                         |
+| `TecnicoMantenimientoObserver` | `main.dosw.prinplup.alertas`    | **SRP, DIP**         | Responsabilidad exclusiva: generar la orden técnica de inspección y reparación física para el personal de campo.                                           | Automatiza la logística de mantenimiento preventivo y correctivo en la ECI.                                                 |
+| `NotificadorAlertas`           | `main.dosw.prinplup.alertas`    | **SRP, OCP**         | Responsabilidad exclusiva: gestionar la lista de suscriptores y difundir eventos de fallo sin conocer sus implementaciones.                                    | Aisla la lógica de suscripción y despacho 'publish-subscribe' del dominio principal.                                       |
 
 ---
 
 #### 3. Auditoría Detallada de los 5 Principios SOLID con Evidencia en Código
 
 ##### 1. Single Responsibility Principle (SRP) — Responsabilidad Única
-- **Dónde se respeta en el código:**  
-  En `AsignadorAutomatico.java`, la clase se limita estrictamente a orquestar la asignación y detectar incidentes:
+
+- **Dónde se respeta en el código:**En `AsignadorAutomatico.java`, la clase se limita estrictamente a orquestar la asignación y detectar incidentes:
+
   ```java
   public Optional<DroneAcuatico> seleccionarDrone(List<DroneAcuatico> flota, String zona) {
       return estrategia.seleccionarDrone(flota, zona); // No calcula matemáticas ni filtra listas directamente
   }
   ```
+
   La lógica de selección pertenece exclusivamente a las implementaciones de `EstrategiaSeleccion`, la instanciación a `FabricaDrones` y el despacho de mensajes a `NotificadorAlertas`.
-- **Por qué importa en AquaPort:**  
+- **Por qué importa en AquaPort:**
   Si cambia el protocolo de telecomunicaciones de alertas (por ejemplo, enviar un correo o mensaje MQTT), el algoritmo de asignación de rutas y selección de drones permanece intacto.
 
 ---
 
 ##### 2. Open/Closed Principle (OCP) — Abierto para Extensión, Cerrado para Modificación
-- **Dónde se respeta en el código:**  
-  En `AsignadorAutomatico.java`, la selección de drones es **polimórfica pura**, sin condicionales `if (estrategia instanceof MayorBateriaStrategy)`:
+
+- **Dónde se respeta en el código:**En `AsignadorAutomatico.java`, la selección de drones es **polimórfica pura**, sin condicionales `if (estrategia instanceof MayorBateriaStrategy)`:
+
   ```java
   // Cero instanceof: abierto a infinitas estrategias futuras
   public Optional<DroneAcuatico> seleccionarDrone(List<DroneAcuatico> flota, String zona) {
       return estrategia.seleccionarDrone(flota, zona);
   }
   ```
+
   Si se introduce un 4to tipo de drone (`DroneSumergibleProfundo`), se hereda de `DroneAcuatico` y se añade a `FabricaDrones`. `AsignadorAutomatico` y las estrategias existentes siguen funcionando sin tocar una sola línea de su código.
-- **Por qué importa en AquaPort:**  
+- **Por qué importa en AquaPort:**
   La escuela ECI puede incorporar nuevos modelos de drones o nuevas políticas hídricas durante futuros cortes académicos sin riesgo de introducir fallos de regresión en las misiones operativas.
 
 ---
 
 ##### 3. Liskov Substitution Principle (LSP) — Sustitución de Liskov
-- **Dónde se respeta en el código:**  
-  En `DroneAcuatico.java` y sus subclases (`DroneSuperficial`, `DroneSemisumergido`, `DroneBuceador`), todas las subclases honran rigurosamente el contrato de su clase base:
+
+- **Dónde se respeta en el código:**En `DroneAcuatico.java` y sus subclases (`DroneSuperficial`, `DroneSemisumergido`, `DroneBuceador`), todas las subclases honran rigurosamente el contrato de su clase base:
+
   ```java
   // Cualquier subtipo puede sustituir a DroneAcuatico en colecciones heterogéneas
   List<DroneAcuatico> flota = List.of(
@@ -1849,15 +1854,17 @@ A continuación se auditan todas las clases e interfaces incorporadas en la v2, 
       new DroneBuceador("D-3", 75, EstadoDrone.DISPONIBLE, "Laguna")
   );
   ```
+
   Ninguna subclase sobreescribe métodos para lanzar `UnsupportedOperationException`, ni devuelve valores nulos donde el padre garantiza contratos válidos, ni debilita las precondiciones de capacidad y batería.
-- **Por qué importa en AquaPort:**  
+- **Por qué importa en AquaPort:**
   El planificador de flota puede iterar, clasificar, ordenar y despachar cualquier drone sin tener que verificar si es un buceador o superficial, evitando comportamientos anómalos o excepciones inesperadas en tiempo de ejecución.
 
 ---
 
 ##### 4. Interface Segregation Principle (ISP) — Segregación de Interfaces
-- **Dónde se respeta en el código:**  
-  Las interfaces creadas en la v2 son precisas, cohesivas y contienen exactamente la firma funcional requerida:
+
+- **Dónde se respeta en el código:**Las interfaces creadas en la v2 son precisas, cohesivas y contienen exactamente la firma funcional requerida:
+
   ```java
   // EstrategiaSeleccion: Solo expone el contrato de selección algorítmica
   public interface EstrategiaSeleccion {
@@ -1869,15 +1876,17 @@ A continuación se auditan todas las clases e interfaces incorporadas en la v2, 
       void notificarFallo(DroneAcuatico drone, String motivo);
   }
   ```
+
   Ninguna de las dos interfaces agrupa métodos irrelevantes (como persistencia en base de datos o validación de credenciales).
-- **Por qué importa en AquaPort:**  
+- **Por qué importa en AquaPort:**
   Evita que los componentes que solo necesitan escuchar fallos (como un sistema de alarmas físicas en el muelle) se vean forzados a implementar métodos relacionados con la planificación de rutas o cálculo de batería.
 
 ---
 
 ##### 5. Dependency Inversion Principle (DIP) — Inversión de Dependencias
-- **Dónde se respeta en el código:**  
-  En `AsignadorAutomatico.java`, la clase de alto nivel no depende de implementaciones concretas, sino de las interfaces abstractas `EstrategiaSeleccion` y `ObservadorMision`:
+
+- **Dónde se respeta en el código:**En `AsignadorAutomatico.java`, la clase de alto nivel no depende de implementaciones concretas, sino de las interfaces abstractas `EstrategiaSeleccion` y `ObservadorMision`:
+
   ```java
   public class AsignadorAutomatico {
       private EstrategiaSeleccion estrategia; // Abstracción, no MayorBateriaStrategy
@@ -1890,8 +1899,9 @@ A continuación se auditan todas las clases e interfaces incorporadas en la v2, 
       ...
   }
   ```
+
   Las dependencias se suministran mediante inyección de dependencias en el constructor y a través del método `setEstrategia(...)`.
-- **Por qué importa en AquaPort:**  
+- **Por qué importa en AquaPort:**
   Permite realizar pruebas unitarias aisladas con **Mocks de Mockito** (`mockCentroControl`, `mockTecnico`) sin depender de bases de datos o terminales físicas, garantizando una arquitectura altamente testeable y desacoplada.
 
 ---
@@ -1899,6 +1909,7 @@ A continuación se auditan todas las clases e interfaces incorporadas en la v2, 
 #### 4. Verificación Automatizada (`SolidPrinciplesAuditTest.java`)
 
 Para garantizar que estas decisiones arquitectónicas no se degraden con el tiempo, se desarrolló la suite de pruebas unitarias `SolidPrinciplesAuditTest.java` (78 tests del proyecto pasando en verde, 0 fallos), comprobando programáticamente:
+
 1. **LSP:** Sustitución perfecta de los 3 subtipos en colecciones heterogéneas del despachador.
 2. **OCP:** Incorporación dinámica de nuevas estrategias de selección y nuevos observadores de alerta al vuelo sin modificar una sola línea de código existente.
 3. **DIP:** Inyección fluida de dependencias abstractas en el asignador.
@@ -1921,8 +1932,7 @@ El diagrama delimita el sistema central como una caja negra de software, identif
 
 ##### Elementos del Diagrama de Contexto v2:
 
-1. **AquaPort v2 (`[Software System]` — Sistema Central):**  
-   Plataforma central autónoma encargada de gestionar y despachar la flota de 15 drones acuáticos especializados (`Superficial`, `Semisumergido`, `Buceador`), seleccionar drones óptimos mediante algoritmos desacoplados (`Strategy`) y emitir alertas inmediatas de contingencia mediante publicación de eventos (`Observer`).
+1. **AquaPort v2 (`[Software System]` — Sistema Central):**Plataforma central autónoma encargada de gestionar y despachar la flota de 15 drones acuáticos especializados (`Superficial`, `Semisumergido`, `Buceador`), seleccionar drones óptimos mediante algoritmos desacoplados (`Strategy`) y emitir alertas inmediatas de contingencia mediante publicación de eventos (`Observer`).
 2. **Actores Humanos (`[Person]`):**
    - **Solicitante:** Investigador, docente o estudiante de la ECI que solicita el traslado de muestras hídricas o sensores ambientales. Recibe el código de seguimiento de misión y el estado operativo.
    - **Operador Hídrico:** Supervisor operativo encargado de validar las asignaciones automáticas, monitorizar la telemetría, batería y estado operativo de los 15 drones en las distintas zonas del campus.
@@ -1945,16 +1955,17 @@ A modo de referencia comparativa, el diagrama de contexto inicial del MVP modela
 
 #### 3. Análisis Comparativo Exhaustivo: ¿Qué Creció? vs ¿Qué se Mantuvo?
 
-| Dimensión de Análisis | Versión Anterior (AquaPort MVP - Piplup) | Versión Actual (AquaPort v2 - Prinplup) | Impacto Arquitectónico y Operativo |
-| :--- | :--- | :--- | :--- |
-| **Actores Humanos** | 3 actores (`Solicitante`, `Operador Hídrico`, `Administrador ECI`). | 4 actores (Se incorpora el **Técnico de Mantenimiento**). | Permite cerrar el ciclo de mantenimiento reactivo y preventivo asistido por el patrón *Observer*. |
-| **Sistemas Externos** | 0 sistemas externos (sistema autocontenido sin dependencias perimetrales). | **3 sistemas externos** (`API Condiciones Hídricas`, `Centro de Control ECI`, `Sistema de Alertas`). | Transforma a AquaPort en un sistema distribuido e integrado con la infraestructura física e institucional de la Escuela. |
-| **Flujos de Información** | Flujos manuales básicos de registro, consulta e inspección. | **Flujos bidireccionales etiquetados** con contratos de datos específicos (telemetría, clima, autorización de ruta y órdenes técnicas). | Elimina la ambigüedad en los límites del sistema definiendo exactamente qué dato viaja y en qué dirección. |
-| **Escala de la Flota** | 4 drones homogéneos del mismo modelo (`Aqua-Ranger 100`). | **15 drones clasificados en 3 familias físicas** (`Superficial`, `Semisumergido`, `Buceador`). | Demanda algoritmos de selección inteligente según resistencia física y capacidad de inmersión. |
-| **Modelo de Asignación** | Asignación 100% manual por decisión visual del Operador Hídrico. | **Asignación autónoma algorítmica** basada en el patrón *Strategy* y variables ambientales. | Reduce la latencia de despacho y mitiga el error humano en misiones urgentes y de alta prioridad. |
-| **Gestión de Incidentes** | Manejo de excepciones locales y mensajes informativos en consola. | **Publicación desacoplada de alertas críticas** a través de canales múltiples en tiempo real. | Garantiza atención inmediata de contingencias en el espejo de agua evitando pérdidas materiales. |
+| Dimensión de Análisis          | Versión Anterior (AquaPort MVP - Piplup)                                  | Versión Actual (AquaPort v2 - Prinplup)                                                                                                           | Impacto Arquitectónico y Operativo                                                                                       |
+| :------------------------------- | :------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| **Actores Humanos**        | 3 actores (`Solicitante`, `Operador Hídrico`, `Administrador ECI`). | 4 actores (Se incorpora el**Técnico de Mantenimiento**).                                                                                    | Permite cerrar el ciclo de mantenimiento reactivo y preventivo asistido por el patrón*Observer*.                       |
+| **Sistemas Externos**      | 0 sistemas externos (sistema autocontenido sin dependencias perimetrales). | **3 sistemas externos** (`API Condiciones Hídricas`, `Centro de Control ECI`, `Sistema de Alertas`).                                  | Transforma a AquaPort en un sistema distribuido e integrado con la infraestructura física e institucional de la Escuela. |
+| **Flujos de Información** | Flujos manuales básicos de registro, consulta e inspección.              | **Flujos bidireccionales etiquetados** con contratos de datos específicos (telemetría, clima, autorización de ruta y órdenes técnicas). | Elimina la ambigüedad en los límites del sistema definiendo exactamente qué dato viaja y en qué dirección.           |
+| **Escala de la Flota**     | 4 drones homogéneos del mismo modelo (`Aqua-Ranger 100`).               | **15 drones clasificados en 3 familias físicas** (`Superficial`, `Semisumergido`, `Buceador`).                                        | Demanda algoritmos de selección inteligente según resistencia física y capacidad de inmersión.                        |
+| **Modelo de Asignación**  | Asignación 100% manual por decisión visual del Operador Hídrico.        | **Asignación autónoma algorítmica** basada en el patrón *Strategy* y variables ambientales.                                            | Reduce la latencia de despacho y mitiga el error humano en misiones urgentes y de alta prioridad.                         |
+| **Gestión de Incidentes** | Manejo de excepciones locales y mensajes informativos en consola.          | **Publicación desacoplada de alertas críticas** a través de canales múltiples en tiempo real.                                            | Garantiza atención inmediata de contingencias en el espejo de agua evitando pérdidas materiales.                        |
 
 ##### ¿Qué creció?
+
 1. **Un nuevo actor humano especializado:** El **Técnico de Mantenimiento**, encargado de la recepción de órdenes físicas de reparación y la reincorporación formal de drones dados de alta.
 2. **Tres interfaces con sistemas externos:**
    - La **API Condiciones Hídricas** para contextualizar la toma de decisiones algorítmicas con variables del entorno acuático.
@@ -1964,9 +1975,111 @@ A modo de referencia comparativa, el diagrama de contexto inicial del MVP modela
 4. **Escala y diversidad de la flota:** De 4 a 15 drones autónomos categorizados.
 
 ##### ¿Qué se mantuvo?
+
 1. **Los tres actores esenciales de la comunidad ECI:** El **Solicitante** continúa requiriendo el transporte de cargas, el **Operador Hídrico** mantiene la supervisión global de las operaciones acuáticas y el **Administrador ECI** sigue accediendo a las estadísticas y el inventario.
 2. **El propósito fundacional del sistema:** Proveer transporte acuático sustentable, seguro y eficiente en la red de canales, embalses y lagunas del campus universitario.
 3. **La delimitación del nivel 1 de C4 (Caja Negra):** El sistema AquaPort se presenta como una entidad conceptual única sin revelar todavía su división interna en contenedores o componentes (reservado para niveles C4 posteriores).
 4. **La integridad y trazabilidad de las misiones:** El concepto central de `Mision` inmutable, con puntos de partida/llegada y tipos de carga estandarizados, permanece inalterado como piedra angular del dominio.
 
+---
 
+### Ejercicio 06 — Análisis de Requisitos (RF, RNF, MoSCoW y Tensión AP-07 vs AP-08)
+
+En este ejercicio se formalizan los **Requerimientos Funcionales (RF)** de las nuevas capacidades de AquaPort v2 (Fase Prinplup), se definen **Requerimientos No Funcionales (RNF)** cuantificables con métricas comprobables en código, se aplica la priorización **MoSCoW** y se analiza a fondo la tensión arquitectónica entre las políticas **AP-07** y **AP-08**.
+
+---
+
+#### 1. Requerimientos Funcionales (RF) de AquaPort v2
+
+|     Código     | Nombre del Requerimiento                                  | Descripción Detallada                                                                                                                                                                                                                                                                                                        |       Actor Principal       | Validación / Criterio de Éxito                                                                                                             |
+| :-------------: | :-------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| **RF-01** | **Asignación Automática Inteligente**             | El sistema debe seleccionar de forma autónoma el dron óptimo disponible para una misión entrante, aplicando políticas algorítmicas intercambiables en tiempo de ejecución (*Strategy Pattern*: `MayorBateriaStrategy`, `ZonaCercanaStrategy`, `PrioridadCriticaStrategy`) según la prioridad y zona requerida. |      Operador Hídrico      | Retorna un`Optional<DroneAcuatico>` con el dron que mejor satisface la estrategia activa sin intervención manual.                         |
+| **RF-02** | **Emisión de Alertas de Falla en Tiempo Real**     | El sistema debe detectar inmediatamente cuando un dron entra en estado`FALLO` durante el registro o despacho de una misión, propagando automáticamente eventos de alerta estructurados (*Observer Pattern*) hacia todos los observadores suscritos.                                                                     | Sistema / Centro de Control | Cada observador registrado (`CentroControlObserver`, `TecnicoMantenimientoObserver`) recibe exactamente una notificación por incidente. |
+| **RF-03** | **Consulta y Validación de Condiciones Hídricas** | El sistema debe consumir los datos hidrológicos y climáticos (agitación del agua, profundidad del canal, corrientes) de la API externa para corroborar que el tipo físico de dron (`SUPERFICIAL`, `SEMISUMERGIDO`, `BUCEADOR`) sea apto para la zona antes del despegue.                                            |      Operador Hídrico      | Rechaza el despacho si las condiciones hídricas exceden los límites de diseño estructural del dron asignado.                              |
+| **RF-04** | **Gestión Técnica y Rehabilitación de Flota**    | El sistema debe generar una orden de servicio urgente ante drones averiados y posibilitar al Técnico de Mantenimiento registrar el alta médica/técnica del dron una vez reparado, reincorporándolo al inventario activo en estado`DISPONIBLE`.                                                                          |  Técnico de Mantenimiento  | Se emite la orden de servicio con causa documentada y se actualiza el estado del dron rehabilitado.                                          |
+
+---
+
+#### 2. Requerimientos No Funcionales (RNF) con Métricas Cuantitativas
+
+Un RNF sin métrica objetiva es simplemente un deseo. Para AquaPort v2, todos los atributos de calidad de software (basados en el estándar ISO/IEC 25010) cuentan con especificaciones cuantificables y medibles:
+
+| Código | Atributo de Calidad (ISO 25010) | Especificación del RNF | Métrica Cuantitativa Objetivo | Herramienta de Medición / Verificación |
+| :---: | :--- | :--- | :---: | :--- |
+| **RNF-01** | **Rendimiento / Latencia de Selección** | El algoritmo de asignación automática debe resolver la selección del dron óptimo para flotas de hasta 30 unidades sin degradar la respuesta interactiva del operador. | **Latencia < 400 ms** para flotas de 30 drones. | JUnit 5 `assertTimeoutPreemptively` en `RequerimientosPrinplupTest`. |
+| **RNF-02** | **Rendimiento / Latencia de Alertas** | La difusión y entrega de alertas críticas de fallo a todos los observadores registrados (`CentroControlObserver`, `TecnicoMantenimientoObserver`) debe ejecutarse casi en tiempo real. | **Latencia < 50 ms** por evento de fallo. | JUnit 5 `assertTimeoutPreemptively` en `RequerimientosPrinplupTest`. |
+| **RNF-03** | **Disponibilidad y Confiabilidad (SLA)** | La plataforma central de despacho y supervisión debe garantizar continuidad operativa durante los horarios de laboratorio e investigación de la ECI. | **Disponibilidad >= 99.9% (uptime)** y **MTTR < 5 minutos** (Lunes a Sábado, 06:00 a 20:00). | Monitoreo de disponibilidad y pruebas de resiliencia operativa. |
+| **RNF-04** | **Capacidad / Concurrencia y Throughput** | El motor de misiones debe procesar ráfagas concurrentes de solicitudes de despacho sin bloqueos mutuos (*deadlocks*) ni pérdida de paquetes de misión. | **Throughput >= 50 solicitudes concurrentes/segundo** con **latencia total < 800 ms** y **tasa de error < 0.1%**. | JUnit 5 pruebas concurrentes multi-hilo (`CompletableFuture`) en `RequerimientosPrinplupTest`. |
+
+---
+
+#### 3. Matriz de Priorización MoSCoW para AquaPort v2
+
+```
+                       MATRIZ MoSCoW — AQUAPORT v2
+ ┌──────────────────────────────────────┬──────────────────────────────────────┐
+ │             MUST HAVE                │             SHOULD HAVE              │
+ │  • RF-01: Asignación automática      │  • RF-03: Validación API hídrica     │
+ │  • RF-02: Alertas de fallo Observer  │  • RF-04: Gestión por técnico campo  │
+ │  • RNF-01: Latencia asignación < 400ms│  • RNF-02: Latencia alertas < 50ms   │
+ │  • RNF-03: Disponibilidad SLA >= 99.9%│                                      │
+ ├──────────────────────────────────────┼──────────────────────────────────────┤
+ │             COULD HAVE               │              WON'T HAVE              │
+ │  • RNF-04: Throughput >= 50 req/s    │  • Rutas multi-etapa complejas       │
+ │  • Dashboard con telemetría en vivo  │  • Reasignación en pleno vuelo       │
+ │  • Bitácora histórica en base de     │    (Alcance reservado para Empoleon) │
+ │    datos distribuida                 │                                      │
+ └──────────────────────────────────────┴──────────────────────────────────────┘
+```
+
+##### Justificación MoSCoW:
+- **Must Have (Críticos e Irremplazables):**  
+  La asignación automática mediante estrategias (`RF-01`) y la emisión de alertas inmediatas (`RF-02`) definen el valor central de la v2. Sin ellos, el sistema continuaría siendo un MVP manual de fase 1. Los requerimientos no funcionales de latencia de selección (`RNF-01`) y disponibilidad del servicio (`RNF-03`) son indispensables para que la plataforma sea viable y confiable en el campus.
+- **Should Have (Gran Valor, No Bloqueantes para el Core):**  
+  La integración con la API de condiciones hídricas (`RF-03`), la consola técnica de mantenimiento (`RF-04`) y la propagación de alertas ultra-rápidas (`RNF-02` < 50ms) agregan una capa robusta de prevención y logística. Si la API externa sufriera una degradación temporal, el operador puede continuar despachando con estrategias estándar.
+- **Could Have (Deseables si el Tiempo y Recursos lo Permiten):**  
+  El soporte de alta concurrencia masiva (`RNF-04` >= 50 req/s), la visualización gráfica avanzada en tiempo real de corrientes y el almacenamiento permanente de logs en base de datos aportan robustez ante picos de tráfico extremos, pero la operación regular del campus maneja volúmenes moderados.
+- **Won't Have (Excluidos de la v2, Planificados para Empoleon):**  
+  Las misiones multi-etapa con waypoints dinámicos y la reasignación en pleno vuelo ante contingencias intermedias requieren arquitectura por capas desacoplada con 60 drones (Fase Empoleon) y quedan deliberadamente fuera del alcance actual.
+
+---
+
+#### 4. Detección y Resolución de la Tensión entre AP-07 y AP-08
+
+##### Enunciado de los Requerimientos en Tensión:
+
+- **AP-07:** *"El sistema asigna automáticamente el drone de mayor batería disponible para cualquier misión hídrica."*
+- **AP-08:** *"Las misiones CRÍTICAS tienen prioridad absoluta: deben recibir el drone técnicamente más apto para la zona, independientemente de la batería."*
+
+##### Análisis del Conflicto de Diseño:
+
+Aparentemente, AP-07 y AP-08 proponen criterios de selección contradictorios:
+
+1. Si se aplica estrictamente **AP-07**, para una misión en aguas turbulentas del Canal Central o de profundidad en Laguna Sur, el sistema elegiría un dron superficial con 95% de batería ubicado en el Embalse Norte. Esto provocaría el fracaso de la misión o daños físicos en el dron, dado que un dron superficial no soporta inmersión ni corrientes fuertes.
+2. Si se aplica estrictamente **AP-08**, la aptitud técnica manda sobre la batería. Sin embargo, no se puede despachar un dron apto si tiene batería en estado crítico (< 20%), ya que se apagaría a mitad de trayecto.
+
+##### Solución Arquitectónica Implementada en AquaPort v2:
+
+La tensión se resolvió aplicando el **Patrón Strategy** de forma jerárquica y contextual:
+
+![Resolución Tensión AP-07 vs AP-08](docs/images/Exercise06PrePinPlup.png)
+
+1. **Precedencia de Prioridad:** Las misiones con prioridad `CRITICA` activan la política `AP-08`, seleccionando el dron según aptitud física para la zona (`SUPERFICIAL`, `SEMISUMERGIDO` o `BUCEADOR`) y proximidad geográfica (`ZonaCercanaStrategy`), exigiendo un piso de seguridad energética (mínimo 50% de batería para contingencias).
+2. **Distribución en Misiones Ordinarias:** Para misiones de prioridad `NORMAL` o `BAJA`, rige `AP-07` mediante `MayorBateriaStrategy`, asegurando una rotación uniforme que maximiza la vida útil de las baterías de la flota.
+
+##### Verificación Automatizada en Código (`RequerimientosPrinplupTest.java`):
+
+La prueba unitaria `testResolucionTensionAp07VsAp08()` valida este comportamiento:
+
+```java
+// Misión ordinaria bajo AP-07: Selecciona el dron con 95% de batería (DRN-SUP-95)
+asignador.setEstrategia(new MayorBateriaStrategy());
+Optional<DroneAcuatico> ordinaria = asignador.seleccionarDrone(flota, "Laguna Sur");
+assertEquals("DRN-SUP-95", ordinaria.get().getId());
+
+// Misión CRÍTICA bajo AP-08: Selecciona el dron BUCEADOR en Laguna Sur (DRN-BUC-75),
+// priorizando la aptitud técnica en la zona sobre el porcentaje bruto de batería
+asignador.setEstrategia(new ZonaCercanaStrategy());
+Optional<DroneAcuatico> critica = asignador.seleccionarDrone(flota, "Laguna Sur");
+assertEquals("DRN-BUC-75", critica.get().getId());
+```
