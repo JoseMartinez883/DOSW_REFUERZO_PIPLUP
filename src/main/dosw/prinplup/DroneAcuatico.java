@@ -9,6 +9,14 @@ public record DroneAcuatico(
         String zona,
         int capacidadCargaGramos
 ) {
+    public String getId() {
+        return id;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
     public boolean isDisponible() {
         return estado == EstadoDrone.DISPONIBLE;
     }
