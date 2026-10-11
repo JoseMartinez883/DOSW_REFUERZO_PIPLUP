@@ -373,3 +373,264 @@ public class Ejercicio03 {
 
 **Explicación:**  
 Se encapsuló la construcción de la clase inmutable `Mision` mediante su clase anidada estática `Builder`. A través de una interfaz fluida se asignan los atributos requeridos, delegando al método `build()` la comprobación estricta de precondiciones: verifica que las cadenas no sean nulas ni estén compuestas únicamente por espacios en blanco (`isBlank()`), que las referencias a objetos/enums no sean nulas y que el `DroneAcuatico` asignado cumpla la regla de negocio de encontrarse en estado disponible. De no cumplirse alguna regla, interrumpe el flujo levantando una `IllegalStateException` descriptiva.
+
+---
+
+### Ejercicio 04 — SRP y DIP en el núcleo de AquaPort MVP
+
+Diseño e implementación de la arquitectura del núcleo de AquaPort MVP aplicando los principios SOLID, específicamente el **Principio de Responsabilidad Única (SRP)** y el **Principio de Inversión de Dependencias (DIP)**. Se desacopla la persistencia mediante la abstracción `RepositorioMisiones`, se aísla la verificación de reglas de negocio en `ValidadorMision`, la emisión de alertas y mensajes en `NotificadorOperador`, y la orquestación del flujo de alta y consulta en `RegistradorMisiones` mediante inyección de dependencias por constructor.
+
+**Código implementado:**
+
+`RepositorioMisiones.java`
+```java
+package main.dosw.piplup;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface RepositorioMisiones {
+
+    void guardar(Mision mision);
+
+    Optional<Mision> buscarPorId(String id);
+
+    List<Mision> obtenerTodas();
+
+    boolean existePorId(String id);
+}
+```
+
+`RepositorioMisionesMemoria.java`
+```java
+package main.dosw.piplup;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+public class RepositorioMisionesMemoria implements RepositorioMisiones {
+
+    private final Map<String, Mision> baseDatos = new LinkedHashMap<>();
+
+    @Override
+    public void guardar(Mision mision) {
+        Objects.requireNonNull(mision, "La misión a guardar no puede ser nula");
+        baseDatos.put(mision.getId(), mision);
+    }
+
+    @Override
+    public Optional<Mision> buscarPorId(String id) {
+        if (id == null || id.isBlank()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(baseDatos.get(id));
+    }
+
+    @Override
+    public List<Mision> obtenerTodas() {
+        return Collections.unmodifiableList(new ArrayList<>(baseDatos.values()));
+    }
+
+    @Override
+    public boolean existePorId(String id) {
+        if (id == null || id.isBlank()) {
+            return false;
+        }
+        return baseDatos.containsKey(id);
+    }
+}
+```
+
+`ValidadorMision.java`
+```java
+package main.dosw.piplup;
+
+public class ValidadorMision {
+
+    private static final int BATERIA_MINIMA = 35;
+
+    public boolean tieneBateriaSuficiente(DroneAcuatico drone) {
+        if (drone == null) {
+            return false;
+        }
+        return drone.bateria() >= BATERIA_MINIMA;
+    }
+
+    public void validarPuntoLlegada(String puntoLlegada) {
+        if (puntoLlegada == null || puntoLlegada.isBlank()) {
+            throw new IllegalArgumentException("El punto de llegada no puede ser nulo ni estar vacío");
+        }
+    }
+
+    public void validarPuntoPartida(String puntoPartida) {
+        if (puntoPartida == null || puntoPartida.isBlank()) {
+            throw new IllegalArgumentException("El punto de partida no puede ser nulo ni estar vacío");
+        }
+    }
+
+    public void validarAsignacion(Mision mision) {
+        if (mision == null) {
+            throw new IllegalArgumentException("La misión a validar no puede ser nula");
+        }
+        DroneAcuatico drone = mision.getDrone();
+        if (drone == null) {
+            throw new IllegalStateException("La misión requiere un drone acuático asignado");
+        }
+        if (!drone.disponible()) {
+            throw new IllegalStateException("El drone asignado " + drone.id() + " no está disponible para operar");
+        }
+        if (!tieneBateriaSuficiente(drone)) {
+            throw new IllegalStateException("El drone " + drone.id() + " tiene batería insuficiente (" + drone.bateria() + "%). Mínimo requerido: " + BATERIA_MINIMA + "%");
+        }
+        validarPuntoPartida(mision.getPuntoPartida());
+        validarPuntoLlegada(mision.getPuntoLlegada());
+    }
+}
+```
+
+`NotificadorOperador.java`
+```java
+package main.dosw.piplup;
+
+public class NotificadorOperador {
+
+    public void notificarRegistroExitoso(Mision mision) {
+        if (mision != null) {
+            System.out.println("[AquaPort - Notificación] Misión " + mision.getId()
+                    + " registrada exitosamente con drone " + mision.getDrone().id()
+                    + " de ruta: " + mision.getPuntoPartida() + " -> " + mision.getPuntoLlegada());
+        }
+    }
+
+    public void notificarError(String mensaje) {
+        System.err.println("[AquaPort - Alerta] Error en operación: " + mensaje);
+    }
+
+    public void notificarConsulta(String detalle) {
+        System.out.println("[AquaPort - Consulta] " + detalle);
+    }
+}
+```
+
+`RegistradorMisiones.java`
+```java
+package main.dosw.piplup;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+public class RegistradorMisiones {
+
+    private final RepositorioMisiones repositorio;
+    private final ValidadorMision validador;
+    private final NotificadorOperador notificador;
+
+    public RegistradorMisiones(RepositorioMisiones repositorio,
+                               ValidadorMision validador,
+                               NotificadorOperador notificador) {
+        this.repositorio = Objects.requireNonNull(repositorio, "El repositorio no puede ser nulo");
+        this.validador = Objects.requireNonNull(validador, "El validador no puede ser nulo");
+        this.notificador = Objects.requireNonNull(notificador, "El notificador no puede ser nulo");
+    }
+
+    public void registrarMision(Mision mision) {
+        Objects.requireNonNull(mision, "La misión a registrar no puede ser nula");
+        if (repositorio.existePorId(mision.getId())) {
+            throw new IllegalStateException("Ya existe una misión registrada con el identificador: " + mision.getId());
+        }
+        validador.validarAsignacion(mision);
+        repositorio.guardar(mision);
+        notificador.notificarRegistroExitoso(mision);
+    }
+
+    public Optional<Mision> consultarPorId(String id) {
+        return repositorio.buscarPorId(id);
+    }
+
+    public List<Mision> consultarTodas() {
+        return repositorio.obtenerTodas();
+    }
+}
+```
+
+`Ejercicio04.java`
+```java
+package main.dosw.piplup;
+
+public class Ejercicio04 {
+
+    public static void main(String[] args) {
+        System.out.println("=== AquaPort MVP — Ejercicio 04: Principios SOLID (SRP y DIP) ===");
+
+        // Inversión de Dependencias (DIP): Se inyecta la abstracción RepositorioMisiones
+        RepositorioMisiones repositorio = new RepositorioMisionesMemoria();
+        ValidadorMision validador = new ValidadorMision();
+        NotificadorOperador notificador = new NotificadorOperador();
+
+        // Responsabilidad Única (SRP): RegistradorMisiones solo coordina el registro
+        RegistradorMisiones registrador = new RegistradorMisiones(repositorio, validador, notificador);
+
+        // Flota de prueba del MVP
+        DroneAcuatico droneOptimo = new DroneAcuatico("AR-01", "Aqua-Ranger 100", 92, true, "Embalse Norte");
+        DroneAcuatico droneBateriaBaja = new DroneAcuatico("AR-03", "Aqua-Ranger 100", 18, false, "Laguna Sur");
+
+        // 1. Caso exitoso: Misión válida
+        System.out.println("\n1. Registrando misión válida:");
+        Mision misionValida = new Mision.Builder()
+                .id("MIS-101")
+                .drone(droneOptimo)
+                .puntoPartida("Embalse Norte")
+                .puntoLlegada("Laboratorio Hídrico")
+                .tipoCarga(TipoCarga.MUESTRA_AGUA)
+                .build();
+
+        registrador.registrarMision(misionValida);
+
+        // 2. Caso fallido: Violación de regla de negocio (batería insuficiente o no disponible)
+        System.out.println("\n2. Intentando registrar misión con drone no apto:");
+        try {
+            Mision misionInvalida = new Mision.Builder()
+                    .id("MIS-102")
+                    .drone(droneBateriaBaja)
+                    .puntoPartida("Laguna Sur")
+                    .puntoLlegada("Laboratorio Hídrico")
+                    .tipoCarga(TipoCarga.MUESTRA_AGUA)
+                    .build();
+            registrador.registrarMision(misionInvalida);
+        } catch (IllegalStateException e) {
+            notificador.notificarError("Validación rechazada: " + e.getMessage());
+        }
+
+        // 3. Caso de consulta a través del repositorio inyectado
+        System.out.println("\n3. Consultando todas las misiones registradas:");
+        registrador.consultarTodas().forEach(m ->
+                notificador.notificarConsulta("ID: " + m.getId() + " | Drone: " + m.getDrone().id()
+                        + " | Carga: " + m.getTipoCarga() + " | Estado: " + m.getEstadoMision())
+        );
+
+        System.out.println("\n4. Consultando misión por ID 'MIS-101':");
+        registrador.consultarPorId("MIS-101").ifPresentOrElse(
+                m -> notificador.notificarConsulta("Encontrada: " + m.getId() + " hacia " + m.getPuntoLlegada()),
+                () -> notificador.notificarError("Misión no encontrada")
+        );
+    }
+}
+```
+
+**Captura de ejecución:**  
+![ExecutionExercise04PiplupPhase.png](docs/images/ExecutionExercise04PiplupPhase.png)
+
+**Explicación:**  
+1. **Principio de Responsabilidad Única (SRP):** En lugar de un objeto Dios (`GestorMision`) que guarde, valide, notifique e imprima simultáneamente, se modularizó el diseño en clases altamente cohesivas:
+   - `RegistradorMisiones`: Exclusivamente orquesta el registro y delegación de consultas.
+   - `ValidadorMision`: Contiene y ejecuta estrictamente las validaciones del dominio (batería ≥35%, disponibilidad y parámetros consistentes).
+   - `NotificadorOperador`: Responsable de la salida y comunicación de alertas y confirmaciones hacia el operador.
+   - `RepositorioMisionesMemoria`: Encargado únicamente de la persistencia de datos en memoria.
+2. **Principio de Inversión de Dependencias (DIP):** El servicio de alto nivel `RegistradorMisiones` no se acopla a ninguna implementación concreta de almacenamiento (evitando `new BaseDatosLocal()`), sino que depende de la abstracción `RepositorioMisiones`, inyectada a través de su constructor (`Constructor Injection`). Esto permite sustituir o extender libremente la persistencia (por bases de datos o mocks en pruebas) sin alterar las reglas de negocio.
+
