@@ -66,4 +66,20 @@ class FabricaDronesTest {
                 FabricaDrones.crearDrone(null, "DRN-ERR", 50, EstadoDrone.DISPONIBLE, "Zona Central")
         );
     }
+
+    @Test
+    @DisplayName("Debe instanciar constructores sobrecargados de especializaciones de drones")
+    void testConstructoresSobrecargadosEspecializaciones() {
+        DroneSuperficial sup = new DroneSuperficial("S-1", "Modelo-Custom-S", 85, EstadoDrone.DISPONIBLE, "Zona-S", 600);
+        assertEquals("Modelo-Custom-S", sup.getModelo());
+        assertEquals(500, sup.getCapacidadCargaGramos()); // Math.min(600, 500)
+
+        DroneSemisumergido semi = new DroneSemisumergido("M-1", "Modelo-Custom-M", 80, EstadoDrone.DISPONIBLE, "Zona-M", 2000);
+        assertEquals("Modelo-Custom-M", semi.getModelo());
+        assertEquals(1500, semi.getCapacidadCargaGramos()); // Math.min(2000, 1500)
+
+        DroneBuceador buc = new DroneBuceador("B-1", "Modelo-Custom-B", 75, EstadoDrone.DISPONIBLE, "Zona-B", 500);
+        assertEquals("Modelo-Custom-B", buc.getModelo());
+        assertEquals(300, buc.getCapacidadCargaGramos()); // Math.min(500, 300)
+    }
 }
