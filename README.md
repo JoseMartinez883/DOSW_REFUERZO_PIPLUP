@@ -1211,7 +1211,7 @@ class ValidadorMisionTest {
     void droneNoDisponible_lanzaExcepcion() {
         // Arrange
         DroneAcuatico droneNoDisponible = new DroneAcuatico("AR-02", "Aqua-Ranger 100", 70, false, "Canal Central");
-      
+    
         // Act & Assert
         IllegalStateException ex = assertThrows(IllegalStateException.class,
                 () -> validador.validarDroneDisponible(droneNoDisponible));
@@ -1264,14 +1264,15 @@ En este ejercicio se configuró e integró la herramienta **JaCoCo** (`jacoco-ma
 
 El reporte de JaCoCo evalúa la efectividad de las pruebas a través de una convención de colores estándar en la industria:
 
-| Color en el Reporte | Significado Técnico | Diagnóstico y Acción Requerida |
-| :---: | :--- | :--- |
-| **■ Verde** | **Línea o rama cubierta** | La instrucción o bifurcación condicional fue ejecutada y validada por al menos una prueba unitaria. Estado óptimo. |
-| **■ Amarillo** | **Rama parcialmente cubierta** | Se ejecutó una de las ramas del condicional (ej. el camino `true`), pero falta validar el camino alterno (`false`). Requiere agregar prueba de cobertura. |
-| **■ Rojo** | **Línea o rama nunca ejecutada** | Bloque de código o instrucción muerta que ninguna prueba unitaria ha alcanzado. Requiere implementar caso de prueba o retirar código muerto. |
+|  Color en el Reporte  | Significado Técnico                    | Diagnóstico y Acción Requerida                                                                                                                              |
+| :-------------------: | :-------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|  **■ Verde**  | **Línea o rama cubierta**        | La instrucción o bifurcación condicional fue ejecutada y validada por al menos una prueba unitaria. Estado óptimo.                                         |
+| **■ Amarillo** | **Rama parcialmente cubierta**    | Se ejecutó una de las ramas del condicional (ej. el camino`true`), pero falta validar el camino alterno (`false`). Requiere agregar prueba de cobertura. |
+|   **■ Rojo**   | **Línea o rama nunca ejecutada** | Bloque de código o instrucción muerta que ninguna prueba unitaria ha alcanzado. Requiere implementar caso de prueba o retirar código muerto.               |
 
 **Exigencia del Reto Piplup:**
-- La clase de dominio [ValidadorMision.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/ValidadorMision.java) debe superar estrictamente el **80% de cobertura de líneas** (*line coverage*).
+
+- La clase de dominio [ValidadorMision.java](<file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/ValidadorMision.java>) debe superar estrictamente el **80% de cobertura de líneas** (*line coverage*).
 - Ninguna clase del núcleo debe presentar ramas sin cubrir en sus flujos principales.
 
 ---
@@ -1303,9 +1304,11 @@ Se añadieron las fases de preparación del agente (`prepare-agent`) y de genera
 ```
 
 **Comando de ejecución:**
+
 ```bash
 mvn clean test
 ```
+
 El reporte navegable se genera automáticamente en: `target/site/jacoco/index.html`.
 
 ---
@@ -1319,6 +1322,7 @@ Como resultado, el reporte general del paquete alcanza un sobresaliente **96% de
 ![Reporte General de JaCoCo](docs/images/JacocoGeneral.png)
 
 *Métricas consolidadas a nivel de paquete:*
+
 - **Instrucciones:** 852 / 882 (**96% de cobertura**).
 - **Ramas condicionales:** 86 / 96 (**89% de cobertura**).
 - **Líneas evaluadas:** 237 / 244 (**97% de cobertura**).
@@ -1329,7 +1333,7 @@ Como resultado, el reporte general del paquete alcanza un sobresaliente **96% de
 
 #### 4. Reporte Detallado de `ValidadorMision` (100% Cobertura Absoluta)
 
-Al examinar la vista individual de **[ValidadorMision.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/ValidadorMision.java)**, se comprueba que no solo se supera con creces el umbral mínimo del 80%, sino que se alcanza la **cobertura total y perfecta**:
+Al examinar la vista individual de **[ValidadorMision.java](<file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/ValidadorMision.java>)**, se comprueba que no solo se supera con creces el umbral mínimo del 80%, sino que se alcanza la **cobertura total y perfecta**:
 
 * **Line Coverage:** **100%** (33 de 33 líneas ejecutadas).
 * **Branch Coverage:** **100%** (30 de 30 ramas evaluadas, cubriendo exhaustivamente todos los caminos `if` / `else`).
@@ -1343,17 +1347,17 @@ Al examinar la vista individual de **[ValidadorMision.java](file:///c:/Users/Jos
 
 #### 5. Matriz de Cobertura Método por Método (`ValidadorMision`)
 
-| Método de `ValidadorMision` | Instrucciones | Ramas Condicionales | Líneas de Código | Estado JaCoCo |
-| :--- | :---: | :---: | :---: | :---: |
-| `validarAsignacion(Mision)` | 49 / 49 (100%) | 8 / 8 (100%) | 12 / 12 (100%) | ■ Verde |
-| `validarZona(String)` | 22 / 22 (100%) | 6 / 6 (100%) | 5 / 5 (100%) | ■ Verde |
-| `validarDroneDisponible(DroneAcuatico)` | 18 / 18 (100%) | 4 / 4 (100%) | 5 / 5 (100%) | ■ Verde |
-| `tieneBateriaSuficiente(DroneAcuatico)` | 12 / 12 (100%) | 4 / 4 (100%) | 3 / 3 (100%) | ■ Verde |
-| `validarPuntoLlegada(String)` | 11 / 11 (100%) | 4 / 4 (100%) | 3 / 3 (100%) | ■ Verde |
-| `validarPuntoPartida(String)` | 11 / 11 (100%) | 4 / 4 (100%) | 3 / 3 (100%) | ■ Verde |
-| Inicializador estático `static {...}` | 8 / 8 (100%) | n/a | 1 / 1 (100%) | ■ Verde |
-| Constructor por defecto `ValidadorMision()` | 3 / 3 (100%) | n/a | 1 / 1 (100%) | ■ Verde |
-| **Total `ValidadorMision`** | **134 / 134 (100%)** | **30 / 30 (100%)** | **33 / 33 (100%)** | **■ Verde Absoluto** |
+| Método de`ValidadorMision`                |       Instrucciones       |   Ramas Condicionales   |    Líneas de Código    |        Estado JaCoCo        |
+| :------------------------------------------- | :------------------------: | :----------------------: | :----------------------: | :-------------------------: |
+| `validarAsignacion(Mision)`                |       49 / 49 (100%)       |       8 / 8 (100%)       |      12 / 12 (100%)      |          ■ Verde          |
+| `validarZona(String)`                      |       22 / 22 (100%)       |       6 / 6 (100%)       |       5 / 5 (100%)       |          ■ Verde          |
+| `validarDroneDisponible(DroneAcuatico)`    |       18 / 18 (100%)       |       4 / 4 (100%)       |       5 / 5 (100%)       |          ■ Verde          |
+| `tieneBateriaSuficiente(DroneAcuatico)`    |       12 / 12 (100%)       |       4 / 4 (100%)       |       3 / 3 (100%)       |          ■ Verde          |
+| `validarPuntoLlegada(String)`              |       11 / 11 (100%)       |       4 / 4 (100%)       |       3 / 3 (100%)       |          ■ Verde          |
+| `validarPuntoPartida(String)`              |       11 / 11 (100%)       |       4 / 4 (100%)       |       3 / 3 (100%)       |          ■ Verde          |
+| Inicializador estático`static {...}`      |        8 / 8 (100%)        |           n/a           |       1 / 1 (100%)       |          ■ Verde          |
+| Constructor por defecto`ValidadorMision()` |        3 / 3 (100%)        |           n/a           |       1 / 1 (100%)       |          ■ Verde          |
+| **Total `ValidadorMision`**          | **134 / 134 (100%)** | **30 / 30 (100%)** | **33 / 33 (100%)** | **■ Verde Absoluto** |
 
 ---
 
@@ -1362,6 +1366,7 @@ Al examinar la vista individual de **[ValidadorMision.java](file:///c:/Users/Jos
 Como cierre culminante del nivel **Piplup**, se integró y ejecutó el análisis estático de código mediante **SonarQube Community Server** (v13.7.0.4455 / build v26.9.0.129388) conectado a través del plugin oficial `sonar-maven-plugin`.
 
 El objetivo de este reto consiste en garantizar que el código del MVP cumpla con los estándares más estrictos de ingeniería de software:
+
 - **0 Bugs** (código con fallos de ejecución).
 - **0 Vulnerabilidades** (brechas de seguridad explotables).
 - **0 Code Smells / 0 Deuda Técnica** (código limpio, mantenible y autoexplicativo).
@@ -1395,11 +1400,11 @@ mvn clean verify sonar:sonar \
 
 SonarQube clasifica los problemas detectados según su impacto y prioridad de resolución:
 
-| Tipo de Incidencia | Impacto en el Software | Prioridad | Criterio en AquaPort MVP |
-| :---: | :--- | :---: | :--- |
-| 🔴 **Bug** | Código que produce un comportamiento incorrecto o excepciones no controladas en tiempo de ejecución. | **Máxima** | **0 detectados**. Cero errores lógicos en el dominio. |
-| 🟠 **Vulnerability** | Vulnerabilidad de seguridad que puede ser explotada por un atacante (inyección, fugas de memoria, etc.). | **Alta** | **0 detectadas**. Arquitectura segura y validada. |
-| 🟡 **Code Smell** | Deficiencias de diseño, código confuso, mala gestión de recursos o redundancia que dificultan el mantenimiento. | **Media/Baja** | **24 detectados inicialmente ➔ 0 residuales (100% resueltos)**. |
+|    Tipo de Incidencia    | Impacto en el Software                                                                                             |      Prioridad      | Criterio en AquaPort MVP                                               |
+| :-----------------------: | :----------------------------------------------------------------------------------------------------------------- | :------------------: | :--------------------------------------------------------------------- |
+|      🔴**Bug**      | Código que produce un comportamiento incorrecto o excepciones no controladas en tiempo de ejecución.             |  **Máxima**  | **0 detectados**. Cero errores lógicos en el dominio.           |
+| 🟠**Vulnerability** | Vulnerabilidad de seguridad que puede ser explotada por un atacante (inyección, fugas de memoria, etc.).          |    **Alta**    | **0 detectadas**. Arquitectura segura y validada.                |
+|  🟡**Code Smell**  | Deficiencias de diseño, código confuso, mala gestión de recursos o redundancia que dificultan el mantenimiento. | **Media/Baja** | **24 detectados inicialmente ➔ 0 residuales (100% resueltos)**. |
 
 ---
 
@@ -1407,16 +1412,16 @@ SonarQube clasifica los problemas detectados según su impacto y prioridad de re
 
 El análisis inicial de SonarQube identificó **24 incidencias de mantenibilidad (*Code Smells*)**. En lugar de suprimirlas artificialmente con `@SuppressWarnings`, se abordaron mediante refactorización arquitectónica limpia:
 
-| Componente | Regla SonarQube Violada | Causa Raíz / Por qué era un problema | Solución Técnica Aplicada (Refactorización) |
-| :--- | :--- | :--- | :--- |
-| [Mision.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Mision.java) | *Remove this unused "estadoMision" private field* | El campo en el Builder tenía un valor por defecto pero no era configurable ni se transfería al constructor, generando inconsistencia. | Se agregó el método fluido `.estadoMision(EstadoMision)` en la API fluida del `Builder` y se asignó en el constructor de `Mision`. |
-| [NotificadorOperador.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/NotificadorOperador.java) | *Replace this use of System.out / System.err by a logger* | El uso de salida estándar directa bloquea hilos, no permite configurar niveles de severidad ni redirigir trazas en entornos de producción. | Se integró `java.util.logging.Logger` con niveles estructurados `Level.INFO` para eventos ordinarios y `Level.SEVERE` para errores críticos. |
-| [Ejercisio1.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercisio1.java) | *Define a constant instead of duplicating literal "Aqua-Ranger 100"* | El nombre del modelo del drone se encontraba duplicado como literal en 4 líneas distintas. | Se extrajo la constante privada `private static final String MODELO_DRONE = "Aqua-Ranger 100";`. |
-| [Ejercisio1.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercisio1.java) | *Replace this use of System.out by a logger* | Impresiones directas por consola en el punto de entrada demostrativo. | Se reemplazó por el logger institucional de la clase registrando mensajes informativos. |
-| [Ejercicio03.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio03.java) | *Define a constant instead of duplicating literal "Embalse Norte"* | Literal de zona repetido 3 veces en la instanciación de misiones y drones. | Se definió la constante `private static final String EMBALSE_NORTE = "Embalse Norte";`. |
-| [Ejercicio03.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio03.java) | *Replace this use of System.out by a logger* | Emisión de logs por consola de misiones y excepciones capturadas. | Se migró a `Logger` con mensajes parametrizados y control de trazas. |
-| [Ejercicio04.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio04.java) | *Replace this use of System.out by a logger* | Salida estándar en la verificación de los principios SOLID. | Se reemplazó por `Logger` para el seguimiento del ciclo de vida de registro y consulta. |
-| [Ejercicio04.java](file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio04.java) | *Remove this unused import 'java.util.logging.Level'* | Declaración de import residual no utilizada tras la simplificación de mensajes. | Se retiró el import huérfano asegurando limpieza absoluta del código fuente. |
+| Componente                                                                                                                                                                    | Regla SonarQube Violada                                                | Causa Raíz / Por qué era un problema                                                                                                       | Solución Técnica Aplicada (Refactorización)                                                                                                      |
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Mision.java](<file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Mision.java>)                           | *Remove this unused "estadoMision" private field*                    | El campo en el Builder tenía un valor por defecto pero no era configurable ni se transfería al constructor, generando inconsistencia.      | Se agregó el método fluido`.estadoMision(EstadoMision)` en la API fluida del `Builder` y se asignó en el constructor de `Mision`.          |
+| [NotificadorOperador.java](<file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/NotificadorOperador.java>) | *Replace this use of System.out / System.err by a logger*            | El uso de salida estándar directa bloquea hilos, no permite configurar niveles de severidad ni redirigir trazas en entornos de producción. | Se integró`java.util.logging.Logger` con niveles estructurados `Level.INFO` para eventos ordinarios y `Level.SEVERE` para errores críticos. |
+| [Ejercisio1.java](<file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercisio1.java>)                   | *Define a constant instead of duplicating literal "Aqua-Ranger 100"* | El nombre del modelo del drone se encontraba duplicado como literal en 4 líneas distintas.                                                  | Se extrajo la constante privada`private static final String MODELO_DRONE = "Aqua-Ranger 100";`.                                                   |
+| [Ejercisio1.java](<file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercisio1.java>)                   | *Replace this use of System.out by a logger*                         | Impresiones directas por consola en el punto de entrada demostrativo.                                                                        | Se reemplazó por el logger institucional de la clase registrando mensajes informativos.                                                            |
+| [Ejercicio03.java](<file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio03.java>)                 | *Define a constant instead of duplicating literal "Embalse Norte"*   | Literal de zona repetido 3 veces en la instanciación de misiones y drones.                                                                  | Se definió la constante`private static final String EMBALSE_NORTE = "Embalse Norte";`.                                                           |
+| [Ejercicio03.java](<file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio03.java>)                 | *Replace this use of System.out by a logger*                         | Emisión de logs por consola de misiones y excepciones capturadas.                                                                           | Se migró a`Logger` con mensajes parametrizados y control de trazas.                                                                              |
+| [Ejercicio04.java](<file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio04.java>)                 | *Replace this use of System.out by a logger*                         | Salida estándar en la verificación de los principios SOLID.                                                                                | Se reemplazó por`Logger` para el seguimiento del ciclo de vida de registro y consulta.                                                           |
+| [Ejercicio04.java](<file:///c:/Users/José%20Alejandro/OneDrive/sexto_semestre/DOSW/Segundo_corte/DOSW_REFUERZO_PIPLUP/src/main/dosw/piplup/Ejercicio04.java>)                 | *Remove this unused import 'java.util.logging.Level'*                | Declaración de import residual no utilizada tras la simplificación de mensajes.                                                            | Se retiró el import huérfano asegurando limpieza absoluta del código fuente.                                                                     |
 
 ---
 
@@ -1485,6 +1490,7 @@ En este ejercicio se escala la flota de AquaPort a **15 drones acuáticos** dist
 #### 2. Las 5 Consultas con Streams Avanzados (`ConsultorFlotaPrinplup.java`)
 
 1. **Agrupar drones disponibles por tipo (`groupingBy`):**
+
    ```java
    public Map<TipoDrone, List<DroneAcuatico>> agruparDronesDisponiblesPorTipo(List<DroneAcuatico> drones) {
        return drones.stream()
@@ -1492,8 +1498,8 @@ En este ejercicio se escala la flota de AquaPort a **15 drones acuáticos** dist
                .collect(Collectors.groupingBy(DroneAcuatico::tipo));
    }
    ```
-
 2. **Obtener drone óptimo para una zona dada (mayor batería y tipo compatible):**
+
    ```java
    public Optional<DroneAcuatico> obtenerDroneOptimoParaZona(List<DroneAcuatico> drones, String zona) {
        return drones.stream()
@@ -1503,8 +1509,8 @@ En este ejercicio se escala la flota de AquaPort a **15 drones acuáticos** dist
                .max(Comparator.comparingInt(DroneAcuatico::bateria));
    }
    ```
-
 3. **Calcular el promedio de batería por tipo de drone (`averagingDouble`):**
+
    ```java
    public Map<TipoDrone, Double> calcularPromedioBateriaPorTipo(List<DroneAcuatico> drones) {
        return drones.stream()
@@ -1514,8 +1520,8 @@ En este ejercicio se escala la flota de AquaPort a **15 drones acuáticos** dist
                ));
    }
    ```
-
 4. **Separar misiones CRÍTICAS de las demás (`partitioningBy`):**
+
    ```java
    public Map<Boolean, List<Mision>> separarMisionesCriticas(List<Mision> misiones) {
        return misiones.stream()
@@ -1524,8 +1530,8 @@ En este ejercicio se escala la flota de AquaPort a **15 drones acuáticos** dist
                ));
    }
    ```
-
 5. **Listar todas las zonas únicas que cubre la flota activa (`distinct` + `sorted`):**
+
    ```java
    public List<String> listarZonasUnicasFlotaActiva(List<DroneAcuatico> drones) {
        return drones.stream()
@@ -1571,10 +1577,9 @@ System.out.println(consultor.listarZonasUnicasFlotaActiva(flota));
 **Captura de ejecución:**
 
 - **Parte 1 (Consultas 1 y 2 — Drones disponibles por tipo y Drone óptimo para Canal Central):**
-![ExecutionExercise01PrinplupPhasePart01.png](docs/images/ExecutionExercise01PrinplupPhasePart01.png)
-
+  ![ExecutionExercise01PrinplupPhasePart01.png](docs/images/ExecutionExercise01PrinplupPhasePart01.png)
 - **Parte 2 (Consultas 3, 4 y 5 — Promedio de batería por tipo, Partición de misiones críticas y Zonas únicas cubiertas):**
-![ExecutionExercise01PrinplupPhasePart02.png](docs/images/ExecutionExercise01PrinplupPhasePart02.png)
+  ![ExecutionExercise01PrinplupPhasePart02.png](docs/images/ExecutionExercise01PrinplupPhasePart02.png)
 
 ---
 
@@ -1586,6 +1591,45 @@ System.out.println(consultor.listarZonasUnicasFlotaActiva(flota));
 4. **`Collectors.partitioningBy`:** Caso especializado de particionamiento binario (`Map<Boolean, List<T>>`) que separa de forma eficiente las misiones con prioridad `CRITICA` (`true`) de las de prioridad regular (`false`).
 5. **Proyección, unicidad y ordenamiento:** Encadenamiento de `map(DroneAcuatico::zona)`, `distinct()` (basado en `hashCode/equals` de `String`) y `sorted()` para devolver una lista inmutable con los puntos de presencia activa.
 
+---
 
+### 🌿 Ejercicio 02: GitHub y GitFlow Completo para AquaPort v2
 
+#### 1. Enunciado y Objetivos del Reto
 
+> **🎯 Reto Prinplup — GitHub y GitFlow:**
+> Crea en tu repositorio las ramas de la v2 con GitFlow. Simula el flujo completo: 3 feature branches con sus PRs a `develop`, una rama `release/v2.0` con al menos un commit de ajuste, y el merge final a `main` con tag `v2.0.0`. Documenta el flujo en el README con un diagrama de ramas.
+
+El propósito de este ejercicio es implementar formalmente la metodología **GitFlow** para la evolución del sistema hacia **AquaPort v2**, garantizando la estabilidad de producción (`main`), la integración continua ordenada (`develop`), el aislamiento modular de funcionalidades especializadas (`feature/*`), la estabilización y ajuste pre-lanzamiento (`release/*`), y la capacidad de reacción ante anomalías críticas en producción (`hotfix/*`).
+
+---
+
+#### 2. Diagrama de Ramas GitFlow (Versión 2.0)
+
+A continuación se presenta el diagrama completo del ciclo de ramificación ejecutado en el repositorio, modelando la interacción entre ramas, Pull Requests, commits de ajuste y etiquetado semántico:
+
+![DiagramBranches.png](docs/images/DiagramBranches.png)
+
+---
+
+#### 3. Trazabilidad de Ramas, Pull Requests y Commits
+
+Todas las integraciones se realizaron estrictamente mediante **Pull Requests en GitHub**, siguiendo políticas de revisión, integración continua y trazabilidad académica:
+
+| Rama | Rama Base | Pull Request en GitHub | Commit Hash / Referencia | Propósito y Cambios Realizados |
+| :--- | :--- | :--- | :--- | :--- |
+| `feature/asignacion-automatica` | `develop` | [**PR #3: feature/asignacion-automatica**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/3) | `5b937c8` | Implementación de la estrategia de selección autónoma de drones (`EstrategiaSeleccion`, `MayorBateriaStrategy`). |
+| `feature/alertas-centro-control` | `develop` | [**PR #4: feature/alertas-centro-control**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/4) | `4cf6045` | Implementación del patrón Observer (`ObservadorMision`, `CentroControlObserver`, `TecnicoMantenimientoObserver`, `NotificadorAlertas`) y tests con Mockito. |
+| `feature/factory-drones` | `develop` | [**PR #5: feature/factory-drones**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/5) | `959fca3` | Implementación del patrón Factory Method (`FabricaDrones`) y subclases especializadas (`DroneSuperficial`, `DroneSemisumergido`, `DroneBuceador`). |
+| `release/v2.0` | `main` | [**PR #6: release/v2.0**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/6) | `5f1d79f` / `26146d8` | Preparación de lanzamiento v2.0.0: commit de ajuste actualizando versión oficial en `pom.xml` a `2.0.0`. Merge a `main` con [**tag v2.0.0**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/releases/tag/v2.0.0). |
+| `hotfix/fix-bateria-critica` | `main` | [**PR #7: hotfix/fix-bateria-critica**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/pull/7) | `1783cbb` / `f6a2a03` | Corrección crítica de producción: se implementó el umbral de seguridad operacional `UMBRAL_BATERIA_MINIMA = 20%` en la selección para evitar varamientos, bump a versión `2.0.1` y [**tag v2.0.1**](https://github.com/JoseMartinez883/DOSW_REFUERZO_PIPLUP/releases/tag/v2.0.1). |
+
+---
+
+#### 4. Justificación y Políticas de la Estrategia GitFlow
+
+1. **Aislamiento Funcional (`feature/*`):** Ningún desarrollo se realizó directamente sobre `develop` o `main`. Cada una de las 3 características principales de la v2 se implementó en su propia rama aislada, garantizando que el código en desarrollo no bloquee el trabajo paralelo ni introduzca regresiones.
+2. **Puerta de Calidad vía Pull Requests:** Todas las incorporaciones a `develop` requirieron la apertura de un Pull Request con revisión de cambios, ejecución de la suite de pruebas unitarias y análisis de cobertura JaCoCo (garantizando 0 fallos).
+3. **Estabilización de Release (`release/v2.0`):** Al finalizar las 3 features planificadas para la v2, se bifurcó una rama de release dedicada donde únicamente se efectuaron tareas de empaquetado y ajuste de versión (`2.0.0` en `pom.xml`), protegiendo `main` de código inestable y liberando `develop` para futuros sprints.
+4. **Etiquetado Semántico Oficial (`v2.0.0`):** Una vez aprobado el PR #6 hacia `main`, se generó el tag anotado `v2.0.0`, constituyendo el hito formal de entrega de la flota autónoma con alertas y patrones de diseño.
+5. **Ciclo de Hotfix Operativo (`hotfix/fix-bateria-critica`):** Permitió subsanar de emergencia una regla de seguridad de batería sobre producción sin tener que esperar un nuevo ciclo de desarrollo, incorporando la solución de inmediato a `main` (tag `v2.0.1`) y retroalimentándola a `develop` para mantener sincronizados todos los entornos.
