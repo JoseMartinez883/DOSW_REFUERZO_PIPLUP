@@ -861,3 +861,112 @@ Se evaluó exhaustivamente la interfaz del panel de monitoreo frente a los 10 pr
 | **#9** | **Ayudar a reconocer, diagnosticar y recuperarse de errores** | **Cumple** | En lugar de alertas genéricas, los mensajes son precisos y orientados a la solución: para `AR-03` se indica el porcentaje actual y la cota mínima requerida; para `AR-04` el banner diagnostica la hora de desconexión y orienta al operador sobre el punto exacto donde inspeccionar el dispositivo. |
 | **#10** | **Ayuda y documentación** | *No aplica aquí* | El panel de control está diseñado para ser autoexplicativo para personal técnico sin manuales contextuales intrusivos. La documentación de diseño y lineamientos se centralizan en el [Manual de Identidad HTML](docs/mockups/AquaPort_Manual_de_Identidad.html). |
 
+---
+
+### Ejercicio 09 — Agilismo y Jira (AquaPort MVP)
+
+En concordancia con los estándares de gestión ágil de la asignatura (**`sprint2-dosw-proyectos.html`** y **`DOSW_Equipo_Piplup.html`**), el desarrollo del MVP de AquaPort se organizó formalmente en Jira aplicando la jerarquía ágil completa:  
+**`Épica` ➔ `Features` (incluyendo contrato Swagger/OpenAPI) ➔ `Historias de Usuario (HU)` ➔ `Subtareas Técnicas por capas de software`**, aplicando estimación con Planning Poker (Fibonacci) y la regla estricta de **Definition of Done (DoD) con evidencia**.
+
+> 🌐 **Enlace directo al Proyecto y Backlog en Jira:**  
+> 👉 [**Abrir Proyecto AquaPort en Atlassian Jira (Tablero AQUA)**](https://josealejandromartinezarias9.atlassian.net/jira/software/projects/AQUA/summary?atlOrigin=eyJpIjoiN2JlNGY5ZTE1OWIxNGMwNjljOGQ1M2VkN2I1OGVjN2QiLCJwIjoiaiJ9)
+
+---
+
+#### 1. Vista General del Backlog en Jira
+
+El backlog de AquaPort consolida la Épica, las Features funcionales y de documentación, junto con las 3 Historias de Usuario priorizadas, sumando un total estimado de **23 Story Points**:
+
+![Backlog General en Jira](docs/images/JiraGeneral.png)
+
+| Clave | Tipo | Resumen / Ítem | Épica / Padre | Estimación | Estado |
+| :---: | :---: | :--- | :---: | :---: | :---: |
+| **AQUA-1** | `Epic` | Digitalizar el monitoreo y reparto hídrico de la ECI... | — | — | Por hacer |
+| **AQUA-2** | `Feature` | FEAT-01: Gestión de la flota de drones acuáticos del campus | AQUA-1 | — | Por hacer |
+| **AQUA-3** | `Feature` | FEAT-02: Documentación y contratos de API con Swagger / OpenAPI | AQUA-1 | — | Por hacer |
+| **AQUA-4** | `Story` | HU-01: Consulta de estado y telemetría de la flota acuática | FEAT-01 | **5 pts** | Por hacer |
+| **AQUA-5** | `Story` | HU-02: Asignación manual de drone a misión de transporte | FEAT-01 | **13 pts** | Por hacer |
+| **AQUA-6** | `Story` | HU-03: Cancelación de misión en estado pendiente | FEAT-01 | **5 pts** | Por hacer |
+
+---
+
+#### 2. Épica del MVP (AQUA-1)
+
+* **Resumen:** `Digitalizar el monitoreo y reparto hídrico de la ECI mediante una flota de drones acuáticos supervisada`
+* **Descripción:** Desarrollar la plataforma central MVP (AquaPort - Fase Piplup) que permita la coordinación, despacho, monitoreo de telemetría y supervisión de una flota de drones acuáticos encargados de transportar muestras hídricas y sensores entre los diferentes cuerpos de agua del campus de la Escuela Colombiana de Ingeniería Julio Garavito (Embalse Norte, Canal Central, Laguna Sur, Punto Ribereño Este y Laboratorio Hídrico).
+
+![Épica en Jira](docs/images/JiraEpica.png)
+
+---
+
+#### 3. Features del Sistema
+
+##### A. FEAT-01: Gestión de la flota de drones acuáticos del campus (AQUA-2)
+Módulo funcional de supervisión y control operativo que permite consultar el inventario y estado de carga de la flota, asignar unidades a misiones de transporte hídrico y gestionar el ciclo de despacho básico para el Operador Hídrico.
+
+![Feature 01 en Jira](docs/images/JiraFeat01.png)
+
+##### B. FEAT-02: Documentación y contratos de API con Swagger / OpenAPI (AQUA-3)
+Definición y publicación interactiva de los contratos de API REST mediante interfaces OpenAPI (SpringDoc) separadas por controlador, garantizando el contrato de integración formal entre frontend y backend conforme a las directrices de la guía de proyectos.
+
+![Feature 02 en Jira](docs/images/JiraFeat02.png)
+
+---
+
+#### 4. Historias de Usuario (User Stories)
+
+> **Criterio de Calidad DOSW:** Todas las historias se encuentran redactadas bajo la plantilla formal *`Como [rol], quiero [qué], para [beneficio]`*, utilizando exclusivamente roles humanos del dominio (`Operador Hídrico`) y evitando designar al "Sistema" como actor.
+
+##### 📋 HU-01: Consulta de estado y telemetría de la flota acuática (AQUA-4 · 5 pts)
+* **Narrativa:**  
+  *Como* Operador Hídrico,  
+  *quiero* visualizar la lista de drones de la flota con su identificador, nivel de batería, estado actual y zona asignada,  
+  *para* evaluar la disponibilidad operativa de las unidades antes de despachar una nueva misión de transporte.
+* **Criterios de Aceptación:**
+  1. El sistema clasifica visualmente el estado de cada unidad entre DISPONIBLE, EN_MISION, RECARGANDO, MANTENIMIENTO y FALLO.
+  2. Los drones con batería < 35% se presentan claramente como no aptos para despacho.
+  3. La consulta se procesa en menos de 200 ms para la flota activa (RNF-01).
+
+![HU 01 en Jira](docs/images/JiraHU01.png)
+
+---
+
+##### 📋 HU-02: Asignación manual de drone a misión de transporte (AQUA-5 · 13 pts)
+* **Narrativa:**  
+  *Como* Operador Hídrico,  
+  *quiero* asignar manualmente un drone disponible a una solicitud de misión especificando puntos de partida, llegada y tipo de carga,  
+  *para* despachar oportunamente el transporte de muestras de agua o sensores en los cuerpos hídricos del campus.
+* **Criterios de Aceptación (Formato Gherkin / BDD):**
+  - **Escenario 1 (Asignación válida):** Dado que el Operador Hídrico selecciona un drone registrado y en estado "DISPONIBLE" con batería $\ge 35\%$, cuando confirma el registro de la misión con datos válidos, entonces el sistema crea la instancia inmutable de la Misión con un ID alfanumérico único y actualiza el drone a "EN_MISION".
+  - **Escenario 2 (Rechazo por RN-01 / RN-02):** Dado que el Operador Hídrico intenta asignar un drone con batería < 35% o en estado diferente a "DISPONIBLE", cuando solicita el registro, entonces el sistema rechaza la operación notificando el motivo en pantalla con la batería actual y la cota mínima requerida (35%).
+
+![HU 02 en Jira](docs/images/JiraHU02.png)
+
+###### Descomposición en Subtareas Técnicas por Capas (AQUA-7 a AQUA-12):
+Siguiendo el template arquitectónico oficial (`Entidades` ➔ `DTOs` ➔ `Validator` ➔ `Service` ➔ `Controller` ➔ `Pruebas`), la HU-02 desglosa sus tareas técnicas con su respectiva Definition of Done (DoD) y evidencia requerida para su cierre:
+
+![Subtareas Técnicas en Jira](docs/images/JiraSubTaks.png)
+
+| Clave | Subtarea Técnica | Capa Arquitectónica | Estimación | Criterio de Aceptación / Done (DoD) |
+| :---: | :--- | :---: | :---: | :--- |
+| **AQUA-7** | `SUB-01: Entidades y records de dominio` | Dominio Puro | 2 pts | Clases inmutables `Mision` (con Builder) y `DroneAcuatico` en `model.domain`, compilando sin anotaciones de persistencia ni DTOs. |
+| **AQUA-8** | `SUB-02: Request y Response DTOs con Bean Validation` | DTOs | 1 pt | `MisionRequestDTO` con validaciones de campos no nulos/no vacíos y `MisionResponseDTO` para la respuesta al cliente. |
+| **AQUA-9** | `SUB-03: Implementar ValidadorMision con reglas de negocio` | Validación | 2 pts | `ValidadorMision` verificando batería $\ge 35\%$, estado `DISPONIBLE` y locaciones no vacías, arrojando excepciones tipadas. |
+| **AQUA-10** | `SUB-04: Service de asignación con Streams y RegistradorMisiones` | Servicio / Negocio | 3 pts | Lógica desacoplada en `IMisionService` orquestando validador y persistencia en memoria, sin retornar DTOs directamente. |
+| **AQUA-11** | `SUB-05: Controller REST y documentación Swagger OpenAPI` | Presentación / Docs | 2 pts | Interfaz `MisionApi` con anotaciones OpenAPI y `MisionController` con endpoint `POST /api/v1/misiones` retornando HTTP 201. |
+| **AQUA-12** | `SUB-06: Pruebas unitarias con JUnit 5 y patrón AAA` | Pruebas Unitarias | 3 pts | Suite `ValidadorMisionTest` y `MisionServiceImplTest` con `@DisplayName` cubriendo casos positivos y negativos con JaCoCo $\ge 80\%$. |
+
+---
+
+##### 📋 HU-03: Cancelación de misión en estado pendiente (AQUA-6 · 5 pts)
+* **Narrativa:**  
+  *Como* Operador Hídrico,  
+  *quiero* cancelar una misión de transporte que se encuentre en estado pendiente antes del inicio de navegación,  
+  *para* liberar el drone asignado en caso de imprevistos ambientales o errores en la solicitud.
+* **Criterios de Aceptación:**
+  1. Solo se permite cancelar misiones en estado `PENDIENTE`. Si el drone ya está navegando (`EN_MISION`), el sistema rechaza la cancelación con código HTTP 422.
+  2. Al confirmarse la cancelación, el drone retorna su estado inmediatamente a `DISPONIBLE`.
+
+![HU 03 en Jira](docs/images/JiraHU03.png)
+
+
