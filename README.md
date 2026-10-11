@@ -2207,6 +2207,87 @@ En cumplimiento con el estándar formal de ingeniería de software de la Escuela
 
 #### 9. HISTORIAL DE REVISIÓN
 
-| Elaborado por                           | Aprobado por                            |        Fecha        |    Versión    | Descripción y Justificación del Cambio                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| :-------------------------------------- | :-------------------------------------- | :------------------: | :-------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Jose Alejandro Martinez Arias** | **Jose Alejandro Martinez Arias** | **11/10/2026** | **2.0.0** | **Evolución completa del requerimiento para la Fase Prinplup (AquaPort v2):** Se introducen tipos anidados y sub-objetos para la carga (`carga.peso`, `carga.tipo`, `carga.prioridad`) y el dron asignado (`droneAsignado.id`, `droneAsignado.tipo`, `droneAsignado.bateria`), integración con la API de Condiciones Hídricas, ciclo básico en 7 pasos, gestión de 4 flujos alternos y 7 reglas de negocio basadas en el comportamiento de los 3 tipos de drones. |
+
+---
+
+### Ejercicio 08 — Sistema de Diseño de AquaPort v2 y Leyes UX aplicadas
+
+En este ejercicio se diseña e implementa el **Sistema de Diseño visual e interactivo de AquaPort v2 (Fase Prinplup)**, orientado a consolas de monitoreo continuo en modo oscuro de baja fatiga visual. Se modelan formalmente los componentes clave del sistema con todos sus estados semánticos, se diseña el flujo completo de asignación en 3 pantallas interactivas y se documenta la aplicación práctica de las **Leyes de Fitts, Hick y Miller**.
+
+> 🌐 **Prototipo Interactivo del Sistema de Diseño v2:**  
+> 👉 [**Abrir AquaPort v2 — Sistema de Diseño y Mockup Interactivo (`docs/mockups/AquaPort_v2_Sistema_Diseno.html`)**](docs/mockups/AquaPort_v2_Sistema_Diseno.html)
+
+---
+
+#### 1. Componente: Tarjeta de Drone Acuático (6 Estados Semánticos)
+
+La tarjeta de dron es el componente nuclear del panel de control. Para garantizar accesibilidad y rápida diferenciación cognitiva sin depender únicamente del color, cada estado incorpora **borde cromático temático, badge estandarizado, icono y microcopia técnica explicativa**:
+
+![Tarjeta de Drone Acuático - 6 Estados](docs/images/AquaPort_v2_Cards_States.png)
+
+##### Especificación de los 6 Estados de la Tarjeta:
+
+| Estado | Color Semántico | Icono / Forma | Comportamiento e Información Visual | Criterio de Uso Operacional |
+| :--- | :---: | :---: | :--- | :--- |
+| **1. Disponible** | Verde Esmeralda (`#3FBF8A`) | `●` Círculo lleno | Muestra batería (`>= 35%`), ubicación actual y capacidad de carga útil. Incluye el botón interactivo *"Seleccionar Drone"*. | Unidad lista para recibir asignaciones automáticas de misión. |
+| **2. En Misión** | Azul Cielo (`#4C9BE8`) | `▶` Flecha de avance | Muestra la ruta de navegación activa (ej. `Canal Central ➔ Lab`), telemetría en tiempo real y el tiempo estimado de arribo (ETA). | Unidad en tránsito por los canales o cuerpos hídricos del campus. |
+| **3. Recargando** | Amarillo Ámbar (`#E5B33A`) | `⚡` Rayo | Muestra el muelle de recarga asignado, la tasa de recarga y el tiempo restante para alcanzar el 100%. Botón deshabilitado. | Unidad conectada a la estación de carga; no disponible para despacho. |
+| **4. Mantenimiento** | Gris Neutro (`#8A979C`) | `◇` Rombo | Tarjeta con opacidad reducida (85%), indicando el taller técnico y la causa de la revisión preventiva o correctiva. | Fuera de servicio por calibración de propulsores o sensores. |
+| **5. Fallo Crítico** | Rojo Carmesí (`#E5604F`) | `▲` Triángulo de alerta | Fondo con matiz de advertencia, código de incidencia (`ERROR #F-88`), batería crítica y botón destacado para despachar asistencia técnica. | Unidad en emergencia; se emite orden automática al Técnico de Mantenimiento. |
+| **6. Sumergido** | Azul Profundo (`#257DA3`) | `≋` Olas de inmersión | Estado exclusivo del `DroneBuceador`: muestra la profundidad activa bajo el espejo de agua (ej. `4.2 m`) y enlace acústico por sonar. | Unidad ejecutando muestreo bentónico o telemetría subacuática. |
+
+---
+
+#### 2. Componentes: Botón "Asignar Misión" (5 Estados) e Indicador de Batería (3 Rangos)
+
+![Botón Asignar Misión e Indicador de Batería](docs/images/AquaPort_v2_Buttons_Battery.png)
+
+##### A. Botón "Asignar Misión" (Call to Action — 5 Estados Interactivos):
+1. **Default:** Fondo color marea institucional (`#1B7F8C`), borde sólido, tipografía semibold de alta legibilidad y cursor pointer.
+2. **Hover / Foco:** Elevación sutil (`translateY(-2px)`), resplandor cian sonar (`#7FD8C9`) con sombra difusa para indicar interactividad activa.
+3. **Procesando (Spinner):** Fondo atenuado (`#145963`), cursor en espera (`wait`), texto *"Asignando..."* y spinner SVG con animación de rotación continua a 360°.
+4. **Éxito Confirmado:** Fondo verde esmeralda (`#3FBF8A`), texto en alto contraste oscuro y checkmark (`✓ ¡Misión Asignada!`) como retroalimentación positiva inmediata.
+5. **Deshabilitado:** Fondo transparente, borde discontinuo tenue (`#2C5563`), opacidad al 60% y cursor no permitido (`not-allowed`) ante precondiciones insatisfechas.
+
+##### B. Indicador de Batería (3 Rangos Semánticos de Seguridad):
+- **Rango Seguro (`>= 60%`):** Barra en verde esmeralda (`#3FBF8A`). Autonomía plena, apto para misiones de larga distancia y prioridad `CRITICA` sin restricciones.
+- **Rango Operativo (`35% - 59%`):** Barra en amarillo ámbar (`#E5B33A`). Nivel adecuado para misiones regulares de corto y mediano alcance dentro de la misma zona.
+- **Rango Crítico (`< 35%`):** Barra en rojo carmesí (`#E5604F`) con advertencia textual destacada. Bloqueo automático de asignación y retorno forzoso a estación de recarga.
+
+---
+
+#### 3. Flujo Completo de Asignación Automática (3 Pantallas)
+
+El flujo de usuario modela el ciclo de vida de una asignación autónoma asistida por el operador hídrico, garantizando claridad en cada transición:
+
+![Flujo Completo de Asignación Automática](docs/images/AquaPort_v2_Flow_Screens.png)
+
+##### Las 3 Pantallas del Flujo:
+1. **Pantalla 1 — Panel de Control de la Flota (15 Drones):**  
+   Vista panorámica de la flota activa clasificada por tipologías físicas. Permite al operador consultar la disponibilidad global, filtrar por escuadrillas (5 superficiales, 5 semisumergidos, 5 buceadores) y activar una nueva misión o la parada de emergencia.
+2. **Pantalla 2 — Detalle de Misión y Validación Ambiental:**  
+   Formulario de captura con los campos de zona de destino y sub-objeto de carga (peso, tipo, prioridad). Se presenta un panel en tiempo real conectado a la **API Condiciones Hídricas** que evalúa el oleaje (ej. *Agitado Nivel 3/5*, corriente de *1.4 m/s*), recomendando automáticamente el dron óptimo (`AR-06 Semisumergido`) con base en el patrón *Strategy*.
+3. **Pantalla 3 — Confirmación y Despacho:**  
+   Tarjeta central de confirmación con checkmark animado, asignación del código único de seguimiento (`MIS-201-V2`), dron vinculado, ruta autorizada, tiempo estimado de navegación y notificación confirmada hacia el Centro de Control.
+
+---
+
+#### 4. Leyes de Experiencia de Usuario (UX) Rigurosamente Aplicadas
+
+##### A. Ley de Fitts (Ergonomía de Acción Rápida y Fitts's Law)
+> *"El tiempo requerido para alcanzar rápidamente un objetivo es una función de la distancia al objetivo y del tamaño del objetivo."*
+
+- **Botón de Parada de Emergencia:** Ubicado en la esquina superior derecha de la interfaz (un anclaje visual perimetral de rápido alcance), cuenta con dimensiones generosas (**48 px de altura y 220 px de ancho**), tipografía en negrita y color rojo carmesí con resplandor pulsante. Esto permite que el operador lo presione de forma refleja ante cualquier contingencia sin requerir puntería milimétrica.
+- **Botones de Acción Primaria:** Los botones de selección en cada tarjeta ocupan el **100% del ancho del contenedor**, maximizando el área táctil e interactiva para acelerar el despacho.
+
+##### B. Ley de Hick (Minimización del Tiempo de Decisión y Hick's Law)
+> *"El tiempo que toma una persona tomar una decisión aumenta logarítmicamente conforme se incrementa el número y la complejidad de las opciones disponibles."*
+
+- **Agrupación Semántica de 15 Drones:** Si los 15 drones se mostraran en una sola lista lineal y desordenada, el tiempo de búsqueda y selección del operador crecería de forma desproporcionada. El diseño implementa **pestañas y filtros por tipología física** (`Superficial`, `Semisumergido`, `Buceador`), reduciendo las opciones activas simultáneas de 15 a únicamente **5 alternativas por pantalla**, acortando drásticamente el tiempo de decisión.
+
+##### C. Ley de Miller (Control de la Carga Cognitiva y Chunking)
+> *"La memoria de trabajo de una persona promedio puede retener entre 5 y 9 fragmentos de información (el número mágico 7 ± 2)."*
+
+- **Estructura en Bloques de 5 Unidades:** La flota total de 15 drones fue deliberadamente fragmentada en **3 escuadrillas de exactamente 5 drones** cada una. Al situar cada bloque dentro del límite inferior de Miller (5 ítems), el operador puede retener mentalmente el estado de cada escuadrilla, realizar escaneos visuales sin fatiga cognitiva y detectar anomalías en fracciones de segundo.
+
