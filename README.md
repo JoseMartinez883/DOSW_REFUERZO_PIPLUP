@@ -969,4 +969,52 @@ Siguiendo el template arquitectónico oficial (`Entidades` ➔ `DTOs` ➔ `Valid
 
 ![HU 03 en Jira](docs/images/JiraHU03.png)
 
+---
+
+### Ejercicio 10 — Diagramas de Casos de Uso (AquaPort MVP)
+
+En cumplimiento con los lineamientos formales de modelado de software de DOSW (**`DOSW_Equipo_Piplup.html`**), se diseñó el **Diagrama de Casos de Uso UML** para el requerimiento funcional principal de la fase Piplup (**`RF-01: Registrar misión de transporte`**), modelando la interacción con el sistema central `AquaPort` y formalizando las relaciones de inclusión obligatoria (`<<include>>`) y extensión condicional (`<<extend>>`).
+
+#### 1. Diagrama de Casos de Uso del MVP
+
+![Diagrama de Casos de Uso de AquaPort](docs/uml/DiagramCaseUse.png)
+
+---
+
+#### 2. Elementos del Diagrama
+
+##### A. Límite del Sistema
+* **Contenedor:** `AquaPort — Sistema Central MVP`. Delimita con precisión la frontera del software; todos los casos de uso (elipses) residen en su interior, mientras que los actores interactúan desde el exterior.
+
+##### B. Actores (Roles Humanos del Dominio)
+Conforme a las reglas de calidad de la asignatura, se modelan roles humanos funcionales y **nunca se utiliza "Sistema" como actor**:
+1. **Operador Hídrico (Actor Principal):** Usuario técnico que opera la pantalla de monitoreo, consulta la telemetría en tiempo real, asigna drones a misiones de despacho y gestiona cancelaciones.
+2. **Solicitante (Actor Secundario):** Investigador, docente o laboratorista del campus que genera solicitudes de transporte para muestras hídricas o sensores (`RF-02`).
+3. **Administrador ECI (Actor de Supervisión):** Personal institucional que audita el estado general de los activos, revisa métricas operativas y supervisa el inventario de la flota (`RF-03`).
+
+---
+
+#### 3. Casos de Uso y Especificación de Relaciones
+
+| Código | Caso de Uso | Actor Primario | Tipo / Relación | Regla / Condición |
+| :---: | :--- | :---: | :---: | :--- |
+| **CU-01** | **Registrar misión de transporte (RF-01)** | Operador Hídrico | Caso Base Principal | Permite formalizar un despacho fluvial acoplando drone, origen, destino y carga. |
+| **CU-02** | **Consultar estado y telemetría de flota** | Operador Hídrico / Admin | Caso de Consulta | Lectura en tiempo real de batería, zona y estado de los drones. |
+| **CU-03** | **Cancelar misión pendiente** | Operador Hídrico | Gestión de Ciclo | Aborta misiones que aún no han iniciado su navegación activa. |
+| **CU-04** | **Solicitar transporte de muestra/sensor (RF-02)** | Solicitante | Caso de Entrada | Ingreso del requerimiento de transporte por parte del solicitante. |
+| **CU-05** | **Supervisar inventario de flota y auditoría (RF-03)** | Administrador ECI | Caso de Control | Monitoreo administrativo de disponibilidad y registro de activos. |
+| **CU-06** | **Validar disponibilidad y batería del drone** | Sistema Interno | **`<<include>>`** | **Obligatorio:** Se ejecuta SIEMPRE que se invoca `CU-01`. Sin verificar que el drone esté `DISPONIBLE` y con batería $\ge 35\%$, no se puede registrar la misión. |
+| **CU-07** | **Alertar batería crítica** | Sistema Interno | **`<<extend>>`** | **Condicional:** `[si batería del drone < 40%]`. Advierte preventivamente al operador antes del despacho. |
+| **CU-08** | **Notificar rechazo de asignación** | Sistema Interno | **`<<extend>>`** | **Condicional:** `[si batería < 35% o drone ocupado]`. Interrumpe la operación informando el motivo técnico exacto (RN-01 / RN-02). |
+
+---
+
+#### 4. Justificación de Buenas Prácticas UML Aplicadas
+
+1. **Diferenciación estricta entre `<<include>>` y `<<extend>>`:**
+   - **`<<include>>` (Sin condición):** La validación de disponibilidad y batería (`CU-06`) es una precondición ineludible. El caso base `CU-01` no puede completarse con éxito sin la ejecución de `CU-06`.
+   - **`<<extend>>` (Condicional con regla explícita):** Tanto la alerta de batería crítica (`CU-07`) como la notificación de rechazo (`CU-08`) solo ocurren si se cumplen condiciones operativas específicas (`batería < 40%` o `batería < 35% / no disponible`). Si la condición no se cumple, el caso base procede normalmente sin ejecutar la extensión.
+2. **Dirección formal de las relaciones:** En UML estándar, las flechas de `<<include>>` nacen en el caso base hacia el caso incluido, mientras que las de `<<extend>>` nacen en el caso de extensión y apuntan hacia el caso base que modifican o enriquecen.
+
+
 
