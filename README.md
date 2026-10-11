@@ -1016,5 +1016,84 @@ Conforme a las reglas de calidad de la asignatura, se modelan roles humanos func
    - **`<<extend>>` (Condicional con regla explícita):** Tanto la alerta de batería crítica (`CU-07`) como la notificación de rechazo (`CU-08`) solo ocurren si se cumplen condiciones operativas específicas (`batería < 40%` o `batería < 35% / no disponible`). Si la condición no se cumple, el caso base procede normalmente sin ejecutar la extensión.
 2. **Dirección formal de las relaciones:** En UML estándar, las flechas de `<<include>>` nacen en el caso base hacia el caso incluido, mientras que las de `<<extend>>` nacen en el caso de extensión y apuntan hacia el caso base que modifican o enriquecen.
 
+---
+
+### Ejercicio 11 — Mocks con IA: Los 3 Estados del Panel (AquaPort MVP)
+
+En cumplimiento con el proceso metodológico de diseño de interfaces guiado por IA (**Referencias ➔ Identidad de Marca ➔ Datos del RF ➔ Prompt Estructurado**), se generaron las pantallas para los **tres estados operacionales fundamentales** del centro de monitoreo de AquaPort, asegurando coherencia visual absoluta con la paleta de identidad corporativa (`Abisal #0A1C26`, `Casco #12303D`, `Marea #1B7F8C`, `Sonar #7FD8C9`) y verificando las heurísticas de usabilidad de Jakob Nielsen.
+
+#### 1. Prompt Estructurado Utilizado para la Generación con IA
+
+Siguiendo la plantilla formal del reto, se utilizó el siguiente prompt base parametrizado para cada estado:
+
+```text
+Actúa como diseñador UX/UI senior de sistemas de monitoreo ambiental y marítimo.
+SISTEMA: AquaPort — Panel de control de flota de drones acuáticos ECI (Escuela Colombiana de Ingeniería).
+PANTALLA: Panel de monitoreo de la flota (vista principal del Operador Hídrico).
+IDENTIDAD VISUAL: Paleta institucional modo oscuro: Fondo Abisal (#0A1C26), tarjetas Casco (#12303D), 
+                  primario Marea (#1B7F8C), acento Sonar (#7FD8C9), texto Bruma (#E4EDEC). 
+                  Tipografía IBM Plex Sans para interfaz y IBM Plex Mono para telemetría.
+ACTOR: Operador Hídrico — requiere evaluar la capacidad operativa de un vistazo para despachar misiones.
+DATOS POR DRONE: ID (AR-XX), nivel de batería (barra + %), estado (DISPONIBLE / EN_MISION / RECARGANDO / FALLO),
+                 zona actual del campus (Embalse Norte, Canal Central, Laguna Sur, Punto Ribereño Este, Laboratorio Hídrico).
+ACCIONES: Botón 'Asignar misión' (cyan primario), 'Ver misión' (secundario outline), 'Ver detalle' (en fallo).
+COMPONENTES ADICIONALES: Radar topográfico/batimétrico circular del campus en panel derecho, barra de resumen superior con contadores y pie con timestamp de actualización.
+ESTADO A GENERAR: [Normal | Alerta | Vacío]
+HEURÍSTICAS NIELSEN: Visibilidad del estado (#1), Prevención de errores (#5), Diseño minimalista (#8), Ayuda ante errores (#9).
+```
+
+---
+
+#### 2. Pantallas de los 3 Estados Operacionales
+
+##### A. Estado Normal (Operación Estable de la Flota)
+* **Escenario:** Flota con disponibilidad regular, sin fallos técnicos activos ni alertas rojas bloqueantes. Permite el despacho ágil e inmediato de misiones con drones en óptimo nivel de carga.
+* **Métricas en Pantalla:** `2 disponible`, `1 en misión`, `1 recargando`, `0 fallo`.
+
+![Estado Normal - Panel de Flota AquaPort](docs/images/AquaPort_Panel_Normal.png)
+
+* **Heurísticas de Nielsen Aplicadas:**
+  - **#1 Visibilidad del estado del sistema:** El operador constata inmediatamente qué unidades están listas (`AR-01` al 88% y `AR-03` al 92%), qué unidad está en tránsito (`AR-02`) y cuál está recargando en estación (`AR-04`).
+  - **#8 Diseño estético y minimalista:** Sin banners de advertencia innecesarios; la jerarquía prioriza los datos de telemetría y la acción primaria destacada en color Marea/Sonar.
+
+---
+
+##### B. Estado Alerta (Incidencia Crítica y Diagnóstico de Fallo)
+* **Escenario:** Anomalía de telemetría detectada en una unidad (`AR-04` en estado `FALLO`), coexistiendo con una unidad en recarga crítica (`AR-03` al 18%).
+* **Métricas en Pantalla:** `1 disponible`, `1 en misión`, `1 recargando`, `1 fallo`.
+
+![Estado Alerta - Panel de Flota AquaPort](docs/images/AquaPort_Panel_Alerta.png)
+
+* **Heurísticas de Nielsen Aplicadas:**
+  - **#1 Visibilidad del estado:** Banner rojo coral superior con mensaje de pérdida de señal desde las `10:42` y punto geográfico de revisión (`Punto Ribereño Este`).
+  - **#5 Prevención de errores:** `AR-03` (18% batería) y `AR-04` (en fallo) tienen bloqueada la acción de asignación, imposibilitando el despacho accidental de unidades no aptas.
+  - **#9 Ayudar a reconocer, diagnosticar y recuperarse de errores:** El banner diagnostica la hora exacta del fallo y la ubicación de inspección, mientras que la tarjeta de `AR-03` informa explícitamente: *"Batería insuficiente (18%). Mínimo requerido: 35%"*.
+
+---
+
+##### C. Estado Vacío / Empty State (Sin Unidades Disponibles para Asignación)
+* **Escenario:** Todos los drones se encuentran ocupados en navegación activa o en ciclo de carga (`0 disponibles`). El operador no puede despachar misiones de inmediato pero debe conocer cuándo se liberará el próximo recurso.
+* **Métricas en Pantalla:** `0 disponible`, `3 en misión`, `1 recargando`, `0 fallo`.
+
+![Estado Vacío - Panel de Flota AquaPort](docs/images/AquaPort_Panel_Vacio.png)
+
+* **Heurísticas de Nielsen Aplicadas:**
+  - **#1 Visibilidad del estado:** Notificación horizontal en Sonar/Ámbar indicando con transparencia que no hay unidades libres pero informando la solución: *"Próxima unidad estimada: AR-04 (disponible en 12 min en Laboratorio Hídrico)"*.
+  - **#5 Prevención de errores:** Todos los botones de despacho se encuentran deshabilitados ("En tránsito" / "Sin acción"), evitando clics inútiles o envíos frustrados.
+  - **#6 Reconocimiento antes que recuerdo:** El operador ve en el radar las trayectorias activas y los tiempos estimados de cada misión sin tener que memorizar las horas de despacho previas.
+
+---
+
+#### 3. Matriz Comparativa de Heurísticas de Nielsen por Estado
+
+| Heurística de Nielsen | Estado Normal | Estado Alerta | Estado Vacío (Empty State) |
+| :--- | :---: | :---: | :---: |
+| **#1 Visibilidad del estado** | Contadores verdes y radar despejado | Banner superior rojo con hora y zona de corte | Banner informativo con conteo `0 disponible` |
+| **#2 Concordancia con el mundo real** | Terminología fluvial y nombres de campus | Nombres de zonas de inspección técnica | Tiempos de espera en minutos comprensibles |
+| **#5 Prevención de errores** | Botón activo solo en drones $\ge 35\%$ | Deshabilitación visual al 55% de unidades no aptas | Todos los botones de asignación desactivados |
+| **#8 Diseño minimalista** | Máximo contraste, cero ornamentos superfluos | El color rojo se reserva estrictamente al fallo | Espacios vacíos limpios con guía técnica clara |
+| **#9 Recuperación de errores** | No aplica (no hay fallos activos) | Diagnóstico con sugerencia de intervención | Indicación de próximo drone disponible con hora |
+
+
 
 
