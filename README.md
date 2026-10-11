@@ -782,3 +782,82 @@ Utilizando la plantilla oficial de la asignatura para el análisis de requerimie
 | Elaborado por | Aprobado por  | Fecha      | Descripción y Justificación de Cambios             |
 | :------------ | :------------ | :--------- | :--------------------------------------------------- |
 | Jose Martinez | Jose Martinez | 10/10/2026 | Versión inicial del documento para el MVP (Piplup). |
+
+---
+
+### Ejercicio 08 — Manual de Identidad y UX/UI (AquaPort MVP)
+
+En concordancia con las buenas prácticas de diseño de producto y las directrices de la fase Piplup, la interfaz de monitoreo de AquaPort se construyó bajo la premisa de **identidad corporativa primero, diseño de interfaz después**. Esto garantiza coherencia visual, accesibilidad y claridad cognitiva para el Operador Hídrico frente a la pantalla de control.
+
+> 🌐 **Enlace directo al Manual de Identidad interactivo:**  
+> 👉 [**Abrir Manual de Identidad de AquaPort (`AquaPort_Manual_de_Identidad.html`)**](docs/mockups/AquaPort_Manual_de_Identidad.html)
+
+#### 1. Manual de Identidad Corporativa
+
+El manual de identidad formal de AquaPort ha sido desarrollado como artefacto web interactivo navegable y autocontenido. Puedes consultarlo directamente en el enlace superior o accediendo al archivo [`docs/mockups/AquaPort_Manual_de_Identidad.html`](docs/mockups/AquaPort_Manual_de_Identidad.html).
+
+##### A. Paleta de Colores Institucional
+Diseñada específicamente para entornos operativos de monitoreo continuo (modo oscuro de baja fatiga visual), inspirada en ambientes hídricos y con altos contrastes WCAG:
+
+| Nombre | Código Hex | RGB | Uso y Aplicación en Interfaz |
+| :--- | :--- | :--- | :--- |
+| **Abisal** | `#0A1C26` | `(10, 28, 38)` | Fondo principal del panel y superficie base. |
+| **Casco** | `#12303D` | `(18, 48, 61)` | Tarjetas de drones, barras de navegación y contenedores. |
+| **Marea** | `#1B7F8C` | `(27, 127, 140)` | Color primario de acción (botones principales, logo claro). |
+| **Sonar** | `#7FD8C9` | `(127, 216, 201)` | Acento visual, enlaces, estados de foco y barras de batería. |
+| **Sedimento** | `#8CA3A8` | `(140, 163, 168)` | Texto secundario, unidades de medida y etiquetas complementarias. |
+| **Bruma** | `#E4EDEC` | `(228, 237, 236)` | Texto principal y encabezados de alta legibilidad (contraste 14.6:1). |
+
+##### B. Colores Semánticos de Estado (Flota de Drones)
+Cada estado combina de forma obligatoria **color, forma e icono y texto explicativo** para prevenir ambigüedad en operadores con daltonismo:
+
+| Estado | Código Hex | Ratio Contraste | Icono / Forma | Criterio de Uso Operativo |
+| :--- | :--- | :--- | :--- | :--- |
+| **Disponible** | `#3FBF8A` | 7.5:1 | Círculo lleno (`●`) | Drone con batería `>= 35%` listo para asignación inmediata. |
+| **En misión** | `#4C9BE8` | 5.9:1 | Flecha de avance (`▶`) | Drone ejecutando un despacho o transporte en tránsito. |
+| **Recargando** | `#E5B33A` | 9.0:1 | Rayo (`⚡`) | Drone en estación de acople cargando energía. |
+| **Mantenimiento** | `#8A979C` | 5.8:1 | Rombo (`◇`) | Drone fuera de servicio por revisión programada. |
+| **Fallo** | `#E5604F` | 5.1:1 | Triángulo de alerta (`▲`) | Alerta técnica; requiere atención inmediata del operador. |
+
+##### C. Tipografía
+- **IBM Plex Sans (400, 500, 600):** Tipografía principal para títulos, etiquetas de navegación, mensajes y botones.
+- **IBM Plex Mono (400, 500):** Tipografía monoespaciada reservada exclusivamente para telemetría y datos que requieren comparación o copiado rápido: identificadores de drone (`AR-01`), códigos de misión (`M-0412`), porcentajes de batería (`82%`) y timestamps (`10:47:12`).
+
+##### D. Tono de Voz y Microcopia
+Técnico, conciso, preventivo y en voz activa en español. Se eliminan los mensajes genéricos o decorativos en favor de diagnósticos claros con cifras y pautas de acción concretas (ej. *"El drone AR-03 tiene batería insuficiente (18%). Mínimo requerido: 35%."* en lugar de *"Error de asignación"*).
+
+---
+
+#### 2. Mockup del Panel de Monitoreo de la Flota Acuática
+
+A partir del manual de identidad establecido, se diseñó la interfaz de monitoreo de la flota mostrando los cuatro (4) drones del MVP de AquaPort en operación simultánea:
+
+![Panel de Monitoreo de la Flota Acuática - AquaPort](docs/images/AquaPort_Panel_Flota.png)
+
+##### Aspectos Destacados del Mockup:
+1. **Resumen Cuantitativo Superior:** Contadores en tiempo real agrupados por estado (`1 disponible`, `1 en misión`, `1 recargando`, `1 fallo`) que permiten evaluar la capacidad de la flota sin navegar entre pestañas.
+2. **Banner de Notificación Crítica:** Aviso destacado en color de fallo sobre el drone `AR-04`, especificando la hora de pérdida de enlace y el punto geográfico donde intervenir (`Punto Ribereño Este`).
+3. **Control y Deshabilitación Preventiva (RN-01):**
+   - El drone `AR-01` (`82%`) cuenta con el botón primario activo **Asignar misión**.
+   - El drone `AR-03` (`18%`) se muestra visualmente deshabilitado (opacidad al 55% y borde discontinuo) con el botón bloqueado y el motivo explícito: *"Batería insuficiente (18%). Mínimo requerido: 35%."*, previniendo errores antes de que ocurran.
+4. **Radar y Zonificación Espacial del Campus:** Representación topográfica y batimétrica con las 5 zonas operacionales (`Embalse Norte`, `Canal Central`, `Laguna Sur`, `Punto Ribereño Este`, `Laboratorio Hídrico`), ubicando espacialmente a cada unidad.
+
+---
+
+#### 3. Verificación con las 10 Heurísticas de Usabilidad de Jakob Nielsen
+
+Se evaluó exhaustivamente la interfaz del panel de monitoreo frente a los 10 principios de usabilidad de Jakob Nielsen, verificando el cumplimiento de **7 de las 10 heurísticas** en esta pantalla y justificando las 3 restantes:
+
+| N.° | Heurística de Nielsen | Evaluación | Aplicación y Evidencia Concreta en el Panel de AquaPort |
+| :---: | :--- | :---: | :--- |
+| **#1** | **Visibilidad del estado del sistema** | **Cumple** | Los indicadores superiores totalizan los estados de la flota en tiempo real. Cada fila de drone y cada nodo del mapa batimétrico muestran su estado con color, icono y texto. El pie de página indica el timestamp exacto de la última sincronización (`Actualizado 10:47:12`). |
+| **#2** | **Concordancia entre el sistema y el mundo real** | **Cumple** | Utiliza la terminología natural del operador hídrico (drones, misiones, batería, telemetría). Las zonas geográficas corresponden a los lugares reales del campus de la Escuela Colombiana de Ingeniería (`Embalse Norte`, `Canal Central`, `Laguna Sur`, `Punto Ribereño Este`, `Laboratorio Hídrico`). |
+| **#3** | **Control y libertad del usuario** | *No aplica aquí* | La cancelación de misiones pendientes o edición de rutas se gestiona en la vista de detalle de misión; el panel de flota actúa como centro de visualización y despacho rápido. |
+| **#4** | **Consistencia y estándares** | **Cumple** | Todas las filas mantienen una jerarquía visual idéntica: ID, estado estandarizado, nivel de batería, zona actual, misión y botón de acción. Los datos numéricos y códigos se expresan uniformemente en tipografía monoespaciada (`IBM Plex Mono`). |
+| **#5** | **Prevención de errores** | **Cumple** | El drone `AR-03` con batería al 18% se presenta deshabilitado y su botón de asignación queda inactivo con el mensaje de restricción (`< 35%`). El drone `AR-04` en fallo no ofrece botón de asignación, impidiendo que el operador intente despachar una unidad averiada. |
+| **#6** | **Reconocimiento antes que recuerdo** | **Cumple** | Cada fila consolida toda la información que el operador necesita para decidir (ID, porcentaje y barra de batería, ubicación actual y misión en curso). El usuario no necesita recordar datos de pantallas previas para tomar decisiones de asignación. |
+| **#7** | **Flexibilidad y eficiencia de uso** | *No aplica aquí* | En la escala del MVP (4 drones), la lista completa cabe en un solo vistazo sin necesidad de filtros ni atajos complejos. Se proyectan aceleradores y filtros avanzados para etapas posteriores con flotas superiores a 50 drones. |
+| **#8** | **Diseño estético y minimalista** | **Cumple** | La interfaz evita elementos ornamentales distractores. El mapa topográfico utiliza líneas sutiles sin saturar, y las tarjetas presentan una distribución espaciada en múltiplos de 4 px, priorizando la lectura rápida de los indicadores operativos. |
+| **#9** | **Ayudar a reconocer, diagnosticar y recuperarse de errores** | **Cumple** | En lugar de alertas genéricas, los mensajes son precisos y orientados a la solución: para `AR-03` se indica el porcentaje actual y la cota mínima requerida; para `AR-04` el banner diagnostica la hora de desconexión y orienta al operador sobre el punto exacto donde inspeccionar el dispositivo. |
+| **#10** | **Ayuda y documentación** | *No aplica aquí* | El panel de control está diseñado para ser autoexplicativo para personal técnico sin manuales contextuales intrusivos. La documentación de diseño y lineamientos se centralizan en el [Manual de Identidad HTML](docs/mockups/AquaPort_Manual_de_Identidad.html). |
+
