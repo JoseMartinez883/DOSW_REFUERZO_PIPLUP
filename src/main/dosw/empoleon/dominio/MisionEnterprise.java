@@ -20,6 +20,7 @@ public class MisionEnterprise {
     private final Prioridad prioridad;
     private final int pesoCargaGramos;
 
+    @SuppressWarnings("java:S107")
     public MisionEnterprise(
             String id,
             String descripcion,

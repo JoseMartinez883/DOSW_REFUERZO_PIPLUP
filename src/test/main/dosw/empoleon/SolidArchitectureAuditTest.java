@@ -18,7 +18,6 @@ import main.dosw.empoleon.aplicacion.cadena.ValidadorZonaActiva;
 import main.dosw.empoleon.dominio.DroneEnterprise;
 import main.dosw.empoleon.dominio.EstadoMisionEnterprise;
 import main.dosw.empoleon.dominio.MisionEnterprise;
-import main.dosw.empoleon.dominio.adapter.CondicionesHidricasDominio;
 import main.dosw.empoleon.dominio.adapter.ProveedorCondicionesHidricas;
 import main.dosw.empoleon.dominio.cadena.EslabonValidacion;
 import main.dosw.empoleon.dominio.cadena.ResultadoValidacion;

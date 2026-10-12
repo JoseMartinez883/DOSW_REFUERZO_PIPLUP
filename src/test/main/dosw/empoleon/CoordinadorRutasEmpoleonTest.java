@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import main.dosw.empoleon.aplicacion.CoordinadorRutasEmpoleon;
-import main.dosw.empoleon.dominio.BateriaPromedioPorZonaCollector;
 import main.dosw.empoleon.dominio.DroneEnterprise;
 import main.dosw.empoleon.dominio.EstadoMisionEnterprise;
 import main.dosw.empoleon.dominio.MisionEnterprise;

@@ -2,14 +2,12 @@ package main.dosw.empoleon;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import main.dosw.empoleon.aplicacion.CoordinadorRutasEmpoleon;
 import main.dosw.empoleon.aplicacion.OrquestadorMisionMultiEtapa;
 import main.dosw.empoleon.dominio.CustodiaMuestra;
 import main.dosw.empoleon.dominio.DroneEnterprise;
@@ -35,7 +33,6 @@ import org.junit.jupiter.api.Test;
 class FlujoCompletoEnterpriseIntegrationTest {
 
     private PlanificadorRuta planificador;
-    private CoordinadorRutasEmpoleon coordinador;
     private List<DroneEnterprise> flota;
     private Waypoint wp1;
     private Waypoint wp2;
@@ -45,7 +42,6 @@ class FlujoCompletoEnterpriseIntegrationTest {
     @BeforeEach
     void setUp() {
         planificador = new PlanificadorRuta();
-        coordinador = new CoordinadorRutasEmpoleon();
         flota = new ArrayList<>();
 
         flota.add(new DroneEnterprise("DRN-01", "Explorer-1", TipoDrone.SUPERFICIAL, 92,

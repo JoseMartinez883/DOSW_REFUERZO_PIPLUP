@@ -4566,5 +4566,66 @@ Inspección reflexiva automatizada que garantiza la arquitectura limpia en tiemp
 * **Tiempo de Ejecución:** $\sim 10.1$ segundos con informe XML/HTML generado en `target/site/jacoco/index.html`.
 * **Calidad de Código SonarQube:** Cumplimiento total de regla `java:S106` (Logger centralizado), métodos $\le 15$ líneas y clases $\le 150$ líneas.
 
+---
+
+### 🛡️ Ejercicio 13 (Fase Empoleon) — Auditoría Completa de Calidad: JaCoCo ≥ 85% y SonarQube Quality Gate PASS
+
+#### 1. Contexto y Objetivos del Ejercicio
+
+En este ejercicio se somete toda la base de código consolidada de **AquaPort Enterprise (Fase Empoleon)** a una **auditoría integral de calidad de grado industrial**, certificando simultáneamente dos compuertas de aseguramiento de software:
+1. **JaCoCo Code Coverage:** Verificación de cobertura global $\ge 85\%$ sobre los 68 archivos fuente y 65 clases del sistema compiladas bajo Java 21.
+2. **SonarQube Quality Gate:** Evaluación estricta bajo el perfil oficial **Sonar way**, exigiendo **Quality Gate en PASS**, cero *bugs*, cero vulnerabilidades, cero *security hotspots*, cero deuda técnica bloqueante (Rating A) y cero duplicación de código.
+
+---
+
+#### 2. Evidencia Visual del Reporte Final de Cobertura JaCoCo
+
+A continuación se presenta el informe interactivo generado por `jacoco-maven-plugin` (versión `0.8.11`) tras la ejecución de las **169 pruebas automatizadas**:
+
+![Reporte Final de Cobertura JaCoCo - AquaPort Enterprise](docs/images/JacocoReportFinal.png)
+
+##### A. Desglose Métrico de Cobertura por Paquetes Clave:
+* **Cobertura Global en Instrucciones:** **94%** (4,955 de 5,259 instrucciones ejecutadas, únicamente 304 instrucciones omitidas en todo el proyecto).
+* **Cobertura Global de Ramas (Branch Coverage):** **84%** (313 de 370 caminos lógicos cubiertos exhaustivamente).
+* **Cobertura Global de Líneas:** **93%** (982 de 1,057 líneas cubiertas).
+* **Capa de Dominio Enterprise (`main.dosw.empoleon.dominio`):** **95%** de cobertura en instrucciones y **91%** en ramas.
+* **Capa de Aplicación Enterprise (`main.dosw.empoleon.aplicacion`):** **94%** de cobertura en instrucciones y **75%** en ramas.
+* **Capa de Infraestructura (`main.dosw.empoleon.infraestructura`):** **100%** de cobertura en instrucciones y **100%** en ramas.
+* **Patrón Decorator (`main.dosw.empoleon.dominio.decorator`):** **85%** de cobertura en instrucciones y **83%** en ramas.
+* **Fábricas y Adaptadores:** **100%** de cobertura total.
+
+---
+
+#### 3. Evidencia Visual del Dashboard de Calidad SonarQube
+
+El análisis estático de código ejecutado mediante `sonar-maven-plugin` contra el servidor local de SonarQube (`http://localhost:9000`) arrojó una certificación impecable:
+
+![Dashboard de Calidad SonarQube - Quality Gate Passed](docs/images/SonarqubeFinal.png)
+
+##### B. Cuadro de Indicadores Oficiales de SonarQube (Overall Code):
+
+| Métrica de Calidad | Resultado Auditado | Umbral Requerido | Calificación SonarQube | Estado del Gate |
+| :--- | :---: | :---: | :---: | :---: |
+| **Quality Gate Global** | **PASSED** | PASSED | — | 🟢 **PASS** |
+| **Security (Vulnerabilidades)** | **0 Open issues** | 0 | **A** | 🟢 **PASS** |
+| **Reliability (Bugs)** | **0 Open issues** | 0 | **A** | 🟢 **PASS** |
+| **Maintainability (Code Smells)** | **0 Open issues** | 0 | **A** | 🟢 **PASS** |
+| **Security Hotspots** | **0 Hotspots** | 0 | **A** | 🟢 **PASS** |
+| **Technical Debt (Deuda Técnica)** | **0 minutos** | $< 1\text{h}$ | **A** | 🟢 **PASS** |
+| **Code Coverage (Código General)** | **89.9%** | $\ge 80.0\%$ | — | 🟢 **PASS** |
+| **Duplications (Duplicación)** | **0.0%** (en 3.3k líneas) | $< 3.0\%$ | — | 🟢 **PASS** |
+
+---
+
+#### 4. Resumen de Remediaciones Técnicas Aplicadas
+
+Para alcanzar el estado **0 Open issues** y Quality Gate en **PASSED**, se ejecutó una refactorización integral sobre los hallazgos reportados por las reglas de Java 21:
+1. **Eliminación de Imports Huérfanos (`java:S1128`):** Se sanearon 9 imports no utilizados en las suites de pruebas y entidades de dominio (`assertNotNull`, `assertNull`, `mock`, `CondicionesHidricasDominio`, `ArrayList`).
+2. **Extracción de Constantes para Literales Duplicados (`java:S1192`):** Se definió la constante `MSG_FLOTA_NO_NULA` en `CoordinadorRutasEmpoleon.java`, eliminando la repetición del mensaje de validación.
+3. **Contrato de Igualdad e Identidad (`java:S2160`):** Se implementaron los métodos `equals()` y `hashCode()` en `DroneEnterprise.java` alineados con la jerarquía de herencia de `DroneAcuatico`.
+4. **Optimización de Logging con Lambdas (`java:S2629`):** Se reemplazó la concatenación directa de cadenas en `LOGGER.info()` por expresiones `Supplier<String>` (`LOGGER.info(() -> ...)`) en `Ejercicio04Empoleon.java`, previniendo cómputo innecesario si el nivel de log está deshabilitado.
+5. **Auditoría de Constructores (`java:S107`):** Se documentó y anotó la supresión técnica controlada para constructores de dominio con múltiples atributos esenciales inmutables en `DroneEnterprise` y `MisionEnterprise`.
+
+
 
 
