@@ -6,6 +6,7 @@ package main.dosw.empoleon.dominio;
 public enum EstadoMisionEnterprise {
     PLANIFICADA,
     EN_TRANSITO,
+    EN_ESPERA_SEGURA,
     COMPLETADA,
     FALLIDA,
     CANCELADA
