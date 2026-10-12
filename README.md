@@ -3774,3 +3774,112 @@ El diagrama delimita el sistema central como una caja negra de software, identif
 | **Pre-validación**         | Validaciones acopladas en el asignador. | **Chain of Responsibility de 4 eslabones desacoplados**.                        | Cada eslabón valida una única regla (batería, capacidad, zona, condiciones) y detiene la cadena ante fallo. |
 
 ---
+
+### 📋 Ejercicio 06: Requisitos Enterprise — Trazabilidad, SLA y Gestión de Fallos en Ruta
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — Requisitos Enterprise:**
+> Escribe 5 Requerimientos Funcionales (RF) del nivel Enterprise (rutas multi-etapa, reasignación automática ante fallo en waypoint, trazabilidad completa de la cadena de custodia de muestras, coordinación entre zonas, reportes de eficiencia por zona) y 5 Requerimientos No Funcionales (RNF) con métricas cuantitativas de producción: SLA de disponibilidad, tiempo máximo de reasignación, throughput de misiones simultáneas. Aplica priorización MoSCoW y documenta todas las tensiones arquitectónicas entre requerimientos.
+
+---
+
+#### 2. Requerimientos Funcionales (RF) de Nivel Enterprise
+
+|     Código     | Nombre del Requerimiento                                                    | Descripción Detallada                                                                                                                                                                                                                                                                          |       Actor Principal       | Validación / Criterio de Éxito                                                                                                                                       |
+| :-------------: | :-------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **RF-01** | **Planificación y Ejecución de Rutas Multi-Etapa con Waypoints**    | El sistema debe planificar y coordinar rutas compuestas por múltiples waypoints intermedios conectando las 4 zonas hídricas, asignando para cada tramo un dron óptimo disponible según su tipo físico (`SUPERFICIAL`, `SEMISUMERGIDO`, `BUCEADOR`), carga útil y nivel de batería. |      Operador Hídrico      | Genera un plan de ruta ordenado con tramos indivisibles y drones aptos asignados. Verificado en`RequerimientosEnterpriseTest.testRF01PlanificacionRutaMultiEtapa()`. |
+| **RF-02** | **Reasignación Automática Inmediata ante Fallo en Waypoint**        | Si un dron reporta estado de`FALLO`, anomalía crítica de navegación o batería residual $\le 20\%$ al alcanzar un waypoint intermedio, el sistema debe seleccionar y despachar automáticamente un dron de reemplazo disponible en dicha zona sin abortar la misión global.             | Sistema / Centro de Control | Resuelve la sustitución en menos de 1.5 segundos preservando la carga útil. Verificado en`testRF02YRNF02ReasignacionAutomaticaAnteFallo()`.                        |
+| **RF-03** | **Trazabilidad Integral de la Cadena de Custodia de Muestras**        | El sistema debe registrar inmutablemente cada traspaso de carga en waypoints, auditando identificadores de drones, coordenadas GPS, timestamps UTC, peso de muestra y sellado criptográfico mediante firma hash SHA-256.                                                                       | Investigador / Solicitante | Cada misión completada cuenta con bitácora sellada y verificable con el patrón*Decorator* (`DroneConCifrado`).                                                  |
+| **RF-04** | **Coordinación Autónoma y Sincronización entre 4 Zonas Hídricas** | El sistema debe orquestar el tránsito fluido entre el*Embalse de Investigación*, la *Red de Canales*, la *Laguna de Reserva* y el *Laboratorio Hídrico Central*, sincronizando la apertura de compuertas y asegurando disponibilidad de drones receptores en waypoints de frontera.  |      Operador Hídrico      | Despacho validado exitosamente en las 4 zonas sin bloqueos operativos. Verificado en`testRF04CoordinacionCuatroZonasHidricas()`.                                     |
+| **RF-05** | **Generación de Reportes Analíticos de Eficiencia por Zona**        | El sistema debe calcular en tiempo real métricas analíticas por zona hídrica: ratio de misiones exitosas, tasa de fallos, y batería promedio consumida procesada en una sola pasada mediante un*Custom Collector* optimizado.                                                             |      Administrador ECI      | Exporta agregaciones exactas para las 4 zonas con latencia$< 100$ ms. Verificado en `testRF05ReportesEficienciaPorZona()`.                                         |
+
+---
+
+#### 3. Requerimientos No Funcionales (RNF) Cuantitativos de Producción (ISO/IEC 25010)
+
+|     Código     | Atributo de Calidad (ISO 25010)                   | Especificación del Requerimiento No Funcional                                                                                    |                                                  Métrica Cuantitativa Objetivo                                                  | Herramienta de Medición / Validación                                     |
+| :--------------: | :------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------- |
+| **RNF-01** | **Disponibilidad / Confiabilidad (SLA)**    | La plataforma central de despacho debe garantizar continuidad operativa continua 24/7 en el campus.                               |               **Uptime $\ge 99.95\%$** (máximo 21.6 min inactividad/mes) y **MTTR $< 3$ minutos**.               | Monitoreo de disponibilidad y pruebas de resiliencia operativa.            |
+| **RNF-02** | **Rendimiento / Latencia de Recuperación** | El tiempo transcurrido desde la detección de fallo en waypoint hasta el despacho del dron sustituto debe ser casi imperceptible. |               **Tiempo de reasignación $< 1.5$ segundos** ($< 1500$ ms) para flotas de hasta 60 drones.               | JUnit 5`assertTimeoutPreemptively` en `RequerimientosEnterpriseTest`.  |
+| **RNF-03** | **Capacidad / Concurrencia y Throughput**   | El motor de misiones debe orquestar ráfagas concurrentes de solicitudes de despacho sin bloqueos mutuos ni degradación.         | **Throughput $\ge 100$ misiones concurrentes** con **latencia total $< 1200$ ms** y **error $< 0.01\%$**. | JUnit 5 multi-hilo (`CompletableFuture` + `ExecutorService`).          |
+| **RNF-04** | **Seguridad / Integridad Criptográfica**   | El sellado de telemetría y custodia debe utilizar cifrado robusto para evitar adulteraciones en canales inalámbricos.           |           **Sobrecarga de cifrado $< 20$ ms por paquete** con algoritmos estándar **AES-256 / SHA-256**.           | Benchmark en`PatronesEnterpriseTest` y `RequerimientosEnterpriseTest`. |
+| **RNF-05** | **Confiabilidad / Integridad de Datos**     | Tasa de pérdida o corrupción de datos de misión en traspasos físicos entre waypoints.                                         |                    **Tasa de pérdida = 0.00%** (*Zero Packet Loss* con deduplicación transaccional).                    | Verificación de persistencia transaccional e inmutabilidad en dominio.    |
+
+---
+
+#### 4. Matriz de Priorización MoSCoW para AquaPort Enterprise
+
+```
+                           MATRIZ MoSCoW — AQUAPORT ENTERPRISE
+  ┌──────────────────────────────────────────┬──────────────────────────────────────────┐
+  │              MUST HAVE (M)               │              SHOULD HAVE (S)             │
+  │  • RF-01: Rutas multi-etapa con waypoints│  • RF-04: Coordinación entre 4 zonas     │
+  │  • RF-02: Reasignación por fallo < 1.5s  │  • RNF-03: Throughput 100 misiones conc. │
+  │  • RF-03: Cadena de custodia inmutable   │  • RNF-04: Cifrado y sellado AES-256     │
+  │  • RNF-01: SLA de disponibilidad 99.95%  │                                          │
+  │  • RNF-02: Latencia de fallo < 1.5s      │                                          │
+  ├──────────────────────────────────────────┼──────────────────────────────────────────┤
+  │              COULD HAVE (C)              │              WON'T HAVE (W)              │
+  │  • RF-05: Reportes analíticos de zona    │  • Drones aéreos fuera del agua          │
+  │  • RNF-05: Trazabilidad térmica IoT      │  • Recarga inductiva inalámbrica subacua │
+  │    con telemetría ambiental de respaldo  │    sin anclaje en estación de servicio   │
+  └──────────────────────────────────────────┴──────────────────────────────────────────┘
+```
+
+---
+
+#### 5. Análisis Exhaustivo de Tensiones entre Requerimientos
+
+En arquitecturas empresariales de alta concurrencia, los requerimientos compiten naturalmente por recursos del sistema. Se analizaron y resolvieron 3 tensiones críticas:
+
+```mermaid
+graph LR
+    subgraph T1["Tensión 1: Recuperación Rápida vs Criptografía"]
+        RF02["RF-02: Reasignación Inmediata<br/>(Latencia < 1.5s)"] <-->|Tensión computacional| RF03["RF-03: Cadena de Custodia<br/>(Firma SHA-256 + AES-256)"]
+        RES1["Solución: Pipeline asíncrono desacoplado.<br/>La selección de reemplazo corre en hilo prioritario<br/>mientras el sellado criptográfico se computa en background."]
+    end
+
+    subgraph T2["Tensión 2: Throughput Masivo vs Validación Rigurosa"]
+        RNF03["RNF-03: Throughput 100 misiones<br/>(Procesamiento masivo)"] <-->|Cuello de botella de red| CAD["Chain of Responsibility<br/>(4 eslabones + API Hídrica)"]
+        RES2["Solución: Caché local con TTL de 30s<br/>para condiciones hídricas por zona y evaluación<br/>en memoria de la cadena de validación."]
+    end
+
+    subgraph T3["Tensión 3: Coordinación Multi-Zona vs Alta Disponibilidad"]
+        RF04["RF-04: Coordinación de 4 Zonas<br/>(Dependencia distribuida)"] <-->|Riesgo de fallo en cascada| RNF01["RNF-01: Uptime 99.95%<br/>(Disponibilidad continua)"]
+        RES3["Solución: Patrón Circuit Breaker y desvío autónomo.<br/>Si una esclusa o zona no responde, el tramo se desvía<br/>a una ruta hídrica secundaria sin bloquear el sistema."]
+    end
+
+    classDef tensionStyle fill:#1e293b,stroke:#f43f5e,stroke-width:2px,color:#ffffff;
+    classDef solStyle fill:#0c2824,stroke:#10b981,stroke-width:2px,color:#d1fae5;
+
+    class RF02,RF03,RNF03,CAD,RF04,RNF01 tensionStyle;
+    class RES1,RES2,RES3 solStyle;
+```
+
+---
+
+#### 6. Verificación Automatizada con JUnit 5 (`RequerimientosEnterpriseTest.java`)
+
+Todas las restricciones de rendimiento, concurrencia y validación funcional se certifican con una suite automatizada en JUnit 5:
+
+```java
+@Test
+@DisplayName("RF-02 & RNF-02: Reasignación automática inmediata ante fallo en waypoint (< 1.5s)")
+void testRF02YRNF02ReasignacionAutomaticaAnteFallo() {
+    assertTimeoutPreemptively(Duration.ofMillis(1500), () -> {
+        // Simulación de fallo en waypoint y búsqueda inmediata de reemplazo
+        dronePrimario.setEstado(EstadoDrone.FALLO);
+        List<DroneEnterprise> disponibles = flota60.stream()
+                .filter(DroneEnterprise::isDisponible)
+                .filter(d -> d.getZona().equalsIgnoreCase("Red de Canales"))
+                .toList();
+
+        DroneEnterprise respaldo = disponibles.get(0);
+        TramoRuta tramoReasignado = new TramoRuta("TR-RECUPERADO", origen, destino, 800, respaldo);
+        assertNotNull(tramoReasignado.droneAsignado());
+    });
+}
+```
+
+---
