@@ -4125,3 +4125,125 @@ Todas las combinaciones cromáticas de texto y elementos interactivos fueron eva
 
 ---
 
+### Ejercicio 09 — Agilismo y Planificación del Roadmap Enterprise en Jira (Fase Empoleon)
+
+En este ejercicio se formaliza la gestión ágil del proyecto **AquaPort Enterprise (Fase Empoleon)** en **Atlassian Jira Cloud**, estructurando el Roadmap estratégico en una Épica multi-sprint subdividida en **3 Sprints temáticos e incrementales** (Arquitectura/Patrones, Rutas Multi-Etapa/Coordinación y Calidad/Métricas), con sus respectivos Sprint Goals, capacidad estimada en Fibonacci, Definition of Done (DoD) Enterprise, métricas de Velocity real, gestión de impedimentos y una retrospectiva real de las fases previas.
+
+> 🌐 **Enlace Directo al Tablero, Backlog y Cronograma en Jira Cloud:**
+> 👉 [**Abrir Proyecto AquaPort en Jira Software (Tablero AQUA — Backlog & Roadmap)**](https://josealejandromartinezarias9.atlassian.net/jira/software/projects/AQUA/boards/69/backlog?atlOrigin=eyJpIjoiZjMyZWFjZWY5MjdkNGJhNDlhNGNmODIzZmY3ZjU5MDciLCJwIjoiaiJ9)
+
+---
+
+#### 1. Vista General del Cronograma / Roadmap de Sprints en Jira
+
+El roadmap visualiza la evolución cronológica y secuencial de los 3 sprints planificados para el despliegue de la versión Enterprise:
+
+![Cronograma y Roadmap Enterprise en Jira](docs/images/Cronograma.png)
+
+---
+
+#### 2. Vista General del Backlog y Sprints en Jira
+
+El backlog consolida las Historias de Usuario (HU) estimadas mediante Planning Poker (secuencia de Fibonacci: 1, 2, 3, 5, 8 SP), agrupadas por sus respectivos ciclos de entrega:
+
+![Backlog General de Sprints en Jira](docs/images/Backlog.png)
+
+![Detalle de Backlog y Sprints en Jira - Parte 1](docs/images/BacklogPi.png)
+
+![Detalle de Backlog y Sprints en Jira - Parte 2](docs/images/BackogPart02.png)
+
+---
+
+#### 3. Épica Multi-Sprint del Enterprise
+
+* **Clave Jira:** `AQUA-EPIC-ENTERPRISE` (asociada al proyecto `AQUA`)
+* **Nombre de la Épica:** `AquaPort Enterprise: Plataforma de 60 Drones, 4 Zonas y Rutas Multi-Etapa`
+* **Descripción:** Desarrollar y desplegar la versión Enterprise de AquaPort para coordinar de forma autónoma una flota naval de 60 drones en las 4 zonas del campus ECI, integrando Clean Architecture (dominio 100% puro), patrones Chain of Responsibility, Decorator y Adapter, ejecución multi-etapa con waypoints y failover en menos de 1.5s, junto con certificación de calidad estricta (JaCoCo $\ge 85\%$ y SonarQube con 0 deuda técnica).
+
+---
+
+#### 4. Planificación Detallada de los 3 Sprints Enterprise
+
+##### 🏃 Sprint 1 Enterprise — Arquitectura por Capas y Patrones Enterprise
+* **Sprint Goal:** *"Establecer la arquitectura limpia por capas desacopladas e implementar los patrones Chain of Responsibility, Decorator y Adapter para validación, cifrado y telemetría de la flota Enterprise"*.
+* **Duración:** 2 Semanas (10 días hábiles de desarrollo).
+* **Capacidad del Equipo:** 24 Story Points (2 desarrolladores × 12 SP).
+* **Velocidad Comprometida:** 21 Story Points (Fibonacci).
+* **Definition of Done (DoD) Enterprise:**
+  1. *Clean Architecture:* Dominio 100% Java puro sin imports de librerías externas ni capas externas (auditado mediante reflexión con `SolidArchitectureAuditTest`).
+  2. *Cobertura de Patrones:* Cadena de validación, decoradores de telemetría/cifrado y adaptador probados al 100% con Mockito y JUnit 5.
+  3. *Reglas de Calidad:* Cero uso de `System.out` en código principal (cumplimiento SonarQube `java:S106` con `Logger`).
+  4. *Límites Estructurales:* Clases $\le 150$ líneas y métodos $\le 15$ líneas.
+* **Historias de Usuario (HU):**
+  * `HU-09`: Implementación de Clean Architecture con regla de oro del dominio y desacoplamiento por capas (**8 SP**).
+  * `HU-10`: Pipeline de validación de despacho con Chain of Responsibility (**5 SP**).
+  * `HU-11`: Decorador criptográfico para sellado de telemetría y eventos de misión (**5 SP**).
+  * `HU-12`: Adaptador para integración desacoplada de condiciones meteorológicas e hidrológicas (**3 SP**).
+
+##### 🏃 Sprint 2 Enterprise — Rutas Multi-Etapa y Coordinación de Zonas
+* **Sprint Goal:** *"Implementar el motor de rutas multi-etapa con waypoints, relevos coordinados entre las 4 zonas hídricas y tolerancia a fallos con reasignación autónoma en menos de 1.5s"*.
+* **Duración:** 2 Semanas (10 días hábiles de desarrollo).
+* **Capacidad del Equipo:** 26 Story Points.
+* **Velocidad Comprometida:** 24 Story Points (Fibonacci).
+* **Definition of Done (DoD) Enterprise:**
+  1. *Tolerancia a Fallos:* Failover y reasignación automática ejecutada en $< 1.5$s certificada con `assertTimeoutPreemptively` en JUnit 5.
+  2. *Cadena de Custodia Forense:* Hash SHA-256 inmutable sellado en origen y validado en cada transferencia de waypoint sin ruptura de custodia.
+  3. *Flujos Alternos Validados:* Cobertura automatizada de desvío de tramo por condiciones adversas y espera segura en zona inactiva.
+  4. *Gestión Concurrente:* Pruebas libres de condiciones de carrera mediante uso estricto de estructuras inmutables.
+* **Historias de Usuario (HU):**
+  * `HU-13`: Ejecución de misiones multi-etapa con secuencia ordenada de waypoints (AP-15) (**8 SP**).
+  * `HU-14`: Failover autónomo inmediato y reasignación de drones en waypoint intermedio (< 1.5s) (**8 SP**).
+  * `HU-15`: Coordinación hidrológica y sincronización interzonal entre 4 zonas del campus (**5 SP**).
+  * `HU-16`: Desvío dinámico de ruta ante condiciones ambientales adversas (**3 SP**).
+
+##### 🏃 Sprint 3 Enterprise — Calidad, Rendimiento y Certificación
+* **Sprint Goal:** *"Alcanzar cobertura de pruebas JaCoCo ≥ 85%, asegurar 0 deuda técnica en SonarQube y validar el throughput de 100 misiones concurrentes"*.
+* **Duración:** 2 Semanas (10 días hábiles de desarrollo).
+* **Capacidad del Equipo:** 24 Story Points.
+* **Velocidad Comprometida:** 21 Story Points (Fibonacci).
+* **Definition of Done (DoD) Enterprise:**
+  1. *Cobertura JaCoCo:* Cobertura de línea (*Line Coverage*) $\ge 85\%$ en todo el bundle de la aplicación sin exclusiones artificiales.
+  2. *SonarQube Quality Gate:* Estado en PASS con 0 bugs, 0 vulnerabilidades, 0 puntos calientes de seguridad y 0 deuda técnica.
+  3. *Throughput & Latencia:* Procesamiento de 100 misiones simultáneas con `CompletableFuture` en menos de 1,200 ms totales.
+  4. *Versionamiento Limpio:* Todas las ramas `feature/*` fusionadas vía `--no-ff` en `feature/empoleon` con historial de Conventional Commits.
+* **Historias de Usuario (HU):**
+  * `HU-17`: Optimización y suite de cobertura integral JaCoCo $\ge 85\%$ para el paquete Enterprise (**8 SP**).
+  * `HU-18`: Auditoría y remediación de SonarQube con 0 deuda técnica y Clean Code (**5 SP**).
+  * `HU-19`: Prueba de estrés concurrente para 100 misiones simultáneas con CompletableFuture (**5 SP**).
+  * `HU-20`: Generación analítica de eficiencia por zona con Collector personalizado en parallelStream (**3 SP**).
+
+---
+
+#### 5. Retrospectiva Real de un Sprint Anterior (Sprint 2 de Fase Prinplup)
+
+Aplicando el marco de mejora continua de Scrum, el equipo documenta la retrospectiva real del Sprint 2 para nutrir las prácticas de la Fase Empoleon:
+
+| Dimensión de la Retrospectiva | Hallazgos y Análisis Operacional |
+| :--- | :--- |
+| **¿Qué funcionó bien? (What went well)** | • **Desacoplamiento con Observer:** Separar las alertas de la lógica de asignación permitió despachar eventos multicanal en $< 50$ms sin bloquear el hilo principal.<br>• **Desarrollo Guiado por Pruebas (TDD):** Implementar primero las pruebas de las estrategias de selección (`MayorBateria`, `ZonaCercana`, `PrioridadCritica`) aceleró la resolución de la tensión AP-07 vs AP-08 con 0 regresiones.<br>• **Pre-commit Hooks:** La automatización de git hooks previno commits con formato no estándar y bloqueó commits directos sobre ramas protegidas. |
+| **¿Qué no funcionó bien? (What didn't go well)** | • **Fricción de Tipos en API Externa:** Al consultar condiciones meteorológicas directamente, se introdujeron tipos de datos incompatibles que inicialmente contaminaron entidades de dominio.<br>• **Condiciones de Carrera Iniciales:** Las pruebas concurrentes tempranas arrojaban fallos esporádicos (*flaky tests*) por mutación de listas compartidas.<br>• **Sobrecarga de Métodos:** Varios métodos en los orquestadores iniciales superaron el umbral de 15 líneas, dificultando la auditoría de Clean Code. |
+| **¿Qué cambiaremos? (Action Items / What will we change)** | • **Patrón Adapter Obligatorio:** Aislar toda fuente de datos externa detrás de interfaces puras de dominio antes de escribir la lógica de aplicación.<br>• **Inmutabilidad por Defecto:** Utilizar `records` de Java 21 y copias inmutables (`List.copyOf`) en todas las entidades compartidas concurrentemente.<br>• **Regla Estricta de Métodos $\le 15$ líneas:** Modularizar exhaustivamente cada responsabilidad mediante métodos privados atómicos para asegurar mantenibilidad y cumplimiento de SonarQube. |
+
+---
+
+#### 6. Métricas de Velocity Real y Capacidad
+
+* **Velocity Real Sprint 1 (Fase Piplup):** 23 Story Points completados / 23 SP comprometidos (100% de efectividad).
+* **Velocity Real Sprint 2 (Fase Prinplup):** 21 Story Points completados / 21 SP comprometidos (100% de efectividad).
+* **Capacidad Media del Equipo:** 24 Story Points por sprint (cadencia de 2 semanas con 2 ingenieros).
+* **Velocidad Comprometida Promedio Enterprise:** 22 Story Points por sprint, manteniendo un colchón de seguridad de 2 a 3 SP para contingencias técnicas imprevistas.
+
+---
+
+#### 7. Gestión de Impedimentos Reales y Mitigaciones Arquitectónicas
+
+1. **Impedimento 1: Tensión Computacional entre Latencia de Reasignación (< 1.5s) y Sellado Criptográfico (SHA-256 / AES-256):**
+   * *Riesgo:* El cómputo del hash y el cifrado secuencial en cada waypoint podía degradar la latencia de reasignación automática en momentos de fallo.
+   * *Mitigación:* Se implementó un pipeline desacoplado: la búsqueda de reemplazo y reasignación de dron corre en hilo de alta prioridad, mientras el cálculo y sellado de la cadena de custodia se ejecuta de forma asíncrona garantizando no-repudio sin degradar la respuesta.
+2. **Impedimento 2: Bloqueo de Concurrencia en Rutas Multi-Etapa con Múltiples Zonas:**
+   * *Riesgo:* La orquestación simultánea de tramos en las 4 zonas generaba contención en el inventario de 60 drones.
+   * *Mitigación:* Se implementó filtrado funcional inmutable con Java Streams y particionamiento por zona hídrica, permitiendo que cada zona opere de forma autónoma con su subflota de 15 unidades.
+
+---
+
+
