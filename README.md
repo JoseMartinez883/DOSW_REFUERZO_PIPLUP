@@ -3261,6 +3261,7 @@ graph TD
 ##### 1. Chain of Responsibility (`CadenaValidacionMision`):
 
 La validación pasa secuencialmente por cuatro eslabones (`EslabonValidacion`):
+
 1. **`ValidadorBateria`:** Verifica que el dron posea $\ge 20\%$ de carga residual.
 2. **`ValidadorCapacidadCarga`:** Comprueba que la masa en gramos de la muestra no exceda la capacidad técnica del vehículo.
 3. **`ValidadorZonaActiva`:** Valida que el dron esté en estado `DISPONIBLE` y localizado en la zona origen requerida.
@@ -3269,6 +3270,7 @@ La validación pasa secuencialmente por cuatro eslabones (`EslabonValidacion`):
 *Si cualquier eslabón falla, la evaluación se interrumpe inmediatamente sin invocar a los eslabones posteriores.*
 
 `ValidadorBateria.java` (Eslabón concreto con detención por fallo):
+
 ```java
 package main.dosw.empoleon.aplicacion.cadena;
 
@@ -3297,6 +3299,7 @@ public class ValidadorBateria extends ValidadorBase {
 ```
 
 `CadenaValidacionMision.java` (Ensamblador y orquestador de la cadena):
+
 ```java
 package main.dosw.empoleon.aplicacion.cadena;
 
@@ -3342,6 +3345,7 @@ public class CadenaValidacionMision {
 - **`DroneConCifrado`:** Firma digitalmente el paquete de telemetría con sellado criptográfico AES-256 / SHA-256.
 
 `DroneOperacional.java` (Interfaz Componente base):
+
 ```java
 package main.dosw.empoleon.dominio.decorator;
 
@@ -3362,6 +3366,7 @@ public interface DroneOperacional {
 ```
 
 `DroneConMonitoreo.java` (Decorador concreto para telemetría transparente):
+
 ```java
 package main.dosw.empoleon.dominio.decorator;
 
@@ -3393,6 +3398,7 @@ public class DroneConMonitoreo extends DroneDecorator {
 Convierte el DTO externo en inglés (`DatosHidricosExternosJson` con `waterLevel`, `turbidity`, `waveHeight`, `safeForNavigation`) al registro inmutable del dominio `CondicionesHidricasDominio`, normalizando valores negativos o extremos a límites físicos navegables seguros.
 
 `ProveedorCondicionesHidricas.java` (Puerto del Dominio):
+
 ```java
 package main.dosw.empoleon.dominio.adapter;
 
@@ -3402,6 +3408,7 @@ public interface ProveedorCondicionesHidricas {
 ```
 
 `AdaptadorAPIHidrica.java` (Adaptador de Infraestructura con Sanitización de Valores Límite):
+
 ```java
 package main.dosw.empoleon.infraestructura.adapter;
 
@@ -3505,6 +3512,7 @@ void testAdapterConvierteCamposValoresLimite() {
 
 > **🎯 Reto Empoleon — Principios SOLID:**
 > Audita toda la arquitectura con SonarQube y una revisión manual de imports. Verifica que:
+>
 > 1. Ninguna clase del dominio depende de infraestructura.
 > 2. Todos los servicios reciben dependencias por constructor (no por campo ni setter).
 > 3. No hay ningún `new ClaseInfraestructura()` en el dominio ni en la aplicación.
@@ -3560,28 +3568,32 @@ graph TD
 
 #### 3. Auditoría Detallada de los 5 Principios SOLID
 
-| Principio | Definición en AquaPort Enterprise | Implementación Concreta en el Código |
-| :--- | :--- | :--- |
-| **S — Single Responsibility (Responsabilidad Única)** | Cada clase u objeto responde a un único actor y tiene una sola razón para cambiar. | • `ValidadorBateria`: Solo valida umbral energético $\ge 20\%$.<br/>• `DroneConMonitoreo`: Solo agrega trazas de telemetría.<br/>• `AdaptadorAPIHidrica`: Solo adapta el modelo JSON externo al dominio.<br/>• `DespachadorMisionesEnterprise`: Solo orquesta la verificación y el despacho. |
-| **O — Open/Closed (Abierto/Cerrado)** | Los módulos están abiertos a la extensión pero cerrados a la modificación. | • Se pueden incorporar nuevos validadores (`EslabonValidacion`) sin tocar la cadena base.<br/>• Se pueden apilar nuevos decoradores (`DroneDecorator`) sin modificar el comportamiento ni la estructura de `DroneEnterprise`.<br/>• Se pueden conectar nuevas fuentes hídricas implementando `ProveedorCondicionesHidricas`. |
-| **L — Liskov Substitution (Sustitución de Liskov)** | Los subtipos deben poder sustituir a sus tipos base sin alterar la corrección del programa. | • Cualquier `DroneDecorator` (`DroneConMonitoreo`, `DroneConCifrado`) puede sustituir a `DroneOperacional` en cualquier flujo o servicio sin lanzar excepciones inesperadas ni alterar los contratos de estado.<br/>• Cualquier `ValidadorBase` sustituye a `EslabonValidacion`. |
-| **I — Interface Segregation (Segregación de Interfaces)** | Los clientes no deben ser forzados a depender de contratos o métodos que no utilizan. | • `ProveedorCondicionesHidricas`: Define exactamente un método cohesivo (`consultarCondiciones(zona)`).<br/>• `EslabonValidacion`: Segrega la lógica de validación secuencial sin mezclar persistencia ni monitoreo.<br/>• `DroneOperacional`: Contrato específico para operaciones en misión. |
-| **D — Dependency Inversion (Inversión de Dependencias)** | Los módulos de alto nivel no deben depender de los de bajo nivel; ambos dependen de abstracciones. | • `DespachadorMisionesEnterprise` depende de la interfaz `ProveedorCondicionesHidricas` y de `CadenaValidacionMision`.<br/>• No existe ningún `new ClaseInfraestructura()` dentro de `dominio` ni `aplicacion`.<br/>• La infraestructura depende hacia adentro implementando los puertos del dominio. |
+| Principio                                                         | Definición en AquaPort Enterprise                                                                  | Implementación Concreta en el Código                                                                                                                                                                                                                                                                                         |
+| :---------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **S — Single Responsibility (Responsabilidad Única)**     | Cada clase u objeto responde a un único actor y tiene una sola razón para cambiar.                | •`ValidadorBateria`: Solo valida umbral energético $\ge 20\%$.• `DroneConMonitoreo`: Solo agrega trazas de telemetría.• `AdaptadorAPIHidrica`: Solo adapta el modelo JSON externo al dominio.• `DespachadorMisionesEnterprise`: Solo orquesta la verificación y el despacho.                                  |
+| **O — Open/Closed (Abierto/Cerrado)**                      | Los módulos están abiertos a la extensión pero cerrados a la modificación.                      | • Se pueden incorporar nuevos validadores (`EslabonValidacion`) sin tocar la cadena base.• Se pueden apilar nuevos decoradores (`DroneDecorator`) sin modificar el comportamiento ni la estructura de `DroneEnterprise`.• Se pueden conectar nuevas fuentes hídricas implementando `ProveedorCondicionesHidricas`. |
+| **L — Liskov Substitution (Sustitución de Liskov)**       | Los subtipos deben poder sustituir a sus tipos base sin alterar la corrección del programa.        | • Cualquier`DroneDecorator` (`DroneConMonitoreo`, `DroneConCifrado`) puede sustituir a `DroneOperacional` en cualquier flujo o servicio sin lanzar excepciones inesperadas ni alterar los contratos de estado.• Cualquier `ValidadorBase` sustituye a `EslabonValidacion`.                                       |
+| **I — Interface Segregation (Segregación de Interfaces)** | Los clientes no deben ser forzados a depender de contratos o métodos que no utilizan.              | •`ProveedorCondicionesHidricas`: Define exactamente un método cohesivo (`consultarCondiciones(zona)`).• `EslabonValidacion`: Segrega la lógica de validación secuencial sin mezclar persistencia ni monitoreo.• `DroneOperacional`: Contrato específico para operaciones en misión.                            |
+| **D — Dependency Inversion (Inversión de Dependencias)**  | Los módulos de alto nivel no deben depender de los de bajo nivel; ambos dependen de abstracciones. | •`DespachadorMisionesEnterprise` depende de la interfaz `ProveedorCondicionesHidricas` y de `CadenaValidacionMision`.• No existe ningún `new ClaseInfraestructura()` dentro de `dominio` ni `aplicacion`.• La infraestructura depende hacia adentro implementando los puertos del dominio.                     |
 
 ---
 
 #### 4. Cumplimiento de la "Regla de Oro de Empoleon" y Constructor Injection
 
 ##### 1. Regla de Oro: Dominio 100% Puro
+
 Una inspección estricta de imports sobre todo el árbol `main.dosw.empoleon.dominio` certifica:
+
 - **0 imports de librerías externas:** Sin dependencias de Mockito, Jackson, HttpClient, Spring o Jakarta.
 - **0 acoplamientos con infraestructura:** El dominio desconoce completamente adaptadores, clientes HTTP o DTOs externos.
 - Solo tipos estándar del JDK (`java.util`, `java.util.function`, `java.util.stream`).
 
 ##### 2. Inyección por Constructor Estricta (Inmutabilidad)
+
 Todas las dependencias requeridas en servicios y adaptadores se declaran como campos inmutables `final` y se exigen obligatoriamente a través del constructor, previniendo estados inconsistentes o inyecciones por campo/setter:
 
 `DespachadorMisionesEnterprise.java` (Servicio de Aplicación desacoplado):
+
 ```java
 package main.dosw.empoleon.aplicacion;
 
@@ -3659,6 +3671,7 @@ void testReglaDeOroDominioSinDependenciasExternasNiInfraestructura() throws IOEx
 #### 6. Ejecución y Demostración en Consola (`Ejercicio04Empoleon.java`)
 
 `Ejercicio04Empoleon.java` (Clase Principal Demostradora):
+
 ```java
 package main.dosw.empoleon;
 
@@ -3721,3 +3734,43 @@ public class Ejercicio04Empoleon {
 
 ---
 
+### 🗺 Ejercicio 05: Diagrama de Contexto C4 del Sistema AquaPort Enterprise
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — Diagrama de Contexto C4:**
+> Elabora el Diagrama de Contexto del Sistema (Nivel 1 del modelo C4) para representar formalmente la arquitectura perimetral de **AquaPort Enterprise (Fase Empoleon)**. El sistema evoluciona para gobernar una flota de **60 drones acuáticos distribuidos en 4 zonas hídricas interconectadas** (Embalse de Investigación, Red de Canales, Laguna de Reserva y Laboratorio Hídrico Central), coordinando misiones multi-etapa con waypoints intermedios y garantizando el aislamiento con la API externa mediante el patrón Adapter.
+
+---
+
+#### 2. Diagrama de Contexto C4 — AquaPort Enterprise (Fase Empoleon)
+
+El diagrama delimita el sistema central como una caja negra de software, identificando a las personas (*Persons*) que interactúan directamente con él y a los sistemas externos (*Software Systems*) con los que intercambia datos de forma bidireccional mediante flujos debidamente etiquetados con sus protocolos:
+
+![Diagrama de Contexto C4 - AquaPort Enterprise](docs/uml/DiagramaC4Empeleon.png)
+
+##### Elementos del Diagrama de Contexto Enterprise:
+
+1. **AquaPort Enterprise (`[Software System]` — Sistema Central):**
+   Plataforma central autónoma encargada de gestionar y despachar la flota de 60 drones en 4 zonas hídricas interconectadas, planificar rutas multi-etapa con waypoints intermedios, pre-validar asignaciones mediante *Chain of Responsibility*, extender dinámicamente capacidades operacionales con *Decorator* y aislar la infraestructura externa mediante *Adapter*.
+2. **Actores Humanos (`[Person]`):**
+   - **Operador Hídrico:** Supervisor operativo que monitorea la flota de 60 drones en tiempo real en las 4 zonas hídricas, valida rutas multi-etapa complejas y autoriza contingencias.
+   - **Solicitante:** Investigador o laboratorista del campus ECI que solicita transporte de muestras hídricas, sensores o equipos entre embalses con trazabilidad estricta de cadena de custodia.
+   - **Administrador ECI:** Directiva institucional que supervisa el inventario global de 60 drones, eficiencia operativa por zona y cumplimiento de Acuerdos de Nivel de Servicio (SLAs).
+   - **Técnico de Mantenimiento:** Personal técnico que recibe órdenes de servicio automatizadas ante fallos en ruta o batería crítica ($\le 20\%$) y registra la rehabilitación de unidades.
+3. **Sistemas Externos (`[Software System]`):**
+   - **API Condiciones Hídricas:** Servicio meteorológico e hidrológico que provee variables limnológicas en tiempo real (`waterLevel`, `turbidity`, `waveHeight`), aislado y sanitizado por el `AdaptadorAPIHidrica` hacia el dominio.
+   - **Centro de Control ECI:** Sistema institucional que evalúa los planes de navegación multi-etapa propuestos, coordina el tráfico en esclusas y emite autorizaciones de paso hídrico.
+   - **Sistema de Alertas y Telemetría:** Infraestructura de difusión de emergencias y monitoreo en tiempo real con sellado criptográfico AES-256 ante fallos en ruta o desvíos de waypoint.
+
+#### 3. Análisis Comparativo: Evolución de Prinplup (v2) a Empoleon Enterprise (v3)
+
+| Dimensión de Análisis           | Versión Prinplup (AquaPort v2)         | Versión Empoleon (AquaPort Enterprise)                                               | Impacto Arquitectónico y de Ingeniería                                                                       |
+| :-------------------------------- | :-------------------------------------- | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------- |
+| **Tamaño de Flota**        | 15 drones agrupados en 3 familias.      | **60 drones autónomos** distribuidos en 4 zonas hídricas.                     | Demanda procesamiento paralelo (`parallelStream`) y recolectores optimizados en una sola pasada.             |
+| **Topología y Zonas**      | Misiones de tramo simple punto a punto. | **Red interconectada de 4 zonas** con rutas multi-etapa y waypoints.            | Requiere coordinación de traspasos físicos y trazabilidad estricta de cadena de custodia.                    |
+| **Aislamiento de API**      | Invocación simulada o directa.         | **Patrón Adapter formal (`AdaptadorAPIHidrica`)**.                           | Aísla el modelo de dominio en español de contratos externos JSON en inglés (`waterLevel`, `turbidity`). |
+| **Seguridad y Telemetría** | Notificaciones reactivas con Observer.  | **Telemetría continua decorada con sellado criptográfico AES-256 / SHA-256**. | Protege la integridad de paquetes y autenticidad en canales de comunicación no seguros.                       |
+| **Pre-validación**         | Validaciones acopladas en el asignador. | **Chain of Responsibility de 4 eslabones desacoplados**.                        | Cada eslabón valida una única regla (batería, capacidad, zona, condiciones) y detiene la cadena ante fallo. |
+
+---
