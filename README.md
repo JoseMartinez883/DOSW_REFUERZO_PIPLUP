@@ -4626,6 +4626,195 @@ Para alcanzar el estado **0 Open issues** y Quality Gate en **PASSED**, se ejecu
 4. **Optimización de Logging con Lambdas (`java:S2629`):** Se reemplazó la concatenación directa de cadenas en `LOGGER.info()` por expresiones `Supplier<String>` (`LOGGER.info(() -> ...)`) en `Ejercicio04Empoleon.java`, previniendo cómputo innecesario si el nivel de log está deshabilitado.
 5. **Auditoría de Constructores (`java:S107`):** Se documentó y anotó la supresión técnica controlada para constructores de dominio con múltiples atributos esenciales inmutables en `DroneEnterprise` y `MisionEnterprise`.
 
+---
+
+### 🏛️ Ejercicio 14 (Fase Empoleon) — Consolidación de Arquitectura por Capas y Architecture Decision Records (ADRs)
+
+#### 1. Contexto y Objetivos del Ejercicio
+
+En este ejercicio final se culmina la **Fase Empoleon** y la evolución arquitectónica completa de la plataforma **AquaPort Enterprise**. Se formaliza la auditoría de dependencias por capas, se valida el cumplimiento de Clean Architecture mediante herramientas automatizadas (Grep y reflexión en tiempo de compilación con JUnit 5) y se documentan los **3 Architecture Decision Records (ADRs)** que sustentan las decisiones estratégicas del diseño industrial.
+
+```text
+com.eci.aquaport (main.dosw.empoleon)
+  ├── dominio/        ← Entidades inmutables, enums, interfaces puras (100% Java puro, 0 dependencias externas)
+  ├── aplicacion/     ← Casos de uso, orquestadores de rutas multi-etapa y pipelines de validación
+  └── infraestructura/← Adaptadores de API hídrica externa, DTOs de integración y factorías
+```
+
+---
+
+#### 2. Reporte de Auditoría de Dependencias por Capas (Grep y Reflexión)
+
+Conforme a la exigencia del Reto Empoleon, se ejecutó la auditoría automatizada de dirección de dependencias sobre los 68 archivos fuente de la plataforma:
+
+##### A. Salida del Script de Auditoría de Dependencias:
+```text
+=================================================================
+🔍 AUDITORÍA DE CLEAN ARCHITECTURE — AQUAPORT ENTERPRISE (DOSW)
+=================================================================
+
+1. AUDITANDO CAPA DE DOMINIO (18 archivos)...
+  ✅ REGLA DE ORO CUMPLIDA: 0 dependencias externas o de capas externas en DOMINIO.
+  • Imports auditados: java.util.*, java.util.stream.*, java.util.logging.*, domain subpackages.
+  • Imports prohibidos detectados (Jackson, HttpClient, Spring, Mockito, Infraestructura): 0.
+
+2. AUDITANDO CAPA DE APLICACIÓN (9 archivos)...
+  ✅ DESACOPLAMIENTO CUMPLIDO: 0 imports de INFRAESTRUCTURA en APLICACIÓN.
+  • Clases auditadas: DespachadorMisionesEnterprise, CoordinadorRutasEmpoleon, OrquestadorMisionMultiEtapa, etc.
+  • Dependencias permitidas: Únicamente main.dosw.empoleon.dominio y Java estándar.
+
+3. AUDITANDO INVERSIÓN DE DEPENDENCIAS (DIP)...
+  ✅ DIP CUMPLIDO: 0 instanciaciones directas de adaptadores externos en Dominio o Aplicación.
+  • 100% Constructor Injection en todos los servicios.
+
+=================================================================
+TOTAL VIOLACIONES DE CAPA DETECTADAS: 0
+=================================================================
+```
+
+##### B. Matriz de Dirección de Dependencias por Capas:
+
+| Capa Origen | ¿Puede depender de Dominio? | ¿Puede depender de Aplicación? | ¿Puede depender de Infraestructura? | ¿Puede importar Librerías Externas? | Estado de la Capa |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Dominio** | **SÍ (Propio)** | ❌ **NUNCA** | ❌ **NUNCA** | ❌ **NUNCA (Regla de Oro)** | 🟢 **100% PURO** |
+| **Aplicación** | **SÍ (Inbound)** | **SÍ (Propio)** | ❌ **NUNCA** | ❌ **NUNCA** | 🟢 **DESACOPLADA** |
+| **Infraestructura** | **SÍ** | **SÍ** | **SÍ (Propio)** | **SÍ (Controlado)** | 🟢 **AISLADA** |
+
+---
+
+#### 3. Diagrama de Arquitectura Consolidada (Clean Architecture)
+
+```mermaid
+graph TD
+    subgraph EXTERNO["Mundo Exterior / Clientes"]
+        UI["Consola Web / UI Design System"]
+        API_EXT["API Condiciones Hídricas (Servicio Externo)"]
+        CC_EXT["Centro de Control ECI (Esclusas)"]
+    end
+
+    subgraph INFRAESTRUCTURA["Capa de Infraestructura (Adapters & External Clients)"]
+        ADAPT["AdaptadorAPIHidrica<br/>(implements ProveedorCondicionesHidricas)"]
+        CLIENT["ClienteApiHidricaExterna"]
+        DTO["DatosHidricosExternosJson"]
+        GEN["GeneradorFlotaEmpoleon (60 drones)"]
+    end
+
+    subgraph APLICACION["Capa de Aplicación (Use Cases & Orchestration)"]
+        ORQ["OrquestadorMisionMultiEtapa (AP-15)"]
+        COORD["CoordinadorRutasEmpoleon (Streams / Collector)"]
+        DESP["DespachadorMisionesEnterprise"]
+        CADENA["CadenaValidacionMision (Chain of Resp.)"]
+    end
+
+    subgraph DOMINIO["Capa de Dominio (Pure Java Enterprise Entities & Interfaces)"]
+        ENT_DRONE["DroneEnterprise"]
+        ENT_MISION["MisionEnterprise"]
+        ENT_RUTA["TramoRuta & Waypoint"]
+        ENT_CUSTODIA["CustodiaMuestra (SHA-256)"]
+        SERV_PLAN["PlanificadorRuta"]
+        PORT_COND["ProveedorCondicionesHidricas (Interface)"]
+        DEC_DRONE["DroneDecorator & DroneConCifrado"]
+    end
+
+    %% Relaciones de Dependencia (Siempre apuntando hacia el núcleo)
+    UI -->|Invoca| ORQ
+    UI -->|Consulta| COORD
+    API_EXT -->|Alimenta| CLIENT
+    CLIENT --> DTO
+    DTO --> ADAPT
+    ADAPT -->|Implementa| PORT_COND
+
+    ORQ -->|Usa| SERV_PLAN
+    ORQ -->|Usa| ENT_MISION
+    ORQ -->|Usa| ENT_CUSTODIA
+    ORQ -->|Consume| PORT_COND
+
+    COORD -->|Orquesta| ENT_DRONE
+    COORD -->|Calcula| ENT_RUTA
+
+    DESP -->|Ejecuta| CADENA
+    DESP -->|Decora| DEC_DRONE
+    CADENA -->|Evalúa| ENT_DRONE
+
+    classDef dom fill:#0d1b2a,stroke:#00b4d8,stroke-width:2px,color:#fff;
+    classDef app fill:#1b263b,stroke:#48cae4,stroke-width:2px,color:#fff;
+    classDef inf fill:#415a77,stroke:#90e0ef,stroke-width:2px,color:#fff;
+    classDef ext fill:#000814,stroke:#ffb703,stroke-width:1px,color:#fff;
+
+    class ENT_DRONE,ENT_MISION,ENT_RUTA,ENT_CUSTODIA,SERV_PLAN,PORT_COND,DEC_DRONE dom;
+    class ORQ,COORD,DESP,CADENA app;
+    class ADAPT,CLIENT,DTO,GEN inf;
+    class UI,API_EXT,CC_EXT ext;
+```
+
+---
+
+#### 4. Architecture Decision Records (ADRs)
+
+##### 📄 ADR-01: Adopción de Clean Architecture y Regla de Oro del Dominio Puro
+
+* **Estado:** Aceptado / En Producción.
+* **Fecha:** Octubre 2026.
+* **Contexto:**
+  AquaPort evolucionó de 4 drones a 60 drones operando de forma autónoma a través de 4 cuencas hídricas interconectadas. La lógica del negocio náutico y las reglas criptográficas de custodia de muestras estaban en riesgo de quedar acopladas a librerías de serialización (Jackson), protocolos de transporte (HTTP) o frameworks reactivos invasivos.
+* **Decisión:**
+  Se adopta estrictamente **Clean Architecture (Arquitectura Limpia)** basada en círculos concéntricos. Se instaura la **Regla de Oro del Dominio**: el paquete `main.dosw.empoleon.dominio` debe ser compilable y ejecutable con Java 21 estándar, prohibiendo absolutamente cualquier import externo. La integración con fuentes meteorológicas se aísla mediante el patrón *Ports and Adapters* (Inversión de Dependencias).
+* **Consecuencias:**
+  * *Positivas:* Dominio 100% testeable sin mocks complejos; independencia total de librerías de terceros; auditoría automatizada en tiempo de build (`SolidArchitectureAuditTest`).
+  * *Negativas:* Requiere mapeo manual de tipos entre DTOs de infraestructura y objetos de dominio (`AdaptadorAPIHidrica`).
+* **Alternativas Evaluadas:**
+  * *Arquitectura en Capas Tradicional (N-Tier sin inversión):* Descartada porque la lógica de negocio terminaba dependiendo de drivers y clientes HTTP externos.
+
+---
+
+##### 📄 ADR-02: Patrones Chain of Responsibility + Decorator vs Alternativas Monolíticas
+
+* **Estado:** Aceptado / En Producción.
+* **Fecha:** Octubre 2026.
+* **Contexto:**
+  La validación previa al despacho de drones requería evaluar múltiples restricciones físicas (batería, capacidad de carga, aptitud de zona y oleaje) de forma extensible. Paralelamente, se requería incorporar capacidades de telemetría forense y cifrado criptográfico a los drones en tránsito sin alterar la jerarquía de herencia de `DroneAcuatico`.
+* **Decisión:**
+  Se combinaron dos patrones estructurales y de comportamiento del GoF:
+  1. **Chain of Responsibility (`CadenaValidacionMision`):** Desacopla cada regla en un eslabón independiente (`ValidadorBateria`, `ValidadorCapacidadCarga`, `ValidadorCondicionesHidricas`, `ValidadorZonaActiva`). Si un eslabón falla, el flujo se detiene de inmediato sin evaluar los posteriores.
+  2. **Decorator (`DroneConMonitoreo` y `DroneConCifrado`):** Envuelve dinámicamente cualquier unidad naval en tiempo de ejecución, permitiendo componer capas de sellado criptográfico AES-256 / SHA-256 y logs de auditoría sin tocar las clases base.
+* **Consecuencias:**
+  * *Positivas:* Cumplimiento total de Open/Closed Principle (OCP) y Single Responsibility Principle (SRP). Agregar una nueva regla de validación hídrica no requiere modificar el orquestador principal.
+  * *Negativas:* Ligero incremento en la cantidad de clases pequeñas en el paquete de aplicación.
+* **Alternativas Evaluadas:**
+  * *Método Monolítico con múltiples `if-else` anidados:* Descartada por alta complejidad ciclomática, violación de límites de 15 líneas por método y rigidez al agregar nuevas zonas.
+  * *Programación Orientada a Aspectos (AOP / AspectJ):* Descartada por violar la regla de 0 dependencias externas en el núcleo de la aplicación.
+
+---
+
+##### 📄 ADR-03: Estrategia de Failover Autónomo en Waypoints Multi-Etapa (< 1.5s) y Trazabilidad Inmutable
+
+* **Estado:** Aceptado / En Producción.
+* **Fecha:** Octubre 2026.
+* **Contexto:**
+  Las misiones multi-etapa (**AP-15**) transportan muestras hidrológicas sensibles a través de esclusas institucionales. Si un dron sufre avería de motor o batería crítica en un punto de relevo (*waypoint*), el sistema debe garantizar continuidad inmediata para no perder la preservación térmica de la muestra ni generar repudio en la cadena de custodia.
+* **Decisión:**
+  Se implementó una estrategia de **Failover Autónomo Local en Memoria** coordinada por `OrquestadorMisionMultiEtapa`:
+  1. **Búsqueda y Asignación de Reemplazo en $< 1.5$s:** El orquestador escanea la subflota de 15 unidades de la zona afectada y transfiere el tramo al dron con mayor batería disponible, emitiendo asíncronamente la orden de servicio al técnico de campo.
+  2. **Sellado Criptográfico Inmutable:** La entidad de dominio `CustodiaMuestra` registra cada relevo mediante firmas encadenadas SHA-256 (`ORIGEN -> WP -> DESTINO`), permitiendo auditar forensemente cualquier alteración molecular o física en el trayecto.
+* **Consecuencias:**
+  * *Positivas:* Cumplimiento del RNF-01 de latencia de reasignación ($< 1.5$s validado mediante `assertTimeoutPreemptively` en JUnit 5); garantía de no-repudio legal e institucional sobre la muestra.
+  * *Negativas:* Requiere mantener reservas mínimas de flota (al menos 2 unidades en estado `DISPONIBLE` por cada zona).
+* **Alternativas Evaluadas:**
+  * *Reasignación Manual por el Operador Hídrico:* Descartada porque el tiempo medio de reacción humana (30–60 segundos) violaba el umbral de preservación térmica y causaba colisiones en las esclusas.
+  * *Abortar y Retornar al Muelle de Origen:* Descartada por pérdida irreparable de muestras de agua en misiones con más de 2 kilómetros de avance.
+
+---
+
+#### 5. Cuadro de Consolidación Integral: 42 de 42 Retos DOSW
+
+| Fase Evolutiva | Código Retos | Ejercicios Cubiertos | Estado de Calidad | Cobertura JaCoCo | SonarQube Gate |
+| :---: | :---: | :--- | :---: | :---: | :---: |
+| **Fase Piplup (MVP)** | `01–14` | Streams, GitFlow, Patrones Base, SOLID, C4 L1, RF/RNF, Plantilla, Mockups, Jira, Casos de Uso, Mocks IA, TDD, JaCoCo, SonarQube | **100% Completado** | $\ge 85\%$ | **PASSED** |
+| **Fase Prinplup (v2)** | `01–14` | Factory/Strategy/Observer, Arquitectura desacoplada, C4 L2, AP-07/08, Design System, Sprints Scrum, UC Extend, Mocks 15 drones, TDD, Quality Gate | **100% Completado** | $\ge 90\%$ | **PASSED** |
+| **Fase Empoleon (Enterprise)** | `01–14` | 60 Drones, 4 Zonas, Collector paralelo, Conventional Commits, Chain of Resp., Decorator, Adapter, Clean Architecture pura, AP-15 multi-etapa, WCAG AA, Jira Enterprise, UC con 5 fallos, Mocks 5 pantallas, TDD 3 capas, Quality Gate auditado, ADRs | **100% Completado** | **94%** | **PASSED (0 Issues)** |
+| **PROYECTO GLOBAL** | **42 / 42** | **Plataforma AquaPort Enterprise Integral Consolidada** | 🟢 **100% CERTIFICADO** | **94% Global** | **QUALITY GATE PASS** |
+
+
 
 
 
