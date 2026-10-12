@@ -3892,91 +3892,91 @@ Siguiendo el estándar de ingeniería de requisitos de la Escuela Colombiana de 
 
 #### 1. FUNCIONALIDAD
 
-| Campo | Detalle de Especificación |
-| :--- | :--- |
-| **Código:** | **AP-15** (RF nuclear de la Fase Empoleon) |
-| **Nombre:** | **Ejecutar misión multi-etapa con waypoints** |
-| **Descripción:** | Permite al sistema orquestar y ejecutar de forma autónoma misiones de navegación acuática multi-etapa a través de una secuencia ordenada de puntos de control (waypoints) y tramos intermedios en el campus ECI. El sistema coordina relevos de drones por tramo, verifica dinámicamente las condiciones meteorológicas e hidrológicas de cada tramo, mantiene la cadena de custodia criptográfica inmutable de la muestra (SHA-256) y gestiona de manera transparente eventos imprevistos (fallo de dron en waypoint, condiciones hídricas adversas o inactividad en zona de destino). |
-| **Cómo se ejecutará:** | A través del módulo central `OrquestadorMisionMultiEtapa` integrado en el Centro de Control AquaPort Enterprise, ejecutándose en tiempo real de forma autónoma con supervisión del Operador Hídrico. |
-| **Actor principal:** | **Operador Hídrico** |
-| **Precondiciones:** | 1. La flota Enterprise de 60 drones acuáticos debe estar registrada y distribuida en las 4 zonas operativas (`Embalse de Investigación`, `Red de Canales`, `Laguna de Reserva` y `Laboratorio Hídrico Central`).<br>2. La ruta debe contener al menos 2 waypoints válidos y sus respectivos tramos de enlace.<br>3. El servicio de condiciones meteorológicas e hidrológicas debe estar respondiendo telemetría.<br>4. La muestra o sensor debe contar con identificación, peso calibrado (≤ 1500g) y sellado criptográfico inicial. |
+| Campo                          | Detalle de Especificación                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| :----------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Código:**             | **AP-15** (RF nuclear de la Fase Empoleon)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| **Nombre:**              | **Ejecutar misión multi-etapa con waypoints**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| **Descripción:**        | Permite al sistema orquestar y ejecutar de forma autónoma misiones de navegación acuática multi-etapa a través de una secuencia ordenada de puntos de control (waypoints) y tramos intermedios en el campus ECI. El sistema coordina relevos de drones por tramo, verifica dinámicamente las condiciones meteorológicas e hidrológicas de cada tramo, mantiene la cadena de custodia criptográfica inmutable de la muestra (SHA-256) y gestiona de manera transparente eventos imprevistos (fallo de dron en waypoint, condiciones hídricas adversas o inactividad en zona de destino). |
+| **Cómo se ejecutará:** | A través del módulo central`OrquestadorMisionMultiEtapa` integrado en el Centro de Control AquaPort Enterprise, ejecutándose en tiempo real de forma autónoma con supervisión del Operador Hídrico.                                                                                                                                                                                                                                                                                                                                                                                      |
+| **Actor principal:**     | **Operador Hídrico**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| **Precondiciones:**      | 1. La flota Enterprise de 60 drones acuáticos debe estar registrada y distribuida en las 4 zonas operativas (`Embalse de Investigación`, `Red de Canales`, `Laguna de Reserva` y `Laboratorio Hídrico Central`).2. La ruta debe contener al menos 2 waypoints válidos y sus respectivos tramos de enlace.3. El servicio de condiciones meteorológicas e hidrológicas debe estar respondiendo telemetría.4. La muestra o sensor debe contar con identificación, peso calibrado (≤ 1500g) y sellado criptográfico inicial.                                                       |
 
 ---
 
 #### 2. DATOS DE ENTRADA (Tipos Anidados y Sub-objetos)
 
-| Nombre del Campo | Descripción | Tipo de Campo | Reglas de Validación / Dominio | Obligatorio |
-| :--- | :--- | :--- | :--- | :---: |
-| `idMision` | Identificador único de la misión multi-etapa. | `String` | Formato alfanumérico no vacío (ej. `MIS-MULTI-01`). | Sí |
-| `descripcion` | Propósito y objetivos de la misión náutica. | `String` | Texto descriptivo con longitud máxima de 255 caracteres. | Sí |
-| `zonaOrigen` | Zona hídrica de partida de la misión. | `String` / `Enum` | Debe coincidir con una de las 4 zonas de `ZonaHidrica`. | Sí |
-| `zonaDestino` | Zona hídrica de entrega final. | `String` / `Enum` | Debe pertenecer a las zonas hídricas registradas del campus. | Sí |
-| `prioridad` | Nivel de precedencia de la misión. | `Prioridad` | `NORMAL`, `ALTA`, `CRITICA`. | Sí |
-| `pesoCargaGramos` | Peso total de la muestra o instrumental. | `Integer` | Valor strictly positivo: `0 < peso <= 1500` gramos. | Sí |
-| **`waypoints`** | **Lista ordenada de puntos de control intermedios y finales.** | **`List<Waypoint>`** | **Mínimo 2 waypoints ordenados secuencialmente.** | **Sí** |
-| `waypoints[i].id` | Identificador único del waypoint. | `String` | Formato `WP-XX`. | Sí |
-| `waypoints[i].nombre` | Nombre geográfico del punto de control. | `String` | Nombre reconocible (ej. `Muelle Central`, `Esclusa Alfa`). | Sí |
-| `waypoints[i].zona` | Zona hídrica donde se ubica el punto. | `String` | Zona válida en el campus. | Sí |
-| `waypoints[i].orden` | Posición secuencial en la ruta de navegación. | `Integer` | Entero positivo estrictamente creciente (1, 2, 3...). | Sí |
-| **`tramos`** | **Segmentos de navegación física entre pares de waypoints.** | **`List<TramoRuta>`** | **`tramos.size() == waypoints.size() - 1`.** | **Sí** |
-| `tramos[i].id` | Identificador único del tramo de ruta. | `String` | Formato `TR-XX`. | Sí |
-| `tramos[i].origen` | Waypoint de partida del tramo. | `Waypoint` | Coincide con `waypoints[i]`. | Sí |
-| `tramos[i].destino` | Waypoint de llegada del tramo. | `Waypoint` | Coincide con `waypoints[i+1]`. | Sí |
-| `tramos[i].distanciaMetros` | Longitud en metros del canal navegable. | `Integer` | Distancia estrictamente positiva (`distancia > 0`). | Sí |
-| `tramos[i].droneAsignado` | Unidad naval asignada al segmento. | `DroneEnterprise` | Dron en estado `DISPONIBLE`, con batería ≥ 25% y capacidad. | Sí |
-| **`custodiaInicial`** | **Sello criptográfico de partida para la muestra.** | **`CustodiaMuestra`** | **Hash SHA-256 inmutable generado a partir de la muestra.** | **Sí** |
+| Nombre del Campo              | Descripción                                                         | Tipo de Campo                 | Reglas de Validación / Dominio                                   |  Obligatorio  |
+| :---------------------------- | :------------------------------------------------------------------- | :---------------------------- | :---------------------------------------------------------------- | :-----------: |
+| `idMision`                  | Identificador único de la misión multi-etapa.                      | `String`                    | Formato alfanumérico no vacío (ej.`MIS-MULTI-01`).            |      Sí      |
+| `descripcion`               | Propósito y objetivos de la misión náutica.                       | `String`                    | Texto descriptivo con longitud máxima de 255 caracteres.         |      Sí      |
+| `zonaOrigen`                | Zona hídrica de partida de la misión.                              | `String` / `Enum`         | Debe coincidir con una de las 4 zonas de`ZonaHidrica`.          |      Sí      |
+| `zonaDestino`               | Zona hídrica de entrega final.                                      | `String` / `Enum`         | Debe pertenecer a las zonas hídricas registradas del campus.     |      Sí      |
+| `prioridad`                 | Nivel de precedencia de la misión.                                  | `Prioridad`                 | `NORMAL`, `ALTA`, `CRITICA`.                                |      Sí      |
+| `pesoCargaGramos`           | Peso total de la muestra o instrumental.                             | `Integer`                   | Valor strictly positivo:`0 < peso <= 1500` gramos.              |      Sí      |
+| **`waypoints`**       | **Lista ordenada de puntos de control intermedios y finales.** | **`List<Waypoint>`**  | **Mínimo 2 waypoints ordenados secuencialmente.**          | **Sí** |
+| `waypoints[i].id`           | Identificador único del waypoint.                                   | `String`                    | Formato`WP-XX`.                                                 |      Sí      |
+| `waypoints[i].nombre`       | Nombre geográfico del punto de control.                             | `String`                    | Nombre reconocible (ej.`Muelle Central`, `Esclusa Alfa`).     |      Sí      |
+| `waypoints[i].zona`         | Zona hídrica donde se ubica el punto.                               | `String`                    | Zona válida en el campus.                                        |      Sí      |
+| `waypoints[i].orden`        | Posición secuencial en la ruta de navegación.                      | `Integer`                   | Entero positivo estrictamente creciente (1, 2, 3...).             |      Sí      |
+| **`tramos`**          | **Segmentos de navegación física entre pares de waypoints.** | **`List<TramoRuta>`** | **`tramos.size() == waypoints.size() - 1`.**              | **Sí** |
+| `tramos[i].id`              | Identificador único del tramo de ruta.                              | `String`                    | Formato`TR-XX`.                                                 |      Sí      |
+| `tramos[i].origen`          | Waypoint de partida del tramo.                                       | `Waypoint`                  | Coincide con`waypoints[i]`.                                     |      Sí      |
+| `tramos[i].destino`         | Waypoint de llegada del tramo.                                       | `Waypoint`                  | Coincide con`waypoints[i+1]`.                                   |      Sí      |
+| `tramos[i].distanciaMetros` | Longitud en metros del canal navegable.                              | `Integer`                   | Distancia estrictamente positiva (`distancia > 0`).             |      Sí      |
+| `tramos[i].droneAsignado`   | Unidad naval asignada al segmento.                                   | `DroneEnterprise`           | Dron en estado`DISPONIBLE`, con batería ≥ 25% y capacidad.    |      Sí      |
+| **`custodiaInicial`** | **Sello criptográfico de partida para la muestra.**           | **`CustodiaMuestra`** | **Hash SHA-256 inmutable generado a partir de la muestra.** | **Sí** |
 
 ---
 
 #### 3. DATOS DE SALIDA (Sub-objetos de Telemetría y Custodia)
 
-| Nombre del Campo | Descripción | Tipo de Campo | Reglas / Aplicación en AquaPort Enterprise | Obligatorio |
-| :--- | :--- | :--- | :--- | :---: |
-| `misionFinal` | Entidad de misión con estado final consolidado. | `MisionEnterprise` | Estado final `COMPLETADA` o `EN_ESPERA_SEGURA`. | Sí |
-| `estadoFinal` | Estado operacional final del ciclo. | `EstadoMisionEnterprise` | Enum representativo del resultado del flujo. | Sí |
-| `tramosEjecutados` | Lista de tramos finales efectivamente navegados. | `List<TramoRuta>` | Incluye tramos recalculados por desvíos o reasignaciones. | Sí |
-| **`custodiaFinal`** | **Registro consolidado de la cadena de custodia.** | **`CustodiaMuestra`** | **Verificación del hash final contra la bitácora encadenada.** | **Sí** |
-| `registrosTrazabilidad` | Bitácora cronológica inmutable de eventos de custodia. | `List<String>` | Formato `[SELLADO_ORIGEN]`, `[TRANSFERENCIA]`, `[WAYPOINT_VERIFICADO]`. | Sí |
-| `telemetriaEventos` | Registro de advertencias y maniobras autónomas. | `List<String>` | Avisos de reasignación automática, desvíos y esperas. | Sí |
+| Nombre del Campo            | Descripción                                             | Tipo de Campo                 | Reglas / Aplicación en AquaPort Enterprise                                  |  Obligatorio  |
+| :-------------------------- | :------------------------------------------------------- | :---------------------------- | :--------------------------------------------------------------------------- | :-----------: |
+| `misionFinal`             | Entidad de misión con estado final consolidado.         | `MisionEnterprise`          | Estado final`COMPLETADA` o `EN_ESPERA_SEGURA`.                           |      Sí      |
+| `estadoFinal`             | Estado operacional final del ciclo.                      | `EstadoMisionEnterprise`    | Enum representativo del resultado del flujo.                                 |      Sí      |
+| `tramosEjecutados`        | Lista de tramos finales efectivamente navegados.         | `List<TramoRuta>`           | Incluye tramos recalculados por desvíos o reasignaciones.                   |      Sí      |
+| **`custodiaFinal`** | **Registro consolidado de la cadena de custodia.** | **`CustodiaMuestra`** | **Verificación del hash final contra la bitácora encadenada.**       | **Sí** |
+| `registrosTrazabilidad`   | Bitácora cronológica inmutable de eventos de custodia. | `List<String>`              | Formato`[SELLADO_ORIGEN]`, `[TRANSFERENCIA]`, `[WAYPOINT_VERIFICADO]`. |      Sí      |
+| `telemetriaEventos`       | Registro de advertencias y maniobras autónomas.         | `List<String>`              | Avisos de reasignación automática, desvíos y esperas.                     |      Sí      |
 
 ---
 
 #### 4. FLUJO BÁSICO (Ciclo de Ejecución Multi-Etapa en 9 Pasos)
 
-| Paso | Actor | Descripción | Excepciones |
-| :---: | :--- | :--- | :--- |
-| **1** | **Operador Hídrico** | Ingresa la solicitud de misión multi-etapa especificando la carga, nivel de prioridad, origen, destino y la secuencia requerida de waypoints. | `IllegalArgumentException` si faltan parámetros, peso ≤ 0 o peso > 1500g. |
-| **2** | **Operador Hídrico** | El sistema valida la integridad de la ruta: coherencia secuencial del orden de waypoints, conectividad hidrológica de los tramos y número de etapas (mínimo 2 waypoints). | `IllegalArgumentException` si hay menos de 2 waypoints o tramos vacíos. |
-| **3** | **Operador Hídrico** | El sistema consulta el servicio de Condiciones Hídricas para el tramo de partida, evaluando nivel de agua, turbidez y altura de oleaje. | Flujo alterno **2a** si las condiciones hídricas son severas o no navegables. |
-| **4** | **Operador Hídrico** | El sistema asigna los drones disponibles más idóneos para cada tramo considerando tipo de dron, proximidad y reserva de batería (mínimo 25%). | Flujo alterno **5a** si no hay dron apto en la zona del tramo. |
-| **5** | **Operador Hídrico** | El sistema inicializa la cadena de custodia criptográfica en el muelle de origen calculando el hash SHA-256 inicial de la muestra y sellando el bulto. | `IllegalStateException` ante fallo en generador criptográfico. |
-| **6** | **Operador Hídrico** | La misión pasa a estado `EN_TRANSITO`. El dron asignado al tramo actual inicia la navegación transmitiendo telemetría continua de rumbo, velocidad y batería. | Flujo alterno **5a** si el dron reporta fallo técnico o batería crítica. |
-| **7** | **Operador Hídrico** | Al arribar a cada waypoint intermedio, el sistema valida las coordenadas de atraque, comprueba la integridad del sello de la muestra y estampa el hash del waypoint. | Flujo alterno **8a** si la siguiente zona o waypoint se encuentra inactivo. |
-| **8** | **Operador Hídrico** | Si el tramo siguiente involucra relevo de dron, se ejecuta la transferencia física/sensorial en el muelle seguro, registrando la firma de traspaso en la custodia (`DRN-A -> DRN-B`). | `IllegalStateException` si el dron entrante no confirma el acople seguro. |
-| **9** | **Operador Hídrico** | Al alcanzar el waypoint final de destino, el sistema valida la integridad de la muestra contra el hash final, cambia el estado a `COMPLETADA` y emite notificación formal al Centro de Control. | Fin del flujo básico exitoso. |
+|    Paso    | Actor                       | Descripción                                                                                                                                                                                      | Excepciones                                                                         |
+| :---------: | :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------- |
+| **1** | **Operador Hídrico** | Ingresa la solicitud de misión multi-etapa especificando la carga, nivel de prioridad, origen, destino y la secuencia requerida de waypoints.                                                    | `IllegalArgumentException` si faltan parámetros, peso ≤ 0 o peso > 1500g.       |
+| **2** | **Operador Hídrico** | El sistema valida la integridad de la ruta: coherencia secuencial del orden de waypoints, conectividad hidrológica de los tramos y número de etapas (mínimo 2 waypoints).                      | `IllegalArgumentException` si hay menos de 2 waypoints o tramos vacíos.          |
+| **3** | **Operador Hídrico** | El sistema consulta el servicio de Condiciones Hídricas para el tramo de partida, evaluando nivel de agua, turbidez y altura de oleaje.                                                          | Flujo alterno**2a** si las condiciones hídricas son severas o no navegables. |
+| **4** | **Operador Hídrico** | El sistema asigna los drones disponibles más idóneos para cada tramo considerando tipo de dron, proximidad y reserva de batería (mínimo 25%).                                                 | Flujo alterno**5a** si no hay dron apto en la zona del tramo.                 |
+| **5** | **Operador Hídrico** | El sistema inicializa la cadena de custodia criptográfica en el muelle de origen calculando el hash SHA-256 inicial de la muestra y sellando el bulto.                                           | `IllegalStateException` ante fallo en generador criptográfico.                   |
+| **6** | **Operador Hídrico** | La misión pasa a estado`EN_TRANSITO`. El dron asignado al tramo actual inicia la navegación transmitiendo telemetría continua de rumbo, velocidad y batería.                                | Flujo alterno**5a** si el dron reporta fallo técnico o batería crítica.    |
+| **7** | **Operador Hídrico** | Al arribar a cada waypoint intermedio, el sistema valida las coordenadas de atraque, comprueba la integridad del sello de la muestra y estampa el hash del waypoint.                              | Flujo alterno**8a** si la siguiente zona o waypoint se encuentra inactivo.    |
+| **8** | **Operador Hídrico** | Si el tramo siguiente involucra relevo de dron, se ejecuta la transferencia física/sensorial en el muelle seguro, registrando la firma de traspaso en la custodia (`DRN-A -> DRN-B`).          | `IllegalStateException` si el dron entrante no confirma el acople seguro.         |
+| **9** | **Operador Hídrico** | Al alcanzar el waypoint final de destino, el sistema valida la integridad de la muestra contra el hash final, cambia el estado a`COMPLETADA` y emite notificación formal al Centro de Control. | Fin del flujo básico exitoso.                                                      |
 
 ---
 
 #### 5. FLUJOS ALTERNOS
 
-| Paso | Actor | Descripción | Excepciones |
-| :---: | :--- | :--- | :--- |
+|     Paso     | Actor                       | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Excepciones                                                                                     |
+| :----------: | :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------- |
 | **5a** | **Operador Hídrico** | **Fallo o avería de dron en waypoint intermedio (Reasignación automática):** Si un dron en tránsito o acoplado en un waypoint reporta avería motriz (`EstadoDrone.FALLO`) o batería residual menor al umbral seguro (< 25%), el sistema activa de inmediato el failover (< 1.5s), localiza un dron de respaldo disponible en la misma zona con capacidad de carga apta, reasigna el tramo y ejecuta la transferencia segura registrando la firma criptográfica (`TRANSFERENCIA:WP-XX:DRN-A->DRN-B`). La misión continúa sin interrupción. | `IllegalStateException` si no existen drones disponibles en la zona ni en reservas contiguas. |
-| **2a** | **Operador Hídrico** | **Condiciones hídricas adversas en tramo específico (Desvío autónomo):** Si la telemetría hídrica reporta oleaje superior a 1.2 metros, velocidad de corriente superior a 2.5 m/s o zona no navegable, el sistema desvía dinámicamente la trayectoria recalculando el tramo hacia un canal secundario protegido o waypoint alterno seguro (`WP-XX-ALT`). Se reajusta la distancia estimada (+200m) y se preserva la integridad de la muestra. | `IllegalStateException` si todos los canales alternos se encuentran cerrados. |
-| **8a** | **Operador Hídrico** | **Zona de destino temporalmente inactiva (Hold seguro en waypoint previo):** Si la esclusa o zona de arribo final reporta cierre de compuertas o inactividad operacional, el sistema suspende el avance final, coloca la misión en estado `EN_ESPERA_SEGURA` en el último waypoint seguro alcanzado y emite una alerta prioritaria al Centro de Control ECI para coordinar autorización de reapertura o reprogramación. | La misión pasa a `EN_ESPERA_SEGURA` a la espera de reactivación. |
+| **2a** | **Operador Hídrico** | **Condiciones hídricas adversas en tramo específico (Desvío autónomo):** Si la telemetría hídrica reporta oleaje superior a 1.2 metros, velocidad de corriente superior a 2.5 m/s o zona no navegable, el sistema desvía dinámicamente la trayectoria recalculando el tramo hacia un canal secundario protegido o waypoint alterno seguro (`WP-XX-ALT`). Se reajusta la distancia estimada (+200m) y se preserva la integridad de la muestra.                                                                                                 | `IllegalStateException` si todos los canales alternos se encuentran cerrados.                 |
+| **8a** | **Operador Hídrico** | **Zona de destino temporalmente inactiva (Hold seguro en waypoint previo):** Si la esclusa o zona de arribo final reporta cierre de compuertas o inactividad operacional, el sistema suspende el avance final, coloca la misión en estado `EN_ESPERA_SEGURA` en el último waypoint seguro alcanzado y emite una alerta prioritaria al Centro de Control ECI para coordinar autorización de reapertura o reprogramación.                                                                                                                           | La misión pasa a`EN_ESPERA_SEGURA` a la espera de reactivación.                             |
 
 ---
 
 #### 6. REGLAS DE NEGOCIO (RN)
 
-| Identificador | Nombre de la Regla | Enunciado Normativo y Justificación Operacional |
-| :---: | :--- | :--- |
-| **RN-EM-01** | **Cadena de Custodia Criptográfica Inmutable (SHA-256)** | Toda muestra hídrica o sensor debe contar con un sellado criptográfico calculado en origen mediante SHA-256. Cada arribo a waypoint y cada transferencia de custodia entre drones (`DRN-A -> DRN-B`) debe encadenar el hash previo con el identificador del nuevo receptor, garantizando no-repudio, trazabilidad forense e inmutabilidad total. |
-| **RN-EM-02** | **Umbral de Reasignación Preventiva de Batería (≥ 25%)** | Ningún dron puede iniciar un tramo si su nivel de batería es inferior al **25%** o si su autonomía proyectada no garantiza el recorrido del segmento más un 15% de margen de maniobra. En caso de no superar este umbral, el sistema debe disparar la reasignación automática en menos de 1.5 segundos. |
-| **RN-EM-03** | **Umbrales Ambientales de Navegabilidad por Tramo** | Se prohíbe la navegación directa en tramos acuáticos con oleaje superior a **1.2 metros** o turbidez superior a **150 NTU** para drones superficiales. Ante estas lecturas, el sistema debe bifurcar automáticamente la ruta hacia canales con protección hidrodinámica. |
-| **RN-EM-04** | **Handshake Obligatorio en Relevo de Waypoint** | Durante una transferencia de muestra en un waypoint intermedio, el dron emisor no puede declararse `DISPONIBLE` ni retornar a su estación de carga hasta que el dron receptor confirme el acople físico y la validación del hash criptográfico recibido. |
-| **RN-EM-05** | **Protocolo de Inactividad y Espera Segura (Hold ≤ 10 min)** | Si la zona de destino se encuentra inactiva, la misión debe mantenerse en atraque seguro en el waypoint previo por un tiempo máximo de 10 minutos. Si la zona no se reactiva en este lapso, el sistema debe abortar de forma controlada y recalcular el retorno al muelle de origen. |
-| **RN-EM-06** | **Capacidad de Carga Estructural por Tramo (≤ 1500g)** | Cada dron seleccionado para un tramo particular debe tener una capacidad de carga útil superior o igual al peso neto de la muestra transportada. Ningún tramo puede asignarse a un `DroneBuceador` si el peso supera 300g, ni a un `DroneSuperficial` si supera 600g. |
+|   Identificador   | Nombre de la Regla                                                  | Enunciado Normativo y Justificación Operacional                                                                                                                                                                                                                                                                                                     |
+| :----------------: | :------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **RN-EM-01** | **Cadena de Custodia Criptográfica Inmutable (SHA-256)**     | Toda muestra hídrica o sensor debe contar con un sellado criptográfico calculado en origen mediante SHA-256. Cada arribo a waypoint y cada transferencia de custodia entre drones (`DRN-A -> DRN-B`) debe encadenar el hash previo con el identificador del nuevo receptor, garantizando no-repudio, trazabilidad forense e inmutabilidad total. |
+| **RN-EM-02** | **Umbral de Reasignación Preventiva de Batería (≥ 25%)**   | Ningún dron puede iniciar un tramo si su nivel de batería es inferior al**25%** o si su autonomía proyectada no garantiza el recorrido del segmento más un 15% de margen de maniobra. En caso de no superar este umbral, el sistema debe disparar la reasignación automática en menos de 1.5 segundos.                                   |
+| **RN-EM-03** | **Umbrales Ambientales de Navegabilidad por Tramo**           | Se prohíbe la navegación directa en tramos acuáticos con oleaje superior a**1.2 metros** o turbidez superior a **150 NTU** para drones superficiales. Ante estas lecturas, el sistema debe bifurcar automáticamente la ruta hacia canales con protección hidrodinámica.                                                            |
+| **RN-EM-04** | **Handshake Obligatorio en Relevo de Waypoint**               | Durante una transferencia de muestra en un waypoint intermedio, el dron emisor no puede declararse`DISPONIBLE` ni retornar a su estación de carga hasta que el dron receptor confirme el acople físico y la validación del hash criptográfico recibido.                                                                                        |
+| **RN-EM-05** | **Protocolo de Inactividad y Espera Segura (Hold ≤ 10 min)** | Si la zona de destino se encuentra inactiva, la misión debe mantenerse en atraque seguro en el waypoint previo por un tiempo máximo de 10 minutos. Si la zona no se reactiva en este lapso, el sistema debe abortar de forma controlada y recalcular el retorno al muelle de origen.                                                               |
+| **RN-EM-06** | **Capacidad de Carga Estructural por Tramo (≤ 1500g)**       | Cada dron seleccionado para un tramo particular debe tener una capacidad de carga útil superior o igual al peso neto de la muestra transportada. Ningún tramo puede asignarse a un`DroneBuceador` si el peso supera 300g, ni a un `DroneSuperficial` si supera 600g.                                                                           |
 
 ---
 
@@ -3993,18 +3993,18 @@ Siguiendo el estándar de ingeniería de requisitos de la Escuela Colombiana de 
 
 #### 8. ABREVIATURAS
 
-| Abreviatura | Significado Técnico |
-| :---: | :--- |
-| **AP** | AquaPort (Identificador formal de especificación de requerimientos) |
-| **RF** | Requerimiento Funcional |
-| **RNF** | Requerimiento No Funcional |
-| **RN** | Regla de Negocio |
-| **WP** | Waypoint (Punto de control intermedio de navegación) |
-| **TR** | Tramo de Ruta (Segmento de enlace entre dos waypoints) |
-| **SHA-256** | Secure Hash Algorithm de 256 bits (Criptografía de integridad) |
+|    Abreviatura    | Significado Técnico                                                   |
+| :---------------: | :--------------------------------------------------------------------- |
+|   **AP**   | AquaPort (Identificador formal de especificación de requerimientos)   |
+|   **RF**   | Requerimiento Funcional                                                |
+|   **RNF**   | Requerimiento No Funcional                                             |
+|   **RN**   | Regla de Negocio                                                       |
+|   **WP**   | Waypoint (Punto de control intermedio de navegación)                  |
+|   **TR**   | Tramo de Ruta (Segmento de enlace entre dos waypoints)                 |
+| **SHA-256** | Secure Hash Algorithm de 256 bits (Criptografía de integridad)        |
 | **AES-256** | Advanced Encryption Standard de 256 bits (Cifrado simétrico de datos) |
-| **ECI** | Escuela Colombiana de Ingeniería Julio Garavito |
-| **NTU** | Nephelometric Turbidity Units (Unidad de turbidez hídrica) |
+|   **ECI**   | Escuela Colombiana de Ingeniería Julio Garavito                       |
+|   **NTU**   | Nephelometric Turbidity Units (Unidad de turbidez hídrica)            |
 
 ---
 
@@ -4045,6 +4045,7 @@ El sistema se cimenta sobre una arquitectura de diseño en modo oscuro profundo 
 ![Componentes Nucleares y Estados Semánticos](docs/images/ComponentsAndStates.png)
 
 ##### A. Tarjeta de Drone Enterprise (6 Estados de Operación):
+
 1. **Disponible:** Borde y badge verde esmeralda (`#00E676`), muestra nivel de batería $\ge 35\%$, zona apostada y capacidad de carga útil.
 2. **En Tránsito Multi-Etapa:** Borde cian sonar (`#00F0FF`), telemetría en vivo, tramo activo (`TR-XX`), velocidad y tiempo estimado de llegada (ETA).
 3. **Recargando:** Borde ámbar (`#FFB800`), muelle de conexión rápida (45W inductiva) y tiempo restante para carga completa.
@@ -4053,6 +4054,7 @@ El sistema se cimenta sobre una arquitectura de diseño en modo oscuro profundo 
 6. **Sumergido:** Borde azul bentónico (`#0077B6`), profundidad de inmersión en metros (ej. 5.4m) y estado del enlace acústico por sonar.
 
 ##### B. Botón de Acción CTA "Despachar Misión Multi-Etapa" (5 Estados Interactivos):
+
 1. **Default:** Fondo cian sonar neón (`#00F0FF`), texto oscuro de alto contraste y sombra de resplandor sutil.
 2. **Hover / Foco:** Elevación de 2px, sombra difusa aumentada (`0 0 25px rgba(0,240,255,0.5)`).
 3. **Procesando (Spinner):** Fondo atenuado, cursor `wait`, spinner SVG con rotación continua a 360° y texto *"Procesando / Asignando..."*.
@@ -4060,6 +4062,7 @@ El sistema se cimenta sobre una arquitectura de diseño en modo oscuro profundo 
 5. **Éxito:** Fondo verde esmeralda (`#00E676`), icono de verificación y confirmación inmediata.
 
 ##### C. Medidor de Batería (3 Rangos de Operación):
+
 * **Normal ($\ge 50\%$):** Barra verde esmeralda.
 * **Precaución ($25\% - 49\%$):** Barra oro de advertencia.
 * **Crítico ($< 25\%$):** Barra roja parpadeante que activa protocolo de reasignación automática inmediata.
@@ -4071,26 +4074,32 @@ El sistema se cimenta sobre una arquitectura de diseño en modo oscuro profundo 
 El flujo de extremo a extremo de una misión multi-etapa se modela en 6 interfaces modulares capturadas directamente del prototipo interactivo:
 
 ##### Pantalla 1: Mapa Global de 4 Zonas Hídricas
+
 Vista macro de las 4 zonas del campus ECI (`Embalse de Investigación`, `Red de Canales`, `Laguna de Reserva` y `Laboratorio Hídrico Central`) con inventario de 60 drones (15 por zona), índices de salud de flota calculados en paralelo y condiciones climáticas:
 ![P1: Mapa Global de 4 Zonas Hídricas](docs/images/Maps4Zones.png)
 
 ##### Pantalla 2: Selección de Ruta y Waypoints Multi-Etapa
+
 Interfaz de parametrización: definición de origen, destino, waypoints secuenciales (`WP-01` a `WP-04`), peso del paquete (≤ 1500g), prioridad y cálculo de distancias hidrológicas:
 ![P2: Selección de Ruta y Waypoints Multi-Etapa](docs/images/SelectRoute.png)
 
 ##### Pantalla 3: Asignación y Relevo de Drones por Tramo
+
 Planificación algorítmica tramo por tramo (`TR-01`, `TR-02`, `TR-03`): selección del dron más idóneo por segmento según aptitud hidrodinámica, autonomía de batería y sincronización en esclusas:
 ![P3: Asignación y Relevo de Drones por Tramo](docs/images/AsignationTramos.png)
 
 ##### Pantalla 4: Monitoreo en Tiempo Real
+
 Consola de telemetría en vivo: cinemática de navegación, velocidad en m/s, deriva, estado de la muestra y actualización continua del hash de custodia SHA-256 en cada waypoint:
 ![P4: Monitoreo en Tiempo Real y Telemetría](docs/images/MonitoringLive.png)
 
 ##### Pantalla 5: Alerta de Fallo y Reasignación Automática (< 1.5s)
+
 Manejo de contingencias en waypoint intermedio: detección de anomalía mecánica/eléctrica, disparo del failover autónomo en menos de 1.5 segundos, relevo por dron de respaldo y transferencia de custodia:
 ![P5: Alerta de Fallo y Reasignación Automática](docs/images/AlertAndReasignation.png)
 
 ##### Pantalla 6: Reporte de Entrega y Auditoría de Custodia
+
 Pantalla de cierre formal: entrega de muestra a investigador/solicitante, bitácora forense de hashes encadenados, tiempo total de travesía y confirmación institucional al Centro de Control ECI:
 ![P6: Reporte de Entrega y Auditoría de Custodia](docs/images/ReportDelivery.png)
 
@@ -4102,15 +4111,15 @@ Todas las combinaciones cromáticas de texto y elementos interactivos fueron eva
 
 ![Certificación de Accesibilidad WCAG 2.1 AA](docs/images/AccesibilityWACG.png)
 
-| Elemento / Token | Color Primer Plano | Color de Fondo | Ratio de Contraste | Criterio Exigido | Dictamen WCAG 2.1 |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Texto Principal** | `#F1F7F9` (Blanco Hielo) | `#050D14` (Fondo Abisal) | **16.4 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AAA)** |
-| **Texto Secundario** | `#8EA6B4` (Gris Azulado) | `#050D14` (Fondo Abisal) | **6.2 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
-| **Acento Sonar Neón** | `#00F0FF` (Cian Neón) | `#050D14` (Fondo Abisal) | **13.1 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AAA)** |
-| **Estado Disponible** | `#00E676` (Verde Esmeralda) | `#0B1924` (Superficie) | **8.9 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AAA)** |
-| **Advertencia / Recarga** | `#FFB800` (Oro) | `#0B1924` (Superficie) | **7.8 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AA)** |
-| **Fallo Crítico** | `#FF3B30` (Rojo Carmesí) | `#0B1924` (Superficie) | **4.8 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
-| **Cadena Custodia** | `#B388FF` (Púrpura) | `#0B1924` (Superficie) | **6.5 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
+| Elemento / Token                |      Color Primer Plano      |       Color de Fondo       | Ratio de Contraste |       Criterio Exigido       |      Dictamen WCAG 2.1      |
+| :------------------------------ | :---------------------------: | :------------------------: | :----------------: | :--------------------------: | :--------------------------: |
+| **Texto Principal**       |  `#F1F7F9` (Blanco Hielo)  | `#050D14` (Fondo Abisal) | **16.4 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AAA)** |
+| **Texto Secundario**      |  `#8EA6B4` (Gris Azulado)  | `#050D14` (Fondo Abisal) | **6.2 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
+| **Acento Sonar Neón**    |   `#00F0FF` (Cian Neón)   | `#050D14` (Fondo Abisal) | **13.1 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AAA)** |
+| **Estado Disponible**     | `#00E676` (Verde Esmeralda) |  `#0B1924` (Superficie)  | **8.9 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AAA)** |
+| **Advertencia / Recarga** |       `#FFB800` (Oro)       |  `#0B1924` (Superficie)  | **7.8 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AA)** |
+| **Fallo Crítico**        |  `#FF3B30` (Rojo Carmesí)  |  `#0B1924` (Superficie)  | **4.8 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
+| **Cadena Custodia**       |    `#B388FF` (Púrpura)    |  `#0B1924` (Superficie)  | **6.5 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
 
 ---
 
@@ -4165,6 +4174,7 @@ El backlog consolida las Historias de Usuario (HU) estimadas mediante Planning P
 #### 4. Planificación Detallada de los 3 Sprints Enterprise
 
 ##### 🏃 Sprint 1 Enterprise — Arquitectura por Capas y Patrones Enterprise
+
 * **Sprint Goal:** *"Establecer la arquitectura limpia por capas desacopladas e implementar los patrones Chain of Responsibility, Decorator y Adapter para validación, cifrado y telemetría de la flota Enterprise"*.
 * **Duración:** 2 Semanas (10 días hábiles de desarrollo).
 * **Capacidad del Equipo:** 24 Story Points (2 desarrolladores × 12 SP).
@@ -4181,6 +4191,7 @@ El backlog consolida las Historias de Usuario (HU) estimadas mediante Planning P
   * `HU-12`: Adaptador para integración desacoplada de condiciones meteorológicas e hidrológicas (**3 SP**).
 
 ##### 🏃 Sprint 2 Enterprise — Rutas Multi-Etapa y Coordinación de Zonas
+
 * **Sprint Goal:** *"Implementar el motor de rutas multi-etapa con waypoints, relevos coordinados entre las 4 zonas hídricas y tolerancia a fallos con reasignación autónoma en menos de 1.5s"*.
 * **Duración:** 2 Semanas (10 días hábiles de desarrollo).
 * **Capacidad del Equipo:** 26 Story Points.
@@ -4197,6 +4208,7 @@ El backlog consolida las Historias de Usuario (HU) estimadas mediante Planning P
   * `HU-16`: Desvío dinámico de ruta ante condiciones ambientales adversas (**3 SP**).
 
 ##### 🏃 Sprint 3 Enterprise — Calidad, Rendimiento y Certificación
+
 * **Sprint Goal:** *"Alcanzar cobertura de pruebas JaCoCo ≥ 85%, asegurar 0 deuda técnica en SonarQube y validar el throughput de 100 misiones concurrentes"*.
 * **Duración:** 2 Semanas (10 días hábiles de desarrollo).
 * **Capacidad del Equipo:** 24 Story Points.
@@ -4218,11 +4230,11 @@ El backlog consolida las Historias de Usuario (HU) estimadas mediante Planning P
 
 Aplicando el marco de mejora continua de Scrum, el equipo documenta la retrospectiva real del Sprint 2 para nutrir las prácticas de la Fase Empoleon:
 
-| Dimensión de la Retrospectiva | Hallazgos y Análisis Operacional |
-| :--- | :--- |
-| **¿Qué funcionó bien? (What went well)** | • **Desacoplamiento con Observer:** Separar las alertas de la lógica de asignación permitió despachar eventos multicanal en $< 50$ms sin bloquear el hilo principal.<br>• **Desarrollo Guiado por Pruebas (TDD):** Implementar primero las pruebas de las estrategias de selección (`MayorBateria`, `ZonaCercana`, `PrioridadCritica`) aceleró la resolución de la tensión AP-07 vs AP-08 con 0 regresiones.<br>• **Pre-commit Hooks:** La automatización de git hooks previno commits con formato no estándar y bloqueó commits directos sobre ramas protegidas. |
-| **¿Qué no funcionó bien? (What didn't go well)** | • **Fricción de Tipos en API Externa:** Al consultar condiciones meteorológicas directamente, se introdujeron tipos de datos incompatibles que inicialmente contaminaron entidades de dominio.<br>• **Condiciones de Carrera Iniciales:** Las pruebas concurrentes tempranas arrojaban fallos esporádicos (*flaky tests*) por mutación de listas compartidas.<br>• **Sobrecarga de Métodos:** Varios métodos en los orquestadores iniciales superaron el umbral de 15 líneas, dificultando la auditoría de Clean Code. |
-| **¿Qué cambiaremos? (Action Items / What will we change)** | • **Patrón Adapter Obligatorio:** Aislar toda fuente de datos externa detrás de interfaces puras de dominio antes de escribir la lógica de aplicación.<br>• **Inmutabilidad por Defecto:** Utilizar `records` de Java 21 y copias inmutables (`List.copyOf`) en todas las entidades compartidas concurrentemente.<br>• **Regla Estricta de Métodos $\le 15$ líneas:** Modularizar exhaustivamente cada responsabilidad mediante métodos privados atómicos para asegurar mantenibilidad y cumplimiento de SonarQube. |
+| Dimensión de la Retrospectiva                                     | Hallazgos y Análisis Operacional                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| :----------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **¿Qué funcionó bien? (What went well)**                  | •**Desacoplamiento con Observer:** Separar las alertas de la lógica de asignación permitió despachar eventos multicanal en $< 50$ms sin bloquear el hilo principal.• **Desarrollo Guiado por Pruebas (TDD):** Implementar primero las pruebas de las estrategias de selección (`MayorBateria`, `ZonaCercana`, `PrioridadCritica`) aceleró la resolución de la tensión AP-07 vs AP-08 con 0 regresiones.• **Pre-commit Hooks:** La automatización de git hooks previno commits con formato no estándar y bloqueó commits directos sobre ramas protegidas. |
+| **¿Qué no funcionó bien? (What didn't go well)**          | •**Fricción de Tipos en API Externa:** Al consultar condiciones meteorológicas directamente, se introdujeron tipos de datos incompatibles que inicialmente contaminaron entidades de dominio.• **Condiciones de Carrera Iniciales:** Las pruebas concurrentes tempranas arrojaban fallos esporádicos (*flaky tests*) por mutación de listas compartidas.• **Sobrecarga de Métodos:** Varios métodos en los orquestadores iniciales superaron el umbral de 15 líneas, dificultando la auditoría de Clean Code.                                                    |
+| **¿Qué cambiaremos? (Action Items / What will we change)** | •**Patrón Adapter Obligatorio:** Aislar toda fuente de datos externa detrás de interfaces puras de dominio antes de escribir la lógica de aplicación.• **Inmutabilidad por Defecto:** Utilizar `records` de Java 21 y copias inmutables (`List.copyOf`) en todas las entidades compartidas concurrentemente.• **Regla Estricta de Métodos $\le 15$ líneas:** Modularizar exhaustivamente cada responsabilidad mediante métodos privados atómicos para asegurar mantenibilidad y cumplimiento de SonarQube.                                                   |
 
 ---
 
@@ -4246,4 +4258,73 @@ Aplicando el marco de mejora continua de Scrum, el equipo documenta la retrospec
 
 ---
 
+---
+
+### 🎯 Ejercicio 10 (Fase Empoleon) — Modelado Formal de Casos de Uso Enterprise y Flujos de Fallo (UML 2.5)
+
+#### 1. Contexto y Objetivos del Ejercicio
+
+En el marco de la evolución **AquaPort Enterprise (Fase Empoleon)**, el sistema pasa de despachos monozona a una orquestación distribuida que administra **60 drones especializados**, distribuidos en **4 zonas hídricas** del campus (Embalse Norte, Canal de Conexión, Lago Central y Humedal Sur), ejecutando rutas multi-etapa con puntos de control (*waypoints*), transferencias de carga (*handover*) y sellado criptográfico inmutable de cadena de custodia (**SHA-256**).
+
+El **Reto Empoleon de Casos de Uso** exige modelar de forma exhaustiva el caso nuclear y representar los **5 flujos alternos y excepcionales** del nivel Enterprise estrictamente mediante estereotipos `<<extend>>`, con sus **condiciones de guardia explicitadas**:
+
+1. **Fallo de drone en waypoint intermedio** $\to$ Reasignación automática sin intervención manual en $< 1.5$s.
+2. **Condición hídrica adversa en tramo** $\to$ Desvío dinámico hacia canal protegido.
+3. **Zona de destino inactiva** $\to$ Suspensión de avance y espera segura (*Hold*).
+4. **Cadena de custodia interrumpida** $\to$ Detección de alteración en hash SHA-256, bloqueo y peritaje forense.
+5. **Batería crítica en mitad de ruta (< 25%)** $\to$ Retorno forzoso de emergencia a muelle base.
+
+---
+
+#### 2. Diagrama de Casos de Uso Enterprise
+
+A continuación se presenta el diagrama formal de Casos de Uso conforme a la especificación **UML 2.5**:
+
+![Diagrama de Casos de Uso - AquaPort Enterprise](docs/images/DiagramC4.png)
+
+---
+
+#### 3. Especificación Formal de Actores
+
+Conforme a las directrices de la especificación UML 2.5, el sistema central **AquaPort Enterprise** constituye el sujeto del modelo (*System Boundary*) y bajo ninguna circunstancia se modela como actor. Todos los actores residen fuera de la frontera:
+
+| Actor                               |        Categoría UML        | Rol y Responsabilidad Operacional                                                                                                                                                                                                                                                                                                                                        |
+| :---------------------------------- | :--------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Solicitante**               |        Humano / Base        | Investigador, laboratorista o estudiante de la ECI que ingresa una solicitud formal de transporte de muestras de agua o sensores hidrológicos, definiendo punto de origen, destino y criticidad de la carga (`CU-01`).                                                                                                                                                |
+| **Operador Hídrico**         |    Humano / Especializado    | Supervisor técnico de guardia que orquesta y monitoriza las misiones multi-etapa complejas (`CU-02`), supervisa la telemetría unificada de las 4 zonas náuticas (`CU-03`) y autoriza o supervisa maniobras excepcionales. **Hereda de `Solicitante`** mediante generalización UML (`<<generalize>>`), pudiendo también ingresar solicitudes directas. |
+| **Administrador ECI**         |       Humano / Auditor       | Director administrativo responsable de auditar el inventario global de la flota de 60 drones, analizar métricas de desgaste, tiempos de servicio y validar reportes periciales de cadena de custodia (`CU-04`).                                                                                                                                                       |
+| **Técnico de Mantenimiento** |      Humano / Operativo      | Personal técnico de campo encargado de recibir órdenes de servicio por averías en agua, retirar unidades siniestradas o degradadas, ejecutar diagnósticos de propulsión/sensores y registrar la rehabilitación de drones en el muelle de servicio (`CU-05`).                                                                                                     |
+| **API Condiciones Hídricas** | Sistema Externo / Secundario | Servicio meteorológico e hidrológico perimetral que suministra en tiempo real datos de oleaje, velocidad de corriente y ráfagas de viento por tramo de navegación para validar la aptitud del trayecto (`CU-INC-02`).                                                                                                                                              |
+| **Centro de Control ECI**     | Sistema Externo / Secundario | Entidad institucional externa encargada de regular el tráfico fluvial del campus, supervisar esclusas automáticas y autorizar el tránsito en canales de interconexión restringidos (`CU-INC-05`).                                                                                                                                                                  |
+
+---
+
+#### 4. Matriz de Casos de Uso y Relaciones UML (`<<include>>` y `<<extend>>`)
+
+|         Código         | Caso de Uso                                                           |     Actor Asociado     |             Relación UML             | Condición Formal / Justificación Técnica                                                                                                                              |
+| :---------------------: | :-------------------------------------------------------------------- | :--------------------: | :------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|   **`CU-01`**   | **Solicitar transporte de muestra con custodia (RF-02)**        |      Solicitante      |            Caso de Entrada            | Ingreso de solicitud con tipo de muestra, volumen, temperatura requerida y sellado criptográfico inicial.                                                               |
+|   **`CU-02`**   | **Ejecutar misión multi-etapa con waypoints (AP-15 / RF-01)**  |   Operador Hídrico   |      **Caso Base Nuclear**      | Orquesta el despacho y navegación a través de múltiples zonas con relevo en waypoints intermedios y tolerancia a fallos.                                              |
+|   **`CU-03`**   | **Consultar telemetría y mapa de las 4 zonas en vivo (RF-04)** |    Operador / Admin    |          Consulta Analítica          | Monitoreo en tiempo real de coordenadas GPS, estado de baterías, velocidad de corriente y posición de las 60 unidades.                                                 |
+|   **`CU-04`**   | **Supervisar inventario de flota y auditoría (RF-03)**         |   Administrador ECI   |           Auditoría Forense           | Seguimiento del ciclo de vida de los 60 drones, desglose de subflotas y trazabilidad de registros forenses.                                                              |
+|   **`CU-05`**   | **Gestionar órdenes de mantenimiento y rehabilitación**       | Técnico Mantenimiento |          Operación Técnica          | Recepción de incidencias críticas, diagnóstico en muelle y reincorporación de drones rehabilitados a estado`DISPONIBLE`.                                           |
+| **`CU-INC-01`** | **Planificar ruta y segmentar tramos (Waypoints)**              |    Sistema Interno    | **`<<include>>`** de `CU-02` | **Inclusión Obligatoria:** Toda misión multi-etapa se segmenta en tramos discretos con waypoints georreferenciados para relevos.                                 |
+| **`CU-INC-02`** | **Validar condiciones hídricas y oleaje por tramo**            |    API Hidrológica    | **`<<include>>`** de `CU-02` | **Inclusión Obligatoria:** Consulta la API externa meteorológica antes de autorizar la navegación en cada tramo.                                                |
+| **`CU-INC-03`** | **Sellar y verificar cadena de custodia (SHA-256)**             |    Sistema Interno    | **`<<include>>`** de `CU-02` | **Inclusión Obligatoria:** Calcula el hash criptográfico inmutable en la recolección y lo verifica en cada handover intermedio.                                 |
+| **`CU-INC-04`** | **Coordinar relevo y handover de carga en waypoint**            |    Sistema Interno    | **`<<include>>`** de `CU-02` | **Inclusión Obligatoria:** Sincroniza la llegada de dos drones en el punto de encuentro para el traspaso físico de la muestra.                                   |
+| **`CU-INC-05`** | **Autorizar tránsito por esclusas institucionales**            | Centro de Control ECI | **`<<include>>`** de `CU-02` | **Inclusión Obligatoria:** Solicita apertura y salvoconducto digital al Centro de Control ECI para cruzar canales interzonales.                                   |
+| **`CU-EXT-01`** | **Reasignar automáticamente drone en waypoint**                |    Sistema Interno    | **`<<extend>>`** de `CU-02` | **Condicional:** `[Condición: Fallo de drone en waypoint]`. Despacha autónomamente una unidad de reserva en $< 1.5$s para continuar la misión.              |
+| **`CU-EXT-02`** | **Desviar dinámicamente ruta por canal protegido**             |    Sistema Interno    | **`<<extend>>`** de `CU-02` | **Condicional:** `[Condición: Condición hídrica adversa en tramo]`. Si el oleaje supera $1.2\text{ m}$, recalcula la ruta por canales protegidos.           |
+| **`CU-EXT-03`** | **Suspender misión y entrar en espera segura (Hold)**          |    Sistema Interno    | **`<<extend>>`** de `CU-02` | **Condicional:** `[Condición: Zona destino inactiva]`. Detiene el avance y activa anclaje virtual mientras se restablece la operatividad.                       |
+| **`CU-EXT-04`** | **Alertar anomalía y emitir peritaje forense**                 |    Sistema Interno    | **`<<extend>>`** de `CU-02` | **Condicional:** `[Condición: Cadena de custodia interrumpida]`. Discrepancia en el hash SHA-256 detiene la entrega y genera reporte forense inmutable.         |
+| **`CU-EXT-05`** | **Activar protocolo de retorno de emergencia a base**           |    Sistema Interno    | **`<<extend>>`** de `CU-02` | **Condicional:** `[Condición: Batería crítica en mitad de ruta (< 25%)]`. Ordena aterrizaje o retorno inmediato al muelle base para evitar extravío en agua. |
+
+---
+
+#### 5. Justificación de Cumplimiento de Reglas UML 2.5
+
+1. **Sentido y Semántica de la Relación `<<extend>>`:** Conforme a la especificación UML 2.5 (§18.1.3), la relación de extensión es condicional y la flecha discontinua apunta **desde el caso de uso extendido hacia el caso de uso base** (`CU_Ext .> CU_Base`). Cada extensión define explícitamente una condición booleana de activación, asegurando que el caso base `CU-02` sea autónomo y completo sin necesidad de conocer los flujos excepcionales a priori.
+2. **Sentido y Semántica de la Relación `<<include>>`:** La flecha discontinua apunta **desde el caso base hacia el caso incluido** (`CU_Base .> CU_Inc`), indicando que los pasos de planificación, validación hídrica, sellado de custodia y relevo son partes constitutivas e ineludibles para la consecución del objetivo del caso base.
+3. **Principio de Actores Externos:** El sistema `AquaPort Enterprise` no interactúa consigo mismo como actor. Los actores modelados representan agentes humanos reales o servicios de software perimetrales (`API Condiciones Hídricas`, `Centro de Control ECI`) que desencadenan o consumen información del sistema.
+4. **Generalización de Actores:** `Operador Hídrico` hereda el rol de `Solicitante` (`Operador --|> Solicitante`), reflejando la jerarquía de roles sin duplicar asociaciones en el diagrama.
 
