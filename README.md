@@ -4328,3 +4328,168 @@ Conforme a las directrices de la especificación UML 2.5, el sistema central **A
 3. **Principio de Actores Externos:** El sistema `AquaPort Enterprise` no interactúa consigo mismo como actor. Los actores modelados representan agentes humanos reales o servicios de software perimetrales (`API Condiciones Hídricas`, `Centro de Control ECI`) que desencadenan o consumen información del sistema.
 4. **Generalización de Actores:** `Operador Hídrico` hereda el rol de `Solicitante` (`Operador --|> Solicitante`), reflejando la jerarquía de roles sin duplicar asociaciones en el diagrama.
 
+---
+
+### 🖼️ Ejercicio 11 (Fase Empoleon) — Mocks con IA: Flujo Completo Enterprise en 5 Pantallas
+
+En este ejercicio se desarrolló el diseño de interfaz de alta fidelidad para el flujo operacional integral de **AquaPort Enterprise (Fase Empoleon)** mediante un proceso sistemático guiado por Inteligencia Artificial y validado a través del prototipo interactivo standalone [AquaPort_Enterprise_Design_System.html](docs/mockups/AquaPort_Enterprise_Design_System.html).
+
+El flujo modela la interacción completa del sistema en **5 pantallas críticas**, utilizando datos realistas del dominio (IDs de drones `AR-01` a `AR-60`, 4 zonas hídricas interconectadas, cargas especializadas, sellado SHA-256 y failover en $< 1.5$s), cumpliendo con el **Reto Empoleon**:
+
+---
+
+#### 1. Pantalla 1: Mapa de las 4 Zonas Hídricas con Drones en Tiempo Real
+
+Visualización geoespacial panorámica de las 4 cuencas hídricas del campus universitario (**Embalse Norte, Canal de Conexión, Lago Central y Humedal Sur**), con monitoreo en tiempo real de las **60 unidades navales** (15 drones por zona), indicando su ubicación GPS, familia física (*Superficial, Semisumergible, Buceador*), batimetría y estado operativo (*Disponible, En Misión, Recargando, Avería*).
+
+![Pantalla 1 — Mapa de las 4 Zonas Hídricas con Drones en Tiempo Real](docs/images/Maps4Zones.png)
+
+##### A. Datos Realistas del Dominio:
+* **Inventario Total:** 60 Drones (`AR-01` a `AR-15` en Embalse Norte, `AR-16` a `AR-30` en Canal de Conexión, `AR-31` a `AR-45` en Lago Central, `AR-46` a `AR-60` en Humedal Sur).
+* **Condiciones Ambientales:** Oleaje promedio $0.35\text{ m}$, corriente superficial $0.6\text{ m/s}$, temperatura del agua $16.4^\circ\text{C}$.
+* **Esclusas y Conexiones:** Esclusa Central E-01 (Abierta / Tránsito Habilitado), Compuerta Ribereña C-02 (Cerrada por protocolo).
+
+##### B. Prompt Estructurado para IA:
+```text
+[ROL]: Principal UX/UI Designer & Geospatial Interface Architect especializado en sistemas SCADA marítimos y flotas autónomas.
+[CONTEXTO]: Plataforma AquaPort Enterprise para la Escuela Colombiana de Ingeniería Julio Garavito. 60 drones acuáticos distribuidos en 4 zonas hidrológicas del campus (Embalse Norte, Canal de Conexión, Lago Central, Humedal Sur).
+[OBJETIVO]: Diseñar la vista principal del mapa táctico en tiempo real con panel de telemetría y filtros por subflota.
+[SISTEMA DE DISEÑO]: Modo oscuro estricto basado en tokens Enterprise: Fondo Abisal (#070d14), Paneles (#0c1521), Acentos Marea (#14b8a6) y Sonar Cyan (#06b6d4), Alertas Carmesí (#ef4444). Tipografía Inter para UI y JetBrains Mono para telemetría.
+[COMPONENTES CLAVE]:
+1. Mapa central vectorial con las 4 masas de agua, canales interzonales y boyas de esclusa.
+2. Indicadores flotantes de 60 drones con iconos diferenciados por tipo (Superficial, Semisumergido, Buceador) y anillos de estado.
+3. Barra superior con KPIs globales: Flota Total (60), En Operación (18), Disponibles (36), En Carga (4), Averías (2).
+4. Panel lateral retráctil con capas batimétricas, velocidad de corrientes y filtros por zona.
+[DATOS DE DOMINIO]: IDs AR-01 a AR-60, zonas reales del campus, niveles de batería (30% a 100%) y estados operativos.
+```
+
+---
+
+#### 2. Pantalla 2: Configuración de Ruta Multi-Etapa con Waypoints
+
+Interfaz de planificación de misiones complejas (**AP-15 / RF-01**) donde el Operador Hídrico selecciona origen, destino, puntos de relevo intermedios (*waypoints*), asigna los drones óptimos para cada tramo y especifica la muestra con su contenedor de preservación.
+
+![Pantalla 2 — Selección y Configuración de Ruta Multi-Etapa](docs/images/SelectRoute.png)
+
+![Pantalla 2B — Asignación de Tramos y Handover](docs/images/AsignationTramos.png)
+
+##### A. Datos Realistas del Dominio:
+* **Misión:** `MIS-2026-MULTI-042` — Transporte de Muestra Fisicoquímica de Sedimento Profundo.
+* **Origen:** Muelle Alfa (Embalse Norte) $\to$ **Destino Final:** Laboratorio Hídrico (Humedal Sur).
+* **Tramos y Waypoints:**
+  * *Tramo 1 (850 m):* Embalse Norte $\to$ `WP-1 (Esclusa Central)`. Dron: `AR-12` (Superficial, Batería 94%).
+  * *Tramo 2 (1,200 m):* `WP-1` $\to$ `WP-2 (Estrecho Ribereño)`. Dron: `AR-28` (Semisumergible, Batería 88%).
+  * *Tramo 3 (650 m):* `WP-2` $\to$ Laboratorio Hídrico. Dron: `AR-52` (Buceador, Batería 91%).
+* **Carga:** Muestra #M-882 (2.4 kg, requiere refrigeración a $4^\circ\text{C} \pm 1^\circ\text{C}$, Prioridad Alta).
+
+##### B. Prompt Estructurado para IA:
+```text
+[ROL]: Senior Product Designer especializado en logística autónoma y planificación de rutas multi-modales.
+[CONTEXTO]: AquaPort Enterprise — Módulo de configuración de misiones multi-etapa con waypoints (Requerimiento AP-15).
+[OBJETIVO]: Diseñar la pantalla de configuración de ruta por tramos con asignación de drones especializados y puntos de relevo (handover).
+[ESTRUCTURA DE INTERFAZ]:
+1. Selector de ruta con diagrama secuencial de nodos (Origen -> Waypoint 1 -> Waypoint 2 -> Destino).
+2. Ficha de asignación por tramo: selección de dron según especialidad física, compatibilidad con la zona y batería proyectada.
+3. Panel de configuración de carga: tipo (Muestra de Sedimento), peso (2.4 kg), control térmico (4°C) y sellado de custodia SHA-256.
+4. Resumen analítico de ruta: distancia acumulada (2.7 km), tiempo estimado (24 min) y consumo de flota estimado.
+5. Botón de acción principal: 'Iniciar Misión Multi-Etapa y Generar Sello Inicial'.
+```
+
+---
+
+#### 3. Pantalla 3: Monitoreo de Progreso por Tramo con Telemetría en Vivo
+
+Consola de seguimiento operacional en tiempo real (**RF-04**) que despliega el avance simultáneo de la misión, mostrando el estado de cada tramo en la línea de tiempo, telemetría continua del dron activo y validación de sellos criptográficos en tránsito.
+
+![Pantalla 3 — Monitoreo de Progreso en Vivo con Telemetría](docs/images/MonitoringLive.png)
+
+##### A. Datos Realistas del Dominio:
+* **Estado de Tramos:**
+  * *Tramo 1:* **100% COMPLETADO** (Handover exitoso en `WP-1` a las 10:14:22).
+  * *Tramo 2:* **68% EN NAVEGACIÓN** (Dron activo: `AR-28`).
+  * *Tramo 3:* **PENDIENTE** (Dron `AR-52` en Standby en muelle de espera).
+* **Telemetría Activa (`AR-28`):** Coordenadas GPS `4.7831° N, 74.0435° W`, Velocidad 3.8 nudos, Profundidad 1.2 m, Batería actual 74%, Temperatura de carga $4.1^\circ\text{C}$, Hash SHA-256 parcial validado.
+* **ETA Restante:** 7 min 45 s hacia `WP-2`.
+
+##### B. Prompt Estructurado para IA:
+```text
+[ROL]: Lead UI Designer especializado en HUD militar, telemetría náutica y paneles de misión crítica en tiempo real.
+[CONTEXTO]: AquaPort Enterprise — Pantalla de seguimiento en vivo de una misión multi-etapa en ejecución activa.
+[OBJETIVO]: Diseñar la interfaz de monitoreo con barra de etapas (stepper), telemetría del dron en vuelo y estado ambiental del canal.
+[COMPONENTES CLAVE]:
+1. Stepper horizontal superior con estados: Tramo 1 (Completado / Verde), Tramo 2 (Activo / Cyan animado), Tramo 3 (En espera).
+2. Panel HUD central con velocímetro náutico, nivel de batería circular (74%), profundidad batimétrica y coordenadas GPS vivas.
+3. Monitor térmico del contenedor biológico mostrando 4.1°C dentro de banda de tolerancia.
+4. Gráfico de corriente y oleaje lateral con lectura de API hídrica en vivo (Oleaje 0.4 m, Viento 12 km/h).
+5. Indicador de Cadena de Custodia: 'Hash Inmutable Verificado: 9f8a...3b21'.
+```
+
+---
+
+#### 4. Pantalla 4: Alerta de Fallo en Waypoint con Reasignación Automática Visible (< 1.5s)
+
+Pantalla de contingencia operativa que ilustra la activación de la tolerancia a fallos (**RNF-01 / CU-EXT-01**). Ante una avería en propulsión del dron activo al llegar al waypoint, el motor autónomo reasigna una unidad de reemplazo en menos de 1.5 segundos sin intervención humana, emitiendo la orden de servicio al técnico.
+
+![Pantalla 4 — Alerta de Fallo en Waypoint y Reasignación Autónoma](docs/images/AlertAndReasignation.png)
+
+##### A. Datos Realistas del Dominio:
+* **Evento de Fallo:** `ERR-PROP-092` — Bloqueo de hélice por vegetación ribereña en dron `AR-28` en `WP-2`.
+* **Tiempo de Failover Registrado:** **1.18 segundos** (Certificado $< 1.5$s según RNF-01).
+* **Unidad Reasignada:** `AR-35` (Semisumergible, Batería 92%, Estado Standby en Dársena Ribereña 2).
+* **Acción Automática:** Traspaso de telemetría y continuidad de misión autorizado; generación de orden de mantenimiento `OT-2026-089` despachada al Técnico de Mantenimiento.
+
+##### B. Prompt Estructurado para IA:
+```text
+[ROL]: Senior Critical-Systems UX Architect especializado en gestión de incidentes, resiliencia y failover autónomo.
+[CONTEXTO]: AquaPort Enterprise — Manejo de fallo crítico en misión multi-etapa y reasignación automática (< 1.5s).
+[OBJETIVO]: Diseñar la pantalla de alerta de emergencia y resolución autónoma visible para el Operador Hídrico.
+[ELEMENTOS DE INTERFAZ]:
+1. Banner superior de alerta roja de alto contraste (#ef4444) con pulso visual: 'INCIDENCIA CRÍTICA EN WAYPOINT WP-2'.
+2. Tarjeta de diagnóstico de la unidad averiada (Dron AR-28: Fallo de Propulsión, Batería 71%, Muestra asegurada).
+3. Cronómetro visual de Failover Autónomo: 'Reasignación completada en 1.18s — Éxito'.
+4. Tarjeta de unidad de reemplazo activada: 'Dron AR-35 asignado automáticamente al Tramo 2'.
+5. Log de eventos de auditoría y notificación emitida al Técnico de Mantenimiento con ID de orden OT-2026-089.
+```
+
+---
+
+#### 5. Pantalla 5: Reporte Final de la Cadena de Custodia (SHA-256 e Inmutabilidad)
+
+Pantalla de cierre operacional y certificación forense (**RF-03 / CU-INC-03 / CU-EXT-04**). Presenta el acta digital inmutable de entrega en el Laboratorio Hídrico, verificando que la muestra mantuvo su integridad molecular, sellos criptográficos intactos y trazabilidad física a lo largo de los 3 tramos y el relevo de emergencia.
+
+![Pantalla 5 — Reporte Final de Cadena de Custodia y Entrega Forense](docs/images/ReportDelivery.png)
+
+##### A. Datos Realistas del Dominio:
+* **Identificador de Muestra:** `MUESTRA-ECI-2026-X88` (Agua profunda para análisis de metales pesados).
+* **Hash SHA-256 en Origen:** `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+* **Hash SHA-256 en Destino:** `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` $\to$ **INTEGRIDAD 100% CERTIFICADA (MATCH PERFECTO)**.
+* **Historial de Drones Custodios:** `AR-12` (Tramo 1) $\to$ `AR-28` (Tramo 2 Inicial) $\to$ `AR-35` (Relevo Failover Tramo 2) $\to$ `AR-52` (Tramo 3).
+* **Preservación Térmica:** Rango registrado: $3.9^\circ\text{C}$ a $4.2^\circ\text{C}$ (Dentro del umbral regulatorio).
+* **Firmas Digitales:** Operador Hídrico, Dron Relevo `AR-35`, Dron Entrega `AR-52`, Receptor Laboratorio Dr. Juan Camilo Mora.
+
+##### B. Prompt Estructurado para IA:
+```text
+[ROL]: Principal Legal-Tech & Forensic UX Designer especializado en cadena de custodia digital, auditoría y trazabilidad inmutable.
+[CONTEXTO]: AquaPort Enterprise — Pantalla de Reporte Final de Entrega y Certificación de Custodia Forense.
+[OBJETIVO]: Diseñar el certificado digital interactivo de recepción de muestra hídrica con validación de hashes y firmas criptográficas.
+[ESTRUCTURA DE INTERFAZ]:
+1. Encabezado institucional con sello de certificación 'CADENA DE CUSTODIA VÁLIDA Y CERTIFICADA'.
+2. Comparador criptográfico: Hash Inicial SHA-256 vs Hash de Entrega SHA-256 con badge de integridad verde 'MATCH FORENSE'.
+3. Bitácora inmutable de relevos (Audit Trail) detallando cada handover con hora, coordenadas GPS y drones intervinientes.
+4. Gráfico histórico de temperatura del contenedor durante todo el trayecto (manteniéndose en 4.0°C ± 0.2°C).
+5. Código QR de validación pública institucional y botón de exportación en PDF criptográficamente firmado.
+```
+
+---
+
+#### 6. Tabla Comparativa de Pantallas y Requerimientos Enterprise
+
+| Pantalla | Vista del Sistema | Requerimiento DOSW | Drones / Datos Relevantes | Mecanismo de Validación |
+| :---: | :--- | :---: | :--- | :--- |
+| **P-01** | Mapa de las 4 Zonas Hídricas | **RF-04** | 60 Drones (`AR-01` a `AR-60`), 4 Cuencas | Telemetría GPS en tiempo real y boyas de esclusa |
+| **P-02** | Configuración de Ruta Multi-Etapa | **AP-15 / RF-01** | `AR-12`, `AR-28`, `AR-52`, 3 Waypoints | Algoritmo de planificación y compatibilidad por tramo |
+| **P-03** | Monitoreo de Progreso por Tramo | **RF-01 / RF-04** | Dron activo `AR-28`, avance 68% | HUD de velocidad, batería 74% y temperatura 4.1°C |
+| **P-04** | Alerta y Reasignación en Waypoint | **RNF-01 / CU-EXT-01** | Fallo `AR-28` $\to$ Relevo `AR-35` | Cronómetro de failover registrado en **1.18 s** ($< 1.5$s) |
+| **P-05** | Reporte de Cadena de Custodia | **RF-03 / CU-INC-03** | Muestra `M-ECI-X88`, 4 drones custodios | Hash SHA-256 inmutable y certificación forense |
+
+
