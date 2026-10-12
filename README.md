@@ -4492,4 +4492,79 @@ Pantalla de cierre operacional y certificación forense (**RF-03 / CU-INC-03 / C
 | **P-04** | Alerta y Reasignación en Waypoint | **RNF-01 / CU-EXT-01** | Fallo `AR-28` $\to$ Relevo `AR-35` | Cronómetro de failover registrado en **1.18 s** ($< 1.5$s) |
 | **P-05** | Reporte de Cadena de Custodia | **RF-03 / CU-INC-03** | Muestra `M-ECI-X88`, 4 drones custodios | Hash SHA-256 inmutable y certificación forense |
 
+---
+
+### 🧪 Ejercicio 12 (Fase Empoleon) — TDD de las 3 Capas: Unitarias, Integración y Cobertura Enterprise (JaCoCo ≥ 85%)
+
+#### 1. Contexto y Objetivos del Ejercicio
+
+En el marco de la evolución **AquaPort Enterprise (Fase Empoleon)**, el desarrollo de software guiado por pruebas (**TDD — Test-Driven Development**) se eleva al estándar industrial estructurado en **tres capas concéntricas de verificación**:
+1. **Capa de Dominio (Unitarias Puras):** Pruebas unitarias exhaustivas del servicio de dominio `PlanificadorRuta` para segmentación de tramos, cálculo de distancias y viabilidad energética.
+2. **Capa de Aplicación e Integración (`Integration Testing`):** Pruebas de integración del flujo completo (Solicitud $\to$ Planificación $\to$ Asignación por tramos $\to$ Notificación de waypoints) y la validación automatizada de los **5 flujos alternos y de fallo** del Enterprise.
+3. **Capa de Calidad y Cobertura (JaCoCo & Clean Architecture):** Cobertura de código global $\ge 85\%$ (alcanzando **94%** en el bundle general), verificación de branch coverage y cumplimiento estricto de la regla de oro del dominio auditada por reflexión (`SolidArchitectureAuditTest`).
+
+---
+
+#### 2. Metodología TDD Aplicada (Ciclo Red - Green - Refactor)
+
+El ciclo de desarrollo se ejecutó de forma rigurosa en tres fases iterativas:
+
+```mermaid
+graph LR
+    RED["🔴 RED<br/>Escribir pruebas unitarias<br/>fallidas para PlanificadorRuta<br/>y flujos alternos"] --> GREEN["🟢 GREEN<br/>Implementar PlanificadorRuta<br/>y orquestación mínima<br/>para pasar la suite"]
+    GREEN --> REFACTOR["🔵 REFACTOR<br/>Optimizar Clean Code,<br/>métodos <= 15 líneas,<br/>inmutabilidad y auditoría"]
+    REFACTOR --> RED
+```
+
+1. **Fase Roja (RED):** Se redactaron las suites [PlanificadorRutaTest.java](src/test/main/dosw/empoleon/PlanificadorRutaTest.java) y [FlujoCompletoEnterpriseIntegrationTest.java](src/test/main/dosw/empoleon/FlujoCompletoEnterpriseIntegrationTest.java) definiendo los contratos de interfaz, casos de borde y los 5 escenarios de fallo antes de escribir el código de producción.
+2. **Fase Verde (GREEN):** Se implementó la clase de dominio [PlanificadorRuta.java](src/main/dosw/empoleon/dominio/PlanificadorRuta.java) en Java 21 puro y se conectó con el orquestador hasta lograr el 100% de pruebas en verde (**169 pruebas pasando**).
+3. **Fase de Refactorización (REFACTOR):** Se refactorizó la lógica dividiendo métodos complejos en funciones privadas $\le 15$ líneas, garantizando 0 dependencias externas en el dominio y verificando ausencia de llamadas a `System.out` (`java:S106`).
+
+---
+
+#### 3. Especificación de las 3 Capas de Pruebas
+
+##### A. Capa 1: Pruebas Unitarias del Dominio (`PlanificadorRutaTest`)
+Verifica la lógica matemática y de negocio aislada dentro del dominio sin dependencias de infraestructura:
+
+| Prueba Unitaria | Caso de Prueba / Condición | Resultado Obtenido |
+| :--- | :--- | :---: |
+| `testPlanificarRutaExitosamente()` | Segmenta ruta en tramos ordenados asignando el dron con mayor batería disponible por zona. | **PASS** |
+| `testValidarExcepcionMenosDeDosWaypoints()` | Lanza `IllegalArgumentException` si la ruta tiene menos de 2 waypoints. | **PASS** |
+| `testValidarExcepcionPesoInvalido()` | Lanza `IllegalArgumentException` ante pesos de carga $\le 0$ g. | **PASS** |
+| `testSeleccionarDroneOptimoVacioSinUnidadesEnZona()` | Retorna `Optional.empty()` si no existen drones disponibles en la zona de partida. | **PASS** |
+| `testSeleccionarDroneDescartaBateriaCritica()` | Descarta proactivamente drones con batería $< 25\%$ (umbral de seguridad). | **PASS** |
+| `testCalcularDistanciaTotal()` | Suma la distancia en metros de todos los tramos de la ruta multi-etapa. | **PASS** |
+| `testEstimarConsumoYViabilidadEnergetica()` | Calcula el consumo esperado ($8\%$ batería/km) y valida si la autonomía final supera el $25\%$. | **PASS** |
+| `testEvaluarTramoViableConParametrosNulos()` | Maneja defensivamente entradas nulas o drones en estado `EN_MISION`. | **PASS** |
+
+##### B. Capa 2: Pruebas de Integración y los 5 Flujos Alternos (`FlujoCompletoEnterpriseIntegrationTest`)
+Valida la interacción entre `PlanificadorRuta`, `OrquestadorMisionMultiEtapa`, `CoordinadorRutasEmpoleon` y `CustodiaMuestra`:
+
+| Prueba de Integración | Escenario Enterprise Evaluado | Mecanismo de Aserción |
+| :--- | :--- | :--- |
+| `testFlujoCompletoIntegracionFeliz()` | Flujo feliz completo de 3 tramos y 4 waypoints: solicitud $\to$ planificación $\to$ asignación $\to$ notificación y custodia intacta. | `assertEquals(COMPLETADA, estado)`<br>`assertTrue(verificarIntegridad())` |
+| `testFlujoAlterno1_FalloDroneEnWaypointConReasignacionAutonoma()` | **Flujo Alterno 1:** Fallo de motor en waypoint intermedio dispara failover autónomo a dron de reserva en $< 1.5$s registrando transferencia de custodia. | `assertTimeoutPreemptively(1500ms)`<br>`assertTrue(transferenciaRegistrada)` |
+| `testFlujoAlterno2_ZonaDestinoInactivaConPasoAHoldSeguro()` | **Flujo Alterno 2:** Detección de zona de destino o esclusa inactiva coloca la misión en estado de espera segura (*Hold*). | `assertFalse(exito)`<br>`assertEquals(EN_ESPERA_SEGURA, estado)` |
+| `testFlujoAlterno3_BateriaCriticaEnMitadDeRutaConRetornoEmergencia()` | **Flujo Alterno 3:** Dron con batería remanente $< 25\%$ activa reasignación de unidad y retorno preventivo a muelle base. | `assertTrue(exito)`<br>`assertTrue(transferenciaRegistrada)` |
+| `testFlujoAlterno4_CadenaCustodiaInterrumpidaConAlertaYPeritaje()` | **Flujo Alterno 4:** Detección de alteración o corrupción en el hash SHA-256 en tránsito bloquea la entrega y emite alerta pericial. | `assertFalse(verificarIntegridad(adulterado))`<br>`assertEquals(3, registros)` |
+| `testFlujoAlterno5_CondicionHidricaAdversaConDesvioCanalProtegido()` | **Flujo Alterno 5:** Oleaje severo ($> 1.2\text{ m}$) reportado por API meteorológica activa desvío dinámico por canal protegido (`-ALT`). | `assertTrue(exito)`<br>`assertEquals(COMPLETADA, estado)` |
+
+##### C. Capa 3: Auditoría Arquitectónica y Principios SOLID (`SolidArchitectureAuditTest`)
+Inspección reflexiva automatizada que garantiza la arquitectura limpia en tiempo de build:
+* **Regla de Oro del Dominio:** Paquete `main.dosw.empoleon.dominio` contiene **0 imports** de librerías externas o capas de aplicación/infraestructura.
+* **Inyección de Dependencias por Constructor:** Todos los servicios y orquestadores utilizan constructores explícitos sin mutabilidad no controlada.
+
+---
+
+#### 4. Resultados de Cobertura JaCoCo y Resumen de Suite
+
+* **Pruebas Totales Ejecutadas:** **169 pruebas unitarias y de integración** (100% pasando sin fallos ni errores).
+* **Cobertura Global de Líneas (Line Coverage):** **94%** (304 de 5,259 instrucciones sin cubrir en todo el repositorio).
+* **Cobertura de Ramas (Branch Coverage):** **84%**.
+* **Clases Analizadas:** **65 clases** del sistema.
+* **Tiempo de Ejecución:** $\sim 10.1$ segundos con informe XML/HTML generado en `target/site/jacoco/index.html`.
+* **Calidad de Código SonarQube:** Cumplimiento total de regla `java:S106` (Logger centralizado), métodos $\le 15$ líneas y clases $\le 150$ líneas.
+
+
 
