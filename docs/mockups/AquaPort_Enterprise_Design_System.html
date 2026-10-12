@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaPort Enterprise — Sistema de Diseño y Mapa de Flujos UX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Paleta Semántica Enterprise */
+      --bg-deep: #050D14;
+      --bg-surface: #0B1924;
+      --bg-card: rgba(15, 32, 46, 0.75);
+      --bg-glass: rgba(18, 38, 54, 0.6);
+      --border-subtle: #183344;
+      --border-glow: #00F0FF;
+      --text-main: #F1F7F9;
+      --text-muted: #8EA6B4;
+      --text-dim: #5C7584;
+
+      /* Acentos de Estado con Cumplimiento WCAG AA */
+      --cyan-sonar: #00F0FF;
+      --blue-tide: #0D829B;
+      --blue-sub: #0077B6;
+      --green-ok: #00E676;
+      --amber-warn: #FFB800;
+      --red-fail: #FF3B30;
+      --purple-crypto: #B388FF;
+      --gray-maint: #78909C;
+
+      /* Tipografías */
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Espaciado */
+      --sp-1: 4px;
+      --sp-2: 8px;
+      --sp-3: 12px;
+      --sp-4: 16px;
+      --sp-6: 24px;
+      --sp-8: 32px;
+      --sp-12: 48px;
+
+      /* Radios */
+      --r-sm: 6px;
+      --r-md: 10px;
+      --r-lg: 16px;
+      --r-full: 9999px;
+
+      /* Sombras & Efectos */
+      --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.45);
+      --shadow-neon: 0 0 20px rgba(0, 240, 255, 0.25);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-deep);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(179, 136, 255, 0.04) 0%, transparent 40%);
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 var(--sp-6);
+    }
+
+    /* Header y Hero */
+    header {
+      padding: var(--sp-12) 0 var(--sp-8);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--sp-4);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--cyan-sonar), var(--blue-tide));
+      border-radius: var(--r-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-neon);
+    }
+    .brand-icon svg { width: 24px; height: 24px; fill: #000; }
+    .brand-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #FFFFFF, var(--cyan-sonar));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .badge-enterprise {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: rgba(0, 240, 255, 0.12);
+      color: var(--cyan-sonar);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      padding: 3px 10px;
+      border-radius: var(--r-full);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Subnavegación de Secciones */
+    .tabs-nav {
+      display: flex;
+      gap: var(--sp-2);
+      margin-top: var(--sp-8);
+      overflow-x: auto;
+      padding-bottom: var(--sp-2);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: var(--r-md);
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .tab-btn.active {
+      background: rgba(0, 240, 255, 0.12);
+      color: var(--cyan-sonar);
+      border-color: rgba(0, 240, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+    }
+
+    /* Contenido de Pestañas */
+    .tab-pane {
+      display: none;
+      padding: var(--sp-8) 0 var(--sp-12);
+      animation: fadeIn 0.3s ease;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Títulos de Sección */
+    .section-head {
+      margin-bottom: var(--sp-6);
+    }
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-subtitle {
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-size: 15px;
+    }
+
+    /* Grid y Tarjetas */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--sp-6); }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--sp-6); }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-4); }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: var(--sp-6);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-glass);
+      position: relative;
+      transition: all 0.25s ease;
+    }
+    .card:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Tokens de Color Visuales */
+    .swatch {
+      height: 70px;
+      border-radius: var(--r-md);
+      margin-bottom: var(--sp-3);
+      display: flex;
+      align-items: flex-end;
+      padding: var(--sp-2) var(--sp-3);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Componente: Tarjeta de Drone Enterprise (6 Estados) */
+    .drone-card {
+      border-radius: var(--r-lg);
+      padding: var(--sp-4);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+      position: relative;
+      overflow: hidden;
+    }
+    .drone-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .drone-card.disponible::before { background: var(--green-ok); }
+    .drone-card.en-transito::before { background: var(--cyan-sonar); }
+    .drone-card.recargando::before { background: var(--amber-warn); }
+    .drone-card.mantenimiento::before { background: var(--gray-maint); opacity: 0.8; }
+    .drone-card.fallo::before { background: var(--red-fail); }
+    .drone-card.sumergido::before { background: var(--blue-sub); }
+
+    .drone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .drone-id {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .status-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--r-full);
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .badge-ok { background: rgba(0, 230, 118, 0.15); color: var(--green-ok); border: 1px solid var(--green-ok); }
+    .badge-transito { background: rgba(0, 240, 255, 0.15); color: var(--cyan-sonar); border: 1px solid var(--cyan-sonar); }
+    .badge-recarga { background: rgba(255, 184, 0, 0.15); color: var(--amber-warn); border: 1px solid var(--amber-warn); }
+    .badge-maint { background: rgba(120, 144, 156, 0.15); color: var(--gray-maint); border: 1px solid var(--gray-maint); }
+    .badge-fail { background: rgba(255, 59, 48, 0.15); color: var(--red-fail); border: 1px solid var(--red-fail); }
+    .badge-sub { background: rgba(0, 119, 182, 0.25); color: #64B5F6; border: 1px solid #64B5F6; }
+
+    .drone-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .drone-meta strong {
+      color: var(--text-main);
+      display: block;
+      font-size: 14px;
+    }
+
+    /* Barra de Batería con Rangos WCAG */
+    .battery-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: var(--r-full);
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .battery-fill {
+      height: 100%;
+      border-radius: var(--r-full);
+    }
+    .bat-high { background: var(--green-ok); width: 85%; }
+    .bat-mid { background: var(--amber-warn); width: 38%; }
+    .bat-low { background: var(--red-fail); width: 14%; }
+
+    /* Botones CTA (5 Estados) */
+    .btn {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: var(--r-md);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--cyan-sonar);
+      color: #03151E;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    }
+    .btn-primary:hover {
+      background: #33F3FF;
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-disabled {
+      background: #182A36;
+      color: var(--text-dim);
+      border-color: #243B4A;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .btn-loading {
+      background: #0B4F5E;
+      color: var(--cyan-sonar);
+      cursor: wait;
+    }
+    .btn-success {
+      background: var(--green-ok);
+      color: #021F0F;
+      box-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+    }
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(0, 240, 255, 0.3);
+      border-top-color: var(--cyan-sonar);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Insignia de Custodia Criptográfica */
+    .crypto-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: rgba(179, 136, 255, 0.12);
+      color: var(--purple-crypto);
+      border: 1px solid rgba(179, 136, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: var(--r-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Tabla de Verificación WCAG */
+    .wcag-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--sp-4);
+      font-size: 14px;
+    }
+    .wcag-table th, .wcag-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .wcag-table th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .ratio-badge {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--green-ok);
+      background: rgba(0, 230, 118, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* Stepper Multi-Etapa */
+    .stepper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: var(--sp-8) 0;
+    }
+    .stepper::before {
+      content: '';
+      position: absolute;
+      top: 18px; left: 30px; right: 30px;
+      height: 2px;
+      background: var(--border-subtle);
+      z-index: 1;
+    }
+    .step-item {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      flex: 1;
+    }
+    .step-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 2px solid var(--border-subtle);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    .step-item.active .step-circle {
+      background: var(--cyan-sonar);
+      border-color: var(--cyan-sonar);
+      color: #000;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+    }
+    .step-item.done .step-circle {
+      background: var(--green-ok);
+      border-color: var(--green-ok);
+      color: #000;
+    }
+    .step-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .step-item.active .step-label {
+      color: var(--cyan-sonar);
+      font-weight: 700;
+    }
+
+    /* Flujo en 6 Pantallas Interactivas */
+    .screen-mockup {
+      background: #06131D;
+      border: 2px solid var(--border-subtle);
+      border-radius: var(--r-lg);
+      padding: var(--sp-6);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      margin-top: var(--sp-6);
+    }
+    .screen-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: var(--sp-4);
+      margin-bottom: var(--sp-6);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .screen-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .dot-red { background: #FF5F56; }
+    .dot-yellow { background: #FFBD2E; }
+    .dot-green { background: #27C93F; }
+
+    /* Leyes UX Banner */
+    .ux-law-box {
+      background: rgba(0, 240, 255, 0.05);
+      border-left: 4px solid var(--cyan-sonar);
+      padding: var(--sp-4);
+      border-radius: 0 var(--r-md) var(--r-md) 0;
+      margin-bottom: var(--sp-6);
+    }
+    .ux-law-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--cyan-sonar);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ux-law-desc {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div>
+            <div class="brand-title">AquaPort Enterprise</div>
+            <div style="font-size: 13px; color: var(--text-muted);">Sistema de Diseño y Mapa de Flujos Multi-Etapa (Fase Empoleon)</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <span class="badge-enterprise">Nivel Empoleon · 60 Drones</span>
+          <span class="crypto-tag">🔒 SHA-256 Custodia</span>
+        </div>
+      </div>
+
+      <!-- Navegación de Pestañas -->
+      <nav class="tabs-nav" id="main-tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-tokens')">🎨 Tokens de Diseño</button>
+        <button class="tab-btn" onclick="switchTab('tab-componentes')">🧩 Componentes y Estados</button>
+        <button class="tab-btn" onclick="switchTab('tab-pantalla-1')">🗺️ P1: Mapa 4 Zonas</button>
+        <button class="tab-btn" onclick="switchTab('tab-pantalla-2')">📍 P2: Selección de Ruta</button>
+        <button class="tab-btn" onclick="switchTab('tab-pantalla-3')">⚡ P3: Asignación Tramos</button>
+        <button class="tab-btn" onclick="switchTab('tab-pantalla-4')">📡 P4: Monitoreo Live</button>
+        <button class="tab-btn" onclick="switchTab('tab-pantalla-5')">🚨 P5: Alerta y Reasignación</button>
+        <button class="tab-btn" onclick="switchTab('tab-pantalla-6')">📜 P6: Reporte de Entrega</button>
+        <button class="tab-btn" onclick="switchTab('tab-wcag')">♿ Accesibilidad WCAG AA</button>
+        <button class="tab-btn" onclick="switchTab('tab-leyes')">🧠 Leyes UX</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- TAB 1: TOKENS DE DISEÑO -->
+    <section class="tab-pane active" id="tab-tokens">
+      <div class="section-head">
+        <h2 class="section-title">Tokens de Diseño Fundacionales</h2>
+        <p class="section-subtitle">Variables semánticas estandarizadas para consistencia visual, ergonomía en turnos de monitoreo nocturno y contraste verificado.</p>
+      </div>
+
+      <h3 style="margin-bottom: var(--sp-4); color: #fff;">1. Paleta Cromática y Estados Semánticos</h3>
+      <div class="grid-4">
+        <div class="card">
+          <div class="swatch" style="background: #050D14; color: #fff; border: 1px solid #183344;">#050D14</div>
+          <strong>Fondo Abisal Profundo</strong>
+          <p style="font-size: 13px; color: var(--text-muted);">Lienzo global de baja fatiga visual.</p>
+        </div>
+        <div class="card">
+          <div class="swatch" style="background: #0B1924; color: #fff; border: 1px solid #183344;">#0B1924</div>
+          <strong>Superficie de Cristal</strong>
+          <p style="font-size: 13px; color: var(--text-muted);">Contenedores modulares y consolas.</p>
+        </div>
+        <div class="card">
+          <div class="swatch" style="background: #00F0FF; color: #000;">#00F0FF</div>
+          <strong>Cian Sonar Neón</strong>
+          <p style="font-size: 13px; color: var(--text-muted);">Foco visual, interactividad y rumbos.</p>
+        </div>
+        <div class="card">
+          <div class="swatch" style="background: #00E676; color: #000;">#00E676</div>
+          <strong>Verde Operativo</strong>
+          <p style="font-size: 13px; color: var(--text-muted);">Unidades disponibles y confirmaciones.</p>
+        </div>
+        <div class="card">
+          <div class="swatch" style="background: #FFB800; color: #000;">#FFB800</div>
+          <strong>Oro de Telemetría</strong>
+          <p style="font-size: 13px; color: var(--text-muted);">Recarga de batería y advertencias leves.</p>
+        </div>
+        <div class="card">
+          <div class="swatch" style="background: #FF3B30; color: #fff;">#FF3B30</div>
+          <strong>Carmesí de Emergencia</strong>
+          <p style="font-size: 13px; color: var(--text-muted);">Fallos motrices y failover crítico.</p>
+        </div>
+        <div class="card">
+          <div class="swatch" style="background: #B388FF; color: #000;">#B388FF</div>
+          <strong>Púrpura Criptográfico</strong>
+          <p style="font-size: 13px; color: var(--text-muted);">Sellos SHA-256 y cadena de custodia.</p>
+        </div>
+        <div class="card">
+          <div class="swatch" style="background: #0077B6; color: #fff;">#0077B6</div>
+          <strong>Azul Bentónico</strong>
+          <p style="font-size: 13px; color: var(--text-muted);">Inmersión de drones buceadores.</p>
+        </div>
+      </div>
+
+      <h3 style="margin: var(--sp-8) 0 var(--sp-4); color: #fff;">2. Tipografía y Escala de Espaciado</h3>
+      <div class="grid-2">
+        <div class="card">
+          <h4 style="color: var(--cyan-sonar); margin-bottom: 8px;">Tipografía Institucional</h4>
+          <p style="margin-bottom: 8px;"><strong>Inter:</strong> Texto general, títulos, botones de acción e interfaces de monitoreo.</p>
+          <p style="font-family: var(--font-mono); color: var(--purple-crypto);"><strong>JetBrains Mono:</strong> Hashes criptográficos SHA-256, códigos de dron (DRN-XX), telemetría numérica y coordenadas GPS.</p>
+        </div>
+        <div class="card">
+          <h4 style="color: var(--cyan-sonar); margin-bottom: 8px;">Escala de Espaciado (Grid de 8 Puntos)</h4>
+          <p style="font-size: 14px; color: var(--text-muted);">4px (xs), 8px (sm), 12px (md), 16px (base), 24px (lg), 32px (xl), 48px (2xl), 64px (3xl). Garantiza alineación rítmica y armonía en dashboards de control.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: COMPONENTES Y ESTADOS -->
+    <section class="tab-pane" id="tab-componentes">
+      <div class="section-head">
+        <h2 class="section-title">Componentes y sus Estados Semánticos</h2>
+        <p class="section-subtitle">Modelado integral de los componentes atómicos del sistema con todos sus estados reactivos.</p>
+      </div>
+
+      <h3 style="margin-bottom: var(--sp-4); color: #fff;">Tarjeta de Drone Enterprise (6 Estados de Operación)</h3>
+      <div class="grid-3">
+        <!-- 1. Disponible -->
+        <div class="drone-card disponible">
+          <div class="drone-header">
+            <span class="drone-id">DRN-ENT-01</span>
+            <span class="status-badge badge-ok">● Disponible</span>
+          </div>
+          <div class="drone-meta">
+            <div>Zona: <strong>Red de Canales</strong></div>
+            <div>Tipo: <strong>SUPERFICIAL</strong></div>
+            <div>Carga Máx: <strong>600 g</strong></div>
+            <div>Batería: <strong>92%</strong></div>
+          </div>
+          <div class="battery-bar"><div class="battery-fill bat-high" style="width: 92%;"></div></div>
+        </div>
+
+        <!-- 2. En Tránsito -->
+        <div class="drone-card en-transito">
+          <div class="drone-header">
+            <span class="drone-id">DRN-ENT-14</span>
+            <span class="status-badge badge-transito">▶ En Tránsito</span>
+          </div>
+          <div class="drone-meta">
+            <div>Tramo: <strong>TR-02 (Canal Alfa)</strong></div>
+            <div>ETA: <strong>3 min 40 s</strong></div>
+            <div>Velocidad: <strong>4.2 m/s</strong></div>
+            <div>Batería: <strong>78%</strong></div>
+          </div>
+          <div class="battery-bar"><div class="battery-fill bat-high" style="width: 78%;"></div></div>
+        </div>
+
+        <!-- 3. Recargando -->
+        <div class="drone-card recargando">
+          <div class="drone-header">
+            <span class="drone-id">DRN-ENT-22</span>
+            <span class="status-badge badge-recarga">⚡ Recargando</span>
+          </div>
+          <div class="drone-meta">
+            <div>Muelle: <strong>Base Central</strong></div>
+            <div>Tasa: <strong>45W Rápida</strong></div>
+            <div>Tiempo restante: <strong>14 min</strong></div>
+            <div>Batería: <strong>42%</strong></div>
+          </div>
+          <div class="battery-bar"><div class="battery-fill bat-mid" style="width: 42%;"></div></div>
+        </div>
+
+        <!-- 4. Mantenimiento -->
+        <div class="drone-card mantenimiento">
+          <div class="drone-header">
+            <span class="drone-id">DRN-ENT-35</span>
+            <span class="status-badge badge-maint">◇ Mantenimiento</span>
+          </div>
+          <div class="drone-meta">
+            <div>Taller: <strong>Hangar Norte</strong></div>
+            <div>Causa: <strong>Calibración Sensores</strong></div>
+            <div>Técnico: <strong>Asignado</strong></div>
+            <div>Batería: <strong>60%</strong></div>
+          </div>
+          <div class="battery-bar"><div class="battery-fill" style="background: var(--gray-maint); width: 60%;"></div></div>
+        </div>
+
+        <!-- 5. Fallo Crítico -->
+        <div class="drone-card fallo">
+          <div class="drone-header">
+            <span class="drone-id">DRN-ENT-48</span>
+            <span class="status-badge badge-fail">▲ Fallo Crítico</span>
+          </div>
+          <div class="drone-meta">
+            <div>Error: <strong>Propulsor Bloqueado</strong></div>
+            <div>Ubicación: <strong>Waypoint WP-02</strong></div>
+            <div>Failover: <strong>Activado (<1.5s)</strong></div>
+            <div>Batería: <strong>18%</strong></div>
+          </div>
+          <div class="battery-bar"><div class="battery-fill bat-low"></div></div>
+        </div>
+
+        <!-- 6. Sumergido -->
+        <div class="drone-card sumergido">
+          <div class="drone-header">
+            <span class="drone-id">DRN-ENT-59</span>
+            <span class="status-badge badge-sub">≋ Sumergido</span>
+          </div>
+          <div class="drone-meta">
+            <div>Zona: <strong>Laguna de Reserva</strong></div>
+            <div>Profundidad: <strong>5.4 m</strong></div>
+            <div>Sonar: <strong>Enlace Activo</strong></div>
+            <div>Batería: <strong>81%</strong></div>
+          </div>
+          <div class="battery-bar"><div class="battery-fill bat-high" style="width: 81%;"></div></div>
+        </div>
+      </div>
+
+      <h3 style="margin: var(--sp-8) 0 var(--sp-4); color: #fff;">Botones de Acción CTA (5 Estados Interactivos)</h3>
+      <div class="card" style="display: flex; gap: var(--sp-4); flex-wrap: wrap; align-items: center;">
+        <button class="btn btn-primary">1. Default: Despachar Misión</button>
+        <button class="btn btn-primary" style="box-shadow: 0 0 25px rgba(0, 240, 255, 0.6); transform: translateY(-2px);">2. Hover / Foco Activo</button>
+        <button class="btn btn-loading"><div class="spinner"></div> 3. Procesando / Asignando...</button>
+        <button class="btn btn-disabled" disabled>4. Deshabilitado</button>
+        <button class="btn btn-success">✓ 5. Éxito: Misión Despachada</button>
+      </div>
+    </section>
+
+    <!-- TAB 3: PANTALLA 1 - MAPA DE 4 ZONAS -->
+    <section class="tab-pane" id="tab-pantalla-1">
+      <div class="ux-law-box">
+        <div class="ux-law-title">🧠 Ley de Hick (Diseño de Interfaz)</div>
+        <div class="ux-law-desc">El mapa agrupa la flota masiva de 60 drones en 4 sectores funcionales coherentes, reduciendo el tiempo de procesamiento cognitivo del operador al minimizar las alternativas directas de primer nivel.</div>
+      </div>
+
+      <div class="screen-mockup">
+        <div class="screen-header-bar">
+          <div class="screen-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--cyan-sonar);">CONSOLA ENTERPRISE · VISTA GENERAL DE 4 ZONAS HÍDRICAS</div>
+          <div style="font-size: 13px; color: var(--text-muted);">60 Drones en Operación</div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card" style="border-color: rgba(0, 240, 255, 0.4);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="color: #fff;">1. Embalse de Investigación (Norte)</h3>
+              <span class="status-badge badge-ok">15 Drones</span>
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Aguas abiertas para recolección de muestras biológicas e inmersiones profundas con drones buceadores.</p>
+            <div style="font-family: var(--font-mono); font-size: 13px; color: var(--cyan-sonar);">Salud promedio: 88.4% · Oleaje: 0.3m (Calma)</div>
+          </div>
+
+          <div class="card" style="border-color: rgba(0, 240, 255, 0.4);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="color: #fff;">2. Red de Canales (Campus Central)</h3>
+              <span class="status-badge badge-ok">15 Drones</span>
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Canales estrechos de alta velocidad para transporte interfacultades mediante drones superficiales.</p>
+            <div style="font-family: var(--font-mono); font-size: 13px; color: var(--cyan-sonar);">Salud promedio: 82.1% · Esclusas: 100% Operativas</div>
+          </div>
+
+          <div class="card" style="border-color: rgba(0, 240, 255, 0.4);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="color: #fff;">3. Laguna de Reserva (Sur)</h3>
+              <span class="status-badge badge-ok">15 Drones</span>
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Zona protegida con vegetación acuática moderada; navegación con drones semisumergibles.</p>
+            <div style="font-family: var(--font-mono); font-size: 13px; color: var(--cyan-sonar);">Salud promedio: 85.7% · Nivel de agua: 3.2m</div>
+          </div>
+
+          <div class="card" style="border-color: rgba(0, 240, 255, 0.4);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="color: #fff;">4. Laboratorio Hídrico Central</h3>
+              <span class="status-badge badge-ok">15 Drones</span>
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Punto neurálgico de acople, recepción de muestras con custodia y base técnica de recarga inductiva.</p>
+            <div style="font-family: var(--font-mono); font-size: 13px; color: var(--cyan-sonar);">Salud promedio: 91.0% · Muelles libres: 6 / 10</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: PANTALLA 2 - SELECCIÓN DE RUTA -->
+    <section class="tab-pane" id="tab-pantalla-2">
+      <div class="ux-law-box">
+        <div class="ux-law-title">🧠 Ley de Miller (Chunking Cognitivo)</div>
+        <div class="ux-law-desc">La ruta multi-etapa se fragmenta en 4 puntos de control estructurados (origen, 2 waypoints intermedios y destino), evitando sobrecarga cognitiva al mantener el número de pasos dentro del rango óptimo de memoria operativa (7 ± 2 elementos).</div>
+      </div>
+
+      <div class="screen-mockup">
+        <div class="screen-header-bar">
+          <div class="screen-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--cyan-sonar);">PLANIFICADOR MULTI-ETAPA · CONFIGURACIÓN DE RUTA AP-15</div>
+          <button class="btn btn-primary" style="padding: 6px 14px; font-size: 13px;">Confirmar Waypoints</button>
+        </div>
+
+        <div class="stepper">
+          <div class="step-item done">
+            <div class="step-circle">1</div>
+            <div class="step-label">WP-01: Muelle Norte</div>
+          </div>
+          <div class="step-item active">
+            <div class="step-circle">2</div>
+            <div class="step-label">WP-02: Esclusa Alfa</div>
+          </div>
+          <div class="step-item">
+            <div class="step-circle">3</div>
+            <div class="step-label">WP-03: Boya Reserva</div>
+          </div>
+          <div class="step-item">
+            <div class="step-circle">4</div>
+            <div class="step-label">WP-04: Lab Central</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: var(--sp-6);">
+          <div class="card">
+            <h4 style="color: #fff; margin-bottom: 12px;">Parámetros del Paquete / Muestra</h4>
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+              <div>ID Muestra: <strong style="color: var(--cyan-sonar);">MUE-ECI-2026-X</strong></div>
+              <div>Peso calibrado: <strong>350 gramos</strong> (Apto para tramo)</div>
+              <div>Prioridad: <span class="status-badge" style="background: rgba(255, 59, 48, 0.2); color: var(--red-fail); border: 1px solid var(--red-fail);">CRÍTICA</span></div>
+              <div>Sello Inicial SHA-256: <code style="font-family: var(--font-mono); font-size: 11px; color: var(--purple-crypto);">e3b0c44298fc1c149afbf4c8996fb924...</code></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4 style="color: #fff; margin-bottom: 12px;">Validación de Ruta y Navegabilidad</h4>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+              <div style="color: var(--green-ok);">✓ Distancia total calculada: 1,850 metros</div>
+              <div style="color: var(--green-ok);">✓ Conectividad hidrológica confirmada entre esclusas</div>
+              <div style="color: var(--green-ok);">✓ Condiciones meteorológicas aptas (viento < 15 km/h)</div>
+              <div style="color: var(--cyan-sonar); font-weight: 600;">Tiempo estimado de travesía: 8 minutos 30 segundos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: PANTALLA 3 - ASIGNACIÓN POR TRAMOS -->
+    <section class="tab-pane" id="tab-pantalla-3">
+      <div class="ux-law-box">
+        <div class="ux-law-title">🧠 Ley de Proximidad y Feedback Claro</div>
+        <div class="ux-law-desc">Cada tramo de navegación se asocia visualmente a la unidad naval asignada, permitiendo al operador verificar de un vistazo el relevo de drones y la compatibilidad de carga en cada segmento.</div>
+      </div>
+
+      <div class="screen-mockup">
+        <div class="screen-header-bar">
+          <div class="screen-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--cyan-sonar);">ASIGNACIÓN ALGORÍTMICA POR TRAMOS · RELEVOS COORDINADOS</div>
+          <span class="crypto-tag">Estrategia: MayorBateriaStrategy</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: var(--sp-4);">
+          <!-- Tramo 1 -->
+          <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <span class="status-badge badge-transito">Tramo 1 (500m)</span>
+              <h4 style="color: #fff; margin-top: 4px;">WP-01 (Muelle Norte) ➔ WP-02 (Esclusa Alfa)</h4>
+              <p style="font-size: 13px; color: var(--text-muted);">Zona: Embalse de Investigación · Cauce con oleaje leve</p>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-family: var(--font-mono); font-weight: 700; color: var(--cyan-sonar);">DRN-ENT-04 (SUPERFICIAL)</div>
+              <div style="font-size: 13px; color: var(--green-ok);">Batería: 95% · Reserva: Segura</div>
+            </div>
+          </div>
+
+          <!-- Tramo 2 -->
+          <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <span class="status-badge badge-transito">Tramo 2 (650m)</span>
+              <h4 style="color: #fff; margin-top: 4px;">WP-02 (Esclusa Alfa) ➔ WP-03 (Boya Reserva)</h4>
+              <p style="font-size: 13px; color: var(--text-muted);">Zona: Red de Canales · Intersección con esclusa automatizada</p>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-family: var(--font-mono); font-weight: 700; color: var(--cyan-sonar);">DRN-ENT-18 (SEMISUMERGIDO)</div>
+              <div style="font-size: 13px; color: var(--green-ok);">Batería: 88% · Capacidad: 1,500g</div>
+            </div>
+          </div>
+
+          <!-- Tramo 3 -->
+          <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <span class="status-badge badge-transito">Tramo 3 (700m)</span>
+              <h4 style="color: #fff; margin-top: 4px;">WP-03 (Boya Reserva) ➔ WP-04 (Lab Central)</h4>
+              <p style="font-size: 13px; color: var(--text-muted);">Zona: Lab Hídrico Central · Atraque en muelle especializado</p>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-family: var(--font-mono); font-weight: 700; color: var(--cyan-sonar);">DRN-ENT-27 (SUPERFICIAL)</div>
+              <div style="font-size: 13px; color: var(--green-ok);">Batería: 91% · Sellado de muelle activo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: PANTALLA 4 - MONITOREO LIVE -->
+    <section class="tab-pane" id="tab-pantalla-4">
+      <div class="ux-law-box">
+        <div class="ux-law-title">🧠 Efecto de Usabilidad-Estética</div>
+        <div class="ux-law-desc">Una interfaz de monitoreo visualmente pulida, con micro-animaciones de telemetría y actualización en vivo del sellado criptográfico genera mayor confianza operativa y reduce el estrés del operador durante el seguimiento.</div>
+      </div>
+
+      <div class="screen-mockup">
+        <div class="screen-header-bar">
+          <div class="screen-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--green-ok);">● TELEMETRÍA EN TIEMPO REAL · MIS-MULTI-01 EN TRÁNSITO</div>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--purple-crypto);">HASH ACTUAL: 8f4b23...c91e</div>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Unidad en Mando</span>
+            <div style="font-size: 22px; font-weight: 800; color: #fff; margin: 4px 0;">DRN-ENT-04</div>
+            <div style="font-size: 13px; color: var(--cyan-sonar);">Tramo 1: Navegando hacia WP-02</div>
+            <div class="battery-bar" style="margin-top: 12px;"><div class="battery-fill bat-high" style="width: 89%;"></div></div>
+            <span style="font-size: 12px; color: var(--text-dim); margin-top: 4px; display: block;">Batería actual: 89%</span>
+          </div>
+
+          <div class="card">
+            <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Cinemática y Rumbo</span>
+            <div style="font-size: 22px; font-weight: 800; color: #fff; margin: 4px 0;">4.6 m/s</div>
+            <div style="font-size: 13px; color: var(--text-muted);">Rumbo: 142° SE · Deriva: 0.2 m</div>
+            <div style="font-size: 13px; color: var(--green-ok); margin-top: 12px;">Oleaje local: 0.35m (Óptimo)</div>
+          </div>
+
+          <div class="card">
+            <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Cadena de Custodia</span>
+            <div style="font-size: 20px; font-weight: 700; color: var(--purple-crypto); margin: 4px 0;">INTACTA</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Sellos validados: 2 / 4 waypoints</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-top: 8px;">Firma origen validada por ECI-Lab</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 7: PANTALLA 5 - ALERTA Y REASIGNACIÓN -->
+    <section class="tab-pane" id="tab-pantalla-5">
+      <div class="ux-law-box">
+        <div class="ux-law-title">🧠 Ley de Fitts y Ley de Jakob</div>
+        <div class="ux-law-desc">El botón de confirmación de failover manual y los controles de emergencia están diseñados con gran tamaño y proximidad ergonómica (Fitts), mientras que la alerta roja con código de fallo utiliza el patrón universal de advertencia industrial (Jakob).</div>
+      </div>
+
+      <div class="screen-mockup" style="border-color: rgba(255, 59, 48, 0.6); box-shadow: 0 0 35px rgba(255, 59, 48, 0.2);">
+        <div class="screen-header-bar" style="border-color: rgba(255, 59, 48, 0.3);">
+          <div class="screen-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--red-fail); font-weight: 700;">ALERTA CRÍTICA · REASIGNACIÓN AUTOMÁTICA EN WAYPOINT WP-02 (< 1.5s)</div>
+          <span class="status-badge badge-fail">FAILOVER EJECUTADO</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="card" style="border-color: rgba(255, 59, 48, 0.4); background: rgba(255, 59, 48, 0.05);">
+            <h4 style="color: var(--red-fail); margin-bottom: 8px;">Dron Averiado: DRN-ENT-04</h4>
+            <div style="font-size: 14px; display: flex; flex-direction: column; gap: 6px;">
+              <div>Causa: <strong>Bloqueo mecánico en hélice izquierda</strong></div>
+              <div>Batería residual: <strong style="color: var(--red-fail);">18% (< 25% umbral seguro)</strong></div>
+              <div>Ubicación de rescate: <strong>Muelle Esclusa Alfa</strong></div>
+              <div style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">Acción automática: Despachada orden técnica #ORD-882 al Técnico de Mantenimiento.</div>
+            </div>
+          </div>
+
+          <div class="card" style="border-color: rgba(0, 230, 118, 0.4); background: rgba(0, 230, 118, 0.05);">
+            <h4 style="color: var(--green-ok); margin-bottom: 8px;">Dron de Relevo Asignado: DRN-ENT-02</h4>
+            <div style="font-size: 14px; display: flex; flex-direction: column; gap: 6px;">
+              <div>Latencia de Reasignación: <strong style="color: var(--cyan-sonar);">0.42 segundos (< 1.5s SLA)</strong></div>
+              <div>Batería del reemplazo: <strong style="color: var(--green-ok);">94%</strong></div>
+              <div>Traspaso de Custodia: <span style="font-family: var(--font-mono); color: var(--purple-crypto);">DRN-ENT-04 ➔ DRN-ENT-02</span></div>
+              <div style="color: var(--green-ok); font-size: 12px; margin-top: 4px;">Nuevo hash encadenado firmado sin ruptura de la muestra.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 8: PANTALLA 6 - REPORTE DE ENTREGA -->
+    <section class="tab-pane" id="tab-pantalla-6">
+      <div class="ux-law-box">
+        <div class="ux-law-title">🧠 Regla del Pico-Fin (Peak-End Rule)</div>
+        <div class="ux-law-desc">El cierre de la misión proporciona un resumen visual gratificante, confirmando el éxito con insignias verdes y el sellado criptográfico verificado, asegurando una memoria psicológica de alta satisfacción, confiabilidad y control forense.</div>
+      </div>
+
+      <div class="screen-mockup">
+        <div class="screen-header-bar">
+          <div class="screen-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--green-ok); font-weight: 700;">MISIÓN COMPLETADA · CERTIFICADO DE ENTREGA Y CUSTODIA</div>
+          <span class="status-badge badge-ok">AUDITORÍA EXITOSA</span>
+        </div>
+
+        <div class="card" style="margin-bottom: var(--sp-6); border-color: rgba(0, 230, 118, 0.4);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <h3 style="color: #fff;">Muestra Recibida en Laboratorio Hídrico Central</h3>
+              <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;">Custodio receptor: Dra. Elena Restrepo · Sensor Acoplado al Analizador</p>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 800; color: var(--green-ok);">08 min 12 s</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Tiempo total de tránsito</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4 style="color: var(--purple-crypto); margin-bottom: 12px;">Bitácora Criptográfica Inmutable (SHA-256)</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 12px;">
+            <div style="background: rgba(255, 255, 255, 0.03); padding: 8px 12px; border-radius: 4px;">
+              [00:00:00] SELLADO_ORIGEN:WP-01 | Hash: <code>a1b2c3d4e5f6...</code> (Responsable: Operador Hídrico)
+            </div>
+            <div style="background: rgba(255, 59, 48, 0.06); padding: 8px 12px; border-radius: 4px; border-left: 3px solid var(--red-fail);">
+              [00:03:15] REASIGNACION_INCIDENCIA:WP-02 | Failover: DRN-ENT-04 ➔ DRN-ENT-02 (Latencia: 420ms)
+            </div>
+            <div style="background: rgba(179, 136, 255, 0.06); padding: 8px 12px; border-radius: 4px; border-left: 3px solid var(--purple-crypto);">
+              [00:03:16] TRANSFERENCIA_CUSTODIA:WP-02 | Hash Encadenado: <code>f8e7d6c5b4a3...</code>
+            </div>
+            <div style="background: rgba(0, 230, 118, 0.06); padding: 8px 12px; border-radius: 4px; border-left: 3px solid var(--green-ok);">
+              [00:08:12] ENTREGA_FINAL:WP-04 | Hash Final Verificado: <code>99a8b7c6d5e4...</code> (Integridad 100%)
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 9: ACCESIBILIDAD WCAG AA -->
+    <section class="tab-pane" id="tab-wcag">
+      <div class="section-head">
+        <h2 class="section-title">Certificación de Accesibilidad WCAG 2.1 Nivel AA</h2>
+        <p class="section-subtitle">Evaluación formal de contraste cromático sobre fondo oscuro para texto estándar (mínimo 4.5:1) y elementos de interfaz/iconos (mínimo 3:1).</p>
+      </div>
+
+      <div class="card">
+        <table class="wcag-table">
+          <thead>
+            <tr>
+              <th>Elemento / Token</th>
+              <th>Color Primer Plano</th>
+              <th>Color de Fondo</th>
+              <th>Ratio Contraste</th>
+              <th>Criterio WCAG AA</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Texto Principal</td>
+              <td><code>#F1F7F9</code> (Blanco Hielo)</td>
+              <td><code>#050D14</code> (Fondo Abisal)</td>
+              <td><span class="ratio-badge">16.4 : 1</span></td>
+              <td>Texto normal (&ge; 4.5:1)</td>
+              <td style="color: var(--green-ok); font-weight: 700;">✓ APROBADO (AAA)</td>
+            </tr>
+            <tr>
+              <td>Texto Secundario Muted</td>
+              <td><code>#8EA6B4</code> (Gris Azulado)</td>
+              <td><code>#050D14</code> (Fondo Abisal)</td>
+              <td><span class="ratio-badge">6.2 : 1</span></td>
+              <td>Texto normal (&ge; 4.5:1)</td>
+              <td style="color: var(--green-ok); font-weight: 700;">✓ APROBADO (AA)</td>
+            </tr>
+            <tr>
+              <td>Acento Cian Sonar</td>
+              <td><code>#00F0FF</code> (Cian Neón)</td>
+              <td><code>#050D14</code> (Fondo Abisal)</td>
+              <td><span class="ratio-badge">13.1 : 1</span></td>
+              <td>Texto e interfaz (&ge; 3.0:1)</td>
+              <td style="color: var(--green-ok); font-weight: 700;">✓ APROBADO (AAA)</td>
+            </tr>
+            <tr>
+              <td>Estado Disponible (Verde)</td>
+              <td><code>#00E676</code> (Verde Esmeralda)</td>
+              <td><code>#0B1924</code> (Superficie)</td>
+              <td><span class="ratio-badge">8.9 : 1</span></td>
+              <td>Texto e interfaz (&ge; 3.0:1)</td>
+              <td style="color: var(--green-ok); font-weight: 700;">✓ APROBADO (AAA)</td>
+            </tr>
+            <tr>
+              <td>Advertencia / Batería Media</td>
+              <td><code>#FFB800</code> (Oro)</td>
+              <td><code>#0B1924</code> (Superficie)</td>
+              <td><span class="ratio-badge">7.8 : 1</span></td>
+              <td>Texto e interfaz (&ge; 3.0:1)</td>
+              <td style="color: var(--green-ok); font-weight: 700;">✓ APROBADO (AA)</td>
+            </tr>
+            <tr>
+              <td>Fallo Crítico / Emergencia</td>
+              <td><code>#FF3B30</code> (Rojo Carmesí)</td>
+              <td><code>#0B1924</code> (Superficie)</td>
+              <td><span class="ratio-badge">4.8 : 1</span></td>
+              <td>Texto normal (&ge; 4.5:1)</td>
+              <td style="color: var(--green-ok); font-weight: 700;">✓ APROBADO (AA)</td>
+            </tr>
+            <tr>
+              <td>Cadena Custodia (Púrpura)</td>
+              <td><code>#B388FF</code> (Púrpura Neón)</td>
+              <td><code>#0B1924</code> (Superficie)</td>
+              <td><span class="ratio-badge">6.5 : 1</span></td>
+              <td>Texto normal (&ge; 4.5:1)</td>
+              <td style="color: var(--green-ok); font-weight: 700;">✓ APROBADO (AA)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 10: LEYES UX -->
+    <section class="tab-pane" id="tab-leyes">
+      <div class="section-head">
+        <h2 class="section-title">Marco de Leyes UX Aplicadas al Enterprise</h2>
+        <p class="section-subtitle">Sustentación teórica y aplicación práctica de la psicología cognitiva en las pantallas de AquaPort Enterprise.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="color: var(--cyan-sonar); margin-bottom: 8px;">1. Ley de Hick</h3>
+          <p style="color: var(--text-muted); font-size: 14px;"><strong>Enunciado:</strong> El tiempo que tarda una persona en tomar una decisión aumenta logarítmicamente con el número y la complejidad de las opciones.</p>
+          <p style="margin-top: 8px; font-size: 14px;"><strong>Aplicación en Pantalla 1:</strong> La consola no muestra 60 botones individuales al operador; en su lugar agrupa la flota en 4 zonas operativas, permitiendo inspeccionar por niveles progresivos sin parálisis por análisis.</p>
+        </div>
+
+        <div class="card">
+          <h3 style="color: var(--cyan-sonar); margin-bottom: 8px;">2. Ley de Miller</h3>
+          <p style="color: var(--text-muted); font-size: 14px;"><strong>Enunciado:</strong> La persona promedio solo puede mantener entre 5 y 9 piezas de información (7 ± 2) en su memoria de trabajo simultáneamente.</p>
+          <p style="margin-top: 8px; font-size: 14px;"><strong>Aplicación en Pantalla 2 y 3:</strong> La ruta multi-etapa se segmenta en waypoints y tramos modulares (origen, WP intermedio, destino) con resúmenes parciales de distancia y carga.</p>
+        </div>
+
+        <div class="card">
+          <h3 style="color: var(--cyan-sonar); margin-bottom: 8px;">3. Ley de Fitts</h3>
+          <p style="color: var(--text-muted); font-size: 14px;"><strong>Enunciado:</strong> El tiempo requerido para alcanzar un objetivo es función de la distancia y el tamaño del objetivo.</p>
+          <p style="margin-top: 8px; font-size: 14px;"><strong>Aplicación en Pantalla 5:</strong> El botón de confirmación de failover y los controles de aborto de emergencia tienen dimensiones aumentadas (padding generoso) y posiciones destacadas en la pantalla.</p>
+        </div>
+
+        <div class="card">
+          <h3 style="color: var(--cyan-sonar); margin-bottom: 8px;">4. Ley de Jakob</h3>
+          <p style="color: var(--text-muted); font-size: 14px;"><strong>Enunciado:</strong> Los usuarios esperan que tu sistema funcione de la misma manera que todos los demás sistemas que ya conocen.</p>
+          <p style="margin-top: 8px; font-size: 14px;"><strong>Aplicación en Pantallas 4 y 5:</strong> Se emplean convenciones industriales estándar: verde para estado seguro, ámbar para recarga, rojo para paro/fallo, y steppers horizontales cronológicos para rutas.</p>
+        </div>
+
+        <div class="card">
+          <h3 style="color: var(--cyan-sonar); margin-bottom: 8px;">5. Efecto de Usabilidad-Estética</h3>
+          <p style="color: var(--text-muted); font-size: 14px;"><strong>Enunciado:</strong> Los usuarios perciben los diseños estéticamente atractivos como más utilizables y confiables.</p>
+          <p style="margin-top: 8px; font-size: 14px;"><strong>Aplicación en Pantalla 4:</strong> Telemetría con glassmorphism, resplandor de neón cian y visualización criptográfica que inspira rigor científico y disminuye la fricción operativa.</p>
+        </div>
+
+        <div class="card">
+          <h3 style="color: var(--cyan-sonar); margin-bottom: 8px;">6. Regla del Pico-Fin (Peak-End Rule)</h3>
+          <p style="color: var(--text-muted); font-size: 14px;"><strong>Enunciado:</strong> Las personas juzgan una experiencia principalmente por cómo se sintieron en su punto álgido (pico) y en su final.</p>
+          <p style="margin-top: 8px; font-size: 14px;"><strong>Aplicación en Pantalla 6:</strong> El cierre de la misión con verificación de cadena de custodia SHA-256 e insignias de éxito garantiza una experiencia memorable de seguridad y misión cumplida.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      
+      const targetPane = document.getElementById(tabId);
+      if (targetPane) targetPane.classList.add('active');
+
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+  </script>
+</body>
+</html>

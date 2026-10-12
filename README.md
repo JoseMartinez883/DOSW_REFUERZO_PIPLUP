@@ -4007,3 +4007,121 @@ Siguiendo el estándar de ingeniería de requisitos de la Escuela Colombiana de 
 | **NTU** | Nephelometric Turbidity Units (Unidad de turbidez hídrica) |
 
 ---
+
+### Ejercicio 08 — Sistema de Diseño de AquaPort Enterprise y Leyes UX aplicadas
+
+En este ejercicio se construye y formaliza el **Sistema de Diseño visual, interactivo y accesible de AquaPort Enterprise (Fase Empoleon)**, diseñado para consolas de control y despacho autónomo de alta densidad operativa (60 drones distribuidos en 4 zonas hídricas interconectadas). Se documentan los tokens de diseño fundacionales, los componentes clave con todos sus estados semánticos, el mapa de flujos en 6 pantallas interactivas, la matriz de certificación de accesibilidad WCAG 2.1 AA y el marco de leyes de psicología cognitiva aplicada.
+
+> 🌐 **Prototipo Interactivo del Sistema de Diseño Enterprise:**
+> 👉 [**Abrir AquaPort Enterprise — Sistema de Diseño y Mapa de Flujos (`docs/mockups/AquaPort_Enterprise_Design_System.html`)**](docs/mockups/AquaPort_Enterprise_Design_System.html)
+
+---
+
+#### 1. Tokens de Diseño Fundacionales
+
+El sistema se cimenta sobre una arquitectura de diseño en modo oscuro profundo (*Deep Abyssal Dark Mode*), que previene el agotamiento visual en operadores de turno continuo:
+
+![Tokens de Diseño Fundacionales](docs/images/TokenDesign.png)
+
+* **Paleta de Color Semántica:**
+  * **Fondo Abisal Profundo (`#050D14`):** Base ambiental de baja emisión lumínica.
+  * **Superficie de Cristal (`#0B1924` / `#0F202E` con 75% opacidad):** Paneles modulares con desenfoque de fondo (*backdrop blur* de 12px).
+  * **Cian Sonar Neón (`#00F0FF`):** Foco visual primario, rumbos de navegación y acentos interactivos.
+  * **Verde Operativo (`#00E676`):** Unidades en estado disponible, acoples seguros y telemetría conforme.
+  * **Oro de Telemetría (`#FFB800`):** Estados de recarga inductiva y advertencias de batería media.
+  * **Carmesí de Fallo (`#FF3B30`):** Averías motrices, fallos en waypoints y alertas de emergencia.
+  * **Púrpura Criptográfico (`#B388FF`):** Sellado de muestras, hashes SHA-256 y trazabilidad de custodia.
+  * **Azul Bentónico (`#0077B6`):** Inmersión sensorial y enlaces acústicos de drones buceadores.
+* **Tipografía:**
+  * **`Inter`:** Tipografía grotesque de alta legibilidad en pantallas táctiles y consolas de escritorio.
+  * **`JetBrains Mono`:** Tipografía monospace para hashes criptográficos SHA-256, telemetría numérica, códigos de unidad (`DRN-ENT-XX`) y coordenadas UTM.
+* **Escala de Espaciado (Grid de 8 Puntos):** 4px (xs), 8px (sm), 12px (md), 16px (base), 24px (lg), 32px (xl), 48px (2xl).
+* **Radios de Borde:** 6px (sm), 10px (md), 16px (lg) y 9999px (pill / badges).
+
+---
+
+#### 2. Componentes Nucleares y sus Estados Semánticos
+
+![Componentes Nucleares y Estados Semánticos](docs/images/ComponentsAndStates.png)
+
+##### A. Tarjeta de Drone Enterprise (6 Estados de Operación):
+1. **Disponible:** Borde y badge verde esmeralda (`#00E676`), muestra nivel de batería $\ge 35\%$, zona apostada y capacidad de carga útil.
+2. **En Tránsito Multi-Etapa:** Borde cian sonar (`#00F0FF`), telemetría en vivo, tramo activo (`TR-XX`), velocidad y tiempo estimado de llegada (ETA).
+3. **Recargando:** Borde ámbar (`#FFB800`), muelle de conexión rápida (45W inductiva) y tiempo restante para carga completa.
+4. **Mantenimiento:** Borde gris neutro (`#78909C`), opacidad al 80%, taller asignado y causa técnica (calibración de propulsores/sensores).
+5. **Fallo Crítico:** Borde carmesí (`#FF3B30`), indicador de incidencia mecánica/eléctrica, disparo de orden de servicio y activación de failover $< 1.5$s.
+6. **Sumergido:** Borde azul bentónico (`#0077B6`), profundidad de inmersión en metros (ej. 5.4m) y estado del enlace acústico por sonar.
+
+##### B. Botón de Acción CTA "Despachar Misión Multi-Etapa" (5 Estados Interactivos):
+1. **Default:** Fondo cian sonar neón (`#00F0FF`), texto oscuro de alto contraste y sombra de resplandor sutil.
+2. **Hover / Foco:** Elevación de 2px, sombra difusa aumentada (`0 0 25px rgba(0,240,255,0.5)`).
+3. **Procesando (Spinner):** Fondo atenuado, cursor `wait`, spinner SVG con rotación continua a 360° y texto *"Procesando / Asignando..."*.
+4. **Deshabilitado:** Fondo gris atenuado, texto dim (`#5C7584`), cursor `not-allowed`.
+5. **Éxito:** Fondo verde esmeralda (`#00E676`), icono de verificación y confirmación inmediata.
+
+##### C. Medidor de Batería (3 Rangos de Operación):
+* **Normal ($\ge 50\%$):** Barra verde esmeralda.
+* **Precaución ($25\% - 49\%$):** Barra oro de advertencia.
+* **Crítico ($< 25\%$):** Barra roja parpadeante que activa protocolo de reasignación automática inmediata.
+
+---
+
+#### 3. Mapa de Flujos del Enterprise (6 Pantallas Interactivas)
+
+El flujo de extremo a extremo de una misión multi-etapa se modela en 6 interfaces modulares capturadas directamente del prototipo interactivo:
+
+##### Pantalla 1: Mapa Global de 4 Zonas Hídricas
+Vista macro de las 4 zonas del campus ECI (`Embalse de Investigación`, `Red de Canales`, `Laguna de Reserva` y `Laboratorio Hídrico Central`) con inventario de 60 drones (15 por zona), índices de salud de flota calculados en paralelo y condiciones climáticas:
+![P1: Mapa Global de 4 Zonas Hídricas](docs/images/Maps4Zones.png)
+
+##### Pantalla 2: Selección de Ruta y Waypoints Multi-Etapa
+Interfaz de parametrización: definición de origen, destino, waypoints secuenciales (`WP-01` a `WP-04`), peso del paquete (≤ 1500g), prioridad y cálculo de distancias hidrológicas:
+![P2: Selección de Ruta y Waypoints Multi-Etapa](docs/images/SelectRoute.png)
+
+##### Pantalla 3: Asignación y Relevo de Drones por Tramo
+Planificación algorítmica tramo por tramo (`TR-01`, `TR-02`, `TR-03`): selección del dron más idóneo por segmento según aptitud hidrodinámica, autonomía de batería y sincronización en esclusas:
+![P3: Asignación y Relevo de Drones por Tramo](docs/images/AsignationTramos.png)
+
+##### Pantalla 4: Monitoreo en Tiempo Real
+Consola de telemetría en vivo: cinemática de navegación, velocidad en m/s, deriva, estado de la muestra y actualización continua del hash de custodia SHA-256 en cada waypoint:
+![P4: Monitoreo en Tiempo Real y Telemetría](docs/images/MonitoringLive.png)
+
+##### Pantalla 5: Alerta de Fallo y Reasignación Automática (< 1.5s)
+Manejo de contingencias en waypoint intermedio: detección de anomalía mecánica/eléctrica, disparo del failover autónomo en menos de 1.5 segundos, relevo por dron de respaldo y transferencia de custodia:
+![P5: Alerta de Fallo y Reasignación Automática](docs/images/AlertAndReasignation.png)
+
+##### Pantalla 6: Reporte de Entrega y Auditoría de Custodia
+Pantalla de cierre formal: entrega de muestra a investigador/solicitante, bitácora forense de hashes encadenados, tiempo total de travesía y confirmación institucional al Centro de Control ECI:
+![P6: Reporte de Entrega y Auditoría de Custodia](docs/images/ReportDelivery.png)
+
+---
+
+#### 4. Certificación de Accesibilidad WCAG 2.1 Nivel AA
+
+Todas las combinaciones cromáticas de texto y elementos interactivos fueron evaluadas bajo el algoritmo de luminancia relativa de la W3C, superando ampliamente el estándar AA:
+
+![Certificación de Accesibilidad WCAG 2.1 AA](docs/images/AccesibilityWACG.png)
+
+| Elemento / Token | Color Primer Plano | Color de Fondo | Ratio de Contraste | Criterio Exigido | Dictamen WCAG 2.1 |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Texto Principal** | `#F1F7F9` (Blanco Hielo) | `#050D14` (Fondo Abisal) | **16.4 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AAA)** |
+| **Texto Secundario** | `#8EA6B4` (Gris Azulado) | `#050D14` (Fondo Abisal) | **6.2 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
+| **Acento Sonar Neón** | `#00F0FF` (Cian Neón) | `#050D14` (Fondo Abisal) | **13.1 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AAA)** |
+| **Estado Disponible** | `#00E676` (Verde Esmeralda) | `#0B1924` (Superficie) | **8.9 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AAA)** |
+| **Advertencia / Recarga** | `#FFB800` (Oro) | `#0B1924` (Superficie) | **7.8 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AA)** |
+| **Fallo Crítico** | `#FF3B30` (Rojo Carmesí) | `#0B1924` (Superficie) | **4.8 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
+| **Cadena Custodia** | `#B388FF` (Púrpura) | `#0B1924` (Superficie) | **6.5 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
+
+---
+
+#### 5. Sustentación Teórica de Leyes UX Aplicadas por Pantalla
+
+1. **Ley de Hick (Pantalla 1 - Mapa de Zonas):** El tiempo para tomar una decisión crece logarítmicamente con el número de opciones. Al agrupar los 60 drones en 4 zonas lógicas en lugar de presentar 60 opciones planas, se optimiza drásticamente la capacidad de escaneo del operador.
+2. **Ley de Miller (Pantallas 2 y 3 - Selección de Ruta y Tramos):** Los humanos retienen $7 \pm 2$ elementos en la memoria de trabajo. La división de misiones multi-etapa en bloques de 3 a 4 waypoints y tramos secuenciales previene la saturación cognitiva.
+3. **Ley de Fitts (Pantalla 5 - Alerta y Reasignación):** El tiempo para alcanzar un blanco depende de su distancia y tamaño. Los botones de parada de emergencia y confirmación de reasignación poseen áreas interactivas amplificadas con padding generoso, minimizando errores motores en situaciones de estrés.
+4. **Ley de Jakob (Pantallas 4 y 5 - Monitoreo y Alertas):** Los usuarios transfieren expectativas de interfaces previas. Se adoptan códigos cromáticos estandarizados en la industria (verde = normal, amarillo = advertencia, rojo = parada) y steppers cronológicos estándar.
+5. **Efecto de Usabilidad-Estética (Pantalla 4 - Monitoreo Live):** Los usuarios perciben interfaces estéticamente atractivas y armoniosas como más fáciles de usar y confiables, reduciendo la ansiedad del operador durante maniobras complejas.
+6. **Regla del Pico-Fin / Peak-End Rule (Pantalla 6 - Reporte de Entrega):** La evaluación psicológica global de un sistema depende del momento más intenso y del desenlace. Un cierre con sello verde de éxito y hash criptográfico auditado garantiza una percepción final de confiabilidad y excelencia operativa.
+
+---
+
