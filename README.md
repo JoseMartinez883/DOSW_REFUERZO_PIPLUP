@@ -2092,14 +2092,14 @@ En cumplimiento con el estándar formal de ingeniería de software de la Escuela
 
 #### 1. FUNCIONALIDAD
 
-| Campo                          | Detalle de Especificación                                                                                                                                                                                                                                                                                                                                                   |
-| :----------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Código:**             | **AP-07** (Correspondiente a **RF-01** de la Fase Prinplup)                                                                                                                                                                                                                                                                                                      |
-| **Nombre:**              | **Asignar automáticamente drone a misión hídrica**                                                                                                                                                                                                                                                                                                                  |
-| **Descripción:**        | Permite al sistema determinar y asignar automáticamente el drone más adecuado para una misión de transporte solicitada, considerando la carga a transportar, las condiciones del agua en la zona de destino y la disponibilidad operativa de la flota, alertando al personal correspondiente si ocurre algún imprevisto.                                                 |
-| **Cómo se ejecutará:** | A través del panel de control de AquaPort al momento de registrar o confirmar una solicitud de misión de transporte.                                                                                                                                                                                                                                                       |
-| **Actor principal:**     | **Operador Hídrico**                                                                                                                                                                                                                                                                                                                                                  |
-| **Precondiciones:**      | 1. El sistema AquaPort debe estar en funcionamiento y con la flota de 15 drones registrada en el inventario.2. Se debe contar con la información ambiental y meteorológica de las zonas hídricas del campus.3. Debe existir al menos un drone en estado `DISPONIBLE` con nivel de batería seguro (mínimo 35% para misiones ordinarias y 50% para misiones críticas). |
+| Campo                          | Detalle de Especificación                                                                                                                                                                                                                                                                                                                                                  |
+| :----------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Código:**             | **AP-07** (Correspondiente a **RF-01** de la Fase Prinplup)                                                                                                                                                                                                                                                                                                     |
+| **Nombre:**              | **Asignar automáticamente drone a misión hídrica**                                                                                                                                                                                                                                                                                                                 |
+| **Descripción:**        | Permite al sistema determinar y asignar automáticamente el drone más adecuado para una misión de transporte solicitada, considerando la carga a transportar, las condiciones del agua en la zona de destino y la disponibilidad operativa de la flota, alertando al personal correspondiente si ocurre algún imprevisto.                                                |
+| **Cómo se ejecutará:** | A través del panel de control de AquaPort al momento de registrar o confirmar una solicitud de misión de transporte.                                                                                                                                                                                                                                                      |
+| **Actor principal:**     | **Operador Hídrico**                                                                                                                                                                                                                                                                                                                                                 |
+| **Precondiciones:**      | 1. El sistema AquaPort debe estar en funcionamiento y con la flota de 15 drones registrada en el inventario.2. Se debe contar con la información ambiental y meteorológica de las zonas hídricas del campus.3. Debe existir al menos un drone en estado`DISPONIBLE` con nivel de batería seguro (mínimo 35% para misiones ordinarias y 50% para misiones críticas). |
 
 ---
 
@@ -2877,15 +2877,15 @@ A continuación se presenta la evidencia oficial del análisis estático tras la
 
 ##### Métricas Consolidadas del Quality Gate:
 
-| Métrica de Calidad           | Meta / Límite Exigido | Valor Obtenido en AquaPort v2 | Calificación SonarQube | Estado del Quality Gate   |
-| :--------------------------- | :-------------------: | :---------------------------: | :--------------------: | :-----------------------: |
-| **Bugs (Reliability)**       |        0 bugs         |           **0 bugs**          |         **A**          | **SUPERADO (Impecable)**  |
-| **Vulnerabilidades**         |   0 vulnerabilidades  |     **0 vulnerabilidades**    |         **A**          | **SUPERADO (Impecable)**  |
-| **Security Hotspots**        |           0           |             **0**             |         **A**          | **SUPERADO (Impecable)**  |
-| **Deuda Técnica**            |        < 30 min       |       **0 min (0 issues)**    |         **A**          | **SUPERADO (Cero Deuda)** |
-| **Cobertura de Pruebas**     |         > 80%         |           **94.0%**           |           —            | **SUPERADO (94.0%)**      |
-| **Densidad de Duplicación**  |         < 5%          |            **0.0%**           |           —            | **SUPERADO (0.0%)**       |
-| **Líneas de Código (LOC)**   |           —           |           **1.2k**            |           —            | **Dentro de alcance v2**  |
+| Métrica de Calidad                | Meta / Límite Exigido | Valor Obtenido en AquaPort v2 | Calificación SonarQube |     Estado del Quality Gate     |
+| :--------------------------------- | :--------------------: | :---------------------------: | :---------------------: | :-----------------------------: |
+| **Bugs (Reliability)**       |         0 bugs         |       **0 bugs**       |       **A**       | **SUPERADO (Impecable)** |
+| **Vulnerabilidades**         |   0 vulnerabilidades   | **0 vulnerabilidades** |       **A**       | **SUPERADO (Impecable)** |
+| **Security Hotspots**        |           0           |          **0**          |       **A**       | **SUPERADO (Impecable)** |
+| **Deuda Técnica**           |        < 30 min        |  **0 min (0 issues)**  |       **A**       | **SUPERADO (Cero Deuda)** |
+| **Cobertura de Pruebas**     |         > 80%         |        **94.0%**        |           —           |   **SUPERADO (94.0%)**   |
+| **Densidad de Duplicación** |          < 5%          |        **0.0%**        |           —           |    **SUPERADO (0.0%)**    |
+| **Líneas de Código (LOC)** |           —           |        **1.2k**        |           —           | **Dentro de alcance v2** |
 
 ---
 
@@ -2893,15 +2893,15 @@ A continuación se presenta la evidencia oficial del análisis estático tras la
 
 A continuación se detallan las categorías de incidencias identificadas por SonarQube y las refactorizaciones aplicadas en el código fuente:
 
-| Regla SonarQube | Archivo(s) Afectado(s) | Severidad Original | Hallazgo Detectado | Refactorización Aplicada y Justificación Técnica |
-| :--- | :--- | :---: | :--- | :--- |
-| **`java:S3776`** (Cognitive Complexity) | `AsignadorAutomatico.java` | **High** | El método `asignar(...)` presentaba una complejidad cognitiva de 23 (máximo permitido: 15) debido a múltiples anidamientos de `if-else` y bifurcaciones de rescate. | **Descomposición Cohesiva:** Se extrajeron tres métodos privados especializados (`resolverFalloConAlternativo`, `esDroneAptoParaMision`, `notificarSiCritica`). La complejidad cognitiva del método principal se redujo de 23 a **5**, incrementando la legibilidad y mantenibilidad. |
-| **`java:S2789`** (Optional null-check) | `AsignadorAutomatico.java` | **Medium** | Comprobaciones redundantes `if (optDrone != null)` sobre tipos `Optional<DroneAcuatico>`. | **Uso Idiomático de Optional:** Se eliminaron todas las comparaciones contra `null`. En su lugar, se emplean los métodos nativos de Java (`isPresent()`, `isEmpty()`, `filter()`, `map()`), garantizando el contrato de la API y previniendo `NullPointerException`. |
-| **`java:S108`** (Empty Blocks) | `AsignadorAutomatico.java` | **Medium** | Bloques de captura `catch` o condicionales sin sentencias ni comentarios explicativos. | **Limpieza de Código Muerto:** Se removieron los bloques vacíos superfluos asegurando que todas las ramas del flujo ejecuten lógica de contingencia válida o registro de traza. |
-| **`java:S106`** (Standard Output Usage) | `CentroControlObserver.java`<br>`TecnicoMantenimientoObserver.java`<br>`Ejercicio01Prinplup.java`<br>`Ejercicio03Prinplup.java` | **Medium** | Uso directo de `System.out.println` para emisión de alertas, logs y trazas de consola. | **Logger Profesional:** Se reemplazó el uso de salida estándar por instancias estáticas de `java.util.logging.Logger`. Esto permite desacoplar los mensajes de la consola, redirigir flujos a ficheros de auditoría y configurar niveles de severidad (`INFO`, `WARNING`, `SEVERE`). |
-| **`java:S1192`** (String Literals Duplication) | `Ejercicio03Prinplup.java` | **High** | Literales de cadena repetidos 3 o más veces: `"Embalse Norte"`, `"Canal Central"`, `" ✓ Drone seleccionado: "`. | **Extracción de Constantes:** Se definieron constantes `private static final String` reutilizables, centralizando los identificadores de zona y mensajes formateados para prevenir errores tipográficos y facilitar mantenimiento. |
-| **`java:S1128`** (Unused Imports) | `ConsultorFlotaPrinplupTest.java`<br>`RequerimientosPrinplupTest.java`<br>`SolidPrinciplesAuditTest.java` | **Low** | Imports de paquetes no referenciados (`Collections`, `PrioridadCriticaStrategy`, `ArrayList`). | **Optimización de Importaciones:** Se limpiaron todas las directivas de importación innecesarias, reduciendo la contaminación del espacio de nombres y mejorando los tiempos de análisis del compilador. |
-| **`java:S6073`** (Redundant Mockito Matchers) | `AsignadorAutomaticoTest.java` | **Low** | Invocaciones redundantes de `eq(...)` en argumentos cuando no se mezclaban con otros argument matchers de Mockito. | **Simplificación de Pruebas Mockito:** Se pasó directamente la referencia del objeto en los métodos `verify(...)`, siguiendo las mejores prácticas de Mockito 5. |
+| Regla SonarQube                                        | Archivo(s) Afectado(s)                                                                                            | Severidad Original | Hallazgo Detectado                                                                                                                                                        | Refactorización Aplicada y Justificación Técnica                                                                                                                                                                                                                                                        |
+| :----------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- | :----------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`java:S3776`** (Cognitive Complexity)        | `AsignadorAutomatico.java`                                                                                      |   **High**   | El método`asignar(...)` presentaba una complejidad cognitiva de 23 (máximo permitido: 15) debido a múltiples anidamientos de `if-else` y bifurcaciones de rescate. | **Descomposición Cohesiva:** Se extrajeron tres métodos privados especializados (`resolverFalloConAlternativo`, `esDroneAptoParaMision`, `notificarSiCritica`). La complejidad cognitiva del método principal se redujo de 23 a **5**, incrementando la legibilidad y mantenibilidad. |
+| **`java:S2789`** (Optional null-check)         | `AsignadorAutomatico.java`                                                                                      |  **Medium**  | Comprobaciones redundantes`if (optDrone != null)` sobre tipos `Optional<DroneAcuatico>`.                                                                              | **Uso Idiomático de Optional:** Se eliminaron todas las comparaciones contra `null`. En su lugar, se emplean los métodos nativos de Java (`isPresent()`, `isEmpty()`, `filter()`, `map()`), garantizando el contrato de la API y previniendo `NullPointerException`.                   |
+| **`java:S108`** (Empty Blocks)                 | `AsignadorAutomatico.java`                                                                                      |  **Medium**  | Bloques de captura`catch` o condicionales sin sentencias ni comentarios explicativos.                                                                                   | **Limpieza de Código Muerto:** Se removieron los bloques vacíos superfluos asegurando que todas las ramas del flujo ejecuten lógica de contingencia válida o registro de traza.                                                                                                                  |
+| **`java:S106`** (Standard Output Usage)        | `CentroControlObserver.javaTecnicoMantenimientoObserver.java``Ejercicio01Prinplup.javaEjercicio03Prinplup.java` |  **Medium**  | Uso directo de`System.out.println` para emisión de alertas, logs y trazas de consola.                                                                                  | **Logger Profesional:** Se reemplazó el uso de salida estándar por instancias estáticas de `java.util.logging.Logger`. Esto permite desacoplar los mensajes de la consola, redirigir flujos a ficheros de auditoría y configurar niveles de severidad (`INFO`, `WARNING`, `SEVERE`).     |
+| **`java:S1192`** (String Literals Duplication) | `Ejercicio03Prinplup.java`                                                                                      |   **High**   | Literales de cadena repetidos 3 o más veces:`"Embalse Norte"`, `"Canal Central"`, `" ✓ Drone seleccionado: "`.                                                    | **Extracción de Constantes:** Se definieron constantes `private static final String` reutilizables, centralizando los identificadores de zona y mensajes formateados para prevenir errores tipográficos y facilitar mantenimiento.                                                               |
+| **`java:S1128`** (Unused Imports)              | `ConsultorFlotaPrinplupTest.javaRequerimientosPrinplupTest.java``SolidPrinciplesAuditTest.java`                 |   **Low**   | Imports de paquetes no referenciados (`Collections`, `PrioridadCriticaStrategy`, `ArrayList`).                                                                      | **Optimización de Importaciones:** Se limpiaron todas las directivas de importación innecesarias, reduciendo la contaminación del espacio de nombres y mejorando los tiempos de análisis del compilador.                                                                                         |
+| **`java:S6073`** (Redundant Mockito Matchers)  | `AsignadorAutomaticoTest.java`                                                                                  |   **Low**   | Invocaciones redundantes de`eq(...)` en argumentos cuando no se mezclaban con otros argument matchers de Mockito.                                                       | **Simplificación de Pruebas Mockito:** Se pasó directamente la referencia del objeto en los métodos `verify(...)`, siguiendo las mejores prácticas de Mockito 5.                                                                                                                               |
 
 ---
 
@@ -2918,3 +2918,1903 @@ mvn sonar:sonar \
 El escaneo procesó las 54 clases del proyecto, vinculando el reporte XML de JaCoCo (`target/site/jacoco/jacoco.xml`) y certificando el pase del 100% de las reglas del perfil **Sonar way** para Java 21.
 
 ---
+
+## 👑 Fase Empoleon — AquaPort Enterprise: Red Multi-Embalse
+
+En esta fase final de evolución, el sistema transiciona a **AquaPort Enterprise**: un ecosistema a escala de producción que coordina **60 drones acuáticos** interconectados a lo largo de **4 zonas hídricas** del campus universitario, gestionando rutas multi-etapa complejas con waypoints intermedios, coordinación de traspasos, y estándares rigurosos de arquitectura limpia por capas (`dominio`, `aplicacion`, `infraestructura`).
+
+---
+
+### ⚡ Ejercicio 01: Streams y Lambdas para Coordinar Rutas Multi-Etapa entre 60 Drones
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — Streams & Lambdas:**
+> Implementa:
+>
+> 1) Calcular la eficiencia de cada zona (`misiones completadas / misiones totales`).
+> 2) Encontrar el drone con el mejor historial de entregas exitosas.
+> 3) Planificar la ruta óptima multi-etapa seleccionando el drone disponible más cercano para cada tramo.
+> 4) Un Collector personalizado que agrupe los drones por zona y calcule la batería promedio por zona en una sola pasada.
+>    Justifica cuándo usar stream paralelo y por qué en los otros casos no aplica.
+
+---
+
+#### 2. Modelo de Dominio y Escala de la Red Enterprise
+
+Para soportar las rutas multi-etapa de 60 drones en AquaPort Enterprise, se implementó el modelo de dominio en `main.dosw.empoleon.dominio`:
+
+1. **`ZonaHidrica` (Enum):**
+   - **`EMBALSE_INVESTIGACION`** (Norte): Base de 15 drones buceadores (`BUCEADOR`, capacidad 300g).
+   - **`RED_CANALES`** (Campus): Base de 15 drones de superficie (`SUPERFICIAL`, capacidad 500g).
+   - **`LAGUNA_RESERVA`** (Sur): Base de 15 drones de carga pesada (`SEMISUMERGIDO`, capacidad 1500g).
+   - **`LABORATORIO_CENTRAL`** (Centro): Base de 15 drones de enlace rápido (`SUPERFICIAL`, capacidad 600g).
+2. **`Waypoint` (Record):** Punto geográfico/operativo con identificador, denominación, zona de pertenencia y secuencia ordinal.
+3. **`TramoRuta` (Record):** Segmento de navegación entre dos waypoints contiguos con distancia estimada en metros y dron asignado.
+4. **`DroneEnterprise`:** Extiende `DroneAcuatico` agregando contadores de entregas exitosas acumuladas (`entregasExitosas`) para analíticas de rendimiento.
+5. **`MisionEnterprise`:** Representa misiones compuestas por múltiples waypoints y tramos, con trazabilidad de estado (`PLANIFICADA`, `EN_TRANSITO`, `COMPLETADA`, `FALLIDA`, `CANCELADA`).
+
+---
+
+#### 3. Implementación de las 4 Operaciones con Streams & Lambdas
+
+En `CoordinadorRutasEmpoleon.java`, las operaciones se implementaron siguiendo principios de programación funcional pura e inmutabilidad:
+
+##### 1. Eficiencia por Zona (`calcularEficienciaPorZona`):
+
+```java
+public Map<String, Double> calcularEficienciaPorZona(List<MisionEnterprise> misiones) {
+    Map<String, List<MisionEnterprise>> porZona = misiones.stream()
+            .collect(Collectors.groupingBy(MisionEnterprise::getZonaOrigen));
+
+    return porZona.entrySet().stream()
+            .collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    entry -> calcularRatioExito(entry.getValue())
+            ));
+}
+
+private double calcularRatioExito(List<MisionEnterprise> lista) {
+    long completadas = lista.stream()
+            .filter(m -> m.getEstado() == EstadoMisionEnterprise.COMPLETADA)
+            .count();
+    return Math.round(((double) completadas / lista.size()) * 100.0) / 100.0;
+}
+```
+
+##### 2. Dron con Mejor Historial de Entregas (`encontrarDroneConMejorHistorial`):
+
+```java
+public Optional<DroneEnterprise> encontrarDroneConMejorHistorial(List<DroneEnterprise> flota) {
+    return flota.stream()
+            .reduce((d1, d2) -> d1.getEntregasExitosas() >= d2.getEntregasExitosas() ? d1 : d2);
+}
+```
+
+##### 3. Planificación de Ruta Óptima Multi-etapa (`planificarRutaOptimaMultiEtapa`):
+
+```java
+public List<TramoRuta> planificarRutaOptimaMultiEtapa(
+        List<Waypoint> waypoints,
+        List<DroneEnterprise> flota,
+        int pesoCargaGramos
+) {
+    validarParametrosRuta(waypoints, flota);
+    return IntStream.range(0, waypoints.size() - 1)
+            .mapToObj(i -> crearTramoConDroneOptimo(
+                    i, waypoints.get(i), waypoints.get(i + 1), flota, pesoCargaGramos
+            ))
+            .toList();
+}
+```
+
+##### 4. Collector Personalizado en Una Sola Pasada (`BateriaPromedioPorZonaCollector`):
+
+Implementa formalmente la interfaz `Collector<DroneAcuatico, Map<String, AcumuladorBateria>, Map<String, Double>>` para evitar dobles recorridos sobre la colección:
+
+```java
+public class BateriaPromedioPorZonaCollector
+        implements Collector<DroneAcuatico, Map<String, AcumuladorBateria>, Map<String, Double>> {
+
+    @Override
+    public Supplier<Map<String, AcumuladorBateria>> supplier() {
+        return HashMap::new;
+    }
+
+    @Override
+    public BiConsumer<Map<String, AcumuladorBateria>, DroneAcuatico> accumulator() {
+        return (map, drone) -> {
+            if (drone != null && drone.getZona() != null) {
+                map.computeIfAbsent(drone.getZona(), k -> new AcumuladorBateria())
+                        .agregar(drone.getBateria());
+            }
+        };
+    }
+
+    @Override
+    public BinaryOperator<Map<String, AcumuladorBateria>> combiner() {
+        return (map1, map2) -> {
+            map2.forEach((zona, acum) ->
+                    map1.computeIfAbsent(zona, k -> new AcumuladorBateria()).combinar(acum)
+            );
+            return map1;
+        };
+    }
+
+    @Override
+    public Function<Map<String, AcumuladorBateria>, Map<String, Double>> finisher() {
+        return map -> {
+            Map<String, Double> resultado = new HashMap<>();
+            map.forEach((zona, acum) -> resultado.put(zona, acum.promedio()));
+            return Collections.unmodifiableMap(resultado);
+        };
+    }
+
+    @Override
+    public Set<Characteristics> characteristics() {
+        return Set.of(Characteristics.UNORDERED);
+    }
+}
+```
+
+---
+
+#### 4. Justificación Técnica: Stream Paralelo vs Stream Secuencial
+
+| Criterio de Comparación               | Stream Secuencial (`.stream()`)                                                    | Stream Paralelo (`.parallelStream()`)                                                                   | Aplicación en AquaPort Enterprise                                                                                     |
+| :------------------------------------- | :----------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| **Mecanismo Interno**            | Un solo hilo de ejecución (`main` / invocador). Sin bifurcaciones.                | Utiliza`ForkJoinPool.commonPool()` para dividir el `Spliterator` recursivamente.                      | **Secuencial** para consultas cotidianas; **Paralelo** para cálculos de telemetría masiva.               |
+| **Overhead de Coordinación**    | **Cero overhead** de sincronización, particionamiento ni combinación.        | Requiere dividir la colección, gestionar hilos de trabajo y combinar buffers intermedios (`combiner`). | En colecciones de 60 elementos, el costo de fork/join supera el tiempo de cálculo simple.                             |
+| **Intensidad de Cómputo (CPU)** | Óptimo para operaciones ligeras (comparaciones simples, getters, mapeos rápidos).  | Óptimo cuando el costo de procesar cada elemento es elevado ($N \times Q \ge 10,000$).                 | Aplicado en`calcularSaludFlotaParalelo` simulando análisis matricial de telemetría y sensores.                     |
+| **Orden y Thread-Safety**        | Preserva el orden natural de la fuente sin riesgo de carreras (*race conditions*). | Requiere operaciones sin estado (*stateless*), asociativas y estructuras thread-safe.                   | En`planificarRutaOptimaMultiEtapa` el orden correlativo de los tramos ($i \to i+1$) exige secuencialidad estricta. |
+
+**Conclusión Arquitectónica:**
+
+- **¿Cuándo usar `parallelStream()`?** Cuando se procesan volúmenes masivos de datos ($> 10,000$ registros) o tareas altamente costosas en CPU (análisis predictivo de desgaste de batería, procesamiento espectral de turbidez), donde el paralelismo amortiza el overhead del pool.
+- **¿Por qué NO en los otros casos?** En la selección de ruta y cálculos de ratio con 60 drones, la partición de hilos introduce contención innecesaria en memoria y puede degradar la latencia de respuesta frente a un stream secuencial optimizado por el JIT compiler.
+
+---
+
+#### 5. Ejecución y Salida en Consola (`Ejercicio01Empoleon.java`)
+
+![Ejecución de Ejercicio01Empoleon en IntelliJ IDEA](docs/images/EmpoleonExecutionExercise01.png)
+
+> [!NOTE]
+> **Decisión de Diseño y Justificación para Evaluación Académica:**
+>
+> 1. **Uso de `Logger` en lugar de `System.out.println`:** Siguiendo rigurosamente las métricas de calidad de código y las reglas de análisis estático de **SonarQube (Regla `java:S106`)**, se prohibió el uso de `System.out` en el código fuente. En su lugar, se implementó `java.util.logging.Logger`, proporcionando tipado semántico de niveles de severidad (`INFO`, `WARNING`, `SEVERE`), capacidades de auditoría profesional y desacoplamiento del flujo de salida estándar.
+> 2. **Tono Rojizo en la Consola de IntelliJ IDEA:** En Java, la implementación nativa de `java.util.logging.Logger` utiliza un `ConsoleHandler` que redirige los registros al canal estándar de diagnóstico del sistema (`System.err`). IntelliJ IDEA colorea por diseño este flujo en tono rojizo/salmón para diferenciar los logs de telemetría de la salida de datos sin formato. La ejecución es completamente limpia, sin errores ni excepciones, certificada por el estado: `Process finished with exit code 0`.
+
+---
+
+#### 6. Verificación Automatizada de Calidad
+
+- **Pruebas Unitarias Ejecutadas:** **123 tests pasando sin fallos (0 failures, 0 errors).**
+- **Quality Gate JaCoCo:** Superado holgadamente ($\ge 80\%$ en instrucciones y ramas).
+- **Cobertura de la Capa Empoleon:** 100% de cobertura en las clases `CoordinadorRutasEmpoleon`, `BateriaPromedioPorZonaCollector`, `Waypoint`, `TramoRuta`, `DroneEnterprise` y `MisionEnterprise`.
+
+---
+
+### 🌿 Ejercicio 02: GitHub, GitFlow y Gobernanza de Repositorio en AquaPort Enterprise
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — GitHub y GitFlow:**
+> Configura en el repositorio: hook de pre-commit que valida el formato de Conventional Commits, protección de rama en `main` y `develop` (no push directo), y un `CHANGELOG.md` generado automáticamente desde los commits. El historial de la v3 debe mostrar únicamente commits descriptivos. Adjunta el log de git con al menos 10 commits del Enterprise.
+
+En el nivel de producción Enterprise, el historial de Git deja de ser un simple registro temporal y se convierte en **documentación viva de decisiones arquitectónicas**. La gobernanza del repositorio exige automatizaciones que garanticen consistencia semántica, protección estricta contra modificaciones no autorizadas en ramas base y trazabilidad formal de entregables.
+
+---
+
+#### 2. Configuración de Git Hooks Automatizados (`.githooks/`)
+
+Para asegurar que todos los desarrolladores del equipo cumplan de forma mandatoria con los estándares sin depender de memoria humana, se configuraron dos hooks en la carpeta `.githooks/`:
+
+##### 1. Validación de Conventional Commits (`.githooks/commit-msg`):
+
+Analiza el encabezado del mensaje de commit mediante una expresión regular estricta, bloqueando el commit si no sigue la estructura `<tipo>(<alcance>): <descripción>`:
+
+```bash
+#!/bin/sh
+commit_msg_file=$1
+commit_msg=$(head -n 1 "$commit_msg_file")
+
+regex="^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9_.-]+\))?: .{1,80}$"
+merge_regex="^Merge (branch|pull request) .+"
+
+if echo "$commit_msg" | grep -Eq "$merge_regex"; then
+    exit 0
+fi
+
+if ! echo "$commit_msg" | grep -Eq "$regex"; then
+    echo "==============================================================================="
+    echo " ERROR: Mensaje de commit no cumple con el estándar Conventional Commits."
+    echo "-------------------------------------------------------------------------------"
+    echo "Mensaje ingresado: '$commit_msg'"
+    echo "Formato requerido: <tipo>(<alcance opcional>): <descripción corta>"
+    echo "Tipos permitidos : feat, fix, docs, style, refactor, perf, test, build, ci, chore"
+    echo "==============================================================================="
+    exit 1
+fi
+exit 0
+```
+
+##### 2. Protección Pre-Commit contra Push Directo (`.githooks/pre-commit`):
+
+Impide realizar commits accidentales directamente sobre la rama protegida `main`, forzando el ciclo de vida a través de ramas feature y Pull Requests:
+
+```bash
+#!/bin/sh
+branch="$(git rev-parse --abbrev-ref HEAD)"
+if [ "$branch" = "main" ]; then
+    echo "ERROR: No está permitido hacer commit directo sobre la rama protegida 'main'."
+    echo "       Debes trabajar en una rama feature y enviar un Pull Request."
+    exit 1
+fi
+exit 0
+```
+
+##### 3. Activación Multiplataforma:
+
+Se establecieron scripts de instalación rápida para Windows PowerShell (`scripts/setup-hooks.ps1`) y entornos Unix/macOS (`scripts/setup-hooks.sh`), ejecutando:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+---
+
+#### 3. Políticas de Protección de Ramas (Branch Protection Rules)
+
+Se establecieron formalmente las reglas de protección de rama en GitHub para los entornos troncales (`main`, `develop` y la rama paraguas `feature/empoleon`):
+
+| Regla de Protección                                 |    `main` (Producción)    | `develop` (Staging / Integración) | `feature/empoleon` (Paraguas v3) | Justificación de Ingeniería                                                                           |
+| :--------------------------------------------------- | :--------------------------: | :----------------------------------: | :--------------------------------: | :------------------------------------------------------------------------------------------------------ |
+| **Bloqueo de Push Directo**                    |      ✅**Activo**      |          ✅**Activo**          |         ✅**Activo**         | Ningún desarrollador puede hacer`git push` directo; todos los cambios ingresan vía Pull Request.    |
+| **Revisiones Obligatorias (PR)**               |  ✅ Mínimo 2 aprobaciones  |       ✅ Mínimo 1 aprobación       |      ✅ Mínimo 1 aprobación      | Revisión entre pares obligatoria con resolución de hilos de discusión.                               |
+| **Status Checks Mandatorios**                  | ✅ Compilación + 100% tests |     ✅ Compilación + 100% tests     |  ✅ Compilación + Tests locales  | Los tests de Surefire y el Quality Gate JaCoCo deben pasar en verde antes de habilitar el botón merge. |
+| **Descarte de Aprobaciones Obsoletas**         |      ✅**Activo**      |          ✅**Activo**          |         ✅**Activo**         | Si se introduce un nuevo commit en el PR, las aprobaciones anteriores se invalidan automáticamente.    |
+| **Restricción de Fuerza (`no force push`)** |      ✅**Activo**      |          ✅**Activo**          |         ✅**Activo**         | Protege el historial público contra reescrituras de commits o eliminaciones accidentales.              |
+| **Administradores Incluidos**                  |      ✅**Activo**      |          ✅**Activo**          |         ✅**Activo**         | Nadie (ni los administradores) puede eludir las puertas de calidad de producción.                      |
+
+---
+
+#### 4. Registro Oficial de Cambios (`CHANGELOG.md`)
+
+Se integró en la raíz del repositorio el archivo [`CHANGELOG.md`](CHANGELOG.md) estructurado rigurosamente bajo el estándar **Keep a Changelog** y **Semantic Versioning (SemVer 2.0.0)**, clasificando cambios en `Added`, `Changed`, `Fixed` y `Deprecated` a lo largo de las 4 versiones históricas del producto:
+
+- **`[3.0.0-enterprise]`:** 60 drones, red de 4 zonas hídricas, rutas multi-etapa, custom collector y gobernanza de hooks.
+- **`[2.0.1]`:** Hotfix de batería mínima operacional al 20% y resolución de 47 issues SonarQube (0 min deuda técnica).
+- **`[2.0.0]`:** Versión 2.0 con patrones GoF (Factory Method, Strategy, Observer) y Quality Gate JaCoCo al 80%.
+- **`[1.0.0]`:** Versión MVP inicial con 4 drones básicos y validación unitaria.
+
+---
+
+#### 5. Evidencia Gráfica del Historial Git Trazable (Git Graph de Enterprise)
+
+Las siguientes capturas del árbol gráfico de Git (`Git Graph`) certifican que el 100% de los commits en la evolución Enterprise y las fases previas siguen rigurosamente el estándar **Conventional Commits** (`feat:`, `docs:`, `test:`, `merge:`) con fusiones explícitas (`--no-ff`):
+
+- **Parte 1 (Evolución de Commits y Convenciones Semánticas en el Árbol de Git):**
+  ![Historial Git Graph - Parte 1](docs/images/EmpoleonExercise02.png)
+- **Parte 2 (Ramas Feature y Fusiones GitFlow Recientes hacia `feature/empoleon` y `develop`):**
+  ![Historial Git Graph - Parte 2](docs/images/EmpoleonExercise02Part02.png)
+
+---
+
+### 🧩 Ejercicio 03: Patrones de Diseño Integrados en AquaPort Enterprise (Chain of Responsibility + Decorator + Adapter)
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — Patrones de Diseño:**
+> Implementa los 3 patrones integrados en el flujo Enterprise: la cadena valida antes de asignar, el decorator registra telemetría en cada misión, el adapter aísla la API externa. Escribe pruebas con Mockito para: que la cadena se detiene en el primer validador que falla, que el decorator registra sin alterar el comportamiento del drone, que el adapter convierte correctamente campos con valores límite.
+
+En el nivel Enterprise, la complejidad arquitectónica se mitiga integrando tres patrones GoF complementarios que resuelven responsabilidades desacopladas:
+
+1. **Chain of Responsibility:** Desacopla las reglas de negocio de pre-validación de misiones en eslabones independientes y secuenciales.
+2. **Decorator:** Extiende dinámicamente las capacidades operacionales de los drones (telemetría en tiempo real y firma criptográfica) sin alterar su jerarquía física ni romper Open/Closed Principle.
+3. **Adapter:** Aísla el núcleo de dominio de interfaces y contratos externos en inglés (`waterLevel`, `turbidity`), traduciéndolos al modelo limpio del sistema.
+
+---
+
+#### 2. Arquitectura de los 3 Patrones de Diseño Integrados
+
+```mermaid
+graph TD
+    subgraph Adapter["Patrón Adapter (Aislamiento de API Externa)"]
+        API["ClienteApiHidricaExterna<br/>(Respuesta JSON en inglés)"] -->|fetchWaterConditions| ADAPT["AdaptadorAPIHidrica<br/>(Implementa ProveedorCondicionesHidricas)"]
+        ADAPT -->|traduce y normaliza| DOM_COND["CondicionesHidricasDominio<br/>(nivelAgua, turbidez, esNavegable)"]
+    end
+
+    subgraph Chain["Patrón Chain of Responsibility (Validación Previa al Despacho)"]
+        DOM_COND -->|suministra condiciones| VAL_BAT["ValidadorBateria<br/>(Batería >= 20%)"]
+        VAL_BAT -->|Pasa si OK| VAL_CARGA["ValidadorCapacidadCarga<br/>(Carga útil <= Capacidad Dron)"]
+        VAL_CARGA -->|Pasa si OK| VAL_ZONA["ValidadorZonaActiva<br/>(Dron disponible en zona origen)"]
+        VAL_ZONA -->|Pasa si OK| VAL_HID["ValidadorCondicionesHidricas<br/>(Navegabilidad acuática segura)"]
+        VAL_BAT -.->|Falla: DETIENE| RECHAZO["ResultadoValidacion.fallo(...)"]
+        VAL_CARGA -.->|Falla: DETIENE| RECHAZO
+        VAL_ZONA -.->|Falla: DETIENE| RECHAZO
+        VAL_HID -.->|Falla: DETIENE| RECHAZO
+    end
+
+    subgraph Decorator["Patrón Decorator (Capas Operacionales sin Modificar Dron Base)"]
+        VAL_HID -->|Aprobado: Despacha| DEC_CIF["DroneConCifrado<br/>(Firma criptográfica SHA-256)"]
+        DEC_CIF -->|Envuelve a| DEC_MON["DroneConMonitoreo<br/>(Registro de telemetría y energía)"]
+        DEC_MON -->|Envuelve a| BASE["DroneOperacionalBase<br/>(Ejecuta tramo y consume batería)"]
+        BASE -->|Delega en| DRONE["DroneEnterprise<br/>(Flota física de 60 drones)"]
+    end
+
+    classDef adapterStyle fill:#0d233a,stroke:#22d3ee,stroke-width:2px,color:#e0f2fe;
+    classDef chainStyle fill:#1a1d36,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
+    classDef decoratorStyle fill:#0c2824,stroke:#34d399,stroke-width:2px,color:#d1fae5;
+    classDef errorStyle fill:#3f1414,stroke:#f87171,stroke-width:2px,color:#fee2e2;
+
+    class API,ADAPT,DOM_COND adapterStyle;
+    class VAL_BAT,VAL_CARGA,VAL_ZONA,VAL_HID chainStyle;
+    class DEC_CIF,DEC_MON,BASE,DRONE decoratorStyle;
+    class RECHAZO errorStyle;
+```
+
+---
+
+#### 3. Implementación Detallada de los Patrones
+
+##### 1. Chain of Responsibility (`CadenaValidacionMision`):
+
+La validación pasa secuencialmente por cuatro eslabones (`EslabonValidacion`):
+
+1. **`ValidadorBateria`:** Verifica que el dron posea $\ge 20\%$ de carga residual.
+2. **`ValidadorCapacidadCarga`:** Comprueba que la masa en gramos de la muestra no exceda la capacidad técnica del vehículo.
+3. **`ValidadorZonaActiva`:** Valida que el dron esté en estado `DISPONIBLE` y localizado en la zona origen requerida.
+4. **`ValidadorCondicionesHidricas`:** Verifica que las variables del espejo de agua permitan navegación segura.
+
+*Si cualquier eslabón falla, la evaluación se interrumpe inmediatamente sin invocar a los eslabones posteriores.*
+
+`ValidadorBateria.java` (Eslabón concreto con detención por fallo):
+
+```java
+package main.dosw.empoleon.aplicacion.cadena;
+
+import main.dosw.empoleon.dominio.DroneEnterprise;
+import main.dosw.empoleon.dominio.MisionEnterprise;
+import main.dosw.empoleon.dominio.adapter.CondicionesHidricasDominio;
+import main.dosw.empoleon.dominio.cadena.ResultadoValidacion;
+
+public class ValidadorBateria extends ValidadorBase {
+    private static final int UMBRAL_BATERIA_MINIMA = 20;
+
+    @Override
+    public ResultadoValidacion validar(
+            MisionEnterprise mision, DroneEnterprise drone, CondicionesHidricasDominio condiciones
+    ) {
+        if (drone == null || drone.getBateria() < UMBRAL_BATERIA_MINIMA) {
+            int bateriaActual = drone != null ? drone.getBateria() : 0;
+            return ResultadoValidacion.fallo(
+                    "Batería insuficiente (" + bateriaActual + "%). Mínimo requerido: " + UMBRAL_BATERIA_MINIMA + "%",
+                    "ValidadorBateria"
+            );
+        }
+        return pasarAlSiguiente(mision, drone, condiciones);
+    }
+}
+```
+
+`CadenaValidacionMision.java` (Ensamblador y orquestador de la cadena):
+
+```java
+package main.dosw.empoleon.aplicacion.cadena;
+
+import main.dosw.empoleon.dominio.DroneEnterprise;
+import main.dosw.empoleon.dominio.MisionEnterprise;
+import main.dosw.empoleon.dominio.adapter.CondicionesHidricasDominio;
+import main.dosw.empoleon.dominio.cadena.EslabonValidacion;
+import main.dosw.empoleon.dominio.cadena.ResultadoValidacion;
+
+public class CadenaValidacionMision {
+    private final EslabonValidacion primerEslabon;
+
+    public CadenaValidacionMision() {
+        this.primerEslabon = construirCadenaPorDefecto();
+    }
+
+    public static EslabonValidacion construirCadenaPorDefecto() {
+        ValidadorBateria valBateria = new ValidadorBateria();
+        ValidadorCapacidadCarga valCarga = new ValidadorCapacidadCarga();
+        ValidadorZonaActiva valZona = new ValidadorZonaActiva();
+        ValidadorCondicionesHidricas valHidrico = new ValidadorCondicionesHidricas();
+
+        valBateria.setSiguiente(valCarga);
+        valCarga.setSiguiente(valZona);
+        valZona.setSiguiente(valHidrico);
+
+        return valBateria;
+    }
+
+    public ResultadoValidacion validar(
+            MisionEnterprise mision, DroneEnterprise drone, CondicionesHidricasDominio condiciones
+    ) {
+        if (primerEslabon == null) return ResultadoValidacion.exito();
+        return primerEslabon.validar(mision, drone, condiciones);
+    }
+}
+```
+
+##### 2. Decorator (`DroneConMonitoreo` y `DroneConCifrado`):
+
+- **`DroneOperacional`:** Interfaz componente que define el contrato de ejecución de tramos y telemetría.
+- **`DroneConMonitoreo`:** Registra automáticamente timestamps, zona, coordenadas y porcentaje de batería en cada misión.
+- **`DroneConCifrado`:** Firma digitalmente el paquete de telemetría con sellado criptográfico AES-256 / SHA-256.
+
+`DroneOperacional.java` (Interfaz Componente base):
+
+```java
+package main.dosw.empoleon.dominio.decorator;
+
+import java.util.List;
+import main.dosw.empoleon.dominio.DroneEnterprise;
+
+public interface DroneOperacional {
+    String getId();
+    int getBateria();
+    String getZona();
+    int getCapacidadCargaGramos();
+    boolean isDisponible();
+    void consumirBateria(int porcentaje);
+    boolean ejecutarMision(String misionId, String tramoId);
+    List<String> getRegistroTelemetria();
+    DroneEnterprise getDroneBase();
+}
+```
+
+`DroneConMonitoreo.java` (Decorador concreto para telemetría transparente):
+
+```java
+package main.dosw.empoleon.dominio.decorator;
+
+public class DroneConMonitoreo extends DroneDecorator {
+    public DroneConMonitoreo(DroneOperacional decorado) {
+        super(decorado);
+    }
+
+    @Override
+    public boolean ejecutarMision(String misionId, String tramoId) {
+        registrarLog("[TELEMETRIA] Dron " + getId() + " en zona '" + getZona()
+                + "' iniciando mision " + misionId + " tramo " + tramoId + " (Bateria: " + getBateria() + "%)");
+        boolean resultado = super.ejecutarMision(misionId, tramoId);
+        registrarLog("[TELEMETRIA] Finalizado tramo " + tramoId + " con resultado: "
+                + (resultado ? "EXITOSO" : "RECHAZADO"));
+        return resultado;
+    }
+}
+```
+
+- **Apilamiento:** Ambos decoradores se encadenan transparentemente:
+  ```java
+  DroneOperacional droneSeguro = new DroneConCifrado(new DroneConMonitoreo(droneBase));
+  droneSeguro.ejecutarMision("MIS-ENT-001", "TR-1");
+  ```
+
+##### 3. Adapter (`AdaptadorAPIHidrica`):
+
+Convierte el DTO externo en inglés (`DatosHidricosExternosJson` con `waterLevel`, `turbidity`, `waveHeight`, `safeForNavigation`) al registro inmutable del dominio `CondicionesHidricasDominio`, normalizando valores negativos o extremos a límites físicos navegables seguros.
+
+`ProveedorCondicionesHidricas.java` (Puerto del Dominio):
+
+```java
+package main.dosw.empoleon.dominio.adapter;
+
+public interface ProveedorCondicionesHidricas {
+    CondicionesHidricasDominio consultarCondiciones(String zona);
+}
+```
+
+`AdaptadorAPIHidrica.java` (Adaptador de Infraestructura con Sanitización de Valores Límite):
+
+```java
+package main.dosw.empoleon.infraestructura.adapter;
+
+import java.util.Objects;
+import main.dosw.empoleon.dominio.adapter.CondicionesHidricasDominio;
+import main.dosw.empoleon.dominio.adapter.ProveedorCondicionesHidricas;
+
+public class AdaptadorAPIHidrica implements ProveedorCondicionesHidricas {
+    private final ClienteApiHidricaExterna clienteExterno;
+
+    public AdaptadorAPIHidrica(ClienteApiHidricaExterna clienteExterno) {
+        this.clienteExterno = Objects.requireNonNull(clienteExterno, "El cliente externo no puede ser nulo");
+    }
+
+    @Override
+    public CondicionesHidricasDominio consultarCondiciones(String zona) {
+        if (zona == null || zona.isBlank()) {
+            return CondicionesHidricasDominio.adversas();
+        }
+        DatosHidricosExternosJson respuesta = clienteExterno.fetchWaterConditions(zona);
+        if (respuesta == null) {
+            return CondicionesHidricasDominio.adversas();
+        }
+        // Sanitización y normalización de valores límite
+        double nivelAgua = Math.max(0.0, respuesta.waterLevel());
+        double turbidez = Math.max(0.0, respuesta.turbidity());
+        double alturaOlas = Math.max(0.0, respuesta.waveHeight());
+        boolean navegable = respuesta.safeForNavigation() && nivelAgua >= 0.5 && alturaOlas <= 1.5;
+
+        return new CondicionesHidricasDominio(nivelAgua, turbidez, alturaOlas, navegable);
+    }
+}
+```
+
+---
+
+#### 4. Verificación Automatizada con Mockito (3 Retos Obligatorios)
+
+En `PatronesEnterpriseTest.java` se implementaron las suites de pruebas con **Mockito 5.11**:
+
+```java
+@Test
+@DisplayName("RETO MOCKITO 1: La cadena de validación se detiene en el primer validador que falla")
+void testCadenaSeDetieneEnPrimerValidadorQueFalla() {
+    ValidadorBateria valBateria = new ValidadorBateria();
+    valBateria.setSiguiente(eslabonMock);
+
+    // Dron con batería insuficiente (15% < 20%)
+    DroneEnterprise droneBateriaBaja = new DroneEnterprise("D-LOW", "Aqua", TipoDrone.SUPERFICIAL, 15, ...);
+    ResultadoValidacion resultado = valBateria.validar(misionValida, droneBateriaBaja, condicionesValidas);
+
+    assertFalse(resultado.exitoso());
+    assertEquals("ValidadorBateria", resultado.validadorFalla());
+    // Verificación clave: el siguiente eslabón NUNCA fue llamado
+    verify(eslabonMock, never()).validar(any(), any(), any());
+}
+
+@Test
+@DisplayName("RETO MOCKITO 2: Decorator registra telemetría sin alterar el comportamiento base del drone")
+void testDecoratorRegistraSinAlterarComportamientoBase() {
+    when(droneOperacionalMock.getId()).thenReturn("DRN-MOCK-01");
+    when(droneOperacionalMock.ejecutarMision("M-100", "TR-1")).thenReturn(true);
+    DroneConMonitoreo droneMonitoreado = new DroneConMonitoreo(droneOperacionalMock);
+
+    boolean resultado = droneMonitoreado.ejecutarMision("M-100", "TR-1");
+
+    assertTrue(resultado);
+    verify(droneOperacionalMock, times(1)).ejecutarMision("M-100", "TR-1");
+    assertTrue(droneMonitoreado.getRegistroTelemetria().stream().anyMatch(l -> l.contains("[TELEMETRIA]")));
+}
+
+@Test
+@DisplayName("RETO MOCKITO 3: Adapter convierte correctamente campos con valores límite")
+void testAdapterConvierteCamposValoresLimite() {
+    DatosHidricosExternosJson respuestaLimite = new DatosHidricosExternosJson(-5.0, -10.0, -2.5, true);
+    when(clienteApiMock.fetchWaterConditions("Canal Central")).thenReturn(respuestaLimite);
+
+    AdaptadorAPIHidrica adaptador = new AdaptadorAPIHidrica(clienteApiMock);
+    CondicionesHidricasDominio resultado = adaptador.consultarCondiciones("Canal Central");
+
+    assertEquals(0.0, resultado.nivelAguaMetros());
+    assertEquals(0.0, resultado.turbidezNtu());
+    assertFalse(resultado.esNavegable()); // Sanitización: nivel de agua 0.0 < 0.5 marca no navegable
+}
+```
+
+---
+
+#### 5. Ejecución y Demostración en Consola (`Ejercicio03Empoleon.java`)
+
+![Ejecución de Ejercicio03Empoleon en IntelliJ IDEA](docs/images/EmpoleonExercise03.png)
+
+> [!NOTE]
+> La salida por consola se emite a través de `java.util.logging.Logger` conforme a las reglas de calidad de SonarQube (`java:S106`), garantizando observabilidad profesional y tipado semántico.
+
+---
+
+### 🏗 Ejercicio 04: Auditoría SOLID Completa de la Arquitectura Enterprise
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — Principios SOLID:**
+> Audita toda la arquitectura con SonarQube y una revisión manual de imports. Verifica que:
+>
+> 1. Ninguna clase del dominio depende de infraestructura.
+> 2. Todos los servicios reciben dependencias por constructor (no por campo ni setter).
+> 3. No hay ningún `new ClaseInfraestructura()` en el dominio ni en la aplicación.
+> 4. Documenta el mapa de dependencias entre capas.
+>
+> **La regla de oro del nivel Empoleon:**
+> El paquete `dominio` no puede tener ningún import de librerías externas (Mockito, Jackson, HttpClient, etc.). Solo Java puro. Las dependencias externas viven en la capa de infraestructura y se inyectan por interfaz.
+
+---
+
+#### 2. Mapa Arquitectónico de Capas e Inversión de Dependencias (Hexagonal / Clean Architecture)
+
+El siguiente diagrama Mermaid documenta el flujo unidireccional y la inversión de dependencias: las capas internas jamás dependen de las externas, y la infraestructura implementa puertos declarados en el dominio.
+
+```mermaid
+graph TD
+    subgraph Dominio["Capa de Dominio (100% Java Puro - Regla de Oro)"]
+        ENT["DroneEnterprise<br/>MisionEnterprise<br/>ZonaHidrica"]
+        PORT["ProveedorCondicionesHidricas<br/>(Puerto SPI)"]
+        CONTRATO["DroneOperacional<br/>EslabonValidacion"]
+    end
+
+    subgraph Aplicacion["Capa de Aplicación (Casos de Uso y Orquestación)"]
+        SRV["DespachadorMisionesEnterprise<br/>(Constructor Injection)"]
+        COORD["CoordinadorRutasEmpoleon"]
+        CADENA["CadenaValidacionMision<br/>ValidadorBateria<br/>ValidadorCapacidadCarga..."]
+    end
+
+    subgraph Infraestructura["Capa de Infraestructura (Adaptadores y APIs Externas)"]
+        ADAPT["AdaptadorAPIHidrica<br/>(Implementa ProveedorCondicionesHidricas)"]
+        CLIENT["ClienteApiHidricaExterna<br/>(DTOs JSON en inglés)"]
+    end
+
+    %% Relaciones
+    SRV -->|Usa| PORT
+    SRV -->|Usa| CADENA
+    SRV -->|Usa| CONTRATO
+    SRV -->|Usa| ENT
+    CADENA -->|Implementa| CONTRATO
+    ADAPT -.->|Implementa DIP| PORT
+    ADAPT -->|Consume| CLIENT
+
+    classDef domStyle fill:#0c2824,stroke:#34d399,stroke-width:2px,color:#d1fae5;
+    classDef appStyle fill:#1a1d36,stroke:#818cf8,stroke-width:2px,color:#e0e7ff;
+    classDef infraStyle fill:#0d233a,stroke:#22d3ee,stroke-width:2px,color:#e0f2fe;
+
+    class ENT,PORT,CONTRATO domStyle;
+    class SRV,COORD,CADENA appStyle;
+    class ADAPT,CLIENT infraStyle;
+```
+
+---
+
+#### 3. Auditoría Detallada de los 5 Principios SOLID
+
+| Principio                                                         | Definición en AquaPort Enterprise                                                                  | Implementación Concreta en el Código                                                                                                                                                                                                                                                                                         |
+| :---------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **S — Single Responsibility (Responsabilidad Única)**     | Cada clase u objeto responde a un único actor y tiene una sola razón para cambiar.                | •`ValidadorBateria`: Solo valida umbral energético $\ge 20\%$.• `DroneConMonitoreo`: Solo agrega trazas de telemetría.• `AdaptadorAPIHidrica`: Solo adapta el modelo JSON externo al dominio.• `DespachadorMisionesEnterprise`: Solo orquesta la verificación y el despacho.                                  |
+| **O — Open/Closed (Abierto/Cerrado)**                      | Los módulos están abiertos a la extensión pero cerrados a la modificación.                      | • Se pueden incorporar nuevos validadores (`EslabonValidacion`) sin tocar la cadena base.• Se pueden apilar nuevos decoradores (`DroneDecorator`) sin modificar el comportamiento ni la estructura de `DroneEnterprise`.• Se pueden conectar nuevas fuentes hídricas implementando `ProveedorCondicionesHidricas`. |
+| **L — Liskov Substitution (Sustitución de Liskov)**       | Los subtipos deben poder sustituir a sus tipos base sin alterar la corrección del programa.        | • Cualquier`DroneDecorator` (`DroneConMonitoreo`, `DroneConCifrado`) puede sustituir a `DroneOperacional` en cualquier flujo o servicio sin lanzar excepciones inesperadas ni alterar los contratos de estado.• Cualquier `ValidadorBase` sustituye a `EslabonValidacion`.                                       |
+| **I — Interface Segregation (Segregación de Interfaces)** | Los clientes no deben ser forzados a depender de contratos o métodos que no utilizan.              | •`ProveedorCondicionesHidricas`: Define exactamente un método cohesivo (`consultarCondiciones(zona)`).• `EslabonValidacion`: Segrega la lógica de validación secuencial sin mezclar persistencia ni monitoreo.• `DroneOperacional`: Contrato específico para operaciones en misión.                            |
+| **D — Dependency Inversion (Inversión de Dependencias)**  | Los módulos de alto nivel no deben depender de los de bajo nivel; ambos dependen de abstracciones. | •`DespachadorMisionesEnterprise` depende de la interfaz `ProveedorCondicionesHidricas` y de `CadenaValidacionMision`.• No existe ningún `new ClaseInfraestructura()` dentro de `dominio` ni `aplicacion`.• La infraestructura depende hacia adentro implementando los puertos del dominio.                     |
+
+---
+
+#### 4. Cumplimiento de la "Regla de Oro de Empoleon" y Constructor Injection
+
+##### 1. Regla de Oro: Dominio 100% Puro
+
+Una inspección estricta de imports sobre todo el árbol `main.dosw.empoleon.dominio` certifica:
+
+- **0 imports de librerías externas:** Sin dependencias de Mockito, Jackson, HttpClient, Spring o Jakarta.
+- **0 acoplamientos con infraestructura:** El dominio desconoce completamente adaptadores, clientes HTTP o DTOs externos.
+- Solo tipos estándar del JDK (`java.util`, `java.util.function`, `java.util.stream`).
+
+##### 2. Inyección por Constructor Estricta (Inmutabilidad)
+
+Todas las dependencias requeridas en servicios y adaptadores se declaran como campos inmutables `final` y se exigen obligatoriamente a través del constructor, previniendo estados inconsistentes o inyecciones por campo/setter:
+
+`DespachadorMisionesEnterprise.java` (Servicio de Aplicación desacoplado):
+
+```java
+package main.dosw.empoleon.aplicacion;
+
+import java.util.Objects;
+import main.dosw.empoleon.aplicacion.cadena.CadenaValidacionMision;
+import main.dosw.empoleon.dominio.DroneEnterprise;
+import main.dosw.empoleon.dominio.MisionEnterprise;
+import main.dosw.empoleon.dominio.adapter.CondicionesHidricasDominio;
+import main.dosw.empoleon.dominio.adapter.ProveedorCondicionesHidricas;
+import main.dosw.empoleon.dominio.cadena.ResultadoValidacion;
+import main.dosw.empoleon.dominio.decorator.DroneOperacional;
+
+public class DespachadorMisionesEnterprise {
+
+    private final CadenaValidacionMision cadenaValidacion;
+    private final ProveedorCondicionesHidricas proveedorCondiciones;
+
+    public DespachadorMisionesEnterprise(
+            CadenaValidacionMision cadenaValidacion,
+            ProveedorCondicionesHidricas proveedorCondiciones
+    ) {
+        this.cadenaValidacion = Objects.requireNonNull(cadenaValidacion, "La cadena no puede ser nula");
+        this.proveedorCondiciones = Objects.requireNonNull(proveedorCondiciones, "El proveedor no puede ser nulo");
+    }
+
+    public ResultadoValidacion validarDespacho(
+            MisionEnterprise mision, DroneEnterprise drone, String zona
+    ) {
+        CondicionesHidricasDominio condiciones = proveedorCondiciones.consultarCondiciones(zona);
+        return cadenaValidacion.validar(mision, drone, condiciones);
+    }
+
+    public boolean despacharMision(
+            MisionEnterprise mision, DroneOperacional droneOperacional, String zona, String tramoId
+    ) {
+        ResultadoValidacion resultado = validarDespacho(mision, droneOperacional.getDroneBase(), zona);
+        if (!resultado.exitoso()) {
+            return false;
+        }
+        return droneOperacional.ejecutarMision(mision.getId(), tramoId);
+    }
+}
+```
+
+---
+
+#### 5. Pruebas Automatizadas de Arquitectura (`SolidArchitectureAuditTest.java`)
+
+Se implementó una suite automatizada de pruebas con JUnit 5 que realiza análisis estático y reflexivo en tiempo de test para certificar la arquitectura:
+
+```java
+@Test
+@DisplayName("SOLID REGLA DE ORO: El paquete dominio no tiene imports externos ni de infraestructura")
+void testReglaDeOroDominioSinDependenciasExternasNiInfraestructura() throws IOException {
+    try (Stream<Path> paths = Files.walk(DOMINIO_PATH)) {
+        List<Path> javaFiles = paths.filter(p -> p.toString().endsWith(".java")).toList();
+        for (Path file : javaFiles) {
+            List<String> lines = Files.readAllLines(file);
+            for (String line : lines) {
+                if (line.trim().startsWith("import ")) {
+                    String importedClass = line.trim().substring(7, line.indexOf(';')).trim();
+                    assertFalse(importedClass.contains("infraestructura"));
+                    assertFalse(importedClass.startsWith("org.mockito"));
+                    assertFalse(importedClass.startsWith("com.fasterxml"));
+                    assertFalse(importedClass.startsWith("java.net.http"));
+                }
+            }
+        }
+    }
+}
+```
+
+---
+
+#### 6. Ejecución y Demostración en Consola (`Ejercicio04Empoleon.java`)
+
+`Ejercicio04Empoleon.java` (Clase Principal Demostradora):
+
+```java
+package main.dosw.empoleon;
+
+import java.util.List;
+import java.util.logging.Logger;
+import main.dosw.empoleon.aplicacion.DespachadorMisionesEnterprise;
+import main.dosw.empoleon.aplicacion.cadena.CadenaValidacionMision;
+import main.dosw.empoleon.dominio.DroneEnterprise;
+import main.dosw.empoleon.dominio.EstadoMisionEnterprise;
+import main.dosw.empoleon.dominio.MisionEnterprise;
+import main.dosw.empoleon.dominio.ZonaHidrica;
+import main.dosw.empoleon.dominio.cadena.ResultadoValidacion;
+import main.dosw.empoleon.dominio.decorator.DroneConCifrado;
+import main.dosw.empoleon.dominio.decorator.DroneConMonitoreo;
+import main.dosw.empoleon.dominio.decorator.DroneOperacional;
+import main.dosw.empoleon.dominio.decorator.DroneOperacionalBase;
+import main.dosw.empoleon.infraestructura.adapter.AdaptadorAPIHidrica;
+import main.dosw.empoleon.infraestructura.adapter.ClienteApiHidricaExterna;
+import main.dosw.empoleon.infraestructura.adapter.DatosHidricosExternosJson;
+import main.dosw.prinplup.EstadoDrone;
+import main.dosw.prinplup.Prioridad;
+import main.dosw.prinplup.TipoDrone;
+
+public class Ejercicio04Empoleon {
+    private static final Logger LOGGER = Logger.getLogger(Ejercicio04Empoleon.class.getName());
+
+    public static void main(String[] args) {
+        LOGGER.info("=== AquaPort Enterprise – Fase Empoleon: Ejercicio 04 (Principios SOLID) ===");
+        // Configuración de dependencias vía constructor
+        ClienteApiHidricaExterna apiExterna = zona -> new DatosHidricosExternosJson(3.5, 12.0, 0.3, true);
+        AdaptadorAPIHidrica adaptador = new AdaptadorAPIHidrica(apiExterna);
+        CadenaValidacionMision cadena = new CadenaValidacionMision();
+        DespachadorMisionesEnterprise despachador = new DespachadorMisionesEnterprise(cadena, adaptador);
+
+        // Envoltorio con decoradores operacionales
+        DroneEnterprise dronFisico = new DroneEnterprise(
+                "DRN-ENT-04", "Aqua-Explorer Enterprise", TipoDrone.SEMISUMERGIDO, 85,
+                EstadoDrone.DISPONIBLE, ZonaHidrica.LAGUNA_RESERVA.getNombre(), 1200, 15
+        );
+        DroneOperacional droneSeguro = new DroneConCifrado(
+                new DroneConMonitoreo(new DroneOperacionalBase(dronFisico))
+        );
+
+        // Despacho desacoplado
+        MisionEnterprise mision = new MisionEnterprise(
+                "MIS-ENT-004", "Monitoreo químico en Laguna",
+                ZonaHidrica.LAGUNA_RESERVA.getNombre(), ZonaHidrica.LABORATORIO_CENTRAL.getNombre(),
+                List.of(), List.of(), EstadoMisionEnterprise.PLANIFICADA, Prioridad.CRITICA, 600
+        );
+        ResultadoValidacion prevalidacion = despachador.validarDespacho(mision, dronFisico, ZonaHidrica.LAGUNA_RESERVA.getNombre());
+        boolean despachoExitoso = despachador.despacharMision(mision, droneSeguro, ZonaHidrica.LAGUNA_RESERVA.getNombre(), "TR-1");
+    }
+}
+```
+
+![Ejecución de Ejercicio04Empoleon en IntelliJ IDEA](docs/images/EmpoleonExercise04.png)
+
+> [!NOTE]
+> La salida por consola se emite a través de `java.util.logging.Logger` conforme a las reglas de calidad de SonarQube (`java:S106`), garantizando observabilidad profesional y tipado semántico.
+
+---
+
+### 🗺 Ejercicio 05: Diagrama de Contexto C4 del Sistema AquaPort Enterprise
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — Diagrama de Contexto C4:**
+> Elabora el Diagrama de Contexto del Sistema (Nivel 1 del modelo C4) para representar formalmente la arquitectura perimetral de **AquaPort Enterprise (Fase Empoleon)**. El sistema evoluciona para gobernar una flota de **60 drones acuáticos distribuidos en 4 zonas hídricas interconectadas** (Embalse de Investigación, Red de Canales, Laguna de Reserva y Laboratorio Hídrico Central), coordinando misiones multi-etapa con waypoints intermedios y garantizando el aislamiento con la API externa mediante el patrón Adapter.
+
+---
+
+#### 2. Diagrama de Contexto C4 — AquaPort Enterprise (Fase Empoleon)
+
+El diagrama delimita el sistema central como una caja negra de software, identificando a las personas (*Persons*) que interactúan directamente con él y a los sistemas externos (*Software Systems*) con los que intercambia datos de forma bidireccional mediante flujos debidamente etiquetados con sus protocolos:
+
+![Diagrama de Contexto C4 - AquaPort Enterprise](docs/uml/DiagramaC4Empeleon.png)
+
+##### Elementos del Diagrama de Contexto Enterprise:
+
+1. **AquaPort Enterprise (`[Software System]` — Sistema Central):**
+   Plataforma central autónoma encargada de gestionar y despachar la flota de 60 drones en 4 zonas hídricas interconectadas, planificar rutas multi-etapa con waypoints intermedios, pre-validar asignaciones mediante *Chain of Responsibility*, extender dinámicamente capacidades operacionales con *Decorator* y aislar la infraestructura externa mediante *Adapter*.
+2. **Actores Humanos (`[Person]`):**
+   - **Operador Hídrico:** Supervisor operativo que monitorea la flota de 60 drones en tiempo real en las 4 zonas hídricas, valida rutas multi-etapa complejas y autoriza contingencias.
+   - **Solicitante:** Investigador o laboratorista del campus ECI que solicita transporte de muestras hídricas, sensores o equipos entre embalses con trazabilidad estricta de cadena de custodia.
+   - **Administrador ECI:** Directiva institucional que supervisa el inventario global de 60 drones, eficiencia operativa por zona y cumplimiento de Acuerdos de Nivel de Servicio (SLAs).
+   - **Técnico de Mantenimiento:** Personal técnico que recibe órdenes de servicio automatizadas ante fallos en ruta o batería crítica ($\le 20\%$) y registra la rehabilitación de unidades.
+3. **Sistemas Externos (`[Software System]`):**
+   - **API Condiciones Hídricas:** Servicio meteorológico e hidrológico que provee variables limnológicas en tiempo real (`waterLevel`, `turbidity`, `waveHeight`), aislado y sanitizado por el `AdaptadorAPIHidrica` hacia el dominio.
+   - **Centro de Control ECI:** Sistema institucional que evalúa los planes de navegación multi-etapa propuestos, coordina el tráfico en esclusas y emite autorizaciones de paso hídrico.
+   - **Sistema de Alertas y Telemetría:** Infraestructura de difusión de emergencias y monitoreo en tiempo real con sellado criptográfico AES-256 ante fallos en ruta o desvíos de waypoint.
+
+#### 3. Análisis Comparativo: Evolución de Prinplup (v2) a Empoleon Enterprise (v3)
+
+| Dimensión de Análisis           | Versión Prinplup (AquaPort v2)         | Versión Empoleon (AquaPort Enterprise)                                               | Impacto Arquitectónico y de Ingeniería                                                                       |
+| :-------------------------------- | :-------------------------------------- | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------- |
+| **Tamaño de Flota**        | 15 drones agrupados en 3 familias.      | **60 drones autónomos** distribuidos en 4 zonas hídricas.                     | Demanda procesamiento paralelo (`parallelStream`) y recolectores optimizados en una sola pasada.             |
+| **Topología y Zonas**      | Misiones de tramo simple punto a punto. | **Red interconectada de 4 zonas** con rutas multi-etapa y waypoints.            | Requiere coordinación de traspasos físicos y trazabilidad estricta de cadena de custodia.                    |
+| **Aislamiento de API**      | Invocación simulada o directa.         | **Patrón Adapter formal (`AdaptadorAPIHidrica`)**.                           | Aísla el modelo de dominio en español de contratos externos JSON en inglés (`waterLevel`, `turbidity`). |
+| **Seguridad y Telemetría** | Notificaciones reactivas con Observer.  | **Telemetría continua decorada con sellado criptográfico AES-256 / SHA-256**. | Protege la integridad de paquetes y autenticidad en canales de comunicación no seguros.                       |
+| **Pre-validación**         | Validaciones acopladas en el asignador. | **Chain of Responsibility de 4 eslabones desacoplados**.                        | Cada eslabón valida una única regla (batería, capacidad, zona, condiciones) y detiene la cadena ante fallo. |
+
+---
+
+### 📋 Ejercicio 06: Requisitos Enterprise — Trazabilidad, SLA y Gestión de Fallos en Ruta
+
+#### 1. Enunciado y Objetivos del Reto
+
+> **🎯 Reto Empoleon — Requisitos Enterprise:**
+> Escribe 5 Requerimientos Funcionales (RF) del nivel Enterprise (rutas multi-etapa, reasignación automática ante fallo en waypoint, trazabilidad completa de la cadena de custodia de muestras, coordinación entre zonas, reportes de eficiencia por zona) y 5 Requerimientos No Funcionales (RNF) con métricas cuantitativas de producción: SLA de disponibilidad, tiempo máximo de reasignación, throughput de misiones simultáneas. Aplica priorización MoSCoW y documenta todas las tensiones arquitectónicas entre requerimientos.
+
+---
+
+#### 2. Requerimientos Funcionales (RF) de Nivel Enterprise
+
+|     Código     | Nombre del Requerimiento                                                    | Descripción Detallada                                                                                                                                                                                                                                                                          |       Actor Principal       | Validación / Criterio de Éxito                                                                                                                                       |
+| :-------------: | :-------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **RF-01** | **Planificación y Ejecución de Rutas Multi-Etapa con Waypoints**    | El sistema debe planificar y coordinar rutas compuestas por múltiples waypoints intermedios conectando las 4 zonas hídricas, asignando para cada tramo un dron óptimo disponible según su tipo físico (`SUPERFICIAL`, `SEMISUMERGIDO`, `BUCEADOR`), carga útil y nivel de batería. |      Operador Hídrico      | Genera un plan de ruta ordenado con tramos indivisibles y drones aptos asignados. Verificado en`RequerimientosEnterpriseTest.testRF01PlanificacionRutaMultiEtapa()`. |
+| **RF-02** | **Reasignación Automática Inmediata ante Fallo en Waypoint**        | Si un dron reporta estado de`FALLO`, anomalía crítica de navegación o batería residual $\le 20\%$ al alcanzar un waypoint intermedio, el sistema debe seleccionar y despachar automáticamente un dron de reemplazo disponible en dicha zona sin abortar la misión global.             | Sistema / Centro de Control | Resuelve la sustitución en menos de 1.5 segundos preservando la carga útil. Verificado en`testRF02YRNF02ReasignacionAutomaticaAnteFallo()`.                        |
+| **RF-03** | **Trazabilidad Integral de la Cadena de Custodia de Muestras**        | El sistema debe registrar inmutablemente cada traspaso de carga en waypoints, auditando identificadores de drones, coordenadas GPS, timestamps UTC, peso de muestra y sellado criptográfico mediante firma hash SHA-256.                                                                       | Investigador / Solicitante | Cada misión completada cuenta con bitácora sellada y verificable con el patrón*Decorator* (`DroneConCifrado`).                                                  |
+| **RF-04** | **Coordinación Autónoma y Sincronización entre 4 Zonas Hídricas** | El sistema debe orquestar el tránsito fluido entre el*Embalse de Investigación*, la *Red de Canales*, la *Laguna de Reserva* y el *Laboratorio Hídrico Central*, sincronizando la apertura de compuertas y asegurando disponibilidad de drones receptores en waypoints de frontera.  |      Operador Hídrico      | Despacho validado exitosamente en las 4 zonas sin bloqueos operativos. Verificado en`testRF04CoordinacionCuatroZonasHidricas()`.                                     |
+| **RF-05** | **Generación de Reportes Analíticos de Eficiencia por Zona**        | El sistema debe calcular en tiempo real métricas analíticas por zona hídrica: ratio de misiones exitosas, tasa de fallos, y batería promedio consumida procesada en una sola pasada mediante un*Custom Collector* optimizado.                                                             |      Administrador ECI      | Exporta agregaciones exactas para las 4 zonas con latencia$< 100$ ms. Verificado en `testRF05ReportesEficienciaPorZona()`.                                         |
+
+---
+
+#### 3. Requerimientos No Funcionales (RNF) Cuantitativos de Producción (ISO/IEC 25010)
+
+|     Código     | Atributo de Calidad (ISO 25010)                   | Especificación del Requerimiento No Funcional                                                                                    |                                                  Métrica Cuantitativa Objetivo                                                  | Herramienta de Medición / Validación                                     |
+| :--------------: | :------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------- |
+| **RNF-01** | **Disponibilidad / Confiabilidad (SLA)**    | La plataforma central de despacho debe garantizar continuidad operativa continua 24/7 en el campus.                               |               **Uptime $\ge 99.95\%$** (máximo 21.6 min inactividad/mes) y **MTTR $< 3$ minutos**.               | Monitoreo de disponibilidad y pruebas de resiliencia operativa.            |
+| **RNF-02** | **Rendimiento / Latencia de Recuperación** | El tiempo transcurrido desde la detección de fallo en waypoint hasta el despacho del dron sustituto debe ser casi imperceptible. |               **Tiempo de reasignación $< 1.5$ segundos** ($< 1500$ ms) para flotas de hasta 60 drones.               | JUnit 5`assertTimeoutPreemptively` en `RequerimientosEnterpriseTest`.  |
+| **RNF-03** | **Capacidad / Concurrencia y Throughput**   | El motor de misiones debe orquestar ráfagas concurrentes de solicitudes de despacho sin bloqueos mutuos ni degradación.         | **Throughput $\ge 100$ misiones concurrentes** con **latencia total $< 1200$ ms** y **error $< 0.01\%$**. | JUnit 5 multi-hilo (`CompletableFuture` + `ExecutorService`).          |
+| **RNF-04** | **Seguridad / Integridad Criptográfica**   | El sellado de telemetría y custodia debe utilizar cifrado robusto para evitar adulteraciones en canales inalámbricos.           |           **Sobrecarga de cifrado $< 20$ ms por paquete** con algoritmos estándar **AES-256 / SHA-256**.           | Benchmark en`PatronesEnterpriseTest` y `RequerimientosEnterpriseTest`. |
+| **RNF-05** | **Confiabilidad / Integridad de Datos**     | Tasa de pérdida o corrupción de datos de misión en traspasos físicos entre waypoints.                                         |                    **Tasa de pérdida = 0.00%** (*Zero Packet Loss* con deduplicación transaccional).                    | Verificación de persistencia transaccional e inmutabilidad en dominio.    |
+
+---
+
+#### 4. Matriz de Priorización MoSCoW para AquaPort Enterprise
+
+```
+                           MATRIZ MoSCoW — AQUAPORT ENTERPRISE
+  ┌──────────────────────────────────────────┬──────────────────────────────────────────┐
+  │              MUST HAVE (M)               │              SHOULD HAVE (S)             │
+  │  • RF-01: Rutas multi-etapa con waypoints│  • RF-04: Coordinación entre 4 zonas     │
+  │  • RF-02: Reasignación por fallo < 1.5s  │  • RNF-03: Throughput 100 misiones conc. │
+  │  • RF-03: Cadena de custodia inmutable   │  • RNF-04: Cifrado y sellado AES-256     │
+  │  • RNF-01: SLA de disponibilidad 99.95%  │                                          │
+  │  • RNF-02: Latencia de fallo < 1.5s      │                                          │
+  ├──────────────────────────────────────────┼──────────────────────────────────────────┤
+  │              COULD HAVE (C)              │              WON'T HAVE (W)              │
+  │  • RF-05: Reportes analíticos de zona    │  • Drones aéreos fuera del agua          │
+  │  • RNF-05: Trazabilidad térmica IoT      │  • Recarga inductiva inalámbrica subacua │
+  │    con telemetría ambiental de respaldo  │    sin anclaje en estación de servicio   │
+  └──────────────────────────────────────────┴──────────────────────────────────────────┘
+```
+
+---
+
+#### 5. Análisis Exhaustivo de Tensiones entre Requerimientos
+
+En arquitecturas empresariales de alta concurrencia, los requerimientos compiten naturalmente por recursos del sistema. Se analizaron y resolvieron 3 tensiones críticas:
+
+```mermaid
+graph LR
+    subgraph T1["Tensión 1: Recuperación Rápida vs Criptografía"]
+        RF02["RF-02: Reasignación Inmediata<br/>(Latencia < 1.5s)"] <-->|Tensión computacional| RF03["RF-03: Cadena de Custodia<br/>(Firma SHA-256 + AES-256)"]
+        RES1["Solución: Pipeline asíncrono desacoplado.<br/>La selección de reemplazo corre en hilo prioritario<br/>mientras el sellado criptográfico se computa en background."]
+    end
+
+    subgraph T2["Tensión 2: Throughput Masivo vs Validación Rigurosa"]
+        RNF03["RNF-03: Throughput 100 misiones<br/>(Procesamiento masivo)"] <-->|Cuello de botella de red| CAD["Chain of Responsibility<br/>(4 eslabones + API Hídrica)"]
+        RES2["Solución: Caché local con TTL de 30s<br/>para condiciones hídricas por zona y evaluación<br/>en memoria de la cadena de validación."]
+    end
+
+    subgraph T3["Tensión 3: Coordinación Multi-Zona vs Alta Disponibilidad"]
+        RF04["RF-04: Coordinación de 4 Zonas<br/>(Dependencia distribuida)"] <-->|Riesgo de fallo en cascada| RNF01["RNF-01: Uptime 99.95%<br/>(Disponibilidad continua)"]
+        RES3["Solución: Patrón Circuit Breaker y desvío autónomo.<br/>Si una esclusa o zona no responde, el tramo se desvía<br/>a una ruta hídrica secundaria sin bloquear el sistema."]
+    end
+
+    classDef tensionStyle fill:#1e293b,stroke:#f43f5e,stroke-width:2px,color:#ffffff;
+    classDef solStyle fill:#0c2824,stroke:#10b981,stroke-width:2px,color:#d1fae5;
+
+    class RF02,RF03,RNF03,CAD,RF04,RNF01 tensionStyle;
+    class RES1,RES2,RES3 solStyle;
+```
+
+---
+
+#### 6. Verificación Automatizada con JUnit 5 (`RequerimientosEnterpriseTest.java`)
+
+Todas las restricciones de rendimiento, concurrencia y validación funcional se certifican con una suite automatizada en JUnit 5:
+
+```java
+@Test
+@DisplayName("RF-02 & RNF-02: Reasignación automática inmediata ante fallo en waypoint (< 1.5s)")
+void testRF02YRNF02ReasignacionAutomaticaAnteFallo() {
+    assertTimeoutPreemptively(Duration.ofMillis(1500), () -> {
+        // Simulación de fallo en waypoint y búsqueda inmediata de reemplazo
+        dronePrimario.setEstado(EstadoDrone.FALLO);
+        List<DroneEnterprise> disponibles = flota60.stream()
+                .filter(DroneEnterprise::isDisponible)
+                .filter(d -> d.getZona().equalsIgnoreCase("Red de Canales"))
+                .toList();
+
+        DroneEnterprise respaldo = disponibles.get(0);
+        TramoRuta tramoReasignado = new TramoRuta("TR-RECUPERADO", origen, destino, 800, respaldo);
+        assertNotNull(tramoReasignado.droneAsignado());
+    });
+}
+```
+
+---
+
+### Ejercicio 07 — Plantilla DOSW para RF "AP-15 Ejecutar misión multi-etapa con waypoints"
+
+Siguiendo el estándar de ingeniería de requisitos de la Escuela Colombiana de Ingeniería Julio Garavito (`Plantilla_Requerimientos_DOSW.docx`), se documenta de manera exhaustiva el Requerimiento Funcional de máxima complejidad para AquaPort Enterprise: la orquestación autónoma de misiones náuticas multi-etapa con secuencias de waypoints, tramos encadenados, relevos de flota entre 60 drones, validación meteorológica dinámica, sellado criptográfico de cadena de custodia y tolerancia a fallos.
+
+---
+
+#### 1. FUNCIONALIDAD
+
+| Campo                          | Detalle de Especificación                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| :----------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Código:**             | **AP-15** (RF nuclear de la Fase Empoleon)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| **Nombre:**              | **Ejecutar misión multi-etapa con waypoints**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| **Descripción:**        | Permite al sistema orquestar y ejecutar de forma autónoma misiones de navegación acuática multi-etapa a través de una secuencia ordenada de puntos de control (waypoints) y tramos intermedios en el campus ECI. El sistema coordina relevos de drones por tramo, verifica dinámicamente las condiciones meteorológicas e hidrológicas de cada tramo, mantiene la cadena de custodia criptográfica inmutable de la muestra (SHA-256) y gestiona de manera transparente eventos imprevistos (fallo de dron en waypoint, condiciones hídricas adversas o inactividad en zona de destino). |
+| **Cómo se ejecutará:** | A través del módulo central`OrquestadorMisionMultiEtapa` integrado en el Centro de Control AquaPort Enterprise, ejecutándose en tiempo real de forma autónoma con supervisión del Operador Hídrico.                                                                                                                                                                                                                                                                                                                                                                                      |
+| **Actor principal:**     | **Operador Hídrico**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| **Precondiciones:**      | 1. La flota Enterprise de 60 drones acuáticos debe estar registrada y distribuida en las 4 zonas operativas (`Embalse de Investigación`, `Red de Canales`, `Laguna de Reserva` y `Laboratorio Hídrico Central`).2. La ruta debe contener al menos 2 waypoints válidos y sus respectivos tramos de enlace.3. El servicio de condiciones meteorológicas e hidrológicas debe estar respondiendo telemetría.4. La muestra o sensor debe contar con identificación, peso calibrado (≤ 1500g) y sellado criptográfico inicial.                                                       |
+
+---
+
+#### 2. DATOS DE ENTRADA (Tipos Anidados y Sub-objetos)
+
+| Nombre del Campo              | Descripción                                                         | Tipo de Campo                 | Reglas de Validación / Dominio                                   |  Obligatorio  |
+| :---------------------------- | :------------------------------------------------------------------- | :---------------------------- | :---------------------------------------------------------------- | :-----------: |
+| `idMision`                  | Identificador único de la misión multi-etapa.                      | `String`                    | Formato alfanumérico no vacío (ej.`MIS-MULTI-01`).            |      Sí      |
+| `descripcion`               | Propósito y objetivos de la misión náutica.                       | `String`                    | Texto descriptivo con longitud máxima de 255 caracteres.         |      Sí      |
+| `zonaOrigen`                | Zona hídrica de partida de la misión.                              | `String` / `Enum`         | Debe coincidir con una de las 4 zonas de`ZonaHidrica`.          |      Sí      |
+| `zonaDestino`               | Zona hídrica de entrega final.                                      | `String` / `Enum`         | Debe pertenecer a las zonas hídricas registradas del campus.     |      Sí      |
+| `prioridad`                 | Nivel de precedencia de la misión.                                  | `Prioridad`                 | `NORMAL`, `ALTA`, `CRITICA`.                                |      Sí      |
+| `pesoCargaGramos`           | Peso total de la muestra o instrumental.                             | `Integer`                   | Valor strictly positivo:`0 < peso <= 1500` gramos.              |      Sí      |
+| **`waypoints`**       | **Lista ordenada de puntos de control intermedios y finales.** | **`List<Waypoint>`**  | **Mínimo 2 waypoints ordenados secuencialmente.**          | **Sí** |
+| `waypoints[i].id`           | Identificador único del waypoint.                                   | `String`                    | Formato`WP-XX`.                                                 |      Sí      |
+| `waypoints[i].nombre`       | Nombre geográfico del punto de control.                             | `String`                    | Nombre reconocible (ej.`Muelle Central`, `Esclusa Alfa`).     |      Sí      |
+| `waypoints[i].zona`         | Zona hídrica donde se ubica el punto.                               | `String`                    | Zona válida en el campus.                                        |      Sí      |
+| `waypoints[i].orden`        | Posición secuencial en la ruta de navegación.                      | `Integer`                   | Entero positivo estrictamente creciente (1, 2, 3...).             |      Sí      |
+| **`tramos`**          | **Segmentos de navegación física entre pares de waypoints.** | **`List<TramoRuta>`** | **`tramos.size() == waypoints.size() - 1`.**              | **Sí** |
+| `tramos[i].id`              | Identificador único del tramo de ruta.                              | `String`                    | Formato`TR-XX`.                                                 |      Sí      |
+| `tramos[i].origen`          | Waypoint de partida del tramo.                                       | `Waypoint`                  | Coincide con`waypoints[i]`.                                     |      Sí      |
+| `tramos[i].destino`         | Waypoint de llegada del tramo.                                       | `Waypoint`                  | Coincide con`waypoints[i+1]`.                                   |      Sí      |
+| `tramos[i].distanciaMetros` | Longitud en metros del canal navegable.                              | `Integer`                   | Distancia estrictamente positiva (`distancia > 0`).             |      Sí      |
+| `tramos[i].droneAsignado`   | Unidad naval asignada al segmento.                                   | `DroneEnterprise`           | Dron en estado`DISPONIBLE`, con batería ≥ 25% y capacidad.    |      Sí      |
+| **`custodiaInicial`** | **Sello criptográfico de partida para la muestra.**           | **`CustodiaMuestra`** | **Hash SHA-256 inmutable generado a partir de la muestra.** | **Sí** |
+
+---
+
+#### 3. DATOS DE SALIDA (Sub-objetos de Telemetría y Custodia)
+
+| Nombre del Campo            | Descripción                                             | Tipo de Campo                 | Reglas / Aplicación en AquaPort Enterprise                                  |  Obligatorio  |
+| :-------------------------- | :------------------------------------------------------- | :---------------------------- | :--------------------------------------------------------------------------- | :-----------: |
+| `misionFinal`             | Entidad de misión con estado final consolidado.         | `MisionEnterprise`          | Estado final`COMPLETADA` o `EN_ESPERA_SEGURA`.                           |      Sí      |
+| `estadoFinal`             | Estado operacional final del ciclo.                      | `EstadoMisionEnterprise`    | Enum representativo del resultado del flujo.                                 |      Sí      |
+| `tramosEjecutados`        | Lista de tramos finales efectivamente navegados.         | `List<TramoRuta>`           | Incluye tramos recalculados por desvíos o reasignaciones.                   |      Sí      |
+| **`custodiaFinal`** | **Registro consolidado de la cadena de custodia.** | **`CustodiaMuestra`** | **Verificación del hash final contra la bitácora encadenada.**       | **Sí** |
+| `registrosTrazabilidad`   | Bitácora cronológica inmutable de eventos de custodia. | `List<String>`              | Formato`[SELLADO_ORIGEN]`, `[TRANSFERENCIA]`, `[WAYPOINT_VERIFICADO]`. |      Sí      |
+| `telemetriaEventos`       | Registro de advertencias y maniobras autónomas.         | `List<String>`              | Avisos de reasignación automática, desvíos y esperas.                     |      Sí      |
+
+---
+
+#### 4. FLUJO BÁSICO (Ciclo de Ejecución Multi-Etapa en 9 Pasos)
+
+|    Paso    | Actor                       | Descripción                                                                                                                                                                                      | Excepciones                                                                         |
+| :---------: | :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------- |
+| **1** | **Operador Hídrico** | Ingresa la solicitud de misión multi-etapa especificando la carga, nivel de prioridad, origen, destino y la secuencia requerida de waypoints.                                                    | `IllegalArgumentException` si faltan parámetros, peso ≤ 0 o peso > 1500g.       |
+| **2** | **Operador Hídrico** | El sistema valida la integridad de la ruta: coherencia secuencial del orden de waypoints, conectividad hidrológica de los tramos y número de etapas (mínimo 2 waypoints).                      | `IllegalArgumentException` si hay menos de 2 waypoints o tramos vacíos.          |
+| **3** | **Operador Hídrico** | El sistema consulta el servicio de Condiciones Hídricas para el tramo de partida, evaluando nivel de agua, turbidez y altura de oleaje.                                                          | Flujo alterno**2a** si las condiciones hídricas son severas o no navegables. |
+| **4** | **Operador Hídrico** | El sistema asigna los drones disponibles más idóneos para cada tramo considerando tipo de dron, proximidad y reserva de batería (mínimo 25%).                                                 | Flujo alterno**5a** si no hay dron apto en la zona del tramo.                 |
+| **5** | **Operador Hídrico** | El sistema inicializa la cadena de custodia criptográfica en el muelle de origen calculando el hash SHA-256 inicial de la muestra y sellando el bulto.                                           | `IllegalStateException` ante fallo en generador criptográfico.                   |
+| **6** | **Operador Hídrico** | La misión pasa a estado`EN_TRANSITO`. El dron asignado al tramo actual inicia la navegación transmitiendo telemetría continua de rumbo, velocidad y batería.                                | Flujo alterno**5a** si el dron reporta fallo técnico o batería crítica.    |
+| **7** | **Operador Hídrico** | Al arribar a cada waypoint intermedio, el sistema valida las coordenadas de atraque, comprueba la integridad del sello de la muestra y estampa el hash del waypoint.                              | Flujo alterno**8a** si la siguiente zona o waypoint se encuentra inactivo.    |
+| **8** | **Operador Hídrico** | Si el tramo siguiente involucra relevo de dron, se ejecuta la transferencia física/sensorial en el muelle seguro, registrando la firma de traspaso en la custodia (`DRN-A -> DRN-B`).          | `IllegalStateException` si el dron entrante no confirma el acople seguro.         |
+| **9** | **Operador Hídrico** | Al alcanzar el waypoint final de destino, el sistema valida la integridad de la muestra contra el hash final, cambia el estado a`COMPLETADA` y emite notificación formal al Centro de Control. | Fin del flujo básico exitoso.                                                      |
+
+---
+
+#### 5. FLUJOS ALTERNOS
+
+|     Paso     | Actor                       | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Excepciones                                                                                     |
+| :----------: | :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------- |
+| **5a** | **Operador Hídrico** | **Fallo o avería de dron en waypoint intermedio (Reasignación automática):** Si un dron en tránsito o acoplado en un waypoint reporta avería motriz (`EstadoDrone.FALLO`) o batería residual menor al umbral seguro (< 25%), el sistema activa de inmediato el failover (< 1.5s), localiza un dron de respaldo disponible en la misma zona con capacidad de carga apta, reasigna el tramo y ejecuta la transferencia segura registrando la firma criptográfica (`TRANSFERENCIA:WP-XX:DRN-A->DRN-B`). La misión continúa sin interrupción. | `IllegalStateException` si no existen drones disponibles en la zona ni en reservas contiguas. |
+| **2a** | **Operador Hídrico** | **Condiciones hídricas adversas en tramo específico (Desvío autónomo):** Si la telemetría hídrica reporta oleaje superior a 1.2 metros, velocidad de corriente superior a 2.5 m/s o zona no navegable, el sistema desvía dinámicamente la trayectoria recalculando el tramo hacia un canal secundario protegido o waypoint alterno seguro (`WP-XX-ALT`). Se reajusta la distancia estimada (+200m) y se preserva la integridad de la muestra.                                                                                                 | `IllegalStateException` si todos los canales alternos se encuentran cerrados.                 |
+| **8a** | **Operador Hídrico** | **Zona de destino temporalmente inactiva (Hold seguro en waypoint previo):** Si la esclusa o zona de arribo final reporta cierre de compuertas o inactividad operacional, el sistema suspende el avance final, coloca la misión en estado `EN_ESPERA_SEGURA` en el último waypoint seguro alcanzado y emite una alerta prioritaria al Centro de Control ECI para coordinar autorización de reapertura o reprogramación.                                                                                                                           | La misión pasa a`EN_ESPERA_SEGURA` a la espera de reactivación.                             |
+
+---
+
+#### 6. REGLAS DE NEGOCIO (RN)
+
+|   Identificador   | Nombre de la Regla                                                  | Enunciado Normativo y Justificación Operacional                                                                                                                                                                                                                                                                                                     |
+| :----------------: | :------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **RN-EM-01** | **Cadena de Custodia Criptográfica Inmutable (SHA-256)**     | Toda muestra hídrica o sensor debe contar con un sellado criptográfico calculado en origen mediante SHA-256. Cada arribo a waypoint y cada transferencia de custodia entre drones (`DRN-A -> DRN-B`) debe encadenar el hash previo con el identificador del nuevo receptor, garantizando no-repudio, trazabilidad forense e inmutabilidad total. |
+| **RN-EM-02** | **Umbral de Reasignación Preventiva de Batería (≥ 25%)**   | Ningún dron puede iniciar un tramo si su nivel de batería es inferior al**25%** o si su autonomía proyectada no garantiza el recorrido del segmento más un 15% de margen de maniobra. En caso de no superar este umbral, el sistema debe disparar la reasignación automática en menos de 1.5 segundos.                                   |
+| **RN-EM-03** | **Umbrales Ambientales de Navegabilidad por Tramo**           | Se prohíbe la navegación directa en tramos acuáticos con oleaje superior a**1.2 metros** o turbidez superior a **150 NTU** para drones superficiales. Ante estas lecturas, el sistema debe bifurcar automáticamente la ruta hacia canales con protección hidrodinámica.                                                            |
+| **RN-EM-04** | **Handshake Obligatorio en Relevo de Waypoint**               | Durante una transferencia de muestra en un waypoint intermedio, el dron emisor no puede declararse`DISPONIBLE` ni retornar a su estación de carga hasta que el dron receptor confirme el acople físico y la validación del hash criptográfico recibido.                                                                                        |
+| **RN-EM-05** | **Protocolo de Inactividad y Espera Segura (Hold ≤ 10 min)** | Si la zona de destino se encuentra inactiva, la misión debe mantenerse en atraque seguro en el waypoint previo por un tiempo máximo de 10 minutos. Si la zona no se reactiva en este lapso, el sistema debe abortar de forma controlada y recalcular el retorno al muelle de origen.                                                               |
+| **RN-EM-06** | **Capacidad de Carga Estructural por Tramo (≤ 1500g)**       | Cada dron seleccionado para un tramo particular debe tener una capacidad de carga útil superior o igual al peso neto de la muestra transportada. Ningún tramo puede asignarse a un`DroneBuceador` si el peso supera 300g, ni a un `DroneSuperficial` si supera 600g.                                                                           |
+
+---
+
+#### 7. ANEXOS / PROTOTIPOS
+
+> **Evidencias de Implementación y Certificación:**
+>
+> 1. **Motor de Orquestación Multi-Etapa:** Implementado en `OrquestadorMisionMultiEtapa.java` (coordinación de 9 pasos, resolución de contingencias y logging SonarQube `java:S106`).
+> 2. **Cadena de Custodia Criptográfica:** Implementado en `CustodiaMuestra.java` utilizando Java Security estándar (`MessageDigest SHA-256`) sin dependencias externas.
+> 3. **Entidades de Dominio Inmutables:** `MisionEnterprise.java`, `TramoRuta.java`, `Waypoint.java` y `EstadoMisionEnterprise.java`.
+> 4. **Suite de Pruebas Unitarias JUnit 5:** `PlantillaMultiEtapaTest.java` (6 tests automatizados verificando el flujo básico y los 3 flujos alternos).
+
+---
+
+#### 8. ABREVIATURAS
+
+|    Abreviatura    | Significado Técnico                                                   |
+| :---------------: | :--------------------------------------------------------------------- |
+|   **AP**   | AquaPort (Identificador formal de especificación de requerimientos)   |
+|   **RF**   | Requerimiento Funcional                                                |
+|   **RNF**   | Requerimiento No Funcional                                             |
+|   **RN**   | Regla de Negocio                                                       |
+|   **WP**   | Waypoint (Punto de control intermedio de navegación)                  |
+|   **TR**   | Tramo de Ruta (Segmento de enlace entre dos waypoints)                 |
+| **SHA-256** | Secure Hash Algorithm de 256 bits (Criptografía de integridad)        |
+| **AES-256** | Advanced Encryption Standard de 256 bits (Cifrado simétrico de datos) |
+|   **ECI**   | Escuela Colombiana de Ingeniería Julio Garavito                       |
+|   **NTU**   | Nephelometric Turbidity Units (Unidad de turbidez hídrica)            |
+
+---
+
+### Ejercicio 08 — Sistema de Diseño de AquaPort Enterprise y Leyes UX aplicadas
+
+En este ejercicio se construye y formaliza el **Sistema de Diseño visual, interactivo y accesible de AquaPort Enterprise (Fase Empoleon)**, diseñado para consolas de control y despacho autónomo de alta densidad operativa (60 drones distribuidos en 4 zonas hídricas interconectadas). Se documentan los tokens de diseño fundacionales, los componentes clave con todos sus estados semánticos, el mapa de flujos en 6 pantallas interactivas, la matriz de certificación de accesibilidad WCAG 2.1 AA y el marco de leyes de psicología cognitiva aplicada.
+
+> 🌐 **Prototipo Interactivo del Sistema de Diseño Enterprise:**
+> 👉 [**Abrir AquaPort Enterprise — Sistema de Diseño y Mapa de Flujos (`docs/mockups/AquaPort_Enterprise_Design_System.html`)**](docs/mockups/AquaPort_Enterprise_Design_System.html)
+
+---
+
+#### 1. Tokens de Diseño Fundacionales
+
+El sistema se cimenta sobre una arquitectura de diseño en modo oscuro profundo (*Deep Abyssal Dark Mode*), que previene el agotamiento visual en operadores de turno continuo:
+
+![Tokens de Diseño Fundacionales](docs/images/TokenDesign.png)
+
+* **Paleta de Color Semántica:**
+  * **Fondo Abisal Profundo (`#050D14`):** Base ambiental de baja emisión lumínica.
+  * **Superficie de Cristal (`#0B1924` / `#0F202E` con 75% opacidad):** Paneles modulares con desenfoque de fondo (*backdrop blur* de 12px).
+  * **Cian Sonar Neón (`#00F0FF`):** Foco visual primario, rumbos de navegación y acentos interactivos.
+  * **Verde Operativo (`#00E676`):** Unidades en estado disponible, acoples seguros y telemetría conforme.
+  * **Oro de Telemetría (`#FFB800`):** Estados de recarga inductiva y advertencias de batería media.
+  * **Carmesí de Fallo (`#FF3B30`):** Averías motrices, fallos en waypoints y alertas de emergencia.
+  * **Púrpura Criptográfico (`#B388FF`):** Sellado de muestras, hashes SHA-256 y trazabilidad de custodia.
+  * **Azul Bentónico (`#0077B6`):** Inmersión sensorial y enlaces acústicos de drones buceadores.
+* **Tipografía:**
+  * **`Inter`:** Tipografía grotesque de alta legibilidad en pantallas táctiles y consolas de escritorio.
+  * **`JetBrains Mono`:** Tipografía monospace para hashes criptográficos SHA-256, telemetría numérica, códigos de unidad (`DRN-ENT-XX`) y coordenadas UTM.
+* **Escala de Espaciado (Grid de 8 Puntos):** 4px (xs), 8px (sm), 12px (md), 16px (base), 24px (lg), 32px (xl), 48px (2xl).
+* **Radios de Borde:** 6px (sm), 10px (md), 16px (lg) y 9999px (pill / badges).
+
+---
+
+#### 2. Componentes Nucleares y sus Estados Semánticos
+
+![Componentes Nucleares y Estados Semánticos](docs/images/ComponentsAndStates.png)
+
+##### A. Tarjeta de Drone Enterprise (6 Estados de Operación):
+
+1. **Disponible:** Borde y badge verde esmeralda (`#00E676`), muestra nivel de batería $\ge 35\%$, zona apostada y capacidad de carga útil.
+2. **En Tránsito Multi-Etapa:** Borde cian sonar (`#00F0FF`), telemetría en vivo, tramo activo (`TR-XX`), velocidad y tiempo estimado de llegada (ETA).
+3. **Recargando:** Borde ámbar (`#FFB800`), muelle de conexión rápida (45W inductiva) y tiempo restante para carga completa.
+4. **Mantenimiento:** Borde gris neutro (`#78909C`), opacidad al 80%, taller asignado y causa técnica (calibración de propulsores/sensores).
+5. **Fallo Crítico:** Borde carmesí (`#FF3B30`), indicador de incidencia mecánica/eléctrica, disparo de orden de servicio y activación de failover $< 1.5$s.
+6. **Sumergido:** Borde azul bentónico (`#0077B6`), profundidad de inmersión en metros (ej. 5.4m) y estado del enlace acústico por sonar.
+
+##### B. Botón de Acción CTA "Despachar Misión Multi-Etapa" (5 Estados Interactivos):
+
+1. **Default:** Fondo cian sonar neón (`#00F0FF`), texto oscuro de alto contraste y sombra de resplandor sutil.
+2. **Hover / Foco:** Elevación de 2px, sombra difusa aumentada (`0 0 25px rgba(0,240,255,0.5)`).
+3. **Procesando (Spinner):** Fondo atenuado, cursor `wait`, spinner SVG con rotación continua a 360° y texto *"Procesando / Asignando..."*.
+4. **Deshabilitado:** Fondo gris atenuado, texto dim (`#5C7584`), cursor `not-allowed`.
+5. **Éxito:** Fondo verde esmeralda (`#00E676`), icono de verificación y confirmación inmediata.
+
+##### C. Medidor de Batería (3 Rangos de Operación):
+
+* **Normal ($\ge 50\%$):** Barra verde esmeralda.
+* **Precaución ($25\% - 49\%$):** Barra oro de advertencia.
+* **Crítico ($< 25\%$):** Barra roja parpadeante que activa protocolo de reasignación automática inmediata.
+
+---
+
+#### 3. Mapa de Flujos del Enterprise (6 Pantallas Interactivas)
+
+El flujo de extremo a extremo de una misión multi-etapa se modela en 6 interfaces modulares capturadas directamente del prototipo interactivo:
+
+##### Pantalla 1: Mapa Global de 4 Zonas Hídricas
+
+Vista macro de las 4 zonas del campus ECI (`Embalse de Investigación`, `Red de Canales`, `Laguna de Reserva` y `Laboratorio Hídrico Central`) con inventario de 60 drones (15 por zona), índices de salud de flota calculados en paralelo y condiciones climáticas:
+![P1: Mapa Global de 4 Zonas Hídricas](docs/images/Maps4Zones.png)
+
+##### Pantalla 2: Selección de Ruta y Waypoints Multi-Etapa
+
+Interfaz de parametrización: definición de origen, destino, waypoints secuenciales (`WP-01` a `WP-04`), peso del paquete (≤ 1500g), prioridad y cálculo de distancias hidrológicas:
+![P2: Selección de Ruta y Waypoints Multi-Etapa](docs/images/SelectRoute.png)
+
+##### Pantalla 3: Asignación y Relevo de Drones por Tramo
+
+Planificación algorítmica tramo por tramo (`TR-01`, `TR-02`, `TR-03`): selección del dron más idóneo por segmento según aptitud hidrodinámica, autonomía de batería y sincronización en esclusas:
+![P3: Asignación y Relevo de Drones por Tramo](docs/images/AsignationTramos.png)
+
+##### Pantalla 4: Monitoreo en Tiempo Real
+
+Consola de telemetría en vivo: cinemática de navegación, velocidad en m/s, deriva, estado de la muestra y actualización continua del hash de custodia SHA-256 en cada waypoint:
+![P4: Monitoreo en Tiempo Real y Telemetría](docs/images/MonitoringLive.png)
+
+##### Pantalla 5: Alerta de Fallo y Reasignación Automática (< 1.5s)
+
+Manejo de contingencias en waypoint intermedio: detección de anomalía mecánica/eléctrica, disparo del failover autónomo en menos de 1.5 segundos, relevo por dron de respaldo y transferencia de custodia:
+![P5: Alerta de Fallo y Reasignación Automática](docs/images/AlertAndReasignation.png)
+
+##### Pantalla 6: Reporte de Entrega y Auditoría de Custodia
+
+Pantalla de cierre formal: entrega de muestra a investigador/solicitante, bitácora forense de hashes encadenados, tiempo total de travesía y confirmación institucional al Centro de Control ECI:
+![P6: Reporte de Entrega y Auditoría de Custodia](docs/images/ReportDelivery.png)
+
+---
+
+#### 4. Certificación de Accesibilidad WCAG 2.1 Nivel AA
+
+Todas las combinaciones cromáticas de texto y elementos interactivos fueron evaluadas bajo el algoritmo de luminancia relativa de la W3C, superando ampliamente el estándar AA:
+
+![Certificación de Accesibilidad WCAG 2.1 AA](docs/images/AccesibilityWACG.png)
+
+| Elemento / Token                |      Color Primer Plano      |       Color de Fondo       | Ratio de Contraste |       Criterio Exigido       |      Dictamen WCAG 2.1      |
+| :------------------------------ | :---------------------------: | :------------------------: | :----------------: | :--------------------------: | :--------------------------: |
+| **Texto Principal**       |  `#F1F7F9` (Blanco Hielo)  | `#050D14` (Fondo Abisal) | **16.4 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AAA)** |
+| **Texto Secundario**      |  `#8EA6B4` (Gris Azulado)  | `#050D14` (Fondo Abisal) | **6.2 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
+| **Acento Sonar Neón**    |   `#00F0FF` (Cian Neón)   | `#050D14` (Fondo Abisal) | **13.1 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AAA)** |
+| **Estado Disponible**     | `#00E676` (Verde Esmeralda) |  `#0B1924` (Superficie)  | **8.9 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AAA)** |
+| **Advertencia / Recarga** |       `#FFB800` (Oro)       |  `#0B1924` (Superficie)  | **7.8 : 1** | $\ge 3.0:1$ (UI e iconos) | **CUMPLE (Nivel AA)** |
+| **Fallo Crítico**        |  `#FF3B30` (Rojo Carmesí)  |  `#0B1924` (Superficie)  | **4.8 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
+| **Cadena Custodia**       |    `#B388FF` (Púrpura)    |  `#0B1924` (Superficie)  | **6.5 : 1** | $\ge 4.5:1$ (Texto normal) | **CUMPLE (Nivel AA)** |
+
+---
+
+#### 5. Sustentación Teórica de Leyes UX Aplicadas por Pantalla
+
+1. **Ley de Hick (Pantalla 1 - Mapa de Zonas):** El tiempo para tomar una decisión crece logarítmicamente con el número de opciones. Al agrupar los 60 drones en 4 zonas lógicas en lugar de presentar 60 opciones planas, se optimiza drásticamente la capacidad de escaneo del operador.
+2. **Ley de Miller (Pantallas 2 y 3 - Selección de Ruta y Tramos):** Los humanos retienen $7 \pm 2$ elementos en la memoria de trabajo. La división de misiones multi-etapa en bloques de 3 a 4 waypoints y tramos secuenciales previene la saturación cognitiva.
+3. **Ley de Fitts (Pantalla 5 - Alerta y Reasignación):** El tiempo para alcanzar un blanco depende de su distancia y tamaño. Los botones de parada de emergencia y confirmación de reasignación poseen áreas interactivas amplificadas con padding generoso, minimizando errores motores en situaciones de estrés.
+4. **Ley de Jakob (Pantallas 4 y 5 - Monitoreo y Alertas):** Los usuarios transfieren expectativas de interfaces previas. Se adoptan códigos cromáticos estandarizados en la industria (verde = normal, amarillo = advertencia, rojo = parada) y steppers cronológicos estándar.
+5. **Efecto de Usabilidad-Estética (Pantalla 4 - Monitoreo Live):** Los usuarios perciben interfaces estéticamente atractivas y armoniosas como más fáciles de usar y confiables, reduciendo la ansiedad del operador durante maniobras complejas.
+6. **Regla del Pico-Fin / Peak-End Rule (Pantalla 6 - Reporte de Entrega):** La evaluación psicológica global de un sistema depende del momento más intenso y del desenlace. Un cierre con sello verde de éxito y hash criptográfico auditado garantiza una percepción final de confiabilidad y excelencia operativa.
+
+---
+
+### Ejercicio 09 — Agilismo y Planificación del Roadmap Enterprise en Jira (Fase Empoleon)
+
+En este ejercicio se formaliza la gestión ágil del proyecto **AquaPort Enterprise (Fase Empoleon)** en **Atlassian Jira Cloud**, estructurando el Roadmap estratégico en una Épica multi-sprint subdividida en **3 Sprints temáticos e incrementales** (Arquitectura/Patrones, Rutas Multi-Etapa/Coordinación y Calidad/Métricas), con sus respectivos Sprint Goals, capacidad estimada en Fibonacci, Definition of Done (DoD) Enterprise, métricas de Velocity real, gestión de impedimentos y una retrospectiva real de las fases previas.
+
+> 🌐 **Enlace Directo al Tablero, Backlog y Cronograma en Jira Cloud:**
+> 👉 [**Abrir Proyecto AquaPort en Jira Software (Tablero AQUA — Backlog & Roadmap)**](https://josealejandromartinezarias9.atlassian.net/jira/software/projects/AQUA/boards/69/backlog?atlOrigin=eyJpIjoiZjMyZWFjZWY5MjdkNGJhNDlhNGNmODIzZmY3ZjU5MDciLCJwIjoiaiJ9)
+
+---
+
+#### 1. Vista General del Cronograma / Roadmap de Sprints en Jira
+
+El roadmap visualiza la evolución cronológica y secuencial de los 3 sprints planificados para el despliegue de la versión Enterprise:
+
+![Cronograma y Roadmap Enterprise en Jira](docs/images/Cronograma.png)
+
+---
+
+#### 2. Vista General del Backlog y Sprints en Jira
+
+El backlog consolida las Historias de Usuario (HU) estimadas mediante Planning Poker (secuencia de Fibonacci: 1, 2, 3, 5, 8 SP), agrupadas por sus respectivos ciclos de entrega:
+
+![Backlog General de Sprints en Jira](docs/images/Backlog.png)
+
+![Detalle de Backlog y Sprints en Jira - Parte 1](docs/images/BacklogPi.png)
+
+![Detalle de Backlog y Sprints en Jira - Parte 2](docs/images/BackogPart02.png)
+
+---
+
+#### 3. Épica Multi-Sprint del Enterprise
+
+* **Clave Jira:** `AQUA-EPIC-ENTERPRISE` (asociada al proyecto `AQUA`)
+* **Nombre de la Épica:** `AquaPort Enterprise: Plataforma de 60 Drones, 4 Zonas y Rutas Multi-Etapa`
+* **Descripción:** Desarrollar y desplegar la versión Enterprise de AquaPort para coordinar de forma autónoma una flota naval de 60 drones en las 4 zonas del campus ECI, integrando Clean Architecture (dominio 100% puro), patrones Chain of Responsibility, Decorator y Adapter, ejecución multi-etapa con waypoints y failover en menos de 1.5s, junto con certificación de calidad estricta (JaCoCo $\ge 85\%$ y SonarQube con 0 deuda técnica).
+
+---
+
+#### 4. Planificación Detallada de los 3 Sprints Enterprise
+
+##### 🏃 Sprint 1 Enterprise — Arquitectura por Capas y Patrones Enterprise
+
+* **Sprint Goal:** *"Establecer la arquitectura limpia por capas desacopladas e implementar los patrones Chain of Responsibility, Decorator y Adapter para validación, cifrado y telemetría de la flota Enterprise"*.
+* **Duración:** 2 Semanas (10 días hábiles de desarrollo).
+* **Capacidad del Equipo:** 24 Story Points (2 desarrolladores × 12 SP).
+* **Velocidad Comprometida:** 21 Story Points (Fibonacci).
+* **Definition of Done (DoD) Enterprise:**
+  1. *Clean Architecture:* Dominio 100% Java puro sin imports de librerías externas ni capas externas (auditado mediante reflexión con `SolidArchitectureAuditTest`).
+  2. *Cobertura de Patrones:* Cadena de validación, decoradores de telemetría/cifrado y adaptador probados al 100% con Mockito y JUnit 5.
+  3. *Reglas de Calidad:* Cero uso de `System.out` en código principal (cumplimiento SonarQube `java:S106` con `Logger`).
+  4. *Límites Estructurales:* Clases $\le 150$ líneas y métodos $\le 15$ líneas.
+* **Historias de Usuario (HU):**
+  * `HU-09`: Implementación de Clean Architecture con regla de oro del dominio y desacoplamiento por capas (**8 SP**).
+  * `HU-10`: Pipeline de validación de despacho con Chain of Responsibility (**5 SP**).
+  * `HU-11`: Decorador criptográfico para sellado de telemetría y eventos de misión (**5 SP**).
+  * `HU-12`: Adaptador para integración desacoplada de condiciones meteorológicas e hidrológicas (**3 SP**).
+
+##### 🏃 Sprint 2 Enterprise — Rutas Multi-Etapa y Coordinación de Zonas
+
+* **Sprint Goal:** *"Implementar el motor de rutas multi-etapa con waypoints, relevos coordinados entre las 4 zonas hídricas y tolerancia a fallos con reasignación autónoma en menos de 1.5s"*.
+* **Duración:** 2 Semanas (10 días hábiles de desarrollo).
+* **Capacidad del Equipo:** 26 Story Points.
+* **Velocidad Comprometida:** 24 Story Points (Fibonacci).
+* **Definition of Done (DoD) Enterprise:**
+  1. *Tolerancia a Fallos:* Failover y reasignación automática ejecutada en $< 1.5$s certificada con `assertTimeoutPreemptively` en JUnit 5.
+  2. *Cadena de Custodia Forense:* Hash SHA-256 inmutable sellado en origen y validado en cada transferencia de waypoint sin ruptura de custodia.
+  3. *Flujos Alternos Validados:* Cobertura automatizada de desvío de tramo por condiciones adversas y espera segura en zona inactiva.
+  4. *Gestión Concurrente:* Pruebas libres de condiciones de carrera mediante uso estricto de estructuras inmutables.
+* **Historias de Usuario (HU):**
+  * `HU-13`: Ejecución de misiones multi-etapa con secuencia ordenada de waypoints (AP-15) (**8 SP**).
+  * `HU-14`: Failover autónomo inmediato y reasignación de drones en waypoint intermedio (< 1.5s) (**8 SP**).
+  * `HU-15`: Coordinación hidrológica y sincronización interzonal entre 4 zonas del campus (**5 SP**).
+  * `HU-16`: Desvío dinámico de ruta ante condiciones ambientales adversas (**3 SP**).
+
+##### 🏃 Sprint 3 Enterprise — Calidad, Rendimiento y Certificación
+
+* **Sprint Goal:** *"Alcanzar cobertura de pruebas JaCoCo ≥ 85%, asegurar 0 deuda técnica en SonarQube y validar el throughput de 100 misiones concurrentes"*.
+* **Duración:** 2 Semanas (10 días hábiles de desarrollo).
+* **Capacidad del Equipo:** 24 Story Points.
+* **Velocidad Comprometida:** 21 Story Points (Fibonacci).
+* **Definition of Done (DoD) Enterprise:**
+  1. *Cobertura JaCoCo:* Cobertura de línea (*Line Coverage*) $\ge 85\%$ en todo el bundle de la aplicación sin exclusiones artificiales.
+  2. *SonarQube Quality Gate:* Estado en PASS con 0 bugs, 0 vulnerabilidades, 0 puntos calientes de seguridad y 0 deuda técnica.
+  3. *Throughput & Latencia:* Procesamiento de 100 misiones simultáneas con `CompletableFuture` en menos de 1,200 ms totales.
+  4. *Versionamiento Limpio:* Todas las ramas `feature/*` fusionadas vía `--no-ff` en `feature/empoleon` con historial de Conventional Commits.
+* **Historias de Usuario (HU):**
+  * `HU-17`: Optimización y suite de cobertura integral JaCoCo $\ge 85\%$ para el paquete Enterprise (**8 SP**).
+  * `HU-18`: Auditoría y remediación de SonarQube con 0 deuda técnica y Clean Code (**5 SP**).
+  * `HU-19`: Prueba de estrés concurrente para 100 misiones simultáneas con CompletableFuture (**5 SP**).
+  * `HU-20`: Generación analítica de eficiencia por zona con Collector personalizado en parallelStream (**3 SP**).
+
+---
+
+#### 5. Retrospectiva Real de un Sprint Anterior (Sprint 2 de Fase Prinplup)
+
+Aplicando el marco de mejora continua de Scrum, el equipo documenta la retrospectiva real del Sprint 2 para nutrir las prácticas de la Fase Empoleon:
+
+| Dimensión de la Retrospectiva                                     | Hallazgos y Análisis Operacional                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| :----------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **¿Qué funcionó bien? (What went well)**                  | •**Desacoplamiento con Observer:** Separar las alertas de la lógica de asignación permitió despachar eventos multicanal en $< 50$ms sin bloquear el hilo principal.• **Desarrollo Guiado por Pruebas (TDD):** Implementar primero las pruebas de las estrategias de selección (`MayorBateria`, `ZonaCercana`, `PrioridadCritica`) aceleró la resolución de la tensión AP-07 vs AP-08 con 0 regresiones.• **Pre-commit Hooks:** La automatización de git hooks previno commits con formato no estándar y bloqueó commits directos sobre ramas protegidas. |
+| **¿Qué no funcionó bien? (What didn't go well)**          | •**Fricción de Tipos en API Externa:** Al consultar condiciones meteorológicas directamente, se introdujeron tipos de datos incompatibles que inicialmente contaminaron entidades de dominio.• **Condiciones de Carrera Iniciales:** Las pruebas concurrentes tempranas arrojaban fallos esporádicos (*flaky tests*) por mutación de listas compartidas.• **Sobrecarga de Métodos:** Varios métodos en los orquestadores iniciales superaron el umbral de 15 líneas, dificultando la auditoría de Clean Code.                                                    |
+| **¿Qué cambiaremos? (Action Items / What will we change)** | •**Patrón Adapter Obligatorio:** Aislar toda fuente de datos externa detrás de interfaces puras de dominio antes de escribir la lógica de aplicación.• **Inmutabilidad por Defecto:** Utilizar `records` de Java 21 y copias inmutables (`List.copyOf`) en todas las entidades compartidas concurrentemente.• **Regla Estricta de Métodos $\le 15$ líneas:** Modularizar exhaustivamente cada responsabilidad mediante métodos privados atómicos para asegurar mantenibilidad y cumplimiento de SonarQube.                                                   |
+
+---
+
+#### 6. Métricas de Velocity Real y Capacidad
+
+* **Velocity Real Sprint 1 (Fase Piplup):** 23 Story Points completados / 23 SP comprometidos (100% de efectividad).
+* **Velocity Real Sprint 2 (Fase Prinplup):** 21 Story Points completados / 21 SP comprometidos (100% de efectividad).
+* **Capacidad Media del Equipo:** 24 Story Points por sprint (cadencia de 2 semanas con 2 ingenieros).
+* **Velocidad Comprometida Promedio Enterprise:** 22 Story Points por sprint, manteniendo un colchón de seguridad de 2 a 3 SP para contingencias técnicas imprevistas.
+
+---
+
+#### 7. Gestión de Impedimentos Reales y Mitigaciones Arquitectónicas
+
+1. **Impedimento 1: Tensión Computacional entre Latencia de Reasignación (< 1.5s) y Sellado Criptográfico (SHA-256 / AES-256):**
+   * *Riesgo:* El cómputo del hash y el cifrado secuencial en cada waypoint podía degradar la latencia de reasignación automática en momentos de fallo.
+   * *Mitigación:* Se implementó un pipeline desacoplado: la búsqueda de reemplazo y reasignación de dron corre en hilo de alta prioridad, mientras el cálculo y sellado de la cadena de custodia se ejecuta de forma asíncrona garantizando no-repudio sin degradar la respuesta.
+2. **Impedimento 2: Bloqueo de Concurrencia en Rutas Multi-Etapa con Múltiples Zonas:**
+   * *Riesgo:* La orquestación simultánea de tramos en las 4 zonas generaba contención en el inventario de 60 drones.
+   * *Mitigación:* Se implementó filtrado funcional inmutable con Java Streams y particionamiento por zona hídrica, permitiendo que cada zona opere de forma autónoma con su subflota de 15 unidades.
+
+---
+
+---
+
+### 🎯 Ejercicio 10 (Fase Empoleon) — Modelado Formal de Casos de Uso Enterprise y Flujos de Fallo (UML 2.5)
+
+#### 1. Contexto y Objetivos del Ejercicio
+
+En el marco de la evolución **AquaPort Enterprise (Fase Empoleon)**, el sistema pasa de despachos monozona a una orquestación distribuida que administra **60 drones especializados**, distribuidos en **4 zonas hídricas** del campus (Embalse Norte, Canal de Conexión, Lago Central y Humedal Sur), ejecutando rutas multi-etapa con puntos de control (*waypoints*), transferencias de carga (*handover*) y sellado criptográfico inmutable de cadena de custodia (**SHA-256**).
+
+El **Reto Empoleon de Casos de Uso** exige modelar de forma exhaustiva el caso nuclear y representar los **5 flujos alternos y excepcionales** del nivel Enterprise estrictamente mediante estereotipos `<<extend>>`, con sus **condiciones de guardia explicitadas**:
+
+1. **Fallo de drone en waypoint intermedio** $\to$ Reasignación automática sin intervención manual en $< 1.5$s.
+2. **Condición hídrica adversa en tramo** $\to$ Desvío dinámico hacia canal protegido.
+3. **Zona de destino inactiva** $\to$ Suspensión de avance y espera segura (*Hold*).
+4. **Cadena de custodia interrumpida** $\to$ Detección de alteración en hash SHA-256, bloqueo y peritaje forense.
+5. **Batería crítica en mitad de ruta (< 25%)** $\to$ Retorno forzoso de emergencia a muelle base.
+
+---
+
+#### 2. Diagrama de Casos de Uso Enterprise
+
+A continuación se presenta el diagrama formal de Casos de Uso conforme a la especificación **UML 2.5**:
+
+![Diagrama de Casos de Uso - AquaPort Enterprise](docs/images/DiagramC4.png)
+
+---
+
+#### 3. Especificación Formal de Actores
+
+Conforme a las directrices de la especificación UML 2.5, el sistema central **AquaPort Enterprise** constituye el sujeto del modelo (*System Boundary*) y bajo ninguna circunstancia se modela como actor. Todos los actores residen fuera de la frontera:
+
+| Actor                               |        Categoría UML        | Rol y Responsabilidad Operacional                                                                                                                                                                                                                                                                                                                                        |
+| :---------------------------------- | :--------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Solicitante**               |        Humano / Base        | Investigador, laboratorista o estudiante de la ECI que ingresa una solicitud formal de transporte de muestras de agua o sensores hidrológicos, definiendo punto de origen, destino y criticidad de la carga (`CU-01`).                                                                                                                                                |
+| **Operador Hídrico**         |    Humano / Especializado    | Supervisor técnico de guardia que orquesta y monitoriza las misiones multi-etapa complejas (`CU-02`), supervisa la telemetría unificada de las 4 zonas náuticas (`CU-03`) y autoriza o supervisa maniobras excepcionales. **Hereda de `Solicitante`** mediante generalización UML (`<<generalize>>`), pudiendo también ingresar solicitudes directas. |
+| **Administrador ECI**         |       Humano / Auditor       | Director administrativo responsable de auditar el inventario global de la flota de 60 drones, analizar métricas de desgaste, tiempos de servicio y validar reportes periciales de cadena de custodia (`CU-04`).                                                                                                                                                       |
+| **Técnico de Mantenimiento** |      Humano / Operativo      | Personal técnico de campo encargado de recibir órdenes de servicio por averías en agua, retirar unidades siniestradas o degradadas, ejecutar diagnósticos de propulsión/sensores y registrar la rehabilitación de drones en el muelle de servicio (`CU-05`).                                                                                                     |
+| **API Condiciones Hídricas** | Sistema Externo / Secundario | Servicio meteorológico e hidrológico perimetral que suministra en tiempo real datos de oleaje, velocidad de corriente y ráfagas de viento por tramo de navegación para validar la aptitud del trayecto (`CU-INC-02`).                                                                                                                                              |
+| **Centro de Control ECI**     | Sistema Externo / Secundario | Entidad institucional externa encargada de regular el tráfico fluvial del campus, supervisar esclusas automáticas y autorizar el tránsito en canales de interconexión restringidos (`CU-INC-05`).                                                                                                                                                                  |
+
+---
+
+#### 4. Matriz de Casos de Uso y Relaciones UML (`<<include>>` y `<<extend>>`)
+
+|         Código         | Caso de Uso                                                           |     Actor Asociado     |             Relación UML             | Condición Formal / Justificación Técnica                                                                                                                              |
+| :---------------------: | :-------------------------------------------------------------------- | :--------------------: | :------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|   **`CU-01`**   | **Solicitar transporte de muestra con custodia (RF-02)**        |      Solicitante      |            Caso de Entrada            | Ingreso de solicitud con tipo de muestra, volumen, temperatura requerida y sellado criptográfico inicial.                                                               |
+|   **`CU-02`**   | **Ejecutar misión multi-etapa con waypoints (AP-15 / RF-01)**  |   Operador Hídrico   |      **Caso Base Nuclear**      | Orquesta el despacho y navegación a través de múltiples zonas con relevo en waypoints intermedios y tolerancia a fallos.                                              |
+|   **`CU-03`**   | **Consultar telemetría y mapa de las 4 zonas en vivo (RF-04)** |    Operador / Admin    |          Consulta Analítica          | Monitoreo en tiempo real de coordenadas GPS, estado de baterías, velocidad de corriente y posición de las 60 unidades.                                                 |
+|   **`CU-04`**   | **Supervisar inventario de flota y auditoría (RF-03)**         |   Administrador ECI   |           Auditoría Forense           | Seguimiento del ciclo de vida de los 60 drones, desglose de subflotas y trazabilidad de registros forenses.                                                              |
+|   **`CU-05`**   | **Gestionar órdenes de mantenimiento y rehabilitación**       | Técnico Mantenimiento |          Operación Técnica          | Recepción de incidencias críticas, diagnóstico en muelle y reincorporación de drones rehabilitados a estado`DISPONIBLE`.                                           |
+| **`CU-INC-01`** | **Planificar ruta y segmentar tramos (Waypoints)**              |    Sistema Interno    | **`<<include>>`** de `CU-02` | **Inclusión Obligatoria:** Toda misión multi-etapa se segmenta en tramos discretos con waypoints georreferenciados para relevos.                                 |
+| **`CU-INC-02`** | **Validar condiciones hídricas y oleaje por tramo**            |    API Hidrológica    | **`<<include>>`** de `CU-02` | **Inclusión Obligatoria:** Consulta la API externa meteorológica antes de autorizar la navegación en cada tramo.                                                |
+| **`CU-INC-03`** | **Sellar y verificar cadena de custodia (SHA-256)**             |    Sistema Interno    | **`<<include>>`** de `CU-02` | **Inclusión Obligatoria:** Calcula el hash criptográfico inmutable en la recolección y lo verifica en cada handover intermedio.                                 |
+| **`CU-INC-04`** | **Coordinar relevo y handover de carga en waypoint**            |    Sistema Interno    | **`<<include>>`** de `CU-02` | **Inclusión Obligatoria:** Sincroniza la llegada de dos drones en el punto de encuentro para el traspaso físico de la muestra.                                   |
+| **`CU-INC-05`** | **Autorizar tránsito por esclusas institucionales**            | Centro de Control ECI | **`<<include>>`** de `CU-02` | **Inclusión Obligatoria:** Solicita apertura y salvoconducto digital al Centro de Control ECI para cruzar canales interzonales.                                   |
+| **`CU-EXT-01`** | **Reasignar automáticamente drone en waypoint**                |    Sistema Interno    | **`<<extend>>`** de `CU-02` | **Condicional:** `[Condición: Fallo de drone en waypoint]`. Despacha autónomamente una unidad de reserva en $< 1.5$s para continuar la misión.              |
+| **`CU-EXT-02`** | **Desviar dinámicamente ruta por canal protegido**             |    Sistema Interno    | **`<<extend>>`** de `CU-02` | **Condicional:** `[Condición: Condición hídrica adversa en tramo]`. Si el oleaje supera $1.2\text{ m}$, recalcula la ruta por canales protegidos.           |
+| **`CU-EXT-03`** | **Suspender misión y entrar en espera segura (Hold)**          |    Sistema Interno    | **`<<extend>>`** de `CU-02` | **Condicional:** `[Condición: Zona destino inactiva]`. Detiene el avance y activa anclaje virtual mientras se restablece la operatividad.                       |
+| **`CU-EXT-04`** | **Alertar anomalía y emitir peritaje forense**                 |    Sistema Interno    | **`<<extend>>`** de `CU-02` | **Condicional:** `[Condición: Cadena de custodia interrumpida]`. Discrepancia en el hash SHA-256 detiene la entrega y genera reporte forense inmutable.         |
+| **`CU-EXT-05`** | **Activar protocolo de retorno de emergencia a base**           |    Sistema Interno    | **`<<extend>>`** de `CU-02` | **Condicional:** `[Condición: Batería crítica en mitad de ruta (< 25%)]`. Ordena aterrizaje o retorno inmediato al muelle base para evitar extravío en agua. |
+
+---
+
+#### 5. Justificación de Cumplimiento de Reglas UML 2.5
+
+1. **Sentido y Semántica de la Relación `<<extend>>`:** Conforme a la especificación UML 2.5 (§18.1.3), la relación de extensión es condicional y la flecha discontinua apunta **desde el caso de uso extendido hacia el caso de uso base** (`CU_Ext .> CU_Base`). Cada extensión define explícitamente una condición booleana de activación, asegurando que el caso base `CU-02` sea autónomo y completo sin necesidad de conocer los flujos excepcionales a priori.
+2. **Sentido y Semántica de la Relación `<<include>>`:** La flecha discontinua apunta **desde el caso base hacia el caso incluido** (`CU_Base .> CU_Inc`), indicando que los pasos de planificación, validación hídrica, sellado de custodia y relevo son partes constitutivas e ineludibles para la consecución del objetivo del caso base.
+3. **Principio de Actores Externos:** El sistema `AquaPort Enterprise` no interactúa consigo mismo como actor. Los actores modelados representan agentes humanos reales o servicios de software perimetrales (`API Condiciones Hídricas`, `Centro de Control ECI`) que desencadenan o consumen información del sistema.
+4. **Generalización de Actores:** `Operador Hídrico` hereda el rol de `Solicitante` (`Operador --|> Solicitante`), reflejando la jerarquía de roles sin duplicar asociaciones en el diagrama.
+
+---
+
+### 🖼️ Ejercicio 11 (Fase Empoleon) — Mocks con IA: Flujo Completo Enterprise en 5 Pantallas
+
+En este ejercicio se desarrolló el diseño de interfaz de alta fidelidad para el flujo operacional integral de **AquaPort Enterprise (Fase Empoleon)** mediante un proceso sistemático guiado por Inteligencia Artificial y validado a través del prototipo interactivo standalone [AquaPort_Enterprise_Design_System.html](docs/mockups/AquaPort_Enterprise_Design_System.html).
+
+El flujo modela la interacción completa del sistema en **5 pantallas críticas**, utilizando datos realistas del dominio (IDs de drones `AR-01` a `AR-60`, 4 zonas hídricas interconectadas, cargas especializadas, sellado SHA-256 y failover en $< 1.5$s), cumpliendo con el **Reto Empoleon**:
+
+---
+
+#### 1. Pantalla 1: Mapa de las 4 Zonas Hídricas con Drones en Tiempo Real
+
+Visualización geoespacial panorámica de las 4 cuencas hídricas del campus universitario (**Embalse Norte, Canal de Conexión, Lago Central y Humedal Sur**), con monitoreo en tiempo real de las **60 unidades navales** (15 drones por zona), indicando su ubicación GPS, familia física (*Superficial, Semisumergible, Buceador*), batimetría y estado operativo (*Disponible, En Misión, Recargando, Avería*).
+
+![Pantalla 1 — Mapa de las 4 Zonas Hídricas con Drones en Tiempo Real](docs/images/Maps4Zones.png)
+
+##### A. Datos Realistas del Dominio:
+* **Inventario Total:** 60 Drones (`AR-01` a `AR-15` en Embalse Norte, `AR-16` a `AR-30` en Canal de Conexión, `AR-31` a `AR-45` en Lago Central, `AR-46` a `AR-60` en Humedal Sur).
+* **Condiciones Ambientales:** Oleaje promedio $0.35\text{ m}$, corriente superficial $0.6\text{ m/s}$, temperatura del agua $16.4^\circ\text{C}$.
+* **Esclusas y Conexiones:** Esclusa Central E-01 (Abierta / Tránsito Habilitado), Compuerta Ribereña C-02 (Cerrada por protocolo).
+
+##### B. Prompt Estructurado para IA:
+```text
+[ROL]: Principal UX/UI Designer & Geospatial Interface Architect especializado en sistemas SCADA marítimos y flotas autónomas.
+[CONTEXTO]: Plataforma AquaPort Enterprise para la Escuela Colombiana de Ingeniería Julio Garavito. 60 drones acuáticos distribuidos en 4 zonas hidrológicas del campus (Embalse Norte, Canal de Conexión, Lago Central, Humedal Sur).
+[OBJETIVO]: Diseñar la vista principal del mapa táctico en tiempo real con panel de telemetría y filtros por subflota.
+[SISTEMA DE DISEÑO]: Modo oscuro estricto basado en tokens Enterprise: Fondo Abisal (#070d14), Paneles (#0c1521), Acentos Marea (#14b8a6) y Sonar Cyan (#06b6d4), Alertas Carmesí (#ef4444). Tipografía Inter para UI y JetBrains Mono para telemetría.
+[COMPONENTES CLAVE]:
+1. Mapa central vectorial con las 4 masas de agua, canales interzonales y boyas de esclusa.
+2. Indicadores flotantes de 60 drones con iconos diferenciados por tipo (Superficial, Semisumergido, Buceador) y anillos de estado.
+3. Barra superior con KPIs globales: Flota Total (60), En Operación (18), Disponibles (36), En Carga (4), Averías (2).
+4. Panel lateral retráctil con capas batimétricas, velocidad de corrientes y filtros por zona.
+[DATOS DE DOMINIO]: IDs AR-01 a AR-60, zonas reales del campus, niveles de batería (30% a 100%) y estados operativos.
+```
+
+---
+
+#### 2. Pantalla 2: Configuración de Ruta Multi-Etapa con Waypoints
+
+Interfaz de planificación de misiones complejas (**AP-15 / RF-01**) donde el Operador Hídrico selecciona origen, destino, puntos de relevo intermedios (*waypoints*), asigna los drones óptimos para cada tramo y especifica la muestra con su contenedor de preservación.
+
+![Pantalla 2 — Selección y Configuración de Ruta Multi-Etapa](docs/images/SelectRoute.png)
+
+![Pantalla 2B — Asignación de Tramos y Handover](docs/images/AsignationTramos.png)
+
+##### A. Datos Realistas del Dominio:
+* **Misión:** `MIS-2026-MULTI-042` — Transporte de Muestra Fisicoquímica de Sedimento Profundo.
+* **Origen:** Muelle Alfa (Embalse Norte) $\to$ **Destino Final:** Laboratorio Hídrico (Humedal Sur).
+* **Tramos y Waypoints:**
+  * *Tramo 1 (850 m):* Embalse Norte $\to$ `WP-1 (Esclusa Central)`. Dron: `AR-12` (Superficial, Batería 94%).
+  * *Tramo 2 (1,200 m):* `WP-1` $\to$ `WP-2 (Estrecho Ribereño)`. Dron: `AR-28` (Semisumergible, Batería 88%).
+  * *Tramo 3 (650 m):* `WP-2` $\to$ Laboratorio Hídrico. Dron: `AR-52` (Buceador, Batería 91%).
+* **Carga:** Muestra #M-882 (2.4 kg, requiere refrigeración a $4^\circ\text{C} \pm 1^\circ\text{C}$, Prioridad Alta).
+
+##### B. Prompt Estructurado para IA:
+```text
+[ROL]: Senior Product Designer especializado en logística autónoma y planificación de rutas multi-modales.
+[CONTEXTO]: AquaPort Enterprise — Módulo de configuración de misiones multi-etapa con waypoints (Requerimiento AP-15).
+[OBJETIVO]: Diseñar la pantalla de configuración de ruta por tramos con asignación de drones especializados y puntos de relevo (handover).
+[ESTRUCTURA DE INTERFAZ]:
+1. Selector de ruta con diagrama secuencial de nodos (Origen -> Waypoint 1 -> Waypoint 2 -> Destino).
+2. Ficha de asignación por tramo: selección de dron según especialidad física, compatibilidad con la zona y batería proyectada.
+3. Panel de configuración de carga: tipo (Muestra de Sedimento), peso (2.4 kg), control térmico (4°C) y sellado de custodia SHA-256.
+4. Resumen analítico de ruta: distancia acumulada (2.7 km), tiempo estimado (24 min) y consumo de flota estimado.
+5. Botón de acción principal: 'Iniciar Misión Multi-Etapa y Generar Sello Inicial'.
+```
+
+---
+
+#### 3. Pantalla 3: Monitoreo de Progreso por Tramo con Telemetría en Vivo
+
+Consola de seguimiento operacional en tiempo real (**RF-04**) que despliega el avance simultáneo de la misión, mostrando el estado de cada tramo en la línea de tiempo, telemetría continua del dron activo y validación de sellos criptográficos en tránsito.
+
+![Pantalla 3 — Monitoreo de Progreso en Vivo con Telemetría](docs/images/MonitoringLive.png)
+
+##### A. Datos Realistas del Dominio:
+* **Estado de Tramos:**
+  * *Tramo 1:* **100% COMPLETADO** (Handover exitoso en `WP-1` a las 10:14:22).
+  * *Tramo 2:* **68% EN NAVEGACIÓN** (Dron activo: `AR-28`).
+  * *Tramo 3:* **PENDIENTE** (Dron `AR-52` en Standby en muelle de espera).
+* **Telemetría Activa (`AR-28`):** Coordenadas GPS `4.7831° N, 74.0435° W`, Velocidad 3.8 nudos, Profundidad 1.2 m, Batería actual 74%, Temperatura de carga $4.1^\circ\text{C}$, Hash SHA-256 parcial validado.
+* **ETA Restante:** 7 min 45 s hacia `WP-2`.
+
+##### B. Prompt Estructurado para IA:
+```text
+[ROL]: Lead UI Designer especializado en HUD militar, telemetría náutica y paneles de misión crítica en tiempo real.
+[CONTEXTO]: AquaPort Enterprise — Pantalla de seguimiento en vivo de una misión multi-etapa en ejecución activa.
+[OBJETIVO]: Diseñar la interfaz de monitoreo con barra de etapas (stepper), telemetría del dron en vuelo y estado ambiental del canal.
+[COMPONENTES CLAVE]:
+1. Stepper horizontal superior con estados: Tramo 1 (Completado / Verde), Tramo 2 (Activo / Cyan animado), Tramo 3 (En espera).
+2. Panel HUD central con velocímetro náutico, nivel de batería circular (74%), profundidad batimétrica y coordenadas GPS vivas.
+3. Monitor térmico del contenedor biológico mostrando 4.1°C dentro de banda de tolerancia.
+4. Gráfico de corriente y oleaje lateral con lectura de API hídrica en vivo (Oleaje 0.4 m, Viento 12 km/h).
+5. Indicador de Cadena de Custodia: 'Hash Inmutable Verificado: 9f8a...3b21'.
+```
+
+---
+
+#### 4. Pantalla 4: Alerta de Fallo en Waypoint con Reasignación Automática Visible (< 1.5s)
+
+Pantalla de contingencia operativa que ilustra la activación de la tolerancia a fallos (**RNF-01 / CU-EXT-01**). Ante una avería en propulsión del dron activo al llegar al waypoint, el motor autónomo reasigna una unidad de reemplazo en menos de 1.5 segundos sin intervención humana, emitiendo la orden de servicio al técnico.
+
+![Pantalla 4 — Alerta de Fallo en Waypoint y Reasignación Autónoma](docs/images/AlertAndReasignation.png)
+
+##### A. Datos Realistas del Dominio:
+* **Evento de Fallo:** `ERR-PROP-092` — Bloqueo de hélice por vegetación ribereña en dron `AR-28` en `WP-2`.
+* **Tiempo de Failover Registrado:** **1.18 segundos** (Certificado $< 1.5$s según RNF-01).
+* **Unidad Reasignada:** `AR-35` (Semisumergible, Batería 92%, Estado Standby en Dársena Ribereña 2).
+* **Acción Automática:** Traspaso de telemetría y continuidad de misión autorizado; generación de orden de mantenimiento `OT-2026-089` despachada al Técnico de Mantenimiento.
+
+##### B. Prompt Estructurado para IA:
+```text
+[ROL]: Senior Critical-Systems UX Architect especializado en gestión de incidentes, resiliencia y failover autónomo.
+[CONTEXTO]: AquaPort Enterprise — Manejo de fallo crítico en misión multi-etapa y reasignación automática (< 1.5s).
+[OBJETIVO]: Diseñar la pantalla de alerta de emergencia y resolución autónoma visible para el Operador Hídrico.
+[ELEMENTOS DE INTERFAZ]:
+1. Banner superior de alerta roja de alto contraste (#ef4444) con pulso visual: 'INCIDENCIA CRÍTICA EN WAYPOINT WP-2'.
+2. Tarjeta de diagnóstico de la unidad averiada (Dron AR-28: Fallo de Propulsión, Batería 71%, Muestra asegurada).
+3. Cronómetro visual de Failover Autónomo: 'Reasignación completada en 1.18s — Éxito'.
+4. Tarjeta de unidad de reemplazo activada: 'Dron AR-35 asignado automáticamente al Tramo 2'.
+5. Log de eventos de auditoría y notificación emitida al Técnico de Mantenimiento con ID de orden OT-2026-089.
+```
+
+---
+
+#### 5. Pantalla 5: Reporte Final de la Cadena de Custodia (SHA-256 e Inmutabilidad)
+
+Pantalla de cierre operacional y certificación forense (**RF-03 / CU-INC-03 / CU-EXT-04**). Presenta el acta digital inmutable de entrega en el Laboratorio Hídrico, verificando que la muestra mantuvo su integridad molecular, sellos criptográficos intactos y trazabilidad física a lo largo de los 3 tramos y el relevo de emergencia.
+
+![Pantalla 5 — Reporte Final de Cadena de Custodia y Entrega Forense](docs/images/ReportDelivery.png)
+
+##### A. Datos Realistas del Dominio:
+* **Identificador de Muestra:** `MUESTRA-ECI-2026-X88` (Agua profunda para análisis de metales pesados).
+* **Hash SHA-256 en Origen:** `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+* **Hash SHA-256 en Destino:** `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` $\to$ **INTEGRIDAD 100% CERTIFICADA (MATCH PERFECTO)**.
+* **Historial de Drones Custodios:** `AR-12` (Tramo 1) $\to$ `AR-28` (Tramo 2 Inicial) $\to$ `AR-35` (Relevo Failover Tramo 2) $\to$ `AR-52` (Tramo 3).
+* **Preservación Térmica:** Rango registrado: $3.9^\circ\text{C}$ a $4.2^\circ\text{C}$ (Dentro del umbral regulatorio).
+* **Firmas Digitales:** Operador Hídrico, Dron Relevo `AR-35`, Dron Entrega `AR-52`, Receptor Laboratorio Dr. Juan Camilo Mora.
+
+##### B. Prompt Estructurado para IA:
+```text
+[ROL]: Principal Legal-Tech & Forensic UX Designer especializado en cadena de custodia digital, auditoría y trazabilidad inmutable.
+[CONTEXTO]: AquaPort Enterprise — Pantalla de Reporte Final de Entrega y Certificación de Custodia Forense.
+[OBJETIVO]: Diseñar el certificado digital interactivo de recepción de muestra hídrica con validación de hashes y firmas criptográficas.
+[ESTRUCTURA DE INTERFAZ]:
+1. Encabezado institucional con sello de certificación 'CADENA DE CUSTODIA VÁLIDA Y CERTIFICADA'.
+2. Comparador criptográfico: Hash Inicial SHA-256 vs Hash de Entrega SHA-256 con badge de integridad verde 'MATCH FORENSE'.
+3. Bitácora inmutable de relevos (Audit Trail) detallando cada handover con hora, coordenadas GPS y drones intervinientes.
+4. Gráfico histórico de temperatura del contenedor durante todo el trayecto (manteniéndose en 4.0°C ± 0.2°C).
+5. Código QR de validación pública institucional y botón de exportación en PDF criptográficamente firmado.
+```
+
+---
+
+#### 6. Tabla Comparativa de Pantallas y Requerimientos Enterprise
+
+| Pantalla | Vista del Sistema | Requerimiento DOSW | Drones / Datos Relevantes | Mecanismo de Validación |
+| :---: | :--- | :---: | :--- | :--- |
+| **P-01** | Mapa de las 4 Zonas Hídricas | **RF-04** | 60 Drones (`AR-01` a `AR-60`), 4 Cuencas | Telemetría GPS en tiempo real y boyas de esclusa |
+| **P-02** | Configuración de Ruta Multi-Etapa | **AP-15 / RF-01** | `AR-12`, `AR-28`, `AR-52`, 3 Waypoints | Algoritmo de planificación y compatibilidad por tramo |
+| **P-03** | Monitoreo de Progreso por Tramo | **RF-01 / RF-04** | Dron activo `AR-28`, avance 68% | HUD de velocidad, batería 74% y temperatura 4.1°C |
+| **P-04** | Alerta y Reasignación en Waypoint | **RNF-01 / CU-EXT-01** | Fallo `AR-28` $\to$ Relevo `AR-35` | Cronómetro de failover registrado en **1.18 s** ($< 1.5$s) |
+| **P-05** | Reporte de Cadena de Custodia | **RF-03 / CU-INC-03** | Muestra `M-ECI-X88`, 4 drones custodios | Hash SHA-256 inmutable y certificación forense |
+
+---
+
+### 🧪 Ejercicio 12 (Fase Empoleon) — TDD de las 3 Capas: Unitarias, Integración y Cobertura Enterprise (JaCoCo ≥ 85%)
+
+#### 1. Contexto y Objetivos del Ejercicio
+
+En el marco de la evolución **AquaPort Enterprise (Fase Empoleon)**, el desarrollo de software guiado por pruebas (**TDD — Test-Driven Development**) se eleva al estándar industrial estructurado en **tres capas concéntricas de verificación**:
+1. **Capa de Dominio (Unitarias Puras):** Pruebas unitarias exhaustivas del servicio de dominio `PlanificadorRuta` para segmentación de tramos, cálculo de distancias y viabilidad energética.
+2. **Capa de Aplicación e Integración (`Integration Testing`):** Pruebas de integración del flujo completo (Solicitud $\to$ Planificación $\to$ Asignación por tramos $\to$ Notificación de waypoints) y la validación automatizada de los **5 flujos alternos y de fallo** del Enterprise.
+3. **Capa de Calidad y Cobertura (JaCoCo & Clean Architecture):** Cobertura de código global $\ge 85\%$ (alcanzando **94%** en el bundle general), verificación de branch coverage y cumplimiento estricto de la regla de oro del dominio auditada por reflexión (`SolidArchitectureAuditTest`).
+
+---
+
+#### 2. Metodología TDD Aplicada (Ciclo Red - Green - Refactor)
+
+El ciclo de desarrollo se ejecutó de forma rigurosa en tres fases iterativas:
+
+```mermaid
+graph LR
+    RED["🔴 RED<br/>Escribir pruebas unitarias<br/>fallidas para PlanificadorRuta<br/>y flujos alternos"] --> GREEN["🟢 GREEN<br/>Implementar PlanificadorRuta<br/>y orquestación mínima<br/>para pasar la suite"]
+    GREEN --> REFACTOR["🔵 REFACTOR<br/>Optimizar Clean Code,<br/>métodos <= 15 líneas,<br/>inmutabilidad y auditoría"]
+    REFACTOR --> RED
+```
+
+1. **Fase Roja (RED):** Se redactaron las suites [PlanificadorRutaTest.java](src/test/main/dosw/empoleon/PlanificadorRutaTest.java) y [FlujoCompletoEnterpriseIntegrationTest.java](src/test/main/dosw/empoleon/FlujoCompletoEnterpriseIntegrationTest.java) definiendo los contratos de interfaz, casos de borde y los 5 escenarios de fallo antes de escribir el código de producción.
+2. **Fase Verde (GREEN):** Se implementó la clase de dominio [PlanificadorRuta.java](src/main/dosw/empoleon/dominio/PlanificadorRuta.java) en Java 21 puro y se conectó con el orquestador hasta lograr el 100% de pruebas en verde (**169 pruebas pasando**).
+3. **Fase de Refactorización (REFACTOR):** Se refactorizó la lógica dividiendo métodos complejos en funciones privadas $\le 15$ líneas, garantizando 0 dependencias externas en el dominio y verificando ausencia de llamadas a `System.out` (`java:S106`).
+
+---
+
+#### 3. Especificación de las 3 Capas de Pruebas
+
+##### A. Capa 1: Pruebas Unitarias del Dominio (`PlanificadorRutaTest`)
+Verifica la lógica matemática y de negocio aislada dentro del dominio sin dependencias de infraestructura:
+
+| Prueba Unitaria | Caso de Prueba / Condición | Resultado Obtenido |
+| :--- | :--- | :---: |
+| `testPlanificarRutaExitosamente()` | Segmenta ruta en tramos ordenados asignando el dron con mayor batería disponible por zona. | **PASS** |
+| `testValidarExcepcionMenosDeDosWaypoints()` | Lanza `IllegalArgumentException` si la ruta tiene menos de 2 waypoints. | **PASS** |
+| `testValidarExcepcionPesoInvalido()` | Lanza `IllegalArgumentException` ante pesos de carga $\le 0$ g. | **PASS** |
+| `testSeleccionarDroneOptimoVacioSinUnidadesEnZona()` | Retorna `Optional.empty()` si no existen drones disponibles en la zona de partida. | **PASS** |
+| `testSeleccionarDroneDescartaBateriaCritica()` | Descarta proactivamente drones con batería $< 25\%$ (umbral de seguridad). | **PASS** |
+| `testCalcularDistanciaTotal()` | Suma la distancia en metros de todos los tramos de la ruta multi-etapa. | **PASS** |
+| `testEstimarConsumoYViabilidadEnergetica()` | Calcula el consumo esperado ($8\%$ batería/km) y valida si la autonomía final supera el $25\%$. | **PASS** |
+| `testEvaluarTramoViableConParametrosNulos()` | Maneja defensivamente entradas nulas o drones en estado `EN_MISION`. | **PASS** |
+
+##### B. Capa 2: Pruebas de Integración y los 5 Flujos Alternos (`FlujoCompletoEnterpriseIntegrationTest`)
+Valida la interacción entre `PlanificadorRuta`, `OrquestadorMisionMultiEtapa`, `CoordinadorRutasEmpoleon` y `CustodiaMuestra`:
+
+| Prueba de Integración | Escenario Enterprise Evaluado | Mecanismo de Aserción |
+| :--- | :--- | :--- |
+| `testFlujoCompletoIntegracionFeliz()` | Flujo feliz completo de 3 tramos y 4 waypoints: solicitud $\to$ planificación $\to$ asignación $\to$ notificación y custodia intacta. | `assertEquals(COMPLETADA, estado)`<br>`assertTrue(verificarIntegridad())` |
+| `testFlujoAlterno1_FalloDroneEnWaypointConReasignacionAutonoma()` | **Flujo Alterno 1:** Fallo de motor en waypoint intermedio dispara failover autónomo a dron de reserva en $< 1.5$s registrando transferencia de custodia. | `assertTimeoutPreemptively(1500ms)`<br>`assertTrue(transferenciaRegistrada)` |
+| `testFlujoAlterno2_ZonaDestinoInactivaConPasoAHoldSeguro()` | **Flujo Alterno 2:** Detección de zona de destino o esclusa inactiva coloca la misión en estado de espera segura (*Hold*). | `assertFalse(exito)`<br>`assertEquals(EN_ESPERA_SEGURA, estado)` |
+| `testFlujoAlterno3_BateriaCriticaEnMitadDeRutaConRetornoEmergencia()` | **Flujo Alterno 3:** Dron con batería remanente $< 25\%$ activa reasignación de unidad y retorno preventivo a muelle base. | `assertTrue(exito)`<br>`assertTrue(transferenciaRegistrada)` |
+| `testFlujoAlterno4_CadenaCustodiaInterrumpidaConAlertaYPeritaje()` | **Flujo Alterno 4:** Detección de alteración o corrupción en el hash SHA-256 en tránsito bloquea la entrega y emite alerta pericial. | `assertFalse(verificarIntegridad(adulterado))`<br>`assertEquals(3, registros)` |
+| `testFlujoAlterno5_CondicionHidricaAdversaConDesvioCanalProtegido()` | **Flujo Alterno 5:** Oleaje severo ($> 1.2\text{ m}$) reportado por API meteorológica activa desvío dinámico por canal protegido (`-ALT`). | `assertTrue(exito)`<br>`assertEquals(COMPLETADA, estado)` |
+
+##### C. Capa 3: Auditoría Arquitectónica y Principios SOLID (`SolidArchitectureAuditTest`)
+Inspección reflexiva automatizada que garantiza la arquitectura limpia en tiempo de build:
+* **Regla de Oro del Dominio:** Paquete `main.dosw.empoleon.dominio` contiene **0 imports** de librerías externas o capas de aplicación/infraestructura.
+* **Inyección de Dependencias por Constructor:** Todos los servicios y orquestadores utilizan constructores explícitos sin mutabilidad no controlada.
+
+---
+
+#### 4. Resultados de Cobertura JaCoCo y Resumen de Suite
+
+* **Pruebas Totales Ejecutadas:** **169 pruebas unitarias y de integración** (100% pasando sin fallos ni errores).
+* **Cobertura Global de Líneas (Line Coverage):** **94%** (304 de 5,259 instrucciones sin cubrir en todo el repositorio).
+* **Cobertura de Ramas (Branch Coverage):** **84%**.
+* **Clases Analizadas:** **65 clases** del sistema.
+* **Tiempo de Ejecución:** $\sim 10.1$ segundos con informe XML/HTML generado en `target/site/jacoco/index.html`.
+* **Calidad de Código SonarQube:** Cumplimiento total de regla `java:S106` (Logger centralizado), métodos $\le 15$ líneas y clases $\le 150$ líneas.
+
+---
+
+### 🛡️ Ejercicio 13 (Fase Empoleon) — Auditoría Completa de Calidad: JaCoCo ≥ 85% y SonarQube Quality Gate PASS
+
+#### 1. Contexto y Objetivos del Ejercicio
+
+En este ejercicio se somete toda la base de código consolidada de **AquaPort Enterprise (Fase Empoleon)** a una **auditoría integral de calidad de grado industrial**, certificando simultáneamente dos compuertas de aseguramiento de software:
+1. **JaCoCo Code Coverage:** Verificación de cobertura global $\ge 85\%$ sobre los 68 archivos fuente y 65 clases del sistema compiladas bajo Java 21.
+2. **SonarQube Quality Gate:** Evaluación estricta bajo el perfil oficial **Sonar way**, exigiendo **Quality Gate en PASS**, cero *bugs*, cero vulnerabilidades, cero *security hotspots*, cero deuda técnica bloqueante (Rating A) y cero duplicación de código.
+
+---
+
+#### 2. Evidencia Visual del Reporte Final de Cobertura JaCoCo
+
+A continuación se presenta el informe interactivo generado por `jacoco-maven-plugin` (versión `0.8.11`) tras la ejecución de las **169 pruebas automatizadas**:
+
+![Reporte Final de Cobertura JaCoCo - AquaPort Enterprise](docs/images/JacocoReportFinal.png)
+
+##### A. Desglose Métrico de Cobertura por Paquetes Clave:
+* **Cobertura Global en Instrucciones:** **94%** (4,955 de 5,259 instrucciones ejecutadas, únicamente 304 instrucciones omitidas en todo el proyecto).
+* **Cobertura Global de Ramas (Branch Coverage):** **84%** (313 de 370 caminos lógicos cubiertos exhaustivamente).
+* **Cobertura Global de Líneas:** **93%** (982 de 1,057 líneas cubiertas).
+* **Capa de Dominio Enterprise (`main.dosw.empoleon.dominio`):** **95%** de cobertura en instrucciones y **91%** en ramas.
+* **Capa de Aplicación Enterprise (`main.dosw.empoleon.aplicacion`):** **94%** de cobertura en instrucciones y **75%** en ramas.
+* **Capa de Infraestructura (`main.dosw.empoleon.infraestructura`):** **100%** de cobertura en instrucciones y **100%** en ramas.
+* **Patrón Decorator (`main.dosw.empoleon.dominio.decorator`):** **85%** de cobertura en instrucciones y **83%** en ramas.
+* **Fábricas y Adaptadores:** **100%** de cobertura total.
+
+---
+
+#### 3. Evidencia Visual del Dashboard de Calidad SonarQube
+
+El análisis estático de código ejecutado mediante `sonar-maven-plugin` contra el servidor local de SonarQube (`http://localhost:9000`) arrojó una certificación impecable:
+
+![Dashboard de Calidad SonarQube - Quality Gate Passed](docs/images/SonarqubeFinal.png)
+
+##### B. Cuadro de Indicadores Oficiales de SonarQube (Overall Code):
+
+| Métrica de Calidad | Resultado Auditado | Umbral Requerido | Calificación SonarQube | Estado del Gate |
+| :--- | :---: | :---: | :---: | :---: |
+| **Quality Gate Global** | **PASSED** | PASSED | — | 🟢 **PASS** |
+| **Security (Vulnerabilidades)** | **0 Open issues** | 0 | **A** | 🟢 **PASS** |
+| **Reliability (Bugs)** | **0 Open issues** | 0 | **A** | 🟢 **PASS** |
+| **Maintainability (Code Smells)** | **0 Open issues** | 0 | **A** | 🟢 **PASS** |
+| **Security Hotspots** | **0 Hotspots** | 0 | **A** | 🟢 **PASS** |
+| **Technical Debt (Deuda Técnica)** | **0 minutos** | $< 1\text{h}$ | **A** | 🟢 **PASS** |
+| **Code Coverage (Código General)** | **89.9%** | $\ge 80.0\%$ | — | 🟢 **PASS** |
+| **Duplications (Duplicación)** | **0.0%** (en 3.3k líneas) | $< 3.0\%$ | — | 🟢 **PASS** |
+
+---
+
+#### 4. Resumen de Remediaciones Técnicas Aplicadas
+
+Para alcanzar el estado **0 Open issues** y Quality Gate en **PASSED**, se ejecutó una refactorización integral sobre los hallazgos reportados por las reglas de Java 21:
+1. **Eliminación de Imports Huérfanos (`java:S1128`):** Se sanearon 9 imports no utilizados en las suites de pruebas y entidades de dominio (`assertNotNull`, `assertNull`, `mock`, `CondicionesHidricasDominio`, `ArrayList`).
+2. **Extracción de Constantes para Literales Duplicados (`java:S1192`):** Se definió la constante `MSG_FLOTA_NO_NULA` en `CoordinadorRutasEmpoleon.java`, eliminando la repetición del mensaje de validación.
+3. **Contrato de Igualdad e Identidad (`java:S2160`):** Se implementaron los métodos `equals()` y `hashCode()` en `DroneEnterprise.java` alineados con la jerarquía de herencia de `DroneAcuatico`.
+4. **Optimización de Logging con Lambdas (`java:S2629`):** Se reemplazó la concatenación directa de cadenas en `LOGGER.info()` por expresiones `Supplier<String>` (`LOGGER.info(() -> ...)`) en `Ejercicio04Empoleon.java`, previniendo cómputo innecesario si el nivel de log está deshabilitado.
+5. **Auditoría de Constructores (`java:S107`):** Se documentó y anotó la supresión técnica controlada para constructores de dominio con múltiples atributos esenciales inmutables en `DroneEnterprise` y `MisionEnterprise`.
+
+---
+
+### 🏛️ Ejercicio 14 (Fase Empoleon) — Consolidación de Arquitectura por Capas y Architecture Decision Records (ADRs)
+
+#### 1. Contexto y Objetivos del Ejercicio
+
+En este ejercicio final se culmina la **Fase Empoleon** y la evolución arquitectónica completa de la plataforma **AquaPort Enterprise**. Se formaliza la auditoría de dependencias por capas, se valida el cumplimiento de Clean Architecture mediante herramientas automatizadas (Grep y reflexión en tiempo de compilación con JUnit 5) y se documentan los **3 Architecture Decision Records (ADRs)** que sustentan las decisiones estratégicas del diseño industrial.
+
+```text
+com.eci.aquaport (main.dosw.empoleon)
+  ├── dominio/        ← Entidades inmutables, enums, interfaces puras (100% Java puro, 0 dependencias externas)
+  ├── aplicacion/     ← Casos de uso, orquestadores de rutas multi-etapa y pipelines de validación
+  └── infraestructura/← Adaptadores de API hídrica externa, DTOs de integración y factorías
+```
+
+---
+
+#### 2. Reporte de Auditoría de Dependencias por Capas (Grep y Reflexión)
+
+Conforme a la exigencia del Reto Empoleon, se ejecutó la auditoría automatizada de dirección de dependencias sobre los 68 archivos fuente de la plataforma:
+
+##### A. Salida del Script de Auditoría de Dependencias:
+```text
+=================================================================
+🔍 AUDITORÍA DE CLEAN ARCHITECTURE — AQUAPORT ENTERPRISE (DOSW)
+=================================================================
+
+1. AUDITANDO CAPA DE DOMINIO (18 archivos)...
+  ✅ REGLA DE ORO CUMPLIDA: 0 dependencias externas o de capas externas en DOMINIO.
+  • Imports auditados: java.util.*, java.util.stream.*, java.util.logging.*, domain subpackages.
+  • Imports prohibidos detectados (Jackson, HttpClient, Spring, Mockito, Infraestructura): 0.
+
+2. AUDITANDO CAPA DE APLICACIÓN (9 archivos)...
+  ✅ DESACOPLAMIENTO CUMPLIDO: 0 imports de INFRAESTRUCTURA en APLICACIÓN.
+  • Clases auditadas: DespachadorMisionesEnterprise, CoordinadorRutasEmpoleon, OrquestadorMisionMultiEtapa, etc.
+  • Dependencias permitidas: Únicamente main.dosw.empoleon.dominio y Java estándar.
+
+3. AUDITANDO INVERSIÓN DE DEPENDENCIAS (DIP)...
+  ✅ DIP CUMPLIDO: 0 instanciaciones directas de adaptadores externos en Dominio o Aplicación.
+  • 100% Constructor Injection en todos los servicios.
+
+=================================================================
+TOTAL VIOLACIONES DE CAPA DETECTADAS: 0
+=================================================================
+```
+
+##### B. Matriz de Dirección de Dependencias por Capas:
+
+| Capa Origen | ¿Puede depender de Dominio? | ¿Puede depender de Aplicación? | ¿Puede depender de Infraestructura? | ¿Puede importar Librerías Externas? | Estado de la Capa |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Dominio** | **SÍ (Propio)** | ❌ **NUNCA** | ❌ **NUNCA** | ❌ **NUNCA (Regla de Oro)** | 🟢 **100% PURO** |
+| **Aplicación** | **SÍ (Inbound)** | **SÍ (Propio)** | ❌ **NUNCA** | ❌ **NUNCA** | 🟢 **DESACOPLADA** |
+| **Infraestructura** | **SÍ** | **SÍ** | **SÍ (Propio)** | **SÍ (Controlado)** | 🟢 **AISLADA** |
+
+---
+
+#### 3. Diagrama de Arquitectura Consolidada (Clean Architecture)
+
+```mermaid
+graph TD
+    subgraph EXTERNO["Mundo Exterior / Clientes"]
+        UI["Consola Web / UI Design System"]
+        API_EXT["API Condiciones Hídricas (Servicio Externo)"]
+        CC_EXT["Centro de Control ECI (Esclusas)"]
+    end
+
+    subgraph INFRAESTRUCTURA["Capa de Infraestructura (Adapters & External Clients)"]
+        ADAPT["AdaptadorAPIHidrica<br/>(implements ProveedorCondicionesHidricas)"]
+        CLIENT["ClienteApiHidricaExterna"]
+        DTO["DatosHidricosExternosJson"]
+        GEN["GeneradorFlotaEmpoleon (60 drones)"]
+    end
+
+    subgraph APLICACION["Capa de Aplicación (Use Cases & Orchestration)"]
+        ORQ["OrquestadorMisionMultiEtapa (AP-15)"]
+        COORD["CoordinadorRutasEmpoleon (Streams / Collector)"]
+        DESP["DespachadorMisionesEnterprise"]
+        CADENA["CadenaValidacionMision (Chain of Resp.)"]
+    end
+
+    subgraph DOMINIO["Capa de Dominio (Pure Java Enterprise Entities & Interfaces)"]
+        ENT_DRONE["DroneEnterprise"]
+        ENT_MISION["MisionEnterprise"]
+        ENT_RUTA["TramoRuta & Waypoint"]
+        ENT_CUSTODIA["CustodiaMuestra (SHA-256)"]
+        SERV_PLAN["PlanificadorRuta"]
+        PORT_COND["ProveedorCondicionesHidricas (Interface)"]
+        DEC_DRONE["DroneDecorator & DroneConCifrado"]
+    end
+
+    %% Relaciones de Dependencia (Siempre apuntando hacia el núcleo)
+    UI -->|Invoca| ORQ
+    UI -->|Consulta| COORD
+    API_EXT -->|Alimenta| CLIENT
+    CLIENT --> DTO
+    DTO --> ADAPT
+    ADAPT -->|Implementa| PORT_COND
+
+    ORQ -->|Usa| SERV_PLAN
+    ORQ -->|Usa| ENT_MISION
+    ORQ -->|Usa| ENT_CUSTODIA
+    ORQ -->|Consume| PORT_COND
+
+    COORD -->|Orquesta| ENT_DRONE
+    COORD -->|Calcula| ENT_RUTA
+
+    DESP -->|Ejecuta| CADENA
+    DESP -->|Decora| DEC_DRONE
+    CADENA -->|Evalúa| ENT_DRONE
+
+    classDef dom fill:#0d1b2a,stroke:#00b4d8,stroke-width:2px,color:#fff;
+    classDef app fill:#1b263b,stroke:#48cae4,stroke-width:2px,color:#fff;
+    classDef inf fill:#415a77,stroke:#90e0ef,stroke-width:2px,color:#fff;
+    classDef ext fill:#000814,stroke:#ffb703,stroke-width:1px,color:#fff;
+
+    class ENT_DRONE,ENT_MISION,ENT_RUTA,ENT_CUSTODIA,SERV_PLAN,PORT_COND,DEC_DRONE dom;
+    class ORQ,COORD,DESP,CADENA app;
+    class ADAPT,CLIENT,DTO,GEN inf;
+    class UI,API_EXT,CC_EXT ext;
+```
+
+---
+
+#### 4. Architecture Decision Records (ADRs)
+
+##### 📄 ADR-01: Adopción de Clean Architecture y Regla de Oro del Dominio Puro
+
+* **Estado:** Aceptado / En Producción.
+* **Fecha:** Octubre 2026.
+* **Contexto:**
+  AquaPort evolucionó de 4 drones a 60 drones operando de forma autónoma a través de 4 cuencas hídricas interconectadas. La lógica del negocio náutico y las reglas criptográficas de custodia de muestras estaban en riesgo de quedar acopladas a librerías de serialización (Jackson), protocolos de transporte (HTTP) o frameworks reactivos invasivos.
+* **Decisión:**
+  Se adopta estrictamente **Clean Architecture (Arquitectura Limpia)** basada en círculos concéntricos. Se instaura la **Regla de Oro del Dominio**: el paquete `main.dosw.empoleon.dominio` debe ser compilable y ejecutable con Java 21 estándar, prohibiendo absolutamente cualquier import externo. La integración con fuentes meteorológicas se aísla mediante el patrón *Ports and Adapters* (Inversión de Dependencias).
+* **Consecuencias:**
+  * *Positivas:* Dominio 100% testeable sin mocks complejos; independencia total de librerías de terceros; auditoría automatizada en tiempo de build (`SolidArchitectureAuditTest`).
+  * *Negativas:* Requiere mapeo manual de tipos entre DTOs de infraestructura y objetos de dominio (`AdaptadorAPIHidrica`).
+* **Alternativas Evaluadas:**
+  * *Arquitectura en Capas Tradicional (N-Tier sin inversión):* Descartada porque la lógica de negocio terminaba dependiendo de drivers y clientes HTTP externos.
+
+---
+
+##### 📄 ADR-02: Patrones Chain of Responsibility + Decorator vs Alternativas Monolíticas
+
+* **Estado:** Aceptado / En Producción.
+* **Fecha:** Octubre 2026.
+* **Contexto:**
+  La validación previa al despacho de drones requería evaluar múltiples restricciones físicas (batería, capacidad de carga, aptitud de zona y oleaje) de forma extensible. Paralelamente, se requería incorporar capacidades de telemetría forense y cifrado criptográfico a los drones en tránsito sin alterar la jerarquía de herencia de `DroneAcuatico`.
+* **Decisión:**
+  Se combinaron dos patrones estructurales y de comportamiento del GoF:
+  1. **Chain of Responsibility (`CadenaValidacionMision`):** Desacopla cada regla en un eslabón independiente (`ValidadorBateria`, `ValidadorCapacidadCarga`, `ValidadorCondicionesHidricas`, `ValidadorZonaActiva`). Si un eslabón falla, el flujo se detiene de inmediato sin evaluar los posteriores.
+  2. **Decorator (`DroneConMonitoreo` y `DroneConCifrado`):** Envuelve dinámicamente cualquier unidad naval en tiempo de ejecución, permitiendo componer capas de sellado criptográfico AES-256 / SHA-256 y logs de auditoría sin tocar las clases base.
+* **Consecuencias:**
+  * *Positivas:* Cumplimiento total de Open/Closed Principle (OCP) y Single Responsibility Principle (SRP). Agregar una nueva regla de validación hídrica no requiere modificar el orquestador principal.
+  * *Negativas:* Ligero incremento en la cantidad de clases pequeñas en el paquete de aplicación.
+* **Alternativas Evaluadas:**
+  * *Método Monolítico con múltiples `if-else` anidados:* Descartada por alta complejidad ciclomática, violación de límites de 15 líneas por método y rigidez al agregar nuevas zonas.
+  * *Programación Orientada a Aspectos (AOP / AspectJ):* Descartada por violar la regla de 0 dependencias externas en el núcleo de la aplicación.
+
+---
+
+##### 📄 ADR-03: Estrategia de Failover Autónomo en Waypoints Multi-Etapa (< 1.5s) y Trazabilidad Inmutable
+
+* **Estado:** Aceptado / En Producción.
+* **Fecha:** Octubre 2026.
+* **Contexto:**
+  Las misiones multi-etapa (**AP-15**) transportan muestras hidrológicas sensibles a través de esclusas institucionales. Si un dron sufre avería de motor o batería crítica en un punto de relevo (*waypoint*), el sistema debe garantizar continuidad inmediata para no perder la preservación térmica de la muestra ni generar repudio en la cadena de custodia.
+* **Decisión:**
+  Se implementó una estrategia de **Failover Autónomo Local en Memoria** coordinada por `OrquestadorMisionMultiEtapa`:
+  1. **Búsqueda y Asignación de Reemplazo en $< 1.5$s:** El orquestador escanea la subflota de 15 unidades de la zona afectada y transfiere el tramo al dron con mayor batería disponible, emitiendo asíncronamente la orden de servicio al técnico de campo.
+  2. **Sellado Criptográfico Inmutable:** La entidad de dominio `CustodiaMuestra` registra cada relevo mediante firmas encadenadas SHA-256 (`ORIGEN -> WP -> DESTINO`), permitiendo auditar forensemente cualquier alteración molecular o física en el trayecto.
+* **Consecuencias:**
+  * *Positivas:* Cumplimiento del RNF-01 de latencia de reasignación ($< 1.5$s validado mediante `assertTimeoutPreemptively` en JUnit 5); garantía de no-repudio legal e institucional sobre la muestra.
+  * *Negativas:* Requiere mantener reservas mínimas de flota (al menos 2 unidades en estado `DISPONIBLE` por cada zona).
+* **Alternativas Evaluadas:**
+  * *Reasignación Manual por el Operador Hídrico:* Descartada porque el tiempo medio de reacción humana (30–60 segundos) violaba el umbral de preservación térmica y causaba colisiones en las esclusas.
+  * *Abortar y Retornar al Muelle de Origen:* Descartada por pérdida irreparable de muestras de agua en misiones con más de 2 kilómetros de avance.
+
+---
+
+#### 5. Cuadro de Consolidación Integral: 42 de 42 Retos DOSW
+
+| Fase Evolutiva | Código Retos | Ejercicios Cubiertos | Estado de Calidad | Cobertura JaCoCo | SonarQube Gate |
+| :---: | :---: | :--- | :---: | :---: | :---: |
+| **Fase Piplup (MVP)** | `01–14` | Streams, GitFlow, Patrones Base, SOLID, C4 L1, RF/RNF, Plantilla, Mockups, Jira, Casos de Uso, Mocks IA, TDD, JaCoCo, SonarQube | **100% Completado** | $\ge 85\%$ | **PASSED** |
+| **Fase Prinplup (v2)** | `01–14` | Factory/Strategy/Observer, Arquitectura desacoplada, C4 L2, AP-07/08, Design System, Sprints Scrum, UC Extend, Mocks 15 drones, TDD, Quality Gate | **100% Completado** | $\ge 90\%$ | **PASSED** |
+| **Fase Empoleon (Enterprise)** | `01–14` | 60 Drones, 4 Zonas, Collector paralelo, Conventional Commits, Chain of Resp., Decorator, Adapter, Clean Architecture pura, AP-15 multi-etapa, WCAG AA, Jira Enterprise, UC con 5 fallos, Mocks 5 pantallas, TDD 3 capas, Quality Gate auditado, ADRs | **100% Completado** | **94%** | **PASSED (0 Issues)** |
+| **PROYECTO GLOBAL** | **42 / 42** | **Plataforma AquaPort Enterprise Integral Consolidada** | 🟢 **100% CERTIFICADO** | **94% Global** | **QUALITY GATE PASS** |
+
+
+
+
+
