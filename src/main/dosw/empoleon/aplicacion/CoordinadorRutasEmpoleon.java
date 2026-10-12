@@ -1,6 +1,5 @@
 package main.dosw.empoleon.aplicacion;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,8 @@ import main.dosw.empoleon.dominio.Waypoint;
  * y ejecuta analíticas avanzadas utilizando la API de Streams y Lambdas de Java.
  */
 public class CoordinadorRutasEmpoleon {
+
+    private static final String MSG_FLOTA_NO_NULA = "La flota no puede ser nula";
 
     /**
      * 1) Calcula la eficiencia de cada zona: (misiones completadas / misiones totales).
@@ -50,7 +51,7 @@ public class CoordinadorRutasEmpoleon {
      * 2) Encuentra el drone con el mejor historial de entregas exitosas.
      */
     public Optional<DroneEnterprise> encontrarDroneConMejorHistorial(List<DroneEnterprise> flota) {
-        Objects.requireNonNull(flota, "La flota no puede ser nula");
+        Objects.requireNonNull(flota, MSG_FLOTA_NO_NULA);
         return flota.stream()
                 .reduce((d1, d2) -> d1.getEntregasExitosas() >= d2.getEntregasExitosas() ? d1 : d2);
     }
@@ -77,7 +78,7 @@ public class CoordinadorRutasEmpoleon {
 
     private void validarParametrosRuta(List<Waypoint> waypoints, List<DroneEnterprise> flota) {
         Objects.requireNonNull(waypoints, "Los waypoints no pueden ser nulos");
-        Objects.requireNonNull(flota, "La flota no puede ser nula");
+        Objects.requireNonNull(flota, MSG_FLOTA_NO_NULA);
         if (waypoints.size() < 2) {
             throw new IllegalArgumentException("Se requieren al menos 2 waypoints para una ruta");
         }
@@ -112,7 +113,7 @@ public class CoordinadorRutasEmpoleon {
      * 4) Collector personalizado en una sola pasada: batería promedio por zona.
      */
     public Map<String, Double> calcularBateriaPromedioPorZona(List<DroneEnterprise> flota) {
-        Objects.requireNonNull(flota, "La flota no puede ser nula");
+        Objects.requireNonNull(flota, MSG_FLOTA_NO_NULA);
         return flota.stream().collect(new BateriaPromedioPorZonaCollector());
     }
 
@@ -131,7 +132,7 @@ public class CoordinadorRutasEmpoleon {
      * Procesamiento paralelo de telemetría y salud para flota enterprise de 60 drones.
      */
     public Map<String, Double> calcularSaludFlotaParalelo(List<DroneEnterprise> flota) {
-        Objects.requireNonNull(flota, "La flota no puede ser nula");
+        Objects.requireNonNull(flota, MSG_FLOTA_NO_NULA);
         return flota.parallelStream()
                 .collect(Collectors.groupingBy(
                         DroneEnterprise::getZona,

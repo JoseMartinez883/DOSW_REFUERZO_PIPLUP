@@ -62,12 +62,12 @@ public class Ejercicio04Empoleon {
         ResultadoValidacion prevalidacion = despachador.validarDespacho(
                 mision, dronFisico, ZonaHidrica.LAGUNA_RESERVA.getNombre()
         );
-        LOGGER.info("   -> Pre-validación SOLID: " + prevalidacion.exitoso() + " (" + prevalidacion.motivo() + ")");
+        LOGGER.info(() -> "   -> Pre-validación SOLID: " + prevalidacion.exitoso() + " (" + prevalidacion.motivo() + ")");
 
         boolean despachoExitoso = despachador.despacharMision(
                 mision, droneSeguro, ZonaHidrica.LAGUNA_RESERVA.getNombre(), "TR-1"
         );
-        LOGGER.info("   -> Misión despachada exitosamente: " + despachoExitoso + " | Batería restante: "
+        LOGGER.info(() -> "   -> Misión despachada exitosamente: " + despachoExitoso + " | Batería restante: "
                 + droneSeguro.getBateria() + "%");
 
         LOGGER.info("4. AUDITORÍA SOLID FINALIZADA: 0 dependencias externas en dominio, 100% constructor injection.");

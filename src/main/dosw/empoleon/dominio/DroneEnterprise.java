@@ -12,6 +12,7 @@ public class DroneEnterprise extends DroneAcuatico {
 
     private int entregasExitosas;
 
+    @SuppressWarnings("java:S107")
     public DroneEnterprise(
             String id,
             String modelo,
@@ -42,5 +43,22 @@ public class DroneEnterprise extends DroneAcuatico {
 
     public void incrementarEntregasExitosas() {
         this.entregasExitosas++;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass() || !super.equals(o)) {
+            return false;
+        }
+        DroneEnterprise that = (DroneEnterprise) o;
+        return entregasExitosas == that.entregasExitosas;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(super.hashCode(), entregasExitosas);
     }
 }
